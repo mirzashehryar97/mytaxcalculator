@@ -102,19 +102,19 @@ function SingleYearCalculator() {
                 <h3 className="text-lg font-semibold text-emerald-800 mb-4">Monthly Breakdown</h3>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-gray-600">Gross Income</p>
+                    <p className="text-sm text-gray-600">Monthly Gross Income</p>
                     <p className="text-2xl font-semibold text-gray-900">
                       Rs. {result.monthlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Tax</p>
+                    <p className="text-sm text-gray-600">Monthly Tax</p>
                     <p className="text-2xl font-semibold text-red-600">
                       Rs. {result.monthlyTax.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Net Income</p>
+                    <p className="text-sm text-gray-600">Monthly Net Income</p>
                     <p className="text-2xl font-semibold text-emerald-600">
                       Rs. {result.salaryAfterTax.toLocaleString()}
                     </p>
@@ -126,19 +126,19 @@ function SingleYearCalculator() {
                 <h3 className="text-lg font-semibold text-emerald-800 mb-4">Annual Breakdown</h3>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-gray-600">Gross Income</p>
+                    <p className="text-sm text-gray-600">Yearly Gross Income</p>
                     <p className="text-2xl font-semibold text-gray-900">
                       Rs. {result.yearlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Tax</p>
+                    <p className="text-sm text-gray-600">Yearly Tax</p>
                     <p className="text-2xl font-semibold text-red-600">
                       Rs. {result.yearlyTax.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Net Income</p>
+                    <p className="text-sm text-gray-600">Yearly Net Income</p>
                     <p className="text-2xl font-semibold text-emerald-600">
                       Rs. {result.yearlyIncomeAfterTax.toLocaleString()}
                     </p>

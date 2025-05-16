@@ -7,6 +7,7 @@ import {
   Area, AreaChart, ComposedChart, Scatter
 } from 'recharts';
 import { useCalculator } from '../context/CalculatorContext';
+import { taxSlabs } from '../utils/taxCalculator';
 
 interface FiscalYearBreakdown {
   fiscalYear: string;
@@ -143,7 +144,50 @@ function MultiYearCalculator() {
     );
   };
 
-  // Validate that no two periods overlap
+  // Check if a date is within available fiscal years
+  const isDateInAvailableFiscalYears = (date: Date): boolean => {
+    const availableFiscalYears = Object.keys(taxSlabs);
+    
+    // Get the earliest and latest fiscal years
+    const sortedYears = [...availableFiscalYears].sort();
+    const earliestYear = sortedYears[0];
+    const latestYear = sortedYears[sortedYears.length - 1];
+    
+    // Parse the years from strings like "2015-2016"
+    const [earliestStartYear] = earliestYear.split('-').map(Number);
+    const [, latestEndYear] = latestYear.split('-').map(Number);
+    
+    // Create normalized date for comparison (strip time portion)
+    const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    
+    // Calculate the earliest fiscal year start date (July 1st of earliestStartYear)
+    const earliestFiscalYearStart = new Date(earliestStartYear, 6, 1); // July 1st (0-indexed months)
+    
+    // Calculate the latest fiscal year end date (June 30th of latestEndYear)
+    const latestFiscalYearEnd = new Date(latestEndYear, 5, 30); // June 30th (0-indexed months)
+    
+    // Check if the date is within the range of available fiscal years
+    // Using >= for start date and <= for end date to include both boundary days
+    return normalizedDate >= earliestFiscalYearStart && normalizedDate <= latestFiscalYearEnd;
+  };
+
+  // Get a formatted date range for error messages
+  const getFormattedDateRange = (): string => {
+    const availableFiscalYears = Object.keys(taxSlabs);
+    
+    // Get the earliest and latest fiscal years
+    const sortedYears = [...availableFiscalYears].sort();
+    const earliestYear = sortedYears[0];
+    const latestYear = sortedYears[sortedYears.length - 1];
+    
+    // Parse the years from strings like "2015-2016"
+    const [earliestStartYear] = earliestYear.split('-').map(Number);
+    const [, latestEndYear] = latestYear.split('-').map(Number);
+    
+    return `July 1, ${earliestStartYear} to June 30, ${latestEndYear}`;
+  };
+
+  // Validate that no two periods overlap and all dates are within available fiscal years
   const validatePeriods = (): boolean => {
     // First convert string dates to Date objects for comparison
     const dateRanges: DayRange[] = [];
@@ -158,6 +202,18 @@ function MultiYearCalculator() {
       
       if (startDate > endDate) {
         setValidationError("Start date cannot be after end date.");
+        return false;
+      }
+      
+      // Check if start date is within available fiscal years
+      if (!isDateInAvailableFiscalYears(startDate)) {
+        setValidationError(`The start date (${period.startDate}) is outside the range of available tax slabs. Please use dates within the range: ${getFormattedDateRange()}`);
+        return false;
+      }
+      
+      // Check if end date is within available fiscal years
+      if (!isDateInAvailableFiscalYears(endDate)) {
+        setValidationError(`The end date (${period.endDate}) is outside the range of available tax slabs. Please use dates within the range: ${getFormattedDateRange()}`);
         return false;
       }
       
@@ -524,6 +580,14 @@ function MultiYearCalculator() {
           <div className="text-sm text-emerald-800">
             <p className="font-medium mb-1">Partial Month Calculation</p>
             <p>For periods that don't align with complete months, your salary is calculated proportionally based on the actual days worked.</p>
+          </div>
+        </div>
+        
+        <div className="bg-blue-50 p-4 rounded-lg flex items-start">
+          <Calendar className="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+          <div className="text-sm text-blue-800">
+            <p className="font-medium mb-1">Available Fiscal Years</p>
+            <p>This calculator supports tax calculations for periods between {getFormattedDateRange()}. Please ensure your dates fall within this range.</p>
           </div>
         </div>
       
