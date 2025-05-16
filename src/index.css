@@ -1,8 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@layer base {
+  html, body, #root, #root *, *::before, *::after {
+    font-family: "Open Sans", serif !important;
+  }
+}
+
+* {
+  font-family: "Open Sans", serif !important;
+}
+
+html, body {
+  font-family: "Open Sans", serif !important;
+}
 
 .grid-pattern {
   position: fixed;
@@ -48,12 +62,6 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-@layer base {
-  body {
-    font-family: 'Inter', sans-serif;
-  }
 }
 
 @layer components {
@@ -108,5 +116,11 @@
   .tax-bracket-bar {
     @apply h-8 rounded-lg transition-all duration-300;
     @apply hover:brightness-110 cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .font-open-sans {
+    font-family: "Open Sans", serif;
   }
 }

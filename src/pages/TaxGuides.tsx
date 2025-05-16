@@ -3,7 +3,7 @@ import { FileText, Download, ExternalLink, ArrowRight, Info, AlertTriangle } fro
 
 const TaxGuides = () => {
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">

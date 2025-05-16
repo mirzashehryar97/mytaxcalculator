@@ -8,6 +8,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import AboutUs from './pages/AboutUs';
 import TaxGuides from './pages/TaxGuides';
+import Contact from './pages/Contact';
 
 function GridPattern() {
   const [squares, setSquares] = useState<number[]>([]);
@@ -44,7 +45,7 @@ function HomePage() {
         </p>
       </div>
 
-      <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
         <div className="flex border-b">
           <button
             onClick={() => setActiveTab('single')}
@@ -104,7 +105,7 @@ function App() {
   return (
     <CalculatorProvider>
       <Router>
-        <div className="min-h-screen relative overflow-hidden flex flex-col">
+        <div className="min-h-screen relative overflow-hidden flex flex-col font-open-sans" style={{ fontFamily: '"Open Sans", serif' }}>
           <GridPattern />
           <Header />
           
@@ -113,6 +114,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/tax-guides" element={<TaxGuides />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
@@ -126,7 +128,7 @@ function App() {
 
 function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-6">
+    <div className="bg-white backdrop-blur-sm rounded-xl shadow-md p-6">
       <div className="flex items-center justify-center w-12 h-12 bg-emerald-50 rounded-lg mb-4">
         {icon}
       </div>

@@ -1,35 +1,32 @@
 import React from 'react';
-import { Calculator, Mail, Github, Twitter, Linkedin } from 'lucide-react';
+import { Calculator, Mail, Twitter, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-white/90 backdrop-blur-sm border-t border-gray-200">
+    <footer className="bg-white backdrop-blur-sm border-t border-gray-200">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center">
               <Calculator className="h-8 w-8 text-emerald-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">TaxCalc Pro</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">My Tax Calculator</span>
             </div>
             <p className="mt-4 text-gray-600 text-sm">
-              TaxCalc Pro is a comprehensive tax calculator for Pakistani taxpayers. 
+              My Tax Calculator is a comprehensive tax calculator for Pakistani taxpayers. 
               Calculate your income tax accurately based on the latest tax slabs.
             </p>
             <div className="mt-4 flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-gray-500">
-                <Github className="h-5 w-5" />
-              </a>
               <a href="#" className="text-gray-400 hover:text-gray-500">
                 <Twitter className="h-5 w-5" />
               </a>
               <a href="#" className="text-gray-400 hover:text-gray-500">
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="mailto:contact@taxcalcpro.pk" className="text-gray-400 hover:text-gray-500">
+              <a href="mailto:contact@mytaxcalculator.pk" className="text-gray-400 hover:text-gray-500">
                 <Mail className="h-5 w-5" />
               </a>
             </div>
@@ -107,7 +104,7 @@ const Footer = () => {
         
         <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm">
-            &copy; {currentYear} TaxCalc Pro. All rights reserved.
+            &copy; {currentYear} My Tax Calculator. All rights reserved.
           </p>
           <p className="text-gray-500 text-sm mt-4 md:mt-0">
             Designed with ❤️ in Pakistan

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calculator, Menu, X, Users, Info, FileText, Github } from 'lucide-react';
+import { Calculator, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
@@ -11,25 +11,25 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <header className="bg-white backdrop-blur-sm shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+        <div className="flex items-center h-16 justify-between md:justify-center relative">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center md:absolute md:left-0">
             <Link to="/" className="flex items-center">
               <Calculator className="h-8 w-8 text-emerald-600" />
               <div className="ml-2">
-                <span className="text-xl font-bold text-gray-900">TaxCalc Pro</span>
+                <span className="text-xl font-bold text-gray-900">My Tax Calculator</span>
                 <span className="hidden md:inline-block ml-1 text-sm text-emerald-600 font-medium">Pakistan</span>
               </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-10">
             <Link 
               to="/" 
-              className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
+              className={`inline-flex items-center px-3 py-2 text-sm font-medium border-b-2 ${
                 isActive('/') 
                   ? 'border-emerald-500 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -39,7 +39,7 @@ const Header = () => {
             </Link>
             <Link 
               to="/about" 
-              className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
+              className={`inline-flex items-center px-3 py-2 text-sm font-medium border-b-2 ${
                 isActive('/about') 
                   ? 'border-emerald-500 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -49,7 +49,7 @@ const Header = () => {
             </Link>
             <Link 
               to="/tax-guides" 
-              className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
+              className={`inline-flex items-center px-3 py-2 text-sm font-medium border-b-2 ${
                 isActive('/tax-guides') 
                   ? 'border-emerald-500 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -57,16 +57,17 @@ const Header = () => {
             >
               Tax Guides
             </Link>
-            <a 
-              href="https://github.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            >
-              <Github className="h-4 w-4 mr-1" />
-              GitHub
-            </a>
           </nav>
+
+          {/* Contact Button (right-aligned) */}
+          <div className="hidden md:block md:absolute md:right-0">
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center px-4 py-2 border border-emerald-600 rounded-full text-sm font-medium text-emerald-600 hover:bg-emerald-50 transition-colors"
+            >
+              Contact Us
+            </Link>
+          </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -87,7 +88,7 @@ const Header = () => {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="md:hidden">
-          <div className="pt-2 pb-3 space-y-1 bg-white/95 backdrop-blur-sm shadow-lg">
+          <div className="pt-2 pb-3 space-y-1 bg-white backdrop-blur-sm shadow-lg">
             <Link
               to="/"
               className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
@@ -121,18 +122,17 @@ const Header = () => {
             >
               Tax Guides
             </Link>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+            <Link
+              to="/contact"
+              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                isActive('/contact')
+                  ? 'border-emerald-500 text-emerald-700 bg-emerald-50'
+                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+              }`}
               onClick={() => setIsMenuOpen(false)}
             >
-              <div className="flex items-center">
-                <Github className="h-4 w-4 mr-2" />
-                GitHub
-              </div>
-            </a>
+              Contact Us
+            </Link>
           </div>
         </div>
       )}

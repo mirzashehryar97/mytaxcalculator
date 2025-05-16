@@ -3,20 +3,20 @@ import { Users, Calculator, Shield, Mail, Github, Twitter, Linkedin } from 'luci
 
 const AboutUs = () => {
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8">
           <div>
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              About TaxCalc Pro
+              About My Tax Calculator
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              TaxCalc Pro is a comprehensive tax calculator specifically designed for Pakistani taxpayers. Our mission is to simplify tax calculations and help individuals understand their tax liabilities.
+              My Tax Calculator is a comprehensive tax calculator specifically designed for Pakistani taxpayers. Our mission is to simplify tax calculations and help individuals understand their tax liabilities.
             </p>
             
             <div className="mt-8 flex">
               <div className="rounded-md shadow">
-                <a href="mailto:contact@taxcalcpro.pk" className="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700">
+                <a href="mailto:contact@mytaxcalculator.pk" className="flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700">
                   <Mail className="h-5 w-5 mr-2" />
                   Contact Us
                 </a>
