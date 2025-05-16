@@ -20,17 +20,24 @@ interface SalaryPeriod {
   salary: string;
 }
 
+interface BreakdownItem {
+  period: string;
+  tax: number;
+  salary: number;
+  netIncome: number;
+  fiscalYear: string; // Added for chart rendering
+  months: number;     // Added for monthly calculations
+  taxRate: number;    // Added for tax rate visualization
+}
+
+interface MultiYearResult {
+  totalTax: number;
+  breakdown: BreakdownItem[];
+}
+
 interface MultiYearState {
   periods: SalaryPeriod[];
-  result: {
-    totalTax: number;
-    breakdown: Array<{
-      period: string;
-      tax: number;
-      salary: number;
-      netIncome: number;
-    }>;
-  } | null;
+  result: MultiYearResult | null;
 }
 
 interface CalculatorContextType {

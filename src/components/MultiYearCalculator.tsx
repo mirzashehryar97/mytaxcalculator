@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { calculateTaxForTotalAmount } from '../utils/taxCalculator';
-import { PlusCircle, MinusCircle, Calendar, AlertTriangle } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { PlusCircle, MinusCircle, Calendar, AlertTriangle, Info } from 'lucide-react';
+import { 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
+  BarChart, Bar, PieChart, Pie, Cell, Legend, CartesianGrid, 
+  Area, AreaChart, ComposedChart, Scatter
+} from 'recharts';
 import { useCalculator } from '../context/CalculatorContext';
 
 interface FiscalYearBreakdown {
@@ -20,10 +24,23 @@ interface DayRange {
   endDate: Date;
 }
 
+// Chart color constants
+const COLORS = {
+  tax: '#dc2626',
+  netIncome: '#059669',
+  salary: '#3b82f6',
+  taxRate: '#8b5cf6',
+  primary: ['#047857', '#059669', '#10b981', '#34d399', '#6ee7b7'],
+  secondary: ['#1d4ed8', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd'],
+  accent: ['#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe']
+};
+
 function MultiYearCalculator() {
   const { multiYear, setMultiYear } = useCalculator();
   const { periods, result } = multiYear;
   const [validationError, setValidationError] = useState<string | null>(null);
+  // Add state for active chart selection
+  const [activeChart, setActiveChart] = useState<string>('comparison');
 
   const addPeriod = () => {
     setMultiYear(prev => ({
@@ -183,7 +200,6 @@ function MultiYearCalculator() {
       end: new Date(parseInt(startYear) + 1, 5, 30) // June 30th
     };
   };
-
   const splitPeriodByFiscalYear = (startDate: Date, endDate: Date, monthlySalary: number): FiscalYearBreakdown[] => {
     const breakdowns: FiscalYearBreakdown[] = [];
     let currentDate = new Date(startDate);
@@ -280,20 +296,217 @@ function MultiYearCalculator() {
           period: `Fiscal Year ${b.fiscalYear} (${b.months.toFixed(2)} months)`,
           tax: b.tax,
           salary: b.totalSalary,
-          netIncome: b.netIncome
+          netIncome: b.netIncome,
+          fiscalYear: b.fiscalYear,  // Add fiscalYear for charts
+          months: b.months,          // Add months for charts
+          taxRate: (b.tax / b.totalSalary) * 100  // Add tax rate for visualization
         }))
       }
     }));
+    
+    // Set default chart view when calculation is done
+    setActiveChart('comparison');
   };
 
-  const getChartData = () => {
+  // Chart data preparation functions
+  const getComparisonChartData = () => {
     if (!result) return [];
     return result.breakdown.map(item => ({
-      name: item.period,
+      name: `FY ${item.fiscalYear}`,
       Tax: Math.round(item.tax),
       'Net Income': Math.round(item.netIncome),
       'Gross Salary': Math.round(item.salary)
     }));
+  };
+
+  const getTaxRateChartData = () => {
+    if (!result) return [];
+    return result.breakdown.map(item => ({
+      name: `FY ${item.fiscalYear}`,
+      'Tax Rate (%)': parseFloat((item.tax / item.salary * 100).toFixed(2)),
+      'Months Worked': parseFloat(item.months.toFixed(2))
+    }));
+  };
+
+  const getDistributionChartData = () => {
+    if (!result) return [];
+    return [
+      { name: 'Tax', value: Math.round(result.totalTax) },
+      { name: 'Net Income', value: Math.round(result.breakdown.reduce((sum, item) => sum + item.netIncome, 0)) }
+    ];
+  };
+
+  const getMonthlyBreakdownData = () => {
+    if (!result) return [];
+    return result.breakdown.map(item => ({
+      name: `FY ${item.fiscalYear}`,
+      'Monthly Salary': Math.round(item.salary / 12),
+      'Monthly Tax': Math.round(item.tax / 12),
+      'Monthly Net': Math.round(item.netIncome / 12)
+    }));
+  };
+
+  // Format large numbers
+  const formatCurrency = (value: number) => {
+    if (value >= 1000000) {
+      return `${(value / 1000000).toFixed(2)}M`;
+    } else if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}K`;
+    }
+    return value.toString();
+  };
+
+  // Render chart based on active selection
+  const renderActiveChart = () => {
+    switch (activeChart) {
+      case 'comparison':
+        return (
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h4 className="text-base font-medium text-gray-700 mb-4">Income & Tax Comparison by Fiscal Year</h4>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={getComparisonChartData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis 
+                    yAxisId="left"
+                    tickFormatter={(value) => formatCurrency(value)}
+                  />
+                  <YAxis 
+                    yAxisId="right" 
+                    orientation="right" 
+                    tickFormatter={(value) => formatCurrency(value)}
+                  />
+                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
+                  <Legend />
+                  <Bar yAxisId="left" dataKey="Gross Salary" fill={COLORS.salary} />
+                  <Bar yAxisId="left" dataKey="Net Income" fill={COLORS.netIncome} />
+                  <Line 
+                    yAxisId="right" 
+                    type="monotone" 
+                    dataKey="Tax" 
+                    stroke={COLORS.tax} 
+                    strokeWidth={3}
+                    dot={{ r: 5 }}
+                    activeDot={{ r: 8 }}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        );
+      
+      case 'taxRate':
+        return (
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h4 className="text-base font-medium text-gray-700 mb-4">Tax Rate Analysis by Fiscal Year</h4>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={getTaxRateChartData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis 
+                    yAxisId="left"
+                    domain={[0, 'dataMax + 2']}
+                    tickFormatter={(value) => `${value}%`}
+                  />
+                  <YAxis 
+                    yAxisId="right" 
+                    orientation="right" 
+                    domain={[0, 12]}
+                    tickFormatter={(value) => `${value} mo`}
+                  />
+                  <Tooltip />
+                  <Legend />
+                  <Bar yAxisId="right" dataKey="Months Worked" fill={COLORS.salary} />
+                  <Line 
+                    yAxisId="left" 
+                    type="monotone" 
+                    dataKey="Tax Rate (%)" 
+                    stroke={COLORS.taxRate} 
+                    strokeWidth={3}
+                    dot={{ r: 5 }}
+                    activeDot={{ r: 8 }}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        );
+      
+      case 'distribution':
+        return (
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h4 className="text-base font-medium text-gray-700 mb-4">Total Income Distribution</h4>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={getDistributionChartData()}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={130}
+                    labelLine={false}
+                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {getDistributionChartData().map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tax : COLORS.netIncome} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        );
+      
+      case 'monthlyBreakdown':
+        return (
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h4 className="text-base font-medium text-gray-700 mb-4">Monthly Averages by Fiscal Year</h4>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={getMonthlyBreakdownData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
+                  <Legend />
+                  <Bar dataKey="Monthly Salary" fill={COLORS.salary} />
+                  <Bar dataKey="Monthly Net" fill={COLORS.netIncome} />
+                  <Bar dataKey="Monthly Tax" fill={COLORS.tax} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        );
+      
+      case 'timeline':
+        return (
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h4 className="text-base font-medium text-gray-700 mb-4">Tax Timeline (Cumulative Analysis)</h4>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={getComparisonChartData()}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
+                  <Legend />
+                  <Area type="monotone" dataKey="Tax" stackId="1" stroke={COLORS.tax} fill={COLORS.tax} />
+                  <Area type="monotone" dataKey="Net Income" stackId="1" stroke={COLORS.netIncome} fill={COLORS.netIncome} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        );
+      
+      default:
+        return null;
+    }
   };
 
   return (
@@ -305,9 +518,17 @@ function MultiYearCalculator() {
             <p>{validationError}</p>
           </div>
         )}
+        
+        <div className="bg-emerald-50 p-4 rounded-lg flex items-start">
+          <Info className="h-5 w-5 text-emerald-600 mr-2 mt-0.5 flex-shrink-0" />
+          <div className="text-sm text-emerald-800">
+            <p className="font-medium mb-1">Partial Month Calculation</p>
+            <p>For periods that don't align with complete months, your salary is calculated proportionally based on the actual days worked.</p>
+          </div>
+        </div>
       
         {periods.map((period, index) => (
-          <div key={index} className="period-card space-y-6">
+          <div key={index} className="period-card space-y-6 bg-gray-50 p-6 rounded-xl border border-gray-100">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-2">
                 <Calendar className="h-5 w-5 text-emerald-600" />
@@ -379,7 +600,7 @@ function MultiYearCalculator() {
 
           <button
             onClick={handleCalculate}
-            className="btn-calculate md:w-auto"
+            className="btn-calculate md:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg shadow transition-colors"
             disabled={periods.some(p => !p.startDate || !p.endDate || !p.salary)}
           >
             Calculate Total Tax
@@ -420,36 +641,63 @@ function MultiYearCalculator() {
               </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white p-6 rounded-xl shadow">
-                <h4 className="text-base font-medium text-gray-700 mb-4">Tax Comparison by Fiscal Year</h4>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={getChartData()}>
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line type="monotone" dataKey="Tax" stroke="#dc2626" strokeWidth={2} />
-                      <Line type="monotone" dataKey="Net Income" stroke="#059669" strokeWidth={2} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
+            <div className="bg-white p-4 rounded-lg shadow mb-6">
+              <div className="flex space-x-2 overflow-x-auto pb-2">
+                <button
+                  onClick={() => setActiveChart('comparison')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                    activeChart === 'comparison' 
+                      ? 'bg-emerald-100 text-emerald-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Income & Tax
+                </button>
+                <button
+                  onClick={() => setActiveChart('taxRate')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                    activeChart === 'taxRate' 
+                      ? 'bg-emerald-100 text-emerald-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Tax Rate
+                </button>
+                <button
+                  onClick={() => setActiveChart('distribution')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                    activeChart === 'distribution' 
+                      ? 'bg-emerald-100 text-emerald-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Distribution
+                </button>
+                <button
+                  onClick={() => setActiveChart('monthlyBreakdown')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                    activeChart === 'monthlyBreakdown' 
+                      ? 'bg-emerald-100 text-emerald-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Monthly Averages
+                </button>
+                <button
+                  onClick={() => setActiveChart('timeline')}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                    activeChart === 'timeline' 
+                      ? 'bg-emerald-100 text-emerald-800' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Timeline
+                </button>
               </div>
+            </div>
 
-              <div className="bg-white p-6 rounded-xl shadow">
-                <h4 className="text-base font-medium text-gray-700 mb-4">Income Distribution by Fiscal Year</h4>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={getChartData()}>
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="Tax" fill="#dc2626" />
-                      <Bar dataKey="Net Income" fill="#059669" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+            <div className="space-y-6">
+              {renderActiveChart()}
             </div>
           </div>
         )}
