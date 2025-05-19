@@ -42,6 +42,20 @@ const UnderstandingTaxSystem = () => {
             <p className="text-gray-600 text-lg mb-6">
               Learn the basics of Pakistan's tax system, including income tax brackets, filing requirements, and important deadlines.
             </p>
+
+            <div className="bg-emerald-50 border border-emerald-100 p-7 rounded-2xl flex items-start gap-5 shadow mb-10">
+              <Info className="h-10 w-10 text-emerald-600 mt-1 flex-shrink-0" />
+              <div>
+                <h2 className="text-2xl font-extrabold text-emerald-800 mb-2 flex items-center gap-2">Why Understanding the Tax System Matters</h2>
+                <p className="text-emerald-900 mb-4 text-base">Knowing how the tax system works helps you stay compliant, avoid penalties, and make the most of your finances:</p>
+                <ul className="space-y-2">
+                  <li className="flex items-center text-emerald-900"><Info className="h-5 w-5 text-emerald-500 mr-2" />Avoid unnecessary penalties and legal issues</li>
+                  <li className="flex items-center text-emerald-900"><Info className="h-5 w-5 text-emerald-500 mr-2" />Maximize your eligible deductions and credits</li>
+                  <li className="flex items-center text-emerald-900"><Info className="h-5 w-5 text-emerald-500 mr-2" />Contribute to national development through proper compliance</li>
+                  <li className="flex items-center text-emerald-900"><Info className="h-5 w-5 text-emerald-500 mr-2" />Access financial services and benefits</li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <SectionHeading icon={<Info className="h-6 w-6" />}>Introduction to Pakistan's Tax System</SectionHeading>

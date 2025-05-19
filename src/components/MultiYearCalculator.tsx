@@ -8,6 +8,9 @@ import {
 } from 'recharts';
 import { useCalculator } from '../context/CalculatorContext';
 import { taxSlabs } from '../utils/taxCalculator';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../datepicker.css';
 
 interface FiscalYearBreakdown {
   fiscalYear: string;
@@ -610,29 +613,57 @@ function MultiYearCalculator() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="form-label text-gray-800">
+                <label className="form-label text-gray-800 flex items-center gap-1">
                   Start Date
+                  <Calendar className="h-4 w-4 text-blue-500 ml-1" />
                 </label>
-                <input
-                  type="date"
-                  value={period.startDate}
-                  onChange={(e) => updatePeriod(index, 'startDate', e.target.value)}
-                  className="form-input"
-                  required
-                />
+                <div className="relative">
+                  <DatePicker
+                    selected={period.startDate ? new Date(period.startDate) : null}
+                    onChange={(date: Date | null) => updatePeriod(index, 'startDate', date ? date.toISOString().split('T')[0] : '')}
+                    dateFormat="dd-MM-yyyy"
+                    className="form-input w-full pr-10 rounded-xl border-emerald-300 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm text-lg"
+                    popperClassName="z-50"
+                    calendarClassName="rounded-xl shadow-lg border border-emerald-200"
+                    placeholderText="Select start date"
+                    minDate={new Date(getFormattedDateRange().split(' to ')[0])}
+                    maxDate={new Date(getFormattedDateRange().split(' to ')[1])}
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={30}
+                    showMonthDropdown
+                    dateFormatCalendar="MMMM yyyy"
+                  />
+                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-blue-400 pointer-events-none" />
+                </div>
+                <div className="text-xs text-gray-500 mt-1">Between {getFormattedDateRange()}</div>
               </div>
 
               <div>
-                <label className="form-label text-gray-800">
+                <label className="form-label text-gray-800 flex items-center gap-1">
                   End Date
+                  <Calendar className="h-4 w-4 text-blue-500 ml-1" />
                 </label>
-                <input
-                  type="date"
-                  value={period.endDate}
-                  onChange={(e) => updatePeriod(index, 'endDate', e.target.value)}
-                  className="form-input"
-                  required
-                />
+                <div className="relative">
+                  <DatePicker
+                    selected={period.endDate ? new Date(period.endDate) : null}
+                    onChange={(date: Date | null) => updatePeriod(index, 'endDate', date ? date.toISOString().split('T')[0] : '')}
+                    dateFormat="dd-MM-yyyy"
+                    className="form-input w-full pr-10 rounded-xl border-emerald-300 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm text-lg"
+                    popperClassName="z-50"
+                    calendarClassName="rounded-xl shadow-lg border border-emerald-200"
+                    placeholderText="Select end date"
+                    minDate={new Date(getFormattedDateRange().split(' to ')[0])}
+                    maxDate={new Date(getFormattedDateRange().split(' to ')[1])}
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={30}
+                    showMonthDropdown
+                    dateFormatCalendar="MMMM yyyy"
+                  />
+                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-blue-400 pointer-events-none" />
+                </div>
+                <div className="text-xs text-gray-500 mt-1">Between {getFormattedDateRange()}</div>
               </div>
 
               <div>

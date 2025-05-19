@@ -42,6 +42,20 @@ const TaxDeductionsCredits = () => {
             <p className="text-gray-600 text-lg mb-6">
               Discover potential tax deductions and credits available for Pakistani taxpayers to reduce your overall tax liability.
             </p>
+
+            <div className="bg-emerald-50 border border-emerald-100 p-7 rounded-2xl flex items-start gap-5 shadow mb-10">
+              <PiggyBank className="h-10 w-10 text-emerald-600 mt-1 flex-shrink-0" />
+              <div>
+                <h2 className="text-2xl font-extrabold text-emerald-800 mb-2 flex items-center gap-2">Why Deductions & Credits Matter</h2>
+                <p className="text-emerald-900 mb-4 text-base">Claiming all eligible deductions and credits can significantly reduce your tax bill and increase your savings:</p>
+                <ul className="space-y-2">
+                  <li className="flex items-center text-emerald-900"><PiggyBank className="h-5 w-5 text-emerald-500 mr-2" />Save thousands of rupees each year</li>
+                  <li className="flex items-center text-emerald-900"><PiggyBank className="h-5 w-5 text-emerald-500 mr-2" />Lower your taxable income and tax liability</li>
+                  <li className="flex items-center text-emerald-900"><PiggyBank className="h-5 w-5 text-emerald-500 mr-2" />Support your financial goals and investments</li>
+                  <li className="flex items-center text-emerald-900"><PiggyBank className="h-5 w-5 text-emerald-500 mr-2" />Stay compliant and avoid missing out on benefits</li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <SectionHeading icon={<Info className="h-6 w-6" />}>Understanding Tax Deductions and Credits</SectionHeading>
