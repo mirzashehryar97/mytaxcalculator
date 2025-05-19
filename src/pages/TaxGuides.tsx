@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileText, Download, ExternalLink, ArrowRight, Info, AlertTriangle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const TaxGuides = () => {
   return (
@@ -38,10 +39,10 @@ const TaxGuides = () => {
               <p className="text-gray-600 mb-4">
                 Learn the basics of Pakistan's tax system, including income tax brackets, filing requirements, and important deadlines.
               </p>
-              <a href="#" className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center">
+              <Link to="/tax-guides/understanding-tax-system" className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center">
                 Read Guide
                 <ArrowRight className="ml-1 h-4 w-4" />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -55,10 +56,10 @@ const TaxGuides = () => {
               <p className="text-gray-600 mb-4">
                 Discover potential tax deductions and credits available for Pakistani taxpayers to reduce your overall tax liability.
               </p>
-              <a href="#" className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center">
+              <Link to="/tax-guides/deductions-credits" className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center">
                 Read Guide
                 <ArrowRight className="ml-1 h-4 w-4" />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -72,10 +73,10 @@ const TaxGuides = () => {
               <p className="text-gray-600 mb-4">
                 Step-by-step instructions on how to file your income tax return in Pakistan, including online filing options.
               </p>
-              <a href="#" className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center">
+              <Link to="/tax-guides/filing-tax-return" className="text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center">
                 Read Guide
                 <ArrowRight className="ml-1 h-4 w-4" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -9,6 +9,9 @@ import Footer from './components/Footer';
 import AboutUs from './pages/AboutUs';
 import TaxGuides from './pages/TaxGuides';
 import Contact from './pages/Contact';
+import UnderstandingTaxSystem from './pages/UnderstandingTaxSystem';
+import TaxDeductionsCredits from './pages/TaxDeductionsCredits';
+import FilingTaxReturn from './pages/FilingTaxReturn';
 
 function GridPattern() {
   const [squares, setSquares] = useState<number[]>([]);
@@ -114,6 +117,9 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/tax-guides" element={<TaxGuides />} />
+              <Route path="/tax-guides/understanding-tax-system" element={<UnderstandingTaxSystem />} />
+              <Route path="/tax-guides/deductions-credits" element={<TaxDeductionsCredits />} />
+              <Route path="/tax-guides/filing-tax-return" element={<FilingTaxReturn />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
