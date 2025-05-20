@@ -1,5 +1,4 @@
-import React from 'react';
-import { Users, Calculator, Shield, Mail, Github, Twitter, Linkedin } from 'lucide-react';
+import { Users, Calculator, Shield, Mail} from 'lucide-react';
 
 const AboutUs = () => {
   return (

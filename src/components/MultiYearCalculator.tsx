@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { calculateTaxForTotalAmount } from '../utils/taxCalculator';
 import { PlusCircle, MinusCircle, Calendar, AlertTriangle, Info } from 'lucide-react';
 import { 
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
+  Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
   BarChart, Bar, PieChart, Pie, Cell, Legend, CartesianGrid, 
-  Area, AreaChart, ComposedChart, Scatter
+  Area, AreaChart, ComposedChart,
 } from 'recharts';
 import { useCalculator } from '../context/CalculatorContext';
 import { taxSlabs } from '../utils/taxCalculator';
@@ -510,7 +510,7 @@ function MultiYearCalculator() {
                     labelLine={false}
                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   >
-                    {getDistributionChartData().map((entry, index) => (
+                    {getDistributionChartData().map((_, index) => (
                       <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tax : COLORS.netIncome} />
                     ))}
                   </Pie>

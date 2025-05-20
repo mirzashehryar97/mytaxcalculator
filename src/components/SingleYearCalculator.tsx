@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { calculateTax } from '../utils/taxCalculator';
 import { 
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell,
@@ -116,7 +116,7 @@ function SingleYearCalculator() {
                     labelLine={false}
                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   >
-                    {getDistributionData().map((entry, index) => (
+                    {getDistributionData().map((_, index) => (
                       <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tax : COLORS.netIncome} />
                     ))}
                   </Pie>
