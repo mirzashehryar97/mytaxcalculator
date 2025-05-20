@@ -5,6 +5,7 @@ import {
   Legend, CartesianGrid
 } from 'recharts';
 import { useCalculator } from '../context/CalculatorContext';
+import { BarChart2 } from 'lucide-react';
 
 const fiscalYears = [
   "2024-2025",
@@ -34,8 +35,8 @@ const COLORS = {
 function SingleYearCalculator() {
   const { singleYear, setSingleYear } = useCalculator();
   const { salary, selectedYear, result } = singleYear;
-  // Add state for active chart selection
   const [activeChart, setActiveChart] = useState<string>('distribution');
+  const [showCharts, setShowCharts] = useState(false);
 
   const calculateTaxResult = () => {
     const salaryNum = parseFloat(salary);
@@ -177,7 +178,7 @@ function SingleYearCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="space-y-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-lg">
+      <div className="space-y-8 bg-white/95 p-8 rounded-2xl shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="form-label text-gray-800">
@@ -267,47 +268,59 @@ function SingleYearCalculator() {
             <div className="section-divider" />
 
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900">Tax Rate: {result.taxRate.toFixed(2)}%</h3>
-              
-              <div className="bg-white p-4 rounded-lg shadow mb-6">
-                <div className="flex space-x-2 overflow-x-auto pb-2">
-                  <button
-                    onClick={() => setActiveChart('distribution')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                      activeChart === 'distribution' 
-                        ? 'bg-emerald-100 text-emerald-800' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    Distribution
-                  </button>
-                  <button
-                    onClick={() => setActiveChart('monthlyBreakdown')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                      activeChart === 'monthlyBreakdown' 
-                        ? 'bg-emerald-100 text-emerald-800' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    Monthly Breakdown
-                  </button>
-                  {/* Removed tax brackets and monthly comparison buttons */}
-                  <button
-                    onClick={() => setActiveChart('salaryComponents')}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                      activeChart === 'salaryComponents' 
-                        ? 'bg-emerald-100 text-emerald-800' 
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    Salary Components
-                  </button>
-                </div>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Tax Rate: {result.taxRate.toFixed(2)}%</h3>
+                <button
+                  onClick={() => setShowCharts(!showCharts)}
+                  className="flex items-center space-x-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                >
+                  <BarChart2 className="h-5 w-5" />
+                  <span>{showCharts ? 'Hide Charts' : 'Show Charts'}</span>
+                </button>
               </div>
               
-              <div className="space-y-6">
-                {renderActiveChart()}
-              </div>
+              {showCharts && (
+                <>
+                  <div className="bg-white p-4 rounded-lg shadow mb-6">
+                    <div className="flex space-x-2 overflow-x-auto pb-2">
+                      <button
+                        onClick={() => setActiveChart('distribution')}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                          activeChart === 'distribution' 
+                            ? 'bg-emerald-100 text-emerald-800' 
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        Distribution
+                      </button>
+                      <button
+                        onClick={() => setActiveChart('monthlyBreakdown')}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                          activeChart === 'monthlyBreakdown' 
+                            ? 'bg-emerald-100 text-emerald-800' 
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        Monthly Breakdown
+                      </button>
+                      <button
+                        onClick={() => setActiveChart('salaryComponents')}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
+                          activeChart === 'salaryComponents' 
+                            ? 'bg-emerald-100 text-emerald-800' 
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        Salary Components
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    {renderActiveChart()}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}

@@ -570,7 +570,7 @@ function MultiYearCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="space-y-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-lg">
+      <div className="space-y-8 bg-white/95 p-8 rounded-2xl shadow-lg">
         {validationError && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start">
             <AlertTriangle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
