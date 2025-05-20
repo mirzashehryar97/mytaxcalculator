@@ -1,4 +1,4 @@
-import { Calculator, Mail, Twitter, Linkedin } from 'lucide-react';
+import { Mail, Twitter, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -11,7 +11,7 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center">
-              <Calculator className="h-8 w-8 text-emerald-600" />
+              <img src="/main-logo.png" alt="My Tax Calculator Logo" className="h-8 w-8 text-emerald-600" />
               <span className="ml-2 text-xl font-bold text-gray-900">My Tax Calculator</span>
             </div>
             <p className="mt-4 text-gray-600 text-sm">

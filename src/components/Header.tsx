@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calculator, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
@@ -17,7 +17,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center md:absolute md:left-0">
             <Link to="/" className="flex items-center">
-              <Calculator className="h-8 w-8 text-emerald-600" />
+              <img src="/main-logo.png" alt="My Tax Calculator Logo" className="h-8 w-8 text-emerald-600" />
               <div className="ml-2">
                 <span className="text-xl font-bold text-gray-900">My Tax Calculator</span>
                 <span className="hidden md:inline-block ml-1 text-sm text-emerald-600 font-medium">Pakistan</span>
