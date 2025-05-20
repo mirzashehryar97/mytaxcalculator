@@ -205,8 +205,9 @@ function SingleYearCalculator() {
               type="number"
               value={salary}
               onChange={(e) => setSingleYear(prev => ({ ...prev, salary: e.target.value }))}
+              onWheel={(e) => (e.target as HTMLInputElement).blur()}
               placeholder="Enter your monthly salary"
-              className="form-input"
+              className="form-input no-spinner"
               min="0"
               required
             />
