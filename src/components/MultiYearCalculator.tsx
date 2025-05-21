@@ -12,6 +12,15 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../datepicker.css';
 
+// Helper function to format date as YYYY-MM-DD
+const formatDateToYYYYMMDD = (date: Date | null): string => {
+  if (!date) return '';
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 interface FiscalYearBreakdown {
   fiscalYear: string;
   startDate: string;
@@ -62,11 +71,11 @@ function MultiYearCalculator() {
     setValidationError(null);
   };
 
-  const updatePeriod = (index: number, field: keyof typeof periods[0], value: string) => {
+  const updatePeriod = (index: number, field: keyof typeof periods[0], value: string | Date | null) => {
     setMultiYear(prev => ({
       ...prev,
       periods: prev.periods.map((period, i) =>
-        i === index ? { ...period, [field]: value } : period
+        i === index ? { ...period, [field]: field === 'salary' ? value : formatDateToYYYYMMDD(value as Date | null) } : period
       )
     }));
     
@@ -620,7 +629,7 @@ function MultiYearCalculator() {
                 <div className="relative">
                   <DatePicker
                     selected={period.startDate ? new Date(period.startDate) : null}
-                    onChange={(date: Date | null) => updatePeriod(index, 'startDate', date ? date.toISOString().split('T')[0] : '')}
+                    onChange={(date: Date | null) => updatePeriod(index, 'startDate', date)}
                     dateFormat="dd-MM-yyyy"
                     className="form-input w-full pr-10 rounded-xl border-emerald-300 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm text-lg"
                     popperClassName="z-50"
@@ -647,7 +656,7 @@ function MultiYearCalculator() {
                 <div className="relative">
                   <DatePicker
                     selected={period.endDate ? new Date(period.endDate) : null}
-                    onChange={(date: Date | null) => updatePeriod(index, 'endDate', date ? date.toISOString().split('T')[0] : '')}
+                    onChange={(date: Date | null) => updatePeriod(index, 'endDate', date)}
                     dateFormat="dd-MM-yyyy"
                     className="form-input w-full pr-10 rounded-xl border-emerald-300 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm text-lg"
                     popperClassName="z-50"
