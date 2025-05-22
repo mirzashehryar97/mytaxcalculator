@@ -59,16 +59,6 @@ const Header = () => {
             </Link>
           </nav>
 
-          {/* Contact Button (right-aligned) */}
-          <div className="hidden md:block md:absolute md:right-0">
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center px-4 py-2 border border-emerald-600 rounded-full text-sm font-medium text-emerald-600 hover:bg-emerald-50 transition-colors"
-            >
-              Contact Us
-            </Link>
-          </div>
-
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
@@ -121,17 +111,6 @@ const Header = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Tax Guides
-            </Link>
-            <Link
-              to="/contact"
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                isActive('/contact')
-                  ? 'border-emerald-500 text-emerald-700 bg-emerald-50'
-                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-700'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contact Us
             </Link>
           </div>
         </div>

@@ -25,9 +25,9 @@ const Footer = () => {
               <a href="#" className="text-gray-400 hover:text-gray-500">
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="mailto:contact@mytaxcalculator.pk" className="text-gray-400 hover:text-gray-500">
+              {/* <a href="mailto:contact@mytaxcalculator.pk" className="text-gray-400 hover:text-gray-500">
                 <Mail className="h-5 w-5" />
-              </a>
+              </a> */}
             </div>
           </div>
           
