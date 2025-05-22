@@ -6,6 +6,9 @@ export default {
       fontFamily: {
         sans: ['"Open Sans"', 'serif'],
       },
+      screens: {
+        '950': '950px',
+      },
     },
   },
   plugins: [],

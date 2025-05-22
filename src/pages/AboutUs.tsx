@@ -1,4 +1,4 @@
-import { Users, Calculator, Shield, Mail} from 'lucide-react';
+import { Users, Calculator, Shield } from 'lucide-react';
 
 const AboutUs = () => {
   return (

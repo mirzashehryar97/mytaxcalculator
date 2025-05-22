@@ -13,9 +13,9 @@ const Header = () => {
   return (
     <header className="bg-white backdrop-blur-sm shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-16 justify-between md:justify-center relative">
+        <div className="flex items-center h-16 justify-between min-[950px]:justify-center relative">
           {/* Logo */}
-          <div className="flex items-center md:absolute md:left-0">
+          <div className="flex items-center min-[950px]:absolute min-[950px]:left-0">
             <Link to="/" className="flex items-center">
               <img src="/main-logo.png" alt="My Tax Calculator Logo" className="h-8 w-8 text-emerald-600" />
               <div className="ml-2">
@@ -25,8 +25,8 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-10">
+          {/* Desktop Navigation - Only show at 950px and above, centered */}
+          <nav className="hidden min-[950px]:flex space-x-10">
             <Link 
               to="/" 
               className={`inline-flex items-center px-3 py-2 text-sm font-medium border-b-2 ${
@@ -59,8 +59,8 @@ const Header = () => {
             </Link>
           </nav>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button - Show below 950px */}
+          <div className="min-[950px]:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-emerald-600 hover:bg-gray-100 transition-colors"
@@ -75,9 +75,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Show below 950px when menu is open */}
       {isMenuOpen && (
-        <div className="md:hidden">
+        <div className="min-[950px]:hidden">
           <div className="pt-2 pb-3 space-y-1 bg-white backdrop-blur-sm shadow-lg">
             <Link
               to="/"
@@ -119,4 +119,4 @@ const Header = () => {
   );
 };
 
-export default Header; 
+export default Header;
