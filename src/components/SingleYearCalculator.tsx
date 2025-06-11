@@ -8,6 +8,7 @@ import { useCalculator } from '../context/CalculatorContext';
 import { BarChart2 } from 'lucide-react';
 
 const fiscalYears = [
+  "2025-2026",
   "2024-2025",
   "2023-2024",
   "2022-2023",

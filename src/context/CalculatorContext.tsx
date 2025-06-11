@@ -52,7 +52,7 @@ const CalculatorContext = createContext<CalculatorContextType | undefined>(undef
 export function CalculatorProvider({ children }: { children: React.ReactNode }) {
   const [singleYear, setSingleYear] = useState<SingleYearState>({
     salary: '',
-    selectedYear: '2024-2025',
+    selectedYear: '2025-2026',
     result: null
   });
 
