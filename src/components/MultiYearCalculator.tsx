@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { calculateTaxForTotalAmount } from '../utils/taxCalculator';
 import { PlusCircle, MinusCircle, Calendar, AlertTriangle, Info } from 'lucide-react';
 import { 
@@ -54,6 +54,15 @@ function MultiYearCalculator() {
   const [validationError, setValidationError] = useState<string | null>(null);
   // Add state for active chart selection
   const [activeChart, setActiveChart] = useState<string>('comparison');
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const addPeriod = () => {
     setMultiYear(prev => ({
@@ -429,21 +438,25 @@ function MultiYearCalculator() {
     switch (activeChart) {
       case 'comparison':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Income & Tax Comparison by Fiscal Year</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={getComparisonChartData()}>
+                <ComposedChart data={getComparisonChartData()} margin={{ top: 5, right: 5, left: isMobile ? -10 : 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
+                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
                   <YAxis 
                     yAxisId="left"
                     tickFormatter={(value) => formatCurrency(value)}
+                    tick={{ fontSize: isMobile ? 11 : 12 }}
+                    width={isMobile ? 40 : 60}
                   />
                   <YAxis 
                     yAxisId="right" 
                     orientation="right" 
                     tickFormatter={(value) => formatCurrency(value)}
+                    tick={{ fontSize: isMobile ? 11 : 12 }}
+                    width={isMobile ? 40 : 60}
                   />
                   <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
                   <Legend />
@@ -466,23 +479,27 @@ function MultiYearCalculator() {
       
       case 'taxRate':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Tax Rate Analysis by Fiscal Year</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={getTaxRateChartData()}>
+                <ComposedChart data={getTaxRateChartData()} margin={{ top: 5, right: 5, left: isMobile ? -10 : 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
+                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
                   <YAxis 
                     yAxisId="left"
                     domain={[0, 'dataMax + 2']}
                     tickFormatter={(value) => `${value}%`}
+                    tick={{ fontSize: isMobile ? 11 : 12 }}
+                    width={isMobile ? 35 : 60}
                   />
                   <YAxis 
                     yAxisId="right" 
                     orientation="right" 
                     domain={[0, 12]}
                     tickFormatter={(value) => `${value} mo`}
+                    tick={{ fontSize: isMobile ? 11 : 12 }}
+                    width={isMobile ? 38 : 60}
                   />
                   <Tooltip />
                   <Legend />
@@ -504,7 +521,7 @@ function MultiYearCalculator() {
       
       case 'distribution':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Total Income Distribution</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
@@ -515,9 +532,13 @@ function MultiYearCalculator() {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={130}
+                    outerRadius={isMobile ? '70%' : 130}
                     labelLine={false}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={
+                      isMobile
+                        ? ({ percent }) => `${(percent * 100).toFixed(0)}%`
+                        : ({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`
+                    }
                   >
                     {getDistributionChartData().map((_, index) => (
                       <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tax : COLORS.netIncome} />
@@ -533,14 +554,14 @@ function MultiYearCalculator() {
       
       case 'monthlyBreakdown':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Monthly Averages by Fiscal Year</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={getMonthlyBreakdownData()}>
+                <BarChart data={getMonthlyBreakdownData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
+                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
                   <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
                   <Legend />
                   <Bar dataKey="Monthly Salary" fill={COLORS.salary} />
@@ -554,14 +575,14 @@ function MultiYearCalculator() {
       
       case 'timeline':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Tax Timeline (Cumulative Analysis)</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={getComparisonChartData()}>
+                <AreaChart data={getComparisonChartData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
+                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
                   <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
                   <Legend />
                   <Area type="monotone" dataKey="Tax" stackId="1" stroke={COLORS.tax} fill={COLORS.tax} />

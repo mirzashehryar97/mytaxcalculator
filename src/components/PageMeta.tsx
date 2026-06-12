@@ -107,9 +107,9 @@ const filingHowTo: JsonLd = {
 
 const pageMeta: Record<string, RouteMeta> = {
   '/': {
-    title: 'Pakistan Salary Tax Calculator 2026-27 | Income Tax & FBR Slabs',
+    title: 'Pakistan Income Tax Calculator 2026-27 | Salary & FBR Tax Slabs',
     description:
-      'Free Pakistan salary & income tax calculator with latest FBR tax slabs for FY 2026-2027. Calculate your take-home pay and salary tax, or compare fiscal years 2014 to 2027.',
+      'Free Pakistan income tax calculator with the latest FBR tax slabs for FY 2026-2027. Calculate your salary tax and take-home pay, or compare fiscal years 2014 to 2027.',
     breadcrumb: 'Home',
     structuredData: homeStructuredData,
   },

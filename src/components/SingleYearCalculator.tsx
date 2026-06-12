@@ -39,6 +39,15 @@ function SingleYearCalculator() {
   const { salary, selectedYear, result } = singleYear;
   const [activeChart, setActiveChart] = useState<string>('distribution');
   const [showCharts, setShowCharts] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const calculateTaxResult = () => {
     const salaryNum = parseFloat(salary);
@@ -104,7 +113,7 @@ function SingleYearCalculator() {
     switch (activeChart) {
       case 'distribution':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Income Distribution</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
@@ -115,9 +124,13 @@ function SingleYearCalculator() {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={130}
+                    outerRadius={isMobile ? '70%' : 130}
                     labelLine={false}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={
+                      isMobile
+                        ? ({ percent }) => `${(percent * 100).toFixed(0)}%`
+                        : ({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`
+                    }
                   >
                     {getDistributionData().map((_, index) => (
                       <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tax : COLORS.netIncome} />
@@ -133,14 +146,14 @@ function SingleYearCalculator() {
       
       case 'monthlyBreakdown':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Monthly Breakdown</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={getMonthlyBreakdownData()}>
+                <BarChart data={getMonthlyBreakdownData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
+                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
                   <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
                   <Legend />
                   <Bar dataKey="value" name="Amount" fill={COLORS.salary} />
@@ -154,14 +167,14 @@ function SingleYearCalculator() {
 
       case 'salaryComponents':
         return (
-          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
             <h4 className="text-base font-semibold text-gray-800 mb-4">Salary Components</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={getSalaryComponentsData()}>
+                <BarChart data={getSalaryComponentsData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
+                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
                   <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
                   <Legend />
                   <Bar dataKey="income" name="Gross Income" fill={COLORS.salary} />
