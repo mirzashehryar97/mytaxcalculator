@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { Head } from 'vite-react-ssg';
 
-const SITE_URL = 'https://mytaxcalculator.pk';
+const SITE_URL = 'https://www.mytaxcalculator.pk';
 
 const pageMeta: Record<string, { title: string; description: string }> = {
   '/': {
