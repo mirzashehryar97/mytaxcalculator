@@ -15,8 +15,8 @@ const Footer = () => {
               <span className="ml-2 text-xl font-bold text-gray-900">My Tax Calculator</span>
             </div>
             <p className="mt-4 text-gray-600 text-sm">
-              My Tax Calculator is a comprehensive tax calculator for Pakistani taxpayers. 
-              Calculate your income tax accurately based on the latest tax slabs.
+              My Tax Calculator is a comprehensive tax calculator for Pakistani taxpayers.
+              Calculate your income tax accurately using the latest FBR tax slabs for FY 2026-2027.
             </p>
             <div className="mt-4 flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-gray-500">

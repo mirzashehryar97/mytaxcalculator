@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calculator, History, ArrowRight } from 'lucide-react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
+import type { RouteRecord } from 'vite-react-ssg';
+import { Analytics } from '@vercel/analytics/react';
 import SingleYearCalculator from './components/SingleYearCalculator';
 import MultiYearCalculator from './components/MultiYearCalculator';
 import { CalculatorProvider } from './context/CalculatorContext';
@@ -11,6 +13,7 @@ import TaxGuides from './pages/TaxGuides';
 import UnderstandingTaxSystem from './pages/UnderstandingTaxSystem';
 import TaxDeductionsCredits from './pages/TaxDeductionsCredits';
 import FilingTaxReturn from './pages/FilingTaxReturn';
+import PageMeta from './components/PageMeta';
 
 function GridPattern() {
   const [squares, setSquares] = useState<number[]>([]);
@@ -39,11 +42,11 @@ function HomePage() {
     <>
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-white mb-4">
-          Pakistan Tax Calculator
+          Pakistan Income Tax Calculator 2026-27
         </h1>
         <p className="text-lg text-gray-200 max-w-2xl mx-auto">
-          Calculate your tax liability accurately with our advanced tax calculator.
-          Support for both single-year and multi-year calculations.
+          Calculate your tax liability using the latest FBR tax slabs for FY 2026-2027.
+          Support for single-year and multi-year calculations from FY 2014-2015 to FY 2026-2027.
         </p>
       </div>
 
@@ -86,7 +89,7 @@ function HomePage() {
         <FeatureCard
           icon={<Calculator className="h-8 w-8 text-emerald-600" />}
           title="Accurate Calculations"
-          description="Get precise tax calculations based on the latest tax slabs and rates."
+          description="Get precise tax calculations based on the latest FBR tax slabs for FY 2026-2027."
         />
         <FeatureCard
           icon={<History className="h-8 w-8 text-emerald-600" />}
@@ -103,29 +106,21 @@ function HomePage() {
   );
 }
 
-function App() {
+function Layout() {
   return (
     <CalculatorProvider>
-      <Router>
-        <div className="min-h-screen relative overflow-hidden flex flex-col font-open-sans" style={{ fontFamily: '"Open Sans", serif' }}>
-          <GridPattern />
-          <Header />
-          
-          <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10 w-full">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/tax-guides" element={<TaxGuides />} />
-              <Route path="/tax-guides/understanding-tax-system" element={<UnderstandingTaxSystem />} />
-              <Route path="/tax-guides/deductions-credits" element={<TaxDeductionsCredits />} />
-              <Route path="/tax-guides/filing-tax-return" element={<FilingTaxReturn />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
-          
-          <Footer />
-        </div>
-      </Router>
+      <PageMeta />
+      <div className="min-h-screen relative overflow-hidden flex flex-col font-open-sans" style={{ fontFamily: '"Open Sans", serif' }}>
+        <GridPattern />
+        <Header />
+
+        <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10 w-full">
+          <Outlet />
+        </main>
+
+        <Footer />
+      </div>
+      <Analytics />
     </CalculatorProvider>
   );
 }
@@ -142,4 +137,18 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode; titl
   );
 }
 
-export default App;
+export const routes: RouteRecord[] = [
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'about', element: <AboutUs /> },
+      { path: 'tax-guides', element: <TaxGuides /> },
+      { path: 'tax-guides/understanding-tax-system', element: <UnderstandingTaxSystem /> },
+      { path: 'tax-guides/deductions-credits', element: <TaxDeductionsCredits /> },
+      { path: 'tax-guides/filing-tax-return', element: <FilingTaxReturn /> },
+      { path: '*', element: <Navigate to="/" replace /> },
+    ],
+  },
+];

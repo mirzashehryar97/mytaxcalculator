@@ -10,7 +10,7 @@ const AboutUs = () => {
               About My Tax Calculator
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              My Tax Calculator is a comprehensive tax calculator specifically designed for Pakistani taxpayers. Our mission is to simplify tax calculations and help individuals understand their tax liabilities.
+              My Tax Calculator is a comprehensive tax calculator specifically designed for Pakistani taxpayers. Our mission is to simplify tax calculations and help individuals understand their tax liabilities using the latest FBR tax slabs through FY 2026-2027.
             </p>
           </div>
           

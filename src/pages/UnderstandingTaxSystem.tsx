@@ -92,9 +92,9 @@ const UnderstandingTaxSystem = () => {
 
           <Divider />
 
-          <SectionHeading icon={<Calculator className="h-6 w-6" />}>Income Tax Slabs (FY 2024-2025)</SectionHeading>
+          <SectionHeading icon={<Calculator className="h-6 w-6" />}>Income Tax Slabs (FY 2026-2027)</SectionHeading>
           <p className="text-gray-700 mb-4">
-            Below are the current income tax slabs for salaried individuals in Pakistan for the fiscal year 2024-2025:
+            Below are the current income tax slabs for salaried individuals in Pakistan for the fiscal year 2026-2027:
           </p>
           <div className="overflow-x-auto mb-6">
             <table className="min-w-full divide-y divide-gray-200 border text-sm">
@@ -113,28 +113,38 @@ const UnderstandingTaxSystem = () => {
                 </tr>
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap">600,001 - 1,200,000</td>
-                  <td className="px-6 py-4 whitespace-nowrap">5%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">1%</td>
                   <td className="px-6 py-4 whitespace-nowrap">0</td>
                 </tr>
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap">1,200,001 - 2,200,000</td>
-                  <td className="px-6 py-4 whitespace-nowrap">15%</td>
-                  <td className="px-6 py-4 whitespace-nowrap">30,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap">11%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">6,000</td>
                 </tr>
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap">2,200,001 - 3,200,000</td>
-                  <td className="px-6 py-4 whitespace-nowrap">25%</td>
-                  <td className="px-6 py-4 whitespace-nowrap">180,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap">20%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">116,000</td>
                 </tr>
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap">3,200,001 - 4,100,000</td>
-                  <td className="px-6 py-4 whitespace-nowrap">30%</td>
-                  <td className="px-6 py-4 whitespace-nowrap">430,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap">25%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">316,000</td>
                 </tr>
                 <tr>
-                  <td className="px-6 py-4 whitespace-nowrap">4,100,001 and above</td>
+                  <td className="px-6 py-4 whitespace-nowrap">4,100,001 - 5,600,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap">29%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">541,000</td>
+                </tr>
+                <tr>
+                  <td className="px-6 py-4 whitespace-nowrap">5,600,001 - 7,000,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap">32%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">976,000</td>
+                </tr>
+                <tr>
+                  <td className="px-6 py-4 whitespace-nowrap">7,000,001 and above</td>
                   <td className="px-6 py-4 whitespace-nowrap">35%</td>
-                  <td className="px-6 py-4 whitespace-nowrap">700,000</td>
+                  <td className="px-6 py-4 whitespace-nowrap">1,424,000</td>
                 </tr>
               </tbody>
             </table>
