@@ -13,6 +13,14 @@ interface NewsItem {
 const NEWS: NewsItem[] = [
   {
     date: 'June 12, 2026',
+    category: 'Budget 2026-27',
+    title: 'Budget 2026-27: salary tax relief and restructured slabs',
+    summary:
+      'The Federal Budget 2026-27 (Finance Bill 2026) restructures the salaried income tax slabs and reduces rates for incomes between PKR 2.2 million and 7 million. New 25%, 29% and 32% bands have been introduced, and the surcharge on annual income above PKR 10 million has been abolished. Use the calculator to see how the changes affect your take-home salary.',
+    to: '/',
+  },
+  {
+    date: 'June 12, 2026',
     category: 'Tax Slabs',
     title: 'Updated income tax slabs for FY 2026-2027 now live',
     summary:

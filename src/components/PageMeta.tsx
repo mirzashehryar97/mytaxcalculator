@@ -61,6 +61,22 @@ const homeStructuredData: JsonLd[] = [
       },
       {
         '@type': 'Question',
+        name: 'How much tax will I pay on my salary in Pakistan?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Your salary tax depends on your annual income and the FBR slab it falls into. For FY 2026-2027, income up to PKR 600,000 is tax-free, then progressive rates from 1% up to 35% apply. Enter your monthly salary to see exactly how much income tax you will pay each month and per year.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What will my take-home salary be after tax?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Your take-home (net) salary is your gross salary minus income tax. The calculator instantly shows your monthly and yearly take-home pay after applying the latest FBR tax slabs, so you know exactly what lands in your account.',
+        },
+      },
+      {
+        '@type': 'Question',
         name: 'Can I compare tax across multiple years in Pakistan?',
         acceptedAnswer: {
           '@type': 'Answer',
@@ -91,9 +107,9 @@ const filingHowTo: JsonLd = {
 
 const pageMeta: Record<string, RouteMeta> = {
   '/': {
-    title: 'Pakistan Income Tax Calculator 2026-27 | FBR Tax Slabs FY 2026-2027',
+    title: 'Pakistan Salary Tax Calculator 2026-27 | Income Tax & FBR Slabs',
     description:
-      'Free Pakistan income tax calculator with latest FBR tax slabs for FY 2026-2027. Calculate salary tax for 2026-27 or compare across fiscal years 2014 to 2027.',
+      'Free Pakistan salary & income tax calculator with latest FBR tax slabs for FY 2026-2027. Calculate your take-home pay and salary tax, or compare fiscal years 2014 to 2027.',
     breadcrumb: 'Home',
     structuredData: homeStructuredData,
   },
