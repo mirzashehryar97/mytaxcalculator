@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const TaxGuides = () => {
   return (
-    <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
@@ -115,10 +115,12 @@ const TaxGuides = () => {
                 </div>
               </div>
               <a 
-                href="#" 
+                href="https://fbr.gov.pk/Categ/Income-Tax-Ordinance/326" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="text-emerald-600 hover:text-emerald-700 font-medium"
               >
-                Download PDF
+                View on FBR
               </a>
             </div>
             

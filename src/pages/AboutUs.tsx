@@ -2,7 +2,7 @@ import { Users, Calculator, Shield } from 'lucide-react';
 
 const AboutUs = () => {
   return (
-    <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8">
           <div>

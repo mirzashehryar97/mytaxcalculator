@@ -429,8 +429,8 @@ function MultiYearCalculator() {
     switch (activeChart) {
       case 'comparison':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Income & Tax Comparison by Fiscal Year</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Income & Tax Comparison by Fiscal Year</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={getComparisonChartData()}>
@@ -466,8 +466,8 @@ function MultiYearCalculator() {
       
       case 'taxRate':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Tax Rate Analysis by Fiscal Year</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Tax Rate Analysis by Fiscal Year</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={getTaxRateChartData()}>
@@ -504,8 +504,8 @@ function MultiYearCalculator() {
       
       case 'distribution':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Total Income Distribution</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Total Income Distribution</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -533,8 +533,8 @@ function MultiYearCalculator() {
       
       case 'monthlyBreakdown':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Monthly Averages by Fiscal Year</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Monthly Averages by Fiscal Year</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={getMonthlyBreakdownData()}>
@@ -554,8 +554,8 @@ function MultiYearCalculator() {
       
       case 'timeline':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Tax Timeline (Cumulative Analysis)</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Tax Timeline (Cumulative Analysis)</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={getComparisonChartData()}>
@@ -579,43 +579,48 @@ function MultiYearCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="space-y-8 bg-white/95 p-8 rounded-2xl shadow-lg">
+      <div className="space-y-6">
         {validationError && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-start animate-fade-in">
             <AlertTriangle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-            <p>{validationError}</p>
+            <p className="text-sm">{validationError}</p>
           </div>
         )}
-        
-        <div className="bg-emerald-50 p-4 rounded-lg flex items-start">
-          <Info className="h-5 w-5 text-emerald-600 mr-2 mt-0.5 flex-shrink-0" />
-          <div className="text-sm text-emerald-800">
-            <p className="font-medium mb-1">Partial Month Calculation</p>
-            <p>For periods that don't align with complete months, your salary is calculated proportionally based on the actual days worked.</p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl flex items-start">
+            <Info className="h-5 w-5 text-emerald-600 mr-3 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-emerald-900">
+              <p className="font-semibold mb-1">Partial Month Calculation</p>
+              <p className="text-emerald-800/80">For periods that don't align with complete months, salary is calculated proportionally based on actual days worked.</p>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-100 p-4 rounded-2xl flex items-start">
+            <Calendar className="h-5 w-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-blue-900">
+              <p className="font-semibold mb-1">Available Fiscal Years</p>
+              <p className="text-blue-800/80">Supports tax calculations for periods between {getFormattedDateRange()}. Ensure your dates fall within this range.</p>
+            </div>
           </div>
         </div>
-        
-        <div className="bg-blue-50 p-4 rounded-lg flex items-start">
-          <Calendar className="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-          <div className="text-sm text-blue-800">
-            <p className="font-medium mb-1">Available Fiscal Years</p>
-            <p>This calculator supports tax calculations for periods between {getFormattedDateRange()}. Please ensure your dates fall within this range.</p>
-          </div>
-        </div>
-      
+
         {periods.map((period, index) => (
-          <div key={index} className="period-card space-y-6 bg-gray-50 p-6 rounded-xl border border-gray-100">
+          <div key={index} className="period-card space-y-6">
             <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <Calendar className="h-5 w-5 text-emerald-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Period {index + 1}</h3>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center justify-center h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+                  <Calendar className="h-5 w-5" />
+                </span>
+                <h3 className="text-lg font-bold text-gray-900">Period {index + 1}</h3>
               </div>
               {periods.length > 1 && (
                 <button
                   onClick={() => removePeriod(index)}
-                  className="text-gray-500 hover:text-red-600 transition-colors"
+                  aria-label="Remove period"
+                  className="flex items-center justify-center h-9 w-9 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                 >
-                  <MinusCircle className="h-6 w-6" />
+                  <MinusCircle className="h-5 w-5" />
                 </button>
               )}
             </div>
@@ -693,18 +698,18 @@ function MultiYearCalculator() {
           </div>
         ))}
 
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
           <button
             onClick={addPeriod}
-            className="flex items-center text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-emerald-200 text-emerald-700 font-semibold hover:border-emerald-400 hover:bg-emerald-50 transition-colors"
           >
-            <PlusCircle className="h-5 w-5 mr-2" />
+            <PlusCircle className="h-5 w-5" />
             Add Another Period
           </button>
 
           <button
             onClick={handleCalculate}
-            className="btn-calculate md:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg shadow transition-colors"
+            className="btn-calculate sm:w-auto"
             disabled={periods.some(p => !p.startDate || !p.endDate || !p.salary)}
           >
             Calculate Total Tax
@@ -712,92 +717,70 @@ function MultiYearCalculator() {
         </div>
 
         {result && (
-          <div className="space-y-8">
-            <div className="bg-emerald-50/80 p-8 rounded-xl">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Tax Breakdown by Fiscal Year</h3>
-              
-              <div className="space-y-6">
+          <div className="space-y-8 animate-fade-up">
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-6 sm:p-8 rounded-2xl">
+              <h3 className="text-lg font-bold text-gray-900 mb-5">Tax Breakdown by Fiscal Year</h3>
+
+              <div className="space-y-3">
                 {result.breakdown.map((item, index) => (
-                  <div key={index} className="flex justify-between items-center py-4 border-b border-emerald-100">
+                  <div key={index} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-white/70 rounded-xl px-4 py-3 border border-emerald-100/60">
                     <div className="space-y-1">
-                      <p className="text-base font-medium text-gray-900">{item.period}</p>
-                      <div className="flex space-x-4">
+                      <p className="text-base font-semibold text-gray-900">{item.period}</p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1">
                         <span className="text-sm text-gray-500">
                           Gross: Rs. {Math.round(item.salary).toLocaleString()}
                         </span>
-                        <span className="text-sm text-emerald-600">
+                        <span className="text-sm text-emerald-600 font-medium">
                           Net: Rs. {Math.round(item.netIncome).toLocaleString()}
                         </span>
                       </div>
                     </div>
-                    <span className="text-lg font-medium text-red-600">
+                    <span className="text-base font-semibold text-red-600 whitespace-nowrap">
                       Tax: Rs. {Math.round(item.tax).toLocaleString()}
                     </span>
                   </div>
                 ))}
-                
-                <div className="pt-4 flex justify-between items-center">
-                  <span className="text-xl font-semibold text-gray-900">Total Tax</span>
-                  <span className="text-2xl font-bold text-gray-900">
+
+                <div className="mt-2 pt-4 border-t border-emerald-200 flex justify-between items-center">
+                  <span className="text-lg font-semibold text-gray-900">Total Tax</span>
+                  <span className="text-xl sm:text-2xl font-semibold text-emerald-700">
                     Rs. {Math.round(result.totalTax).toLocaleString()}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white p-4 rounded-lg shadow mb-6">
-              <div className="flex space-x-2 overflow-x-auto pb-2">
-                <button
-                  onClick={() => setActiveChart('comparison')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                    activeChart === 'comparison' 
-                      ? 'bg-emerald-100 text-emerald-800' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Income & Tax
-                </button>
-                <button
-                  onClick={() => setActiveChart('taxRate')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                    activeChart === 'taxRate' 
-                      ? 'bg-emerald-100 text-emerald-800' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Tax Rate
-                </button>
-                <button
-                  onClick={() => setActiveChart('distribution')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                    activeChart === 'distribution' 
-                      ? 'bg-emerald-100 text-emerald-800' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Distribution
-                </button>
-                <button
-                  onClick={() => setActiveChart('monthlyBreakdown')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                    activeChart === 'monthlyBreakdown' 
-                      ? 'bg-emerald-100 text-emerald-800' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Monthly Averages
-                </button>
-                <button
-                  onClick={() => setActiveChart('timeline')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                    activeChart === 'timeline' 
-                      ? 'bg-emerald-100 text-emerald-800' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Timeline
-                </button>
-              </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setActiveChart('comparison')}
+                className={`chip ${activeChart === 'comparison' ? 'chip-active' : 'chip-inactive'}`}
+              >
+                Income &amp; Tax
+              </button>
+              <button
+                onClick={() => setActiveChart('taxRate')}
+                className={`chip ${activeChart === 'taxRate' ? 'chip-active' : 'chip-inactive'}`}
+              >
+                Tax Rate
+              </button>
+              <button
+                onClick={() => setActiveChart('distribution')}
+                className={`chip ${activeChart === 'distribution' ? 'chip-active' : 'chip-inactive'}`}
+              >
+                Distribution
+              </button>
+              <button
+                onClick={() => setActiveChart('monthlyBreakdown')}
+                className={`chip ${activeChart === 'monthlyBreakdown' ? 'chip-active' : 'chip-inactive'}`}
+              >
+                Monthly Averages
+              </button>
+              <button
+                onClick={() => setActiveChart('timeline')}
+                className={`chip ${activeChart === 'timeline' ? 'chip-active' : 'chip-inactive'}`}
+              >
+                Timeline
+              </button>
             </div>
 
             <div className="space-y-6">

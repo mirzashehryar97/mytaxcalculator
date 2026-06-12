@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const FilingTaxReturn = () => {
   return (
-    <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <Link to="/tax-guides" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -85,7 +85,7 @@ const FilingTaxReturn = () => {
             </p>
 
             <div className="space-y-6 my-8">
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <div id="step1" className="bg-white border border-gray-200 rounded-lg overflow-hidden scroll-mt-24">
                 <div className="p-4 bg-emerald-50 border-b border-gray-200">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 bg-emerald-100 h-10 w-10 rounded-full flex items-center justify-center mr-4">
@@ -105,7 +105,7 @@ const FilingTaxReturn = () => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <div id="step2" className="bg-white border border-gray-200 rounded-lg overflow-hidden scroll-mt-24">
                 <div className="p-4 bg-emerald-50 border-b border-gray-200">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 bg-emerald-100 h-10 w-10 rounded-full flex items-center justify-center mr-4">
@@ -130,7 +130,7 @@ const FilingTaxReturn = () => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <div id="step3" className="bg-white border border-gray-200 rounded-lg overflow-hidden scroll-mt-24">
                 <div className="p-4 bg-emerald-50 border-b border-gray-200">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 bg-emerald-100 h-10 w-10 rounded-full flex items-center justify-center mr-4">
@@ -152,7 +152,7 @@ const FilingTaxReturn = () => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <div id="step4" className="bg-white border border-gray-200 rounded-lg overflow-hidden scroll-mt-24">
                 <div className="p-4 bg-emerald-50 border-b border-gray-200">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 bg-emerald-100 h-10 w-10 rounded-full flex items-center justify-center mr-4">
@@ -190,7 +190,7 @@ const FilingTaxReturn = () => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <div id="step5" className="bg-white border border-gray-200 rounded-lg overflow-hidden scroll-mt-24">
                 <div className="p-4 bg-emerald-50 border-b border-gray-200">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 bg-emerald-100 h-10 w-10 rounded-full flex items-center justify-center mr-4">
@@ -219,7 +219,7 @@ const FilingTaxReturn = () => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <div id="step6" className="bg-white border border-gray-200 rounded-lg overflow-hidden scroll-mt-24">
                 <div className="p-4 bg-emerald-50 border-b border-gray-200">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 bg-emerald-100 h-10 w-10 rounded-full flex items-center justify-center mr-4">
@@ -251,7 +251,7 @@ const FilingTaxReturn = () => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <div id="step7" className="bg-white border border-gray-200 rounded-lg overflow-hidden scroll-mt-24">
                 <div className="p-4 bg-emerald-50 border-b border-gray-200">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 bg-emerald-100 h-10 w-10 rounded-full flex items-center justify-center mr-4">

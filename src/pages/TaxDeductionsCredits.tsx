@@ -26,7 +26,7 @@ const Card = ({ children, color = 'emerald' }: { children: React.ReactNode; colo
 
 const TaxDeductionsCredits = () => {
   return (
-    <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <Link to="/tax-guides" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />

@@ -104,8 +104,8 @@ function SingleYearCalculator() {
     switch (activeChart) {
       case 'distribution':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Income Distribution</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Income Distribution</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -133,8 +133,8 @@ function SingleYearCalculator() {
       
       case 'monthlyBreakdown':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Monthly Breakdown</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Monthly Breakdown</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={getMonthlyBreakdownData()}>
@@ -154,8 +154,8 @@ function SingleYearCalculator() {
 
       case 'salaryComponents':
         return (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h4 className="text-base font-medium text-gray-700 mb-4">Salary Components</h4>
+          <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+            <h4 className="text-base font-semibold text-gray-800 mb-4">Salary Components</h4>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={getSalaryComponentsData()}>
@@ -180,7 +180,7 @@ function SingleYearCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="space-y-8 bg-white/95 p-8 rounded-2xl shadow-lg">
+      <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="form-label text-gray-800">
@@ -217,25 +217,25 @@ function SingleYearCalculator() {
         </div>
 
         {result && (
-          <div className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-emerald-50 p-6 rounded-xl">
-                <h3 className="text-lg font-semibold text-emerald-800 mb-4">Monthly Breakdown</h3>
-                <div className="space-y-4">
+          <div className="space-y-8 animate-fade-up">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="stat-card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-100">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-5">Monthly Breakdown</h3>
+                <div className="space-y-5">
                   <div>
-                    <p className="text-sm text-gray-600">Monthly Gross Income</p>
+                    <p className="text-sm text-gray-500">Gross Income</p>
                     <p className="text-2xl font-semibold text-gray-900">
                       Rs. {result.monthlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Monthly Tax</p>
+                    <p className="text-sm text-gray-500">Tax</p>
                     <p className="text-2xl font-semibold text-red-600">
                       Rs. {result.monthlyTax.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Monthly Net Income</p>
+                    <p className="text-sm text-gray-500">Net Income</p>
                     <p className="text-2xl font-semibold text-emerald-600">
                       Rs. {result.salaryAfterTax.toLocaleString()}
                     </p>
@@ -243,23 +243,23 @@ function SingleYearCalculator() {
                 </div>
               </div>
 
-              <div className="bg-emerald-50 p-6 rounded-xl">
-                <h3 className="text-lg font-semibold text-emerald-800 mb-4">Annual Breakdown</h3>
-                <div className="space-y-4">
+              <div className="stat-card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-100">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-5">Annual Breakdown</h3>
+                <div className="space-y-5">
                   <div>
-                    <p className="text-sm text-gray-600">Yearly Gross Income</p>
+                    <p className="text-sm text-gray-500">Gross Income</p>
                     <p className="text-2xl font-semibold text-gray-900">
                       Rs. {result.yearlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Yearly Tax</p>
+                    <p className="text-sm text-gray-500">Tax</p>
                     <p className="text-2xl font-semibold text-red-600">
                       Rs. {result.yearlyTax.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Yearly Net Income</p>
+                    <p className="text-sm text-gray-500">Net Income</p>
                     <p className="text-2xl font-semibold text-emerald-600">
                       Rs. {result.yearlyIncomeAfterTax.toLocaleString()}
                     </p>
@@ -271,58 +271,49 @@ function SingleYearCalculator() {
             <div className="section-divider" />
 
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Tax Rate: {result.taxRate.toFixed(2)}%</h3>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-gray-500">Effective Tax Rate</span>
+                  <span className="inline-flex items-center rounded-full bg-emerald-100 text-emerald-800 px-3 py-1 text-lg font-semibold">
+                    {result.taxRate.toFixed(2)}%
+                  </span>
+                </div>
                 <button
                   onClick={() => setShowCharts(!showCharts)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                  className="flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 shadow-sm transition-colors"
                 >
                   <BarChart2 className="h-5 w-5" />
                   <span>{showCharts ? 'Hide Charts' : 'Show Charts'}</span>
                 </button>
               </div>
-              
+
               {showCharts && (
-                <>
-                  <div className="bg-white p-4 rounded-lg shadow mb-6">
-                    <div className="flex space-x-2 overflow-x-auto pb-2">
-                      <button
-                        onClick={() => setActiveChart('distribution')}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                          activeChart === 'distribution' 
-                            ? 'bg-emerald-100 text-emerald-800' 
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        Distribution
-                      </button>
-                      <button
-                        onClick={() => setActiveChart('monthlyBreakdown')}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                          activeChart === 'monthlyBreakdown' 
-                            ? 'bg-emerald-100 text-emerald-800' 
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        Monthly Breakdown
-                      </button>
-                      <button
-                        onClick={() => setActiveChart('salaryComponents')}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap ${
-                          activeChart === 'salaryComponents' 
-                            ? 'bg-emerald-100 text-emerald-800' 
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        Salary Components
-                      </button>
-                    </div>
+                <div className="space-y-6 animate-fade-up">
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setActiveChart('distribution')}
+                      className={`chip ${activeChart === 'distribution' ? 'chip-active' : 'chip-inactive'}`}
+                    >
+                      Distribution
+                    </button>
+                    <button
+                      onClick={() => setActiveChart('monthlyBreakdown')}
+                      className={`chip ${activeChart === 'monthlyBreakdown' ? 'chip-active' : 'chip-inactive'}`}
+                    >
+                      Monthly Breakdown
+                    </button>
+                    <button
+                      onClick={() => setActiveChart('salaryComponents')}
+                      className={`chip ${activeChart === 'salaryComponents' ? 'chip-active' : 'chip-inactive'}`}
+                    >
+                      Salary Components
+                    </button>
                   </div>
-                  
+
                   <div className="space-y-6">
                     {renderActiveChart()}
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>
