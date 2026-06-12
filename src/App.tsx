@@ -132,12 +132,20 @@ const FAQS: FaqItem[] = [
 
 const FISCAL_YEARS = Object.keys(taxSlabs);
 
-const formatPkr = (value: number) => value.toLocaleString('en-US');
+const formatPkr = (value: number) => `Rs. ${value.toLocaleString('en-IN')}`;
 
 function formatSlabRange(min: number, max: number | null): string {
   if (min === 0 && max !== null) return `Up to ${formatPkr(max)}`;
   if (max === null) return `Above ${formatPkr(min - 1)}`;
-  return `${formatPkr(min)} \u2013 ${formatPkr(max)}`;
+  return `${formatPkr(min)} to ${formatPkr(max)}`;
+}
+
+function formatTaxRate(slab: { min: number; max: number | null; rate: number; fixed: number }): string {
+  if (slab.rate === 0 && slab.fixed === 0) return '0% (Tax Free)';
+  const exceedingBase = formatPkr(slab.min - 1);
+  const rateStr = `${slab.rate}% of the amount exceeding ${exceedingBase}`;
+  if (slab.fixed === 0) return rateStr;
+  return `${formatPkr(slab.fixed)} + ${rateStr}`;
 }
 
 function SlabsAnswer() {
@@ -150,12 +158,11 @@ function SlabsAnswer() {
         <p className="text-gray-600">
           Pakistan&rsquo;s salaried income tax slabs for the selected fiscal year:
         </p>
-        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-          <span className="whitespace-nowrap">Fiscal Year</span>
+        <div className="relative inline-flex items-center">
           <select
             value={year}
             onChange={(e) => setYear(e.target.value)}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
+            className="appearance-none rounded-lg border border-gray-200 bg-white pl-3 pr-10 py-1.5 text-sm font-semibold text-gray-900 shadow-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100 cursor-pointer"
             aria-label="Select fiscal year for tax slabs"
           >
             {FISCAL_YEARS.map((fy) => (
@@ -164,22 +171,27 @@ function SlabsAnswer() {
               </option>
             ))}
           </select>
-        </label>
+          <span className="pointer-events-none absolute right-3 text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </span>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-xl border border-gray-200">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="bg-emerald-50 text-emerald-800">
-              <th scope="col" className="px-4 py-2.5 font-semibold">Annual Taxable Income (PKR)</th>
-              <th scope="col" className="px-4 py-2.5 font-semibold text-right">Tax Rate</th>
+              <th scope="col" className="px-4 py-2.5 font-semibold">Annual Taxable Income</th>
+              <th scope="col" className="px-4 py-2.5 font-semibold">Tax</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {slabs.map((slab) => (
               <tr key={`${slab.min}-${slab.max}`} className="even:bg-gray-50/60">
-                <td className="px-4 py-2.5 text-gray-700">{formatSlabRange(slab.min, slab.max)}</td>
-                <td className="px-4 py-2.5 text-right font-semibold text-gray-900 tabular-nums">{slab.rate}%</td>
+                <td className="px-4 py-2.5 text-gray-700 whitespace-nowrap">{formatSlabRange(slab.min, slab.max)}</td>
+                <td className="px-4 py-2.5 text-gray-900">{formatTaxRate(slab)}</td>
               </tr>
             ))}
           </tbody>
