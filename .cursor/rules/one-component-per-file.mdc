@@ -1,0 +1,34 @@
+---
+description: Each React component must live in its own file
+alwaysApply: true
+---
+
+# One component per file
+
+Every React component must be defined in its own file.
+
+## Rules
+
+- One default or named component export per `.tsx` file (small local helpers like formatters are fine if they are not components).
+- Do not add multiple component functions (e.g. `function Foo()` and `function Bar()`) in the same file.
+- File name should match the component name in PascalCase (e.g. `DistributionChart.tsx` exports `DistributionChart`).
+- When splitting a file, colocate shared types/constants in a sibling file only if reused by multiple components (e.g. `chartColors.ts`, `types.ts`).
+
+## Examples
+
+```tsx
+// ❌ BAD — multiple components in one file
+function SingleYearDistributionChart() { ... }
+function SingleYearMonthlyBreakdownChart() { ... }
+export default function SingleYearCharts() { ... }
+
+// ✅ GOOD — one file per component
+// src/components/single-year-charts/SingleYearDistributionChart.tsx
+export default function SingleYearDistributionChart() { ... }
+
+// src/components/single-year-charts/SingleYearCharts.tsx
+import SingleYearDistributionChart from './SingleYearDistributionChart';
+export default function SingleYearCharts() { ... }
+```
+
+When editing a file that already violates this rule, prefer extracting new components into separate files rather than adding more components to the same file.

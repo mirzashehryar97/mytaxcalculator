@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, type Dispatch, type SetStateAction } from 'react';
 
-interface SingleYearState {
+export interface SingleYearState {
   salary: string;
   selectedYear: string;
   result: {
@@ -14,64 +14,37 @@ interface SingleYearState {
   } | null;
 }
 
-interface SalaryPeriod {
+export interface SalaryPeriod {
   startDate: string;
   endDate: string;
   salary: string;
 }
 
-interface BreakdownItem {
+export interface BreakdownItem {
   period: string;
   tax: number;
   salary: number;
   netIncome: number;
-  fiscalYear: string; // Added for chart rendering
-  months: number;     // Added for monthly calculations
-  taxRate: number;    // Added for tax rate visualization
+  fiscalYear: string;
+  months: number;
+  taxRate: number;
 }
 
-interface MultiYearResult {
+export interface MultiYearResult {
   totalTax: number;
   breakdown: BreakdownItem[];
 }
 
-interface MultiYearState {
+export interface MultiYearState {
   periods: SalaryPeriod[];
   result: MultiYearResult | null;
 }
 
-interface CalculatorContextType {
+export interface CalculatorContextType {
   singleYear: SingleYearState;
-  setSingleYear: React.Dispatch<React.SetStateAction<SingleYearState>>;
+  setSingleYear: Dispatch<SetStateAction<SingleYearState>>;
   multiYear: MultiYearState;
-  setMultiYear: React.Dispatch<React.SetStateAction<MultiYearState>>;
+  setMultiYear: Dispatch<SetStateAction<MultiYearState>>;
 }
 
-const CalculatorContext = createContext<CalculatorContextType | undefined>(undefined);
-
-export function CalculatorProvider({ children }: { children: React.ReactNode }) {
-  const [singleYear, setSingleYear] = useState<SingleYearState>({
-    salary: '',
-    selectedYear: '2026-2027',
-    result: null
-  });
-
-  const [multiYear, setMultiYear] = useState<MultiYearState>({
-    periods: [{ startDate: '', endDate: '', salary: '' }],
-    result: null
-  });
-
-  return (
-    <CalculatorContext.Provider value={{ singleYear, setSingleYear, multiYear, setMultiYear }}>
-      {children}
-    </CalculatorContext.Provider>
-  );
-}
-
-export function useCalculator() {
-  const context = useContext(CalculatorContext);
-  if (context === undefined) {
-    throw new Error('useCalculator must be used within a CalculatorProvider');
-  }
-  return context;
-}
+export const CalculatorContext = createContext<CalculatorContextType | undefined>(undefined);

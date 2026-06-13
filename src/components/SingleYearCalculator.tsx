@@ -1,38 +1,36 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { calculateTax } from '../utils/taxCalculator';
-import { 
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell,
-  Legend, CartesianGrid
-} from 'recharts';
-import { useCalculator } from '../context/CalculatorContext';
+
+import dynamic from 'next/dynamic';
+
 import { BarChart2 } from 'lucide-react';
 
-const fiscalYears = [
-  "2026-2027",
-  "2025-2026",
-  "2024-2025",
-  "2023-2024",
-  "2022-2023",
-  "2021-2022",
-  "2020-2021",
-  "2019-2020",
-  "2018-2019",
-  "2017-2018",
-  "2016-2017",
-  "2015-2016",
-  "2014-2015"
-];
+import { useCalculator } from '@/context/useCalculator';
 
-// Chart color constants matching MultiYearCalculator
-const COLORS = {
-  tax: '#dc2626',
-  netIncome: '#059669',
-  salary: '#3b82f6',
-  taxRate: '#8b5cf6',
-  primary: ['#047857', '#059669', '#10b981', '#34d399', '#6ee7b7'],
-  secondary: ['#1d4ed8', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd'],
-  accent: ['#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe']
-};
+import { calculateTax } from '../utils/taxCalculator';
+import SingleYearChartsLoading from './SingleYearChartsLoading';
+
+const SingleYearCharts = dynamic(() => import('./single-year-charts/SingleYearCharts'), {
+  loading: () => <SingleYearChartsLoading />,
+  ssr: false,
+});
+
+const fiscalYears = [
+  '2026-2027',
+  '2025-2026',
+  '2024-2025',
+  '2023-2024',
+  '2022-2023',
+  '2021-2022',
+  '2020-2021',
+  '2019-2020',
+  '2018-2019',
+  '2017-2018',
+  '2016-2017',
+  '2015-2016',
+  '2014-2015',
+];
 
 function SingleYearCalculator() {
   const { singleYear, setSingleYear } = useCalculator();
@@ -40,7 +38,7 @@ function SingleYearCalculator() {
   const [activeChart, setActiveChart] = useState<string>('distribution');
   const [showCharts, setShowCharts] = useState(false);
   const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false,
   );
 
   useEffect(() => {
@@ -50,158 +48,32 @@ function SingleYearCalculator() {
   }, []);
 
   const calculateTaxResult = () => {
-    const salaryNum = parseFloat(salary);
-    if (!isNaN(salaryNum) && salaryNum > 0) {
-      // The calculateTax function now handles both monthly salary and total salary calculations
-      // For SingleYearCalculator, we're still using the default 12 months
+    const salaryNum = Number.parseFloat(salary);
+    if (!Number.isNaN(salaryNum) && salaryNum > 0) {
       const tax = calculateTax(salaryNum, selectedYear);
-      setSingleYear(prev => ({ ...prev, result: tax }));
+      setSingleYear((prev) => ({ ...prev, result: tax }));
     } else {
-      // Clear the result if salary is invalid
-      setSingleYear(prev => ({ ...prev, result: null }));
+      setSingleYear((prev) => ({ ...prev, result: null }));
+      setShowCharts(false);
     }
   };
 
-  // Recalculate tax whenever salary or fiscal year changes
   useEffect(() => {
     calculateTaxResult();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [salary, selectedYear]);
 
-  // Data for the distribution pie chart
-  const getDistributionData = () => {
-    if (!result) return [];
-    return [
-      { name: 'Tax', value: result.yearlyTax },
-      { name: 'Take Home', value: result.yearlyIncomeAfterTax }
-    ];
-  };
-
-  // Data for the monthly breakdown bar chart
-  const getMonthlyBreakdownData = () => {
-    if (!result) return [];
-    return [
-      { name: 'Gross', value: result.monthlyIncome },
-      { name: 'Take Home', value: result.salaryAfterTax },
-      { name: 'Tax', value: result.monthlyTax }
-    ];
-  };
-
-  // We've removed tax bracket analysis and monthly comparison functions
-
-  // Data for salary components
-  const getSalaryComponentsData = () => {
-    if (!result) return [];
-    return [
-      { name: 'Monthly', income: result.monthlyIncome, tax: result.monthlyTax, netIncome: result.salaryAfterTax },
-      { name: 'Yearly', income: result.yearlyIncome, tax: result.yearlyTax, netIncome: result.yearlyIncomeAfterTax }
-    ];
-  };
-
-  // Format large numbers
-  const formatCurrency = (value: number) => {
-    if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(2)}M`;
-    } else if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}K`;
-    }
-    return value.toString();
-  };
-
-  // Render chart based on active selection
-  const renderActiveChart = () => {
-    switch (activeChart) {
-      case 'distribution':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Income Distribution</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={getDistributionData()}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={isMobile ? '70%' : 130}
-                    labelLine={false}
-                    label={
-                      isMobile
-                        ? ({ percent }) => `${(percent * 100).toFixed(0)}%`
-                        : ({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`
-                    }
-                  >
-                    {getDistributionData().map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tax : COLORS.netIncome} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      case 'monthlyBreakdown':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Monthly Breakdown</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={getMonthlyBreakdownData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
-                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
-                  <Legend />
-                  <Bar dataKey="value" name="Amount" fill={COLORS.salary} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      // We've removed tax brackets and monthly comparison chart implementations
-
-      case 'salaryComponents':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Salary Components</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={getSalaryComponentsData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
-                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
-                  <Legend />
-                  <Bar dataKey="income" name="Gross Income" fill={COLORS.salary} />
-                  <Bar dataKey="tax" name="Tax" fill={COLORS.tax} />
-                  <Bar dataKey="netIncome" name="Net Income" fill={COLORS.netIncome} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      default:
-        return null;
-    }
-  };
-
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       <div className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="form-label text-gray-800">
+            <label htmlFor="fiscal-year" className="form-label text-gray-800">
               Fiscal Year
             </label>
             <select
+              id="fiscal-year"
               value={selectedYear}
-              onChange={(e) => setSingleYear(prev => ({ ...prev, selectedYear: e.target.value }))}
+              onChange={(e) => setSingleYear((prev) => ({ ...prev, selectedYear: e.target.value }))}
               className="form-select"
             >
               {fiscalYears.map((year) => (
@@ -213,13 +85,14 @@ function SingleYearCalculator() {
           </div>
 
           <div>
-            <label className="form-label text-gray-800">
+            <label htmlFor="monthly-salary" className="form-label text-gray-800">
               Monthly Salary (Rs.)
             </label>
             <input
+              id="monthly-salary"
               type="number"
               value={salary}
-              onChange={(e) => setSingleYear(prev => ({ ...prev, salary: e.target.value }))}
+              onChange={(e) => setSingleYear((prev) => ({ ...prev, salary: e.target.value }))}
               onWheel={(e) => (e.target as HTMLInputElement).blur()}
               placeholder="Enter your monthly salary"
               className="form-input no-spinner"
@@ -230,50 +103,54 @@ function SingleYearCalculator() {
         </div>
 
         {result && (
-          <div className="space-y-8 animate-fade-up">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="stat-card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-100">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-5">Monthly Breakdown</h3>
+          <div className="animate-fade-up space-y-8">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="stat-card border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50">
+                <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">
+                  Monthly Breakdown
+                </h3>
                 <div className="space-y-5">
                   <div>
-                    <p className="text-sm text-gray-500">Gross Income</p>
-                    <p className="text-2xl font-semibold text-gray-900">
+                    <p className="text-gray-500 text-sm">Gross Income</p>
+                    <p className="font-semibold text-2xl text-gray-900">
                       Rs. {result.monthlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Tax</p>
-                    <p className="text-2xl font-semibold text-red-600">
+                    <p className="text-gray-500 text-sm">Tax</p>
+                    <p className="font-semibold text-2xl text-red-600">
                       Rs. {result.monthlyTax.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Net Income</p>
-                    <p className="text-2xl font-semibold text-emerald-600">
+                    <p className="text-gray-500 text-sm">Net Income</p>
+                    <p className="font-semibold text-2xl text-emerald-600">
                       Rs. {result.salaryAfterTax.toLocaleString()}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="stat-card bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-100">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-700 mb-5">Annual Breakdown</h3>
+              <div className="stat-card border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50">
+                <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">
+                  Annual Breakdown
+                </h3>
                 <div className="space-y-5">
                   <div>
-                    <p className="text-sm text-gray-500">Gross Income</p>
-                    <p className="text-2xl font-semibold text-gray-900">
+                    <p className="text-gray-500 text-sm">Gross Income</p>
+                    <p className="font-semibold text-2xl text-gray-900">
                       Rs. {result.yearlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Tax</p>
-                    <p className="text-2xl font-semibold text-red-600">
+                    <p className="text-gray-500 text-sm">Tax</p>
+                    <p className="font-semibold text-2xl text-red-600">
                       Rs. {result.yearlyTax.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Net Income</p>
-                    <p className="text-2xl font-semibold text-emerald-600">
+                    <p className="text-gray-500 text-sm">Net Income</p>
+                    <p className="font-semibold text-2xl text-emerald-600">
                       Rs. {result.yearlyIncomeAfterTax.toLocaleString()}
                     </p>
                   </div>
@@ -284,16 +161,17 @@ function SingleYearCalculator() {
             <div className="section-divider" />
 
             <div className="space-y-6">
-              <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-gray-500">Effective Tax Rate</span>
-                  <span className="inline-flex items-center rounded-full bg-emerald-100 text-emerald-800 px-3 py-1 text-lg font-semibold">
+                  <span className="font-medium text-gray-500 text-sm">Effective Tax Rate</span>
+                  <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-800 text-lg">
                     {result.taxRate.toFixed(2)}%
                   </span>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setShowCharts(!showCharts)}
-                  className="flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 shadow-sm transition-colors"
+                  className="flex items-center space-x-2 rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
                 >
                   <BarChart2 className="h-5 w-5" />
                   <span>{showCharts ? 'Hide Charts' : 'Show Charts'}</span>
@@ -301,21 +179,24 @@ function SingleYearCalculator() {
               </div>
 
               {showCharts && (
-                <div className="space-y-6 animate-fade-up">
+                <div className="animate-fade-up space-y-6">
                   <div className="flex flex-wrap gap-2">
                     <button
+                      type="button"
                       onClick={() => setActiveChart('distribution')}
                       className={`chip ${activeChart === 'distribution' ? 'chip-active' : 'chip-inactive'}`}
                     >
                       Distribution
                     </button>
                     <button
+                      type="button"
                       onClick={() => setActiveChart('monthlyBreakdown')}
                       className={`chip ${activeChart === 'monthlyBreakdown' ? 'chip-active' : 'chip-inactive'}`}
                     >
                       Monthly Breakdown
                     </button>
                     <button
+                      type="button"
                       onClick={() => setActiveChart('salaryComponents')}
                       className={`chip ${activeChart === 'salaryComponents' ? 'chip-active' : 'chip-inactive'}`}
                     >
@@ -323,9 +204,7 @@ function SingleYearCalculator() {
                     </button>
                   </div>
 
-                  <div className="space-y-6">
-                    {renderActiveChart()}
-                  </div>
+                  <SingleYearCharts result={result} activeChart={activeChart} isMobile={isMobile} />
                 </div>
               )}
             </div>

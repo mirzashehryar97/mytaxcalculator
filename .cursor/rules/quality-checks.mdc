@@ -1,0 +1,16 @@
+---
+description: Run lint and type-check after every code change
+alwaysApply: true
+---
+
+# Quality checks after code changes
+
+After making any code change in this project, always run these commands before finishing:
+
+1. `npm run lint:fix` — auto-fix Biome issues (formatting, import order, safe fixes)
+2. `npm run lint` — verify no remaining Biome errors
+3. `npm run type-check` — verify TypeScript types
+
+If `lint` or `type-check` fails, fix the reported issues and re-run until both pass.
+
+Do not skip these checks, even for small edits.

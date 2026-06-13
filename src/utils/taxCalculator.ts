@@ -6,155 +6,155 @@ interface TaxBracket {
 }
 
 export const taxSlabs: Record<string, TaxBracket[]> = {
-  "2026-2027": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 1, fixed: 0 },
-    { min: 1200001, max: 2200000, rate: 11, fixed: 6000 },
-    { min: 2200001, max: 3200000, rate: 20, fixed: 116000 },
-    { min: 3200001, max: 4100000, rate: 25, fixed: 316000 },
-    { min: 4100001, max: 5600000, rate: 29, fixed: 541000 },
-    { min: 5600001, max: 7000000, rate: 32, fixed: 976000 },
-    { min: 7000001, max: null, rate: 35, fixed: 1424000 }
+  '2026-2027': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 1, fixed: 0 },
+    { min: 1_200_001, max: 2_200_000, rate: 11, fixed: 6000 },
+    { min: 2_200_001, max: 3_200_000, rate: 20, fixed: 116_000 },
+    { min: 3_200_001, max: 4_100_000, rate: 25, fixed: 316_000 },
+    { min: 4_100_001, max: 5_600_000, rate: 29, fixed: 541_000 },
+    { min: 5_600_001, max: 7_000_000, rate: 32, fixed: 976_000 },
+    { min: 7_000_001, max: null, rate: 35, fixed: 1_424_000 },
   ],
-  "2025-2026": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 1, fixed: 0 },
-    { min: 1200001, max: 2200000, rate: 11, fixed: 6000 },
-    { min: 2200001, max: 3200000, rate: 23, fixed: 116000 },
-    { min: 3200001, max: 4100000, rate: 30, fixed: 346000 },
-    { min: 4100001, max: null, rate: 35, fixed: 616000 }
+  '2025-2026': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 1, fixed: 0 },
+    { min: 1_200_001, max: 2_200_000, rate: 11, fixed: 6000 },
+    { min: 2_200_001, max: 3_200_000, rate: 23, fixed: 116_000 },
+    { min: 3_200_001, max: 4_100_000, rate: 30, fixed: 346_000 },
+    { min: 4_100_001, max: null, rate: 35, fixed: 616_000 },
   ],
-  "2024-2025": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 5, fixed: 0 },
-    { min: 1200001, max: 2200000, rate: 15, fixed: 30000 },
-    { min: 2200001, max: 3200000, rate: 25, fixed: 180000 },
-    { min: 3200001, max: 4100000, rate: 30, fixed: 430000 },
-    { min: 4100001, max: null, rate: 35, fixed: 700000 }
+  '2024-2025': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 5, fixed: 0 },
+    { min: 1_200_001, max: 2_200_000, rate: 15, fixed: 30_000 },
+    { min: 2_200_001, max: 3_200_000, rate: 25, fixed: 180_000 },
+    { min: 3_200_001, max: 4_100_000, rate: 30, fixed: 430_000 },
+    { min: 4_100_001, max: null, rate: 35, fixed: 700_000 },
   ],
-  "2023-2024": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 2.5, fixed: 0 },
-    { min: 1200001, max: 2400000, rate: 12.5, fixed: 15000 },
-    { min: 2400001, max: 3600000, rate: 22.5, fixed: 165000 },
-    { min: 3600001, max: 6000000, rate: 27.5, fixed: 435000 },
-    { min: 6000001, max: null, rate: 35, fixed: 1095000 }
+  '2023-2024': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 2.5, fixed: 0 },
+    { min: 1_200_001, max: 2_400_000, rate: 12.5, fixed: 15_000 },
+    { min: 2_400_001, max: 3_600_000, rate: 22.5, fixed: 165_000 },
+    { min: 3_600_001, max: 6_000_000, rate: 27.5, fixed: 435_000 },
+    { min: 6_000_001, max: null, rate: 35, fixed: 1_095_000 },
   ],
-  "2022-2023": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 2.5, fixed: 0 },
-    { min: 1200001, max: 2400000, rate: 12.5, fixed: 15000 },
-    { min: 2400001, max: 3600000, rate: 20, fixed: 165000 },
-    { min: 3600001, max: 6000000, rate: 25, fixed: 405000 },
-    { min: 6000001, max: 12000000, rate: 32.5, fixed: 1005000 },
-    { min: 12000001, max: null, rate: 35, fixed: 2955000 }
+  '2022-2023': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 2.5, fixed: 0 },
+    { min: 1_200_001, max: 2_400_000, rate: 12.5, fixed: 15_000 },
+    { min: 2_400_001, max: 3_600_000, rate: 20, fixed: 165_000 },
+    { min: 3_600_001, max: 6_000_000, rate: 25, fixed: 405_000 },
+    { min: 6_000_001, max: 12_000_000, rate: 32.5, fixed: 1_005_000 },
+    { min: 12_000_001, max: null, rate: 35, fixed: 2_955_000 },
   ],
-  "2021-2022": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 5, fixed: 0 },
-    { min: 1200001, max: 1800000, rate: 10, fixed: 30000 },
-    { min: 1800001, max: 2500000, rate: 15, fixed: 90000 },
-    { min: 2500001, max: 3500000, rate: 17.5, fixed: 195000 },
-    { min: 3500001, max: 5000000, rate: 20, fixed: 370000 },
-    { min: 5000001, max: 8000000, rate: 22.5, fixed: 670000 },
-    { min: 8000001, max: 12000000, rate: 25, fixed: 1345000 },
-    { min: 12000001, max: 30000000, rate: 27.5, fixed: 2345000 },
-    { min: 30000001, max: 50000000, rate: 30, fixed: 7295000 },
-    { min: 50000001, max: 75000000, rate: 32.5, fixed: 13295000 },
-    { min: 75000001, max: null, rate: 35, fixed: 21420000 }
+  '2021-2022': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 5, fixed: 0 },
+    { min: 1_200_001, max: 1_800_000, rate: 10, fixed: 30_000 },
+    { min: 1_800_001, max: 2_500_000, rate: 15, fixed: 90_000 },
+    { min: 2_500_001, max: 3_500_000, rate: 17.5, fixed: 195_000 },
+    { min: 3_500_001, max: 5_000_000, rate: 20, fixed: 370_000 },
+    { min: 5_000_001, max: 8_000_000, rate: 22.5, fixed: 670_000 },
+    { min: 8_000_001, max: 12_000_000, rate: 25, fixed: 1_345_000 },
+    { min: 12_000_001, max: 30_000_000, rate: 27.5, fixed: 2_345_000 },
+    { min: 30_000_001, max: 50_000_000, rate: 30, fixed: 7_295_000 },
+    { min: 50_000_001, max: 75_000_000, rate: 32.5, fixed: 13_295_000 },
+    { min: 75_000_001, max: null, rate: 35, fixed: 21_420_000 },
   ],
-  "2020-2021": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 5, fixed: 0 },
-    { min: 1200001, max: 1800000, rate: 10, fixed: 30000 },
-    { min: 1800001, max: 2500000, rate: 15, fixed: 90000 },
-    { min: 2500001, max: 3500000, rate: 17.5, fixed: 195000 },
-    { min: 3500001, max: 5000000, rate: 20, fixed: 370000 },
-    { min: 5000001, max: 8000000, rate: 22.5, fixed: 670000 },
-    { min: 8000001, max: 12000000, rate: 25, fixed: 1345000 },
-    { min: 12000001, max: 30000000, rate: 27.5, fixed: 2345000 },
-    { min: 30000001, max: 50000000, rate: 30, fixed: 7295000 },
-    { min: 50000001, max: 75000000, rate: 32.5, fixed: 13295000 },
-    { min: 75000001, max: null, rate: 35, fixed: 21420000 }
+  '2020-2021': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 5, fixed: 0 },
+    { min: 1_200_001, max: 1_800_000, rate: 10, fixed: 30_000 },
+    { min: 1_800_001, max: 2_500_000, rate: 15, fixed: 90_000 },
+    { min: 2_500_001, max: 3_500_000, rate: 17.5, fixed: 195_000 },
+    { min: 3_500_001, max: 5_000_000, rate: 20, fixed: 370_000 },
+    { min: 5_000_001, max: 8_000_000, rate: 22.5, fixed: 670_000 },
+    { min: 8_000_001, max: 12_000_000, rate: 25, fixed: 1_345_000 },
+    { min: 12_000_001, max: 30_000_000, rate: 27.5, fixed: 2_345_000 },
+    { min: 30_000_001, max: 50_000_000, rate: 30, fixed: 7_295_000 },
+    { min: 50_000_001, max: 75_000_000, rate: 32.5, fixed: 13_295_000 },
+    { min: 75_000_001, max: null, rate: 35, fixed: 21_420_000 },
   ],
-  "2019-2020": [
-    { min: 0, max: 600000, rate: 0, fixed: 0 },
-    { min: 600001, max: 1200000, rate: 5, fixed: 0 },
-    { min: 1200001, max: 1800000, rate: 10, fixed: 30000 },
-    { min: 1800001, max: 2500000, rate: 15, fixed: 90000 },
-    { min: 2500001, max: 3500000, rate: 17.5, fixed: 195000 },
-    { min: 3500001, max: 5000000, rate: 20, fixed: 370000 },
-    { min: 5000001, max: 8000000, rate: 22.5, fixed: 670000 },
-    { min: 8000001, max: 12000000, rate: 25, fixed: 1345000 },
-    { min: 12000001, max: 30000000, rate: 27.5, fixed: 2345000 },
-    { min: 30000001, max: 50000000, rate: 30, fixed: 7295000 },
-    { min: 50000001, max: 75000000, rate: 32.5, fixed: 13295000 },
-    { min: 75000001, max: null, rate: 35, fixed: 21420000 }
+  '2019-2020': [
+    { min: 0, max: 600_000, rate: 0, fixed: 0 },
+    { min: 600_001, max: 1_200_000, rate: 5, fixed: 0 },
+    { min: 1_200_001, max: 1_800_000, rate: 10, fixed: 30_000 },
+    { min: 1_800_001, max: 2_500_000, rate: 15, fixed: 90_000 },
+    { min: 2_500_001, max: 3_500_000, rate: 17.5, fixed: 195_000 },
+    { min: 3_500_001, max: 5_000_000, rate: 20, fixed: 370_000 },
+    { min: 5_000_001, max: 8_000_000, rate: 22.5, fixed: 670_000 },
+    { min: 8_000_001, max: 12_000_000, rate: 25, fixed: 1_345_000 },
+    { min: 12_000_001, max: 30_000_000, rate: 27.5, fixed: 2_345_000 },
+    { min: 30_000_001, max: 50_000_000, rate: 30, fixed: 7_295_000 },
+    { min: 50_000_001, max: 75_000_000, rate: 32.5, fixed: 13_295_000 },
+    { min: 75_000_001, max: null, rate: 35, fixed: 21_420_000 },
   ],
-  "2018-2019": [
-    { min: 0, max: 400000, rate: 0, fixed: 0 },
-    { min: 400001, max: 800000, rate: 0, fixed: 1000 },
-    { min: 800001, max: 1200000, rate: 0, fixed: 2000 },
-    { min: 1200001, max: 2500000, rate: 5, fixed: 2000 },
-    { min: 2500001, max: 4000000, rate: 15, fixed: 65000 },
-    { min: 4000001, max: 8000000, rate: 20, fixed: 290000 },
-    { min: 8000001, max: null, rate: 25, fixed: 1090000 }
+  '2018-2019': [
+    { min: 0, max: 400_000, rate: 0, fixed: 0 },
+    { min: 400_001, max: 800_000, rate: 0, fixed: 1000 },
+    { min: 800_001, max: 1_200_000, rate: 0, fixed: 2000 },
+    { min: 1_200_001, max: 2_500_000, rate: 5, fixed: 2000 },
+    { min: 2_500_001, max: 4_000_000, rate: 15, fixed: 65_000 },
+    { min: 4_000_001, max: 8_000_000, rate: 20, fixed: 290_000 },
+    { min: 8_000_001, max: null, rate: 25, fixed: 1_090_000 },
   ],
-  "2017-2018": [
-    { min: 0, max: 400000, rate: 0, fixed: 0 },
-    { min: 400001, max: 500000, rate: 2, fixed: 0 },
-    { min: 500001, max: 750000, rate: 5, fixed: 2000 },
-    { min: 750001, max: 1400000, rate: 10, fixed: 14500 },
-    { min: 1400001, max: 1500000, rate: 12.5, fixed: 79500 },
-    { min: 1500001, max: 1800000, rate: 15, fixed: 92000 },
-    { min: 1800001, max: 2500000, rate: 17.5, fixed: 137000 },
-    { min: 2500001, max: 3000000, rate: 20, fixed: 259500 },
-    { min: 3000001, max: 3500000, rate: 22.5, fixed: 359500 },
-    { min: 3500001, max: 4000000, rate: 25, fixed: 472000 },
-    { min: 4000001, max: 7000000, rate: 27.5, fixed: 597000 },
-    { min: 7000001, max: null, rate: 30, fixed: 1422000 }
+  '2017-2018': [
+    { min: 0, max: 400_000, rate: 0, fixed: 0 },
+    { min: 400_001, max: 500_000, rate: 2, fixed: 0 },
+    { min: 500_001, max: 750_000, rate: 5, fixed: 2000 },
+    { min: 750_001, max: 1_400_000, rate: 10, fixed: 14_500 },
+    { min: 1_400_001, max: 1_500_000, rate: 12.5, fixed: 79_500 },
+    { min: 1_500_001, max: 1_800_000, rate: 15, fixed: 92_000 },
+    { min: 1_800_001, max: 2_500_000, rate: 17.5, fixed: 137_000 },
+    { min: 2_500_001, max: 3_000_000, rate: 20, fixed: 259_500 },
+    { min: 3_000_001, max: 3_500_000, rate: 22.5, fixed: 359_500 },
+    { min: 3_500_001, max: 4_000_000, rate: 25, fixed: 472_000 },
+    { min: 4_000_001, max: 7_000_000, rate: 27.5, fixed: 597_000 },
+    { min: 7_000_001, max: null, rate: 30, fixed: 1_422_000 },
   ],
-  "2016-2017": [
-    { min: 0, max: 400000, rate: 0, fixed: 0 },
-    { min: 400001, max: 500000, rate: 2, fixed: 0 },
-    { min: 500001, max: 750000, rate: 5, fixed: 2000 },
-    { min: 750001, max: 1400000, rate: 10, fixed: 14500 },
-    { min: 1400001, max: 1500000, rate: 12.5, fixed: 79500 },
-    { min: 1500001, max: 1800000, rate: 15, fixed: 92000 },
-    { min: 1800001, max: 2500000, rate: 17.5, fixed: 137000 },
-    { min: 2500001, max: 3000000, rate: 20, fixed: 259500 },
-    { min: 3000001, max: 3500000, rate: 22.5, fixed: 359500 },
-    { min: 3500001, max: 4000000, rate: 25, fixed: 472000 },
-    { min: 4000001, max: 7000000, rate: 27.5, fixed: 597000 },
-    { min: 7000001, max: null, rate: 30, fixed: 1422000 }
+  '2016-2017': [
+    { min: 0, max: 400_000, rate: 0, fixed: 0 },
+    { min: 400_001, max: 500_000, rate: 2, fixed: 0 },
+    { min: 500_001, max: 750_000, rate: 5, fixed: 2000 },
+    { min: 750_001, max: 1_400_000, rate: 10, fixed: 14_500 },
+    { min: 1_400_001, max: 1_500_000, rate: 12.5, fixed: 79_500 },
+    { min: 1_500_001, max: 1_800_000, rate: 15, fixed: 92_000 },
+    { min: 1_800_001, max: 2_500_000, rate: 17.5, fixed: 137_000 },
+    { min: 2_500_001, max: 3_000_000, rate: 20, fixed: 259_500 },
+    { min: 3_000_001, max: 3_500_000, rate: 22.5, fixed: 359_500 },
+    { min: 3_500_001, max: 4_000_000, rate: 25, fixed: 472_000 },
+    { min: 4_000_001, max: 7_000_000, rate: 27.5, fixed: 597_000 },
+    { min: 7_000_001, max: null, rate: 30, fixed: 1_422_000 },
   ],
-  "2015-2016": [
-    { min: 0, max: 400000, rate: 0, fixed: 0 },
-    { min: 400001, max: 500000, rate: 2, fixed: 0 },
-    { min: 500001, max: 750000, rate: 5, fixed: 2000 },
-    { min: 750001, max: 1400000, rate: 10, fixed: 14500 },
-    { min: 1400001, max: 1500000, rate: 12.5, fixed: 79500 },
-    { min: 1500001, max: 1800000, rate: 15, fixed: 92000 },
-    { min: 1800001, max: 2500000, rate: 17.5, fixed: 137000 },
-    { min: 2500001, max: 3000000, rate: 20, fixed: 259500 },
-    { min: 3000001, max: 3500000, rate: 22.5, fixed: 359500 },
-    { min: 3500001, max: 4000000, rate: 25, fixed: 472000 },
-    { min: 4000001, max: 7000000, rate: 27.5, fixed: 597000 },
-    { min: 7000001, max: null, rate: 30, fixed: 1422000 }
+  '2015-2016': [
+    { min: 0, max: 400_000, rate: 0, fixed: 0 },
+    { min: 400_001, max: 500_000, rate: 2, fixed: 0 },
+    { min: 500_001, max: 750_000, rate: 5, fixed: 2000 },
+    { min: 750_001, max: 1_400_000, rate: 10, fixed: 14_500 },
+    { min: 1_400_001, max: 1_500_000, rate: 12.5, fixed: 79_500 },
+    { min: 1_500_001, max: 1_800_000, rate: 15, fixed: 92_000 },
+    { min: 1_800_001, max: 2_500_000, rate: 17.5, fixed: 137_000 },
+    { min: 2_500_001, max: 3_000_000, rate: 20, fixed: 259_500 },
+    { min: 3_000_001, max: 3_500_000, rate: 22.5, fixed: 359_500 },
+    { min: 3_500_001, max: 4_000_000, rate: 25, fixed: 472_000 },
+    { min: 4_000_001, max: 7_000_000, rate: 27.5, fixed: 597_000 },
+    { min: 7_000_001, max: null, rate: 30, fixed: 1_422_000 },
   ],
-  "2014-2015": [
-    { min: 0, max: 400000, rate: 0, fixed: 0 },
-    { min: 400001, max: 750000, rate: 5, fixed: 0 },
-    { min: 750001, max: 1400000, rate: 10, fixed: 17500 },
-    { min: 1400001, max: 1500000, rate: 12.5, fixed: 82500 },
-    { min: 1500001, max: 1800000, rate: 15, fixed: 95000 },
-    { min: 1800001, max: 2500000, rate: 17.5, fixed: 140000 },
-    { min: 2500001, max: 3000000, rate: 20, fixed: 262500 },
-    { min: 3000001, max: 3500000, rate: 22.5, fixed: 362500 },
-    { min: 3500001, max: 4000000, rate: 25, fixed: 475000 },
-    { min: 4000001, max: 7000000, rate: 27.5, fixed: 600000 },
-    { min: 7000001, max: null, rate: 30, fixed: 1425000 }
-  ]
+  '2014-2015': [
+    { min: 0, max: 400_000, rate: 0, fixed: 0 },
+    { min: 400_001, max: 750_000, rate: 5, fixed: 0 },
+    { min: 750_001, max: 1_400_000, rate: 10, fixed: 17_500 },
+    { min: 1_400_001, max: 1_500_000, rate: 12.5, fixed: 82_500 },
+    { min: 1_500_001, max: 1_800_000, rate: 15, fixed: 95_000 },
+    { min: 1_800_001, max: 2_500_000, rate: 17.5, fixed: 140_000 },
+    { min: 2_500_001, max: 3_000_000, rate: 20, fixed: 262_500 },
+    { min: 3_000_001, max: 3_500_000, rate: 22.5, fixed: 362_500 },
+    { min: 3_500_001, max: 4_000_000, rate: 25, fixed: 475_000 },
+    { min: 4_000_001, max: 7_000_000, rate: 27.5, fixed: 600_000 },
+    { min: 7_000_001, max: null, rate: 30, fixed: 1_425_000 },
+  ],
 };
 
 interface TaxCalculation {
@@ -167,6 +167,38 @@ interface TaxCalculation {
   taxRate: number;
 }
 
+function calculateTax2018_2019(totalAmount: number): number {
+  if (totalAmount <= 400_000) {
+    return 0;
+  }
+  if (totalAmount <= 800_000) {
+    return 1000;
+  }
+  if (totalAmount <= 1_200_000) {
+    return 2000;
+  }
+  if (totalAmount <= 2_500_000) {
+    return Math.max(2000, (totalAmount - 1_200_000) * 0.05);
+  }
+  if (totalAmount <= 4_000_000) {
+    return 65_000 + (totalAmount - 2_500_000) * 0.15;
+  }
+  if (totalAmount <= 8_000_000) {
+    return 290_000 + (totalAmount - 4_000_000) * 0.2;
+  }
+  return 1_090_000 + (totalAmount - 8_000_000) * 0.25;
+}
+
+function findTaxBracket(slabs: TaxBracket[], totalAmount: number): TaxBracket {
+  for (const slab of slabs) {
+    if (totalAmount >= slab.min && (!slab.max || totalAmount <= slab.max)) {
+      return slab;
+    }
+  }
+
+  return slabs.at(-1) ?? slabs[0];
+}
+
 /**
  * Calculate tax for a specific total amount using the appropriate tax bracket
  * @param totalAmount The total income amount to calculate tax on
@@ -174,45 +206,14 @@ interface TaxCalculation {
  * @returns The calculated tax amount
  */
 export function calculateTaxForTotalAmount(totalAmount: number, fiscalYear: string): number {
-  const slabs = taxSlabs[fiscalYear] || taxSlabs["2026-2027"];
-  let tax = 0;
-  
-  if (fiscalYear === "2018-2019") {
-    // Special handling for 2018-2019 tax year
-    if (totalAmount <= 400000) {
-      tax = 0;
-    } else if (totalAmount <= 800000) {
-      tax = 1000;
-    } else if (totalAmount <= 1200000) {
-      tax = 2000;
-    } else if (totalAmount <= 2500000) {
-      tax = Math.max(2000, (totalAmount - 1200000) * 0.05);
-    } else if (totalAmount <= 4000000) {
-      tax = 65000 + (totalAmount - 2500000) * 0.15;
-    } else if (totalAmount <= 8000000) {
-      tax = 290000 + (totalAmount - 4000000) * 0.20;
-    } else {
-      tax = 1090000 + (totalAmount - 8000000) * 0.25;
-    }
-  } else {
-    // Find the appropriate tax bracket
-    let taxBracket: TaxBracket | undefined;
-    
-    for (const slab of slabs) {
-      if (totalAmount >= slab.min && (!slab.max || totalAmount <= slab.max)) {
-        taxBracket = slab;
-        break;
-      }
-    }
-    
-    if (!taxBracket) {
-      taxBracket = slabs[slabs.length - 1]; // Use the highest bracket
-    }
-    
-    // Calculate tax using the bracket's fixed amount and rate
-    tax = taxBracket.fixed + ((totalAmount - taxBracket.min) * (taxBracket.rate / 100));
+  if (fiscalYear === '2018-2019') {
+    return Math.round(calculateTax2018_2019(totalAmount));
   }
-  
+
+  const slabs = taxSlabs[fiscalYear] || taxSlabs['2026-2027'];
+  const taxBracket = findTaxBracket(slabs, totalAmount);
+  const tax = taxBracket.fixed + (totalAmount - taxBracket.min) * (taxBracket.rate / 100);
+
   return Math.round(tax);
 }
 
@@ -223,16 +224,20 @@ export function calculateTaxForTotalAmount(totalAmount: number, fiscalYear: stri
  * @param months Optional: Number of months to calculate for (defaults to 12)
  * @returns A complete tax calculation result
  */
-export function calculateTax(monthlySalary: number, fiscalYear: string, months: number = 12): TaxCalculation {
+export function calculateTax(
+  monthlySalary: number,
+  fiscalYear: string,
+  months = 12,
+): TaxCalculation {
   // Calculate the total income for the specified number of months
   const totalIncome = monthlySalary * months;
-  
+
   // Calculate tax on the total income
   const yearlyTax = calculateTaxForTotalAmount(totalIncome, fiscalYear);
-  
+
   // Calculate monthly tax (for display purposes)
   const monthlyTax = yearlyTax / months;
-  
+
   // Calculate tax rate
   const taxRate = (yearlyTax / totalIncome) * 100;
 
@@ -243,6 +248,6 @@ export function calculateTax(monthlySalary: number, fiscalYear: string, months: 
     yearlyIncome: Math.round(totalIncome),
     yearlyTax: Math.round(yearlyTax),
     yearlyIncomeAfterTax: Math.round(totalIncome - yearlyTax),
-    taxRate: taxRate
+    taxRate,
   };
 }

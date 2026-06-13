@@ -1,14 +1,21 @@
-import { useState, useEffect } from 'react';
-import { calculateTaxForTotalAmount } from '../utils/taxCalculator';
-import { PlusCircle, MinusCircle, Calendar, AlertTriangle, Info } from 'lucide-react';
-import { 
-  Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
-  BarChart, Bar, PieChart, Pie, Cell, Legend, CartesianGrid, 
-  Area, AreaChart, ComposedChart,
-} from 'recharts';
-import { useCalculator } from '../context/CalculatorContext';
-import { taxSlabs } from '../utils/taxCalculator';
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import dynamic from 'next/dynamic';
+
+import { AlertTriangle, Calendar, Info, MinusCircle, PlusCircle } from 'lucide-react';
 import DatePicker from 'react-datepicker';
+
+import { useCalculator } from '@/context/useCalculator';
+
+import { calculateTaxForTotalAmount, taxSlabs } from '../utils/taxCalculator';
+import MultiYearChartsLoading from './MultiYearChartsLoading';
+
+const MultiYearCharts = dynamic(() => import('./multi-year-charts/MultiYearCharts'), {
+  loading: () => <MultiYearChartsLoading />,
+  ssr: false,
+});
 import 'react-datepicker/dist/react-datepicker.css';
 import '../datepicker.css';
 
@@ -37,16 +44,70 @@ interface DayRange {
   endDate: Date;
 }
 
-// Chart color constants
-const COLORS = {
-  tax: '#dc2626',
-  netIncome: '#059669',
-  salary: '#3b82f6',
-  taxRate: '#8b5cf6',
-  primary: ['#047857', '#059669', '#10b981', '#34d399', '#6ee7b7'],
-  secondary: ['#1d4ed8', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd'],
-  accent: ['#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe']
-};
+interface PeriodInput {
+  startDate: string;
+  endDate: string;
+  salary: string;
+}
+
+function getFiscalYearBounds(): { earliestStartYear: number; latestEndYear: number } {
+  const sortedYears = [...Object.keys(taxSlabs)].sort();
+  const earliestYear = sortedYears[0];
+  const latestYear = sortedYears.at(-1) ?? earliestYear;
+  const [earliestStartYear] = earliestYear.split('-').map(Number);
+  const [, latestEndYear] = latestYear.split('-').map(Number);
+  return { earliestStartYear, latestEndYear };
+}
+
+function isDateInAvailableFiscalYears(date: Date): boolean {
+  const { earliestStartYear, latestEndYear } = getFiscalYearBounds();
+  const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const earliestFiscalYearStart = new Date(earliestStartYear, 6, 1);
+  const latestFiscalYearEnd = new Date(latestEndYear, 5, 30);
+  return normalizedDate >= earliestFiscalYearStart && normalizedDate <= latestFiscalYearEnd;
+}
+
+function getFormattedDateRange(): string {
+  const { earliestStartYear, latestEndYear } = getFiscalYearBounds();
+  return `July 1, ${earliestStartYear} to June 30, ${latestEndYear}`;
+}
+
+function doRangesOverlap(rangeA: DayRange, rangeB: DayRange): boolean {
+  return rangeA.startDate <= rangeB.endDate && rangeA.endDate >= rangeB.startDate;
+}
+
+function getPeriodValidationError(
+  period: PeriodInput,
+  dateRanges: DayRange[],
+  formattedDateRange: string,
+): string | null {
+  if (!(period.startDate && period.endDate && period.salary)) {
+    return null;
+  }
+
+  const startDate = new Date(period.startDate);
+  const endDate = new Date(period.endDate);
+
+  if (startDate > endDate) {
+    return 'Start date cannot be after end date.';
+  }
+
+  if (!isDateInAvailableFiscalYears(startDate)) {
+    return `The start date (${period.startDate}) is outside the range of available tax slabs. Please use dates within the range: ${formattedDateRange}`;
+  }
+
+  if (!isDateInAvailableFiscalYears(endDate)) {
+    return `The end date (${period.endDate}) is outside the range of available tax slabs. Please use dates within the range: ${formattedDateRange}`;
+  }
+
+  for (const range of dateRanges) {
+    if (doRangesOverlap({ startDate, endDate }, range)) {
+      return 'Periods cannot overlap. Please ensure no date is covered by multiple periods.';
+    }
+  }
+
+  return null;
+}
 
 function MultiYearCalculator() {
   const { multiYear, setMultiYear } = useCalculator();
@@ -55,7 +116,7 @@ function MultiYearCalculator() {
   // Add state for active chart selection
   const [activeChart, setActiveChart] = useState<string>('comparison');
   const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false,
   );
 
   useEffect(() => {
@@ -65,29 +126,38 @@ function MultiYearCalculator() {
   }, []);
 
   const addPeriod = () => {
-    setMultiYear(prev => ({
+    setMultiYear((prev) => ({
       ...prev,
-      periods: [...prev.periods, { startDate: '', endDate: '', salary: '' }]
+      periods: [...prev.periods, { startDate: '', endDate: '', salary: '' }],
     }));
   };
 
   const removePeriod = (index: number) => {
-    setMultiYear(prev => ({
+    setMultiYear((prev) => ({
       ...prev,
-      periods: prev.periods.filter((_, i) => i !== index)
+      periods: prev.periods.filter((_, i) => i !== index),
     }));
     // Clear validation error when removing a period
     setValidationError(null);
   };
 
-  const updatePeriod = (index: number, field: keyof typeof periods[0], value: string | Date | null) => {
-    setMultiYear(prev => ({
+  const updatePeriod = (
+    index: number,
+    field: keyof (typeof periods)[0],
+    value: string | Date | null,
+  ) => {
+    setMultiYear((prev) => ({
       ...prev,
       periods: prev.periods.map((period, i) =>
-        i === index ? { ...period, [field]: field === 'salary' ? value : formatDateToYYYYMMDD(value as Date | null) } : period
-      )
+        i === index
+          ? {
+              ...period,
+              [field]: field === 'salary' ? value : formatDateToYYYYMMDD(value as Date | null),
+            }
+          : period,
+      ),
     }));
-    
+
     // Clear validation error when updating a period
     setValidationError(null);
   };
@@ -103,47 +173,49 @@ function MultiYearCalculator() {
     const month = date.getMonth();
     const day = date.getDate();
     const daysInMonth = getDaysInMonth(year, month);
-    
+
     if (isStartDate) {
       // For start date, calculate proportion from the date to end of month
       return (daysInMonth - day + 1) / daysInMonth;
-    } else {
-      // For end date, calculate proportion from beginning of month to the date
-      return day / daysInMonth;
     }
+    // For end date, calculate proportion from beginning of month to the date
+    return day / daysInMonth;
   };
 
   // Calculate actual salary for a period including partial months
   const calculateActualSalary = (startDate: Date, endDate: Date, monthlySalary: number): number => {
     // If dates are in the same month and year
-    if (startDate.getFullYear() === endDate.getFullYear() && 
-        startDate.getMonth() === endDate.getMonth()) {
+    if (
+      startDate.getFullYear() === endDate.getFullYear() &&
+      startDate.getMonth() === endDate.getMonth()
+    ) {
       const daysInMonth = getDaysInMonth(startDate.getFullYear(), startDate.getMonth());
       const daysDifference = endDate.getDate() - startDate.getDate() + 1;
       return monthlySalary * (daysDifference / daysInMonth);
     }
-    
+
     let totalSalary = 0;
     let currentDate = new Date(startDate);
-    
+
     // Handle first partial month (if not starting on the 1st)
     if (currentDate.getDate() !== 1) {
       const firstMonthProportion = getMonthProportion(currentDate, true);
       totalSalary += monthlySalary * firstMonthProportion;
-      
+
       // Move to the first day of the next month
       currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
     }
-    
+
     // Handle full months in between
     while (
-      (currentDate.getFullYear() < endDate.getFullYear()) || 
-      (currentDate.getFullYear() === endDate.getFullYear() && currentDate.getMonth() < endDate.getMonth())
+      currentDate.getFullYear() < endDate.getFullYear() ||
+      (currentDate.getFullYear() === endDate.getFullYear() &&
+        currentDate.getMonth() < endDate.getMonth())
     ) {
       totalSalary += monthlySalary;
       currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
     }
-    
+
     // Handle last partial month (if not ending on the last day of month)
     const lastDayOfMonth = getDaysInMonth(endDate.getFullYear(), endDate.getMonth());
     if (endDate.getDate() !== lastDayOfMonth) {
@@ -153,114 +225,46 @@ function MultiYearCalculator() {
       // If it ends on the last day of the month, add the full month
       totalSalary += monthlySalary;
     }
-    
+
     return totalSalary;
   };
 
-  // Check if two date ranges overlap
-  const doRangesOverlap = (rangeA: DayRange, rangeB: DayRange): boolean => {
-    return (
-      (rangeA.startDate <= rangeB.endDate) && 
-      (rangeA.endDate >= rangeB.startDate)
-    );
-  };
-
-  // Check if a date is within available fiscal years
-  const isDateInAvailableFiscalYears = (date: Date): boolean => {
-    const availableFiscalYears = Object.keys(taxSlabs);
-    
-    // Get the earliest and latest fiscal years
-    const sortedYears = [...availableFiscalYears].sort();
-    const earliestYear = sortedYears[0];
-    const latestYear = sortedYears[sortedYears.length - 1];
-    
-    // Parse the years from strings like "2015-2016"
-    const [earliestStartYear] = earliestYear.split('-').map(Number);
-    const [, latestEndYear] = latestYear.split('-').map(Number);
-    
-    // Create normalized date for comparison (strip time portion)
-    const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    
-    // Calculate the earliest fiscal year start date (July 1st of earliestStartYear)
-    const earliestFiscalYearStart = new Date(earliestStartYear, 6, 1); // July 1st (0-indexed months)
-    
-    // Calculate the latest fiscal year end date (June 30th of latestEndYear)
-    const latestFiscalYearEnd = new Date(latestEndYear, 5, 30); // June 30th (0-indexed months)
-    
-    // Check if the date is within the range of available fiscal years
-    // Using >= for start date and <= for end date to include both boundary days
-    return normalizedDate >= earliestFiscalYearStart && normalizedDate <= latestFiscalYearEnd;
-  };
-
-  // Get a formatted date range for error messages
-  const getFormattedDateRange = (): string => {
-    const availableFiscalYears = Object.keys(taxSlabs);
-    
-    // Get the earliest and latest fiscal years
-    const sortedYears = [...availableFiscalYears].sort();
-    const earliestYear = sortedYears[0];
-    const latestYear = sortedYears[sortedYears.length - 1];
-    
-    // Parse the years from strings like "2015-2016"
-    const [earliestStartYear] = earliestYear.split('-').map(Number);
-    const [, latestEndYear] = latestYear.split('-').map(Number);
-    
-    return `July 1, ${earliestStartYear} to June 30, ${latestEndYear}`;
-  };
-
   // Validate that no two periods overlap and all dates are within available fiscal years
+
   const validatePeriods = (): boolean => {
-    // First convert string dates to Date objects for comparison
     const dateRanges: DayRange[] = [];
-    
+    const formattedDateRange = getFormattedDateRange();
+
     for (const period of periods) {
-      if (!period.startDate || !period.endDate || !period.salary) {
-        continue; // Skip incomplete periods
-      }
-      
-      const startDate = new Date(period.startDate);
-      const endDate = new Date(period.endDate);
-      
-      if (startDate > endDate) {
-        setValidationError("Start date cannot be after end date.");
+      const error = getPeriodValidationError(period, dateRanges, formattedDateRange);
+      if (error) {
+        setValidationError(error);
         return false;
       }
-      
-      // Check if start date is within available fiscal years
-      if (!isDateInAvailableFiscalYears(startDate)) {
-        setValidationError(`The start date (${period.startDate}) is outside the range of available tax slabs. Please use dates within the range: ${getFormattedDateRange()}`);
-        return false;
+
+      if (period.startDate && period.endDate && period.salary) {
+        dateRanges.push({
+          startDate: new Date(period.startDate),
+          endDate: new Date(period.endDate),
+        });
       }
-      
-      // Check if end date is within available fiscal years
-      if (!isDateInAvailableFiscalYears(endDate)) {
-        setValidationError(`The end date (${period.endDate}) is outside the range of available tax slabs. Please use dates within the range: ${getFormattedDateRange()}`);
-        return false;
-      }
-      
-      // Check for overlap with existing ranges
-      for (const range of dateRanges) {
-        if (doRangesOverlap({ startDate, endDate }, range)) {
-          setValidationError("Periods cannot overlap. Please ensure no date is covered by multiple periods.");
-          return false;
-        }
-      }
-      
-      dateRanges.push({ startDate, endDate });
     }
-    
+
     return true;
   };
 
   const getMonthsInRange = (start: Date, end: Date): number => {
     // Calculate full months
-    const fullMonths = (end.getFullYear() - start.getFullYear()) * 12 + 
-                      (end.getMonth() - start.getMonth());
-    
+    const fullMonths =
+      (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+
     // Calculate partial months as decimal
-    const startDayProportion = start.getDate() === 1 ? 0 : (1 - getMonthProportion(start, true));
-    const endDayProportion = end.getDate() === getDaysInMonth(end.getFullYear(), end.getMonth()) ? 0 : (1 - getMonthProportion(end, false));
-    
+    const startDayProportion = start.getDate() === 1 ? 0 : 1 - getMonthProportion(start, true);
+    const endDayProportion =
+      end.getDate() === getDaysInMonth(end.getFullYear(), end.getMonth())
+        ? 0
+        : 1 - getMonthProportion(end, false);
+
     return fullMonths + 1 - startDayProportion - endDayProportion;
   };
 
@@ -273,27 +277,31 @@ function MultiYearCalculator() {
   const getFiscalYearDates = (fiscalYear: string): { start: Date; end: Date } => {
     const [startYear] = fiscalYear.split('-');
     return {
-      start: new Date(parseInt(startYear), 6, 1), // July 1st
-      end: new Date(parseInt(startYear) + 1, 5, 30) // June 30th
+      start: new Date(Number.parseInt(startYear, 10), 6, 1), // July 1st
+      end: new Date(Number.parseInt(startYear, 10) + 1, 5, 30), // June 30th
     };
   };
-  const splitPeriodByFiscalYear = (startDate: Date, endDate: Date, monthlySalary: number): FiscalYearBreakdown[] => {
+  const splitPeriodByFiscalYear = (
+    startDate: Date,
+    endDate: Date,
+    monthlySalary: number,
+  ): FiscalYearBreakdown[] => {
     const breakdowns: FiscalYearBreakdown[] = [];
     let currentDate = new Date(startDate);
 
     while (currentDate <= endDate) {
       const fiscalYear = getFiscalYear(currentDate);
       const { start: fiscalYearStart, end: fiscalYearEnd } = getFiscalYearDates(fiscalYear);
-      
+
       const periodStart = currentDate > fiscalYearStart ? currentDate : fiscalYearStart;
       const periodEnd = endDate < fiscalYearEnd ? endDate : fiscalYearEnd;
-      
+
       // Calculate exact months including partial months
       const months = getMonthsInRange(periodStart, periodEnd);
-      
+
       // Calculate the actual salary for this period considering partial months
       const totalSalary = calculateActualSalary(periodStart, periodEnd, monthlySalary);
-      
+
       breakdowns.push({
         fiscalYear,
         startDate: periodStart.toISOString().split('T')[0],
@@ -302,7 +310,7 @@ function MultiYearCalculator() {
         monthlySalary,
         totalSalary,
         tax: 0, // We'll calculate this after combining all periods
-        netIncome: 0 // We'll calculate this after combining all periods
+        netIncome: 0, // We'll calculate this after combining all periods
       });
 
       // Move to next fiscal year
@@ -318,69 +326,69 @@ function MultiYearCalculator() {
     if (!validatePeriods()) {
       return;
     }
-    
+
     const allBreakdowns: FiscalYearBreakdown[] = [];
 
-    periods.forEach(period => {
-      const salary = parseFloat(period.salary);
-      if (isNaN(salary) || !period.startDate || !period.endDate) return;
+    for (const period of periods) {
+      const salary = Number.parseFloat(period.salary);
+      if (Number.isNaN(salary) || !period.startDate || !period.endDate) continue;
 
       const startDate = new Date(period.startDate);
       const endDate = new Date(period.endDate);
       const breakdowns = splitPeriodByFiscalYear(startDate, endDate, salary);
       allBreakdowns.push(...breakdowns);
-    });
+    }
 
     // First, group all periods by fiscal year
     const fiscalYearGroups = new Map<string, FiscalYearBreakdown[]>();
-    allBreakdowns.forEach(breakdown => {
+    for (const breakdown of allBreakdowns) {
       const existing = fiscalYearGroups.get(breakdown.fiscalYear) || [];
       fiscalYearGroups.set(breakdown.fiscalYear, [...existing, breakdown]);
-    });
+    }
 
     // Now process each fiscal year group
     const finalBreakdowns: FiscalYearBreakdown[] = [];
-    fiscalYearGroups.forEach((breakdowns, fiscalYear) => {
+    for (const [fiscalYear, breakdowns] of fiscalYearGroups) {
       // Calculate total months and salary for this fiscal year
       const totalMonths = breakdowns.reduce((sum, b) => sum + b.months, 0);
       const totalSalary = breakdowns.reduce((sum, b) => sum + b.totalSalary, 0);
-      
+
       // Calculate the average monthly salary for this period
       const averageMonthlySalary = totalSalary / totalMonths;
-      
+
       // Use the tax utility function to calculate tax directly on the total amount
       const tax = calculateTaxForTotalAmount(totalSalary, fiscalYear);
-      
+
       finalBreakdowns.push({
         fiscalYear,
         startDate: breakdowns[0].startDate, // Just use the first start date
-        endDate: breakdowns[breakdowns.length - 1].endDate, // Use the last end date
+        endDate: breakdowns.at(-1)?.endDate ?? breakdowns[0].endDate,
         months: totalMonths,
         monthlySalary: averageMonthlySalary, // Average monthly salary across all periods
-        totalSalary: totalSalary,
-        tax: tax,
-        netIncome: totalSalary - tax
+        totalSalary,
+        tax,
+        netIncome: totalSalary - tax,
       });
-    });
+    }
 
     const totalTax = finalBreakdowns.reduce((sum, b) => sum + b.tax, 0);
 
-    setMultiYear(prev => ({
+    setMultiYear((prev) => ({
       ...prev,
       result: {
         totalTax,
-        breakdown: finalBreakdowns.map(b => ({
+        breakdown: finalBreakdowns.map((b) => ({
           period: `Fiscal Year ${b.fiscalYear} (${b.months.toFixed(2)} months)`,
           tax: b.tax,
           salary: b.totalSalary,
           netIncome: b.netIncome,
-          fiscalYear: b.fiscalYear,  // Add fiscalYear for charts
-          months: b.months,          // Add months for charts
-          taxRate: (b.tax / b.totalSalary) * 100  // Add tax rate for visualization
-        }))
-      }
+          fiscalYear: b.fiscalYear, // Add fiscalYear for charts
+          months: b.months, // Add months for charts
+          taxRate: (b.tax / b.totalSalary) * 100, // Add tax rate for visualization
+        })),
+      },
     }));
-    
+
     // Set default chart view when calculation is done
     setActiveChart('comparison');
   };
@@ -388,20 +396,20 @@ function MultiYearCalculator() {
   // Chart data preparation functions
   const getComparisonChartData = () => {
     if (!result) return [];
-    return result.breakdown.map(item => ({
+    return result.breakdown.map((item) => ({
       name: `FY ${item.fiscalYear}`,
       Tax: Math.round(item.tax),
       'Net Income': Math.round(item.netIncome),
-      'Gross Salary': Math.round(item.salary)
+      'Gross Salary': Math.round(item.salary),
     }));
   };
 
   const getTaxRateChartData = () => {
     if (!result) return [];
-    return result.breakdown.map(item => ({
+    return result.breakdown.map((item) => ({
       name: `FY ${item.fiscalYear}`,
-      'Tax Rate (%)': parseFloat((item.tax / item.salary * 100).toFixed(2)),
-      'Months Worked': parseFloat(item.months.toFixed(2))
+      'Tax Rate (%)': Number.parseFloat(((item.tax / item.salary) * 100).toFixed(2)),
+      'Months Worked': Number.parseFloat(item.months.toFixed(2)),
     }));
   };
 
@@ -409,255 +417,94 @@ function MultiYearCalculator() {
     if (!result) return [];
     return [
       { name: 'Tax', value: Math.round(result.totalTax) },
-      { name: 'Net Income', value: Math.round(result.breakdown.reduce((sum, item) => sum + item.netIncome, 0)) }
+      {
+        name: 'Net Income',
+        value: Math.round(result.breakdown.reduce((sum, item) => sum + item.netIncome, 0)),
+      },
     ];
   };
 
   const getMonthlyBreakdownData = () => {
     if (!result) return [];
-    return result.breakdown.map(item => ({
+    return result.breakdown.map((item) => ({
       name: `FY ${item.fiscalYear}`,
       'Monthly Salary': Math.round(item.salary / 12),
       'Monthly Tax': Math.round(item.tax / 12),
-      'Monthly Net': Math.round(item.netIncome / 12)
+      'Monthly Net': Math.round(item.netIncome / 12),
     }));
   };
 
-  // Format large numbers
-  const formatCurrency = (value: number) => {
-    if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(2)}M`;
-    } else if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}K`;
-    }
-    return value.toString();
-  };
-
-  // Render chart based on active selection
-  const renderActiveChart = () => {
-    switch (activeChart) {
-      case 'comparison':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Income & Tax Comparison by Fiscal Year</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={getComparisonChartData()} margin={{ top: 5, right: 5, left: isMobile ? -10 : 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                  <YAxis 
-                    yAxisId="left"
-                    tickFormatter={(value) => formatCurrency(value)}
-                    tick={{ fontSize: isMobile ? 11 : 12 }}
-                    width={isMobile ? 40 : 60}
-                  />
-                  <YAxis 
-                    yAxisId="right" 
-                    orientation="right" 
-                    tickFormatter={(value) => formatCurrency(value)}
-                    tick={{ fontSize: isMobile ? 11 : 12 }}
-                    width={isMobile ? 40 : 60}
-                  />
-                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
-                  <Legend />
-                  <Bar yAxisId="left" dataKey="Gross Salary" fill={COLORS.salary} />
-                  <Bar yAxisId="left" dataKey="Net Income" fill={COLORS.netIncome} />
-                  <Line 
-                    yAxisId="right" 
-                    type="monotone" 
-                    dataKey="Tax" 
-                    stroke={COLORS.tax} 
-                    strokeWidth={3}
-                    dot={{ r: 5 }}
-                    activeDot={{ r: 8 }}
-                  />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      case 'taxRate':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Tax Rate Analysis by Fiscal Year</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={getTaxRateChartData()} margin={{ top: 5, right: 5, left: isMobile ? -10 : 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                  <YAxis 
-                    yAxisId="left"
-                    domain={[0, 'dataMax + 2']}
-                    tickFormatter={(value) => `${value}%`}
-                    tick={{ fontSize: isMobile ? 11 : 12 }}
-                    width={isMobile ? 35 : 60}
-                  />
-                  <YAxis 
-                    yAxisId="right" 
-                    orientation="right" 
-                    domain={[0, 12]}
-                    tickFormatter={(value) => `${value} mo`}
-                    tick={{ fontSize: isMobile ? 11 : 12 }}
-                    width={isMobile ? 38 : 60}
-                  />
-                  <Tooltip />
-                  <Legend />
-                  <Bar yAxisId="right" dataKey="Months Worked" fill={COLORS.salary} />
-                  <Line 
-                    yAxisId="left" 
-                    type="monotone" 
-                    dataKey="Tax Rate (%)" 
-                    stroke={COLORS.taxRate} 
-                    strokeWidth={3}
-                    dot={{ r: 5 }}
-                    activeDot={{ r: 8 }}
-                  />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      case 'distribution':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Total Income Distribution</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={getDistributionChartData()}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={isMobile ? '70%' : 130}
-                    labelLine={false}
-                    label={
-                      isMobile
-                        ? ({ percent }) => `${(percent * 100).toFixed(0)}%`
-                        : ({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`
-                    }
-                  >
-                    {getDistributionChartData().map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tax : COLORS.netIncome} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      case 'monthlyBreakdown':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Monthly Averages by Fiscal Year</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={getMonthlyBreakdownData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
-                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
-                  <Legend />
-                  <Bar dataKey="Monthly Salary" fill={COLORS.salary} />
-                  <Bar dataKey="Monthly Net" fill={COLORS.netIncome} />
-                  <Bar dataKey="Monthly Tax" fill={COLORS.tax} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      case 'timeline':
-        return (
-          <div className="bg-gray-50 border border-gray-100 p-4 sm:p-6 rounded-2xl">
-            <h4 className="text-base font-semibold text-gray-800 mb-4">Tax Timeline (Cumulative Analysis)</h4>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={getComparisonChartData()} margin={{ top: 5, right: 5, left: isMobile ? -15 : 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: isMobile ? 11 : 12 }} />
-                  <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: isMobile ? 11 : 12 }} width={isMobile ? 45 : 60} />
-                  <Tooltip formatter={(value) => `Rs. ${Number(value).toLocaleString()}`} />
-                  <Legend />
-                  <Area type="monotone" dataKey="Tax" stackId="1" stroke={COLORS.tax} fill={COLORS.tax} />
-                  <Area type="monotone" dataKey="Net Income" stackId="1" stroke={COLORS.netIncome} fill={COLORS.netIncome} />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        );
-      
-      default:
-        return null;
-    }
-  };
-
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       <div className="space-y-6">
         {validationError && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-start animate-fade-in">
-            <AlertTriangle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+          <div className="flex animate-fade-in items-start rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+            <AlertTriangle className="mt-0.5 mr-2 h-5 w-5 flex-shrink-0" />
             <p className="text-sm">{validationError}</p>
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl flex items-start">
-            <Info className="h-5 w-5 text-emerald-600 mr-3 mt-0.5 flex-shrink-0" />
-            <div className="text-sm text-emerald-900">
-              <p className="font-semibold mb-1">Partial Month Calculation</p>
-              <p className="text-emerald-800/80">For periods that don't align with complete months, salary is calculated proportionally based on actual days worked.</p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="flex items-start rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+            <Info className="mt-0.5 mr-3 h-5 w-5 flex-shrink-0 text-emerald-600" />
+            <div className="text-emerald-900 text-sm">
+              <p className="mb-1 font-semibold">Partial Month Calculation</p>
+              <p className="text-emerald-800/80">
+                For periods that don't align with complete months, salary is calculated
+                proportionally based on actual days worked.
+              </p>
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-100 p-4 rounded-2xl flex items-start">
-            <Calendar className="h-5 w-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
-            <div className="text-sm text-blue-900">
-              <p className="font-semibold mb-1">Available Fiscal Years</p>
-              <p className="text-blue-800/80">Supports tax calculations for periods between {getFormattedDateRange()}. Ensure your dates fall within this range.</p>
+          <div className="flex items-start rounded-2xl border border-blue-100 bg-blue-50 p-4">
+            <Calendar className="mt-0.5 mr-3 h-5 w-5 flex-shrink-0 text-blue-600" />
+            <div className="text-blue-900 text-sm">
+              <p className="mb-1 font-semibold">Available Fiscal Years</p>
+              <p className="text-blue-800/80">
+                Supports tax calculations for periods between {getFormattedDateRange()}. Ensure your
+                dates fall within this range.
+              </p>
             </div>
           </div>
         </div>
 
         {periods.map((period, index) => (
           <div key={index} className="period-card space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex items-center justify-center h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
                   <Calendar className="h-5 w-5" />
                 </span>
-                <h3 className="text-lg font-bold text-gray-900">Period {index + 1}</h3>
+                <h3 className="font-bold text-gray-900 text-lg">Period {index + 1}</h3>
               </div>
               {periods.length > 1 && (
                 <button
+                  type="button"
                   onClick={() => removePeriod(index)}
                   aria-label="Remove period"
-                  className="flex items-center justify-center h-9 w-9 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
                 >
                   <MinusCircle className="h-5 w-5" />
                 </button>
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <div>
-                <label className="form-label text-gray-800 flex items-center gap-1">
+                <label
+                  htmlFor={`period-${index}-start`}
+                  className="form-label flex items-center gap-1 text-gray-800"
+                >
                   Start Date
-                  <Calendar className="h-4 w-4 text-blue-500 ml-1" />
+                  <Calendar className="ml-1 h-4 w-4 text-blue-500" />
                 </label>
                 <div className="relative">
                   <DatePicker
+                    id={`period-${index}-start`}
                     selected={period.startDate ? new Date(period.startDate) : null}
                     onChange={(date: Date | null) => updatePeriod(index, 'startDate', date)}
                     dateFormat="dd-MM-yyyy"
-                    className="form-input w-full pr-10 rounded-xl border-emerald-300 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm text-lg"
+                    className="form-input w-full rounded-xl border-emerald-300 pr-10 text-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                     popperClassName="z-50"
                     calendarClassName="rounded-xl shadow-lg border border-emerald-200"
                     placeholderText="Select start date"
@@ -669,22 +516,26 @@ function MultiYearCalculator() {
                     showMonthDropdown
                     dateFormatCalendar="MMMM yyyy"
                   />
-                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-blue-400 pointer-events-none" />
+                  <Calendar className="-translate-y-1/2 pointer-events-none absolute top-1/2 right-3 h-5 w-5 text-blue-400" />
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Between {getFormattedDateRange()}</div>
+                <div className="mt-1 text-gray-500 text-xs">Between {getFormattedDateRange()}</div>
               </div>
 
               <div>
-                <label className="form-label text-gray-800 flex items-center gap-1">
+                <label
+                  htmlFor={`period-${index}-end`}
+                  className="form-label flex items-center gap-1 text-gray-800"
+                >
                   End Date
-                  <Calendar className="h-4 w-4 text-blue-500 ml-1" />
+                  <Calendar className="ml-1 h-4 w-4 text-blue-500" />
                 </label>
                 <div className="relative">
                   <DatePicker
+                    id={`period-${index}-end`}
                     selected={period.endDate ? new Date(period.endDate) : null}
                     onChange={(date: Date | null) => updatePeriod(index, 'endDate', date)}
                     dateFormat="dd-MM-yyyy"
-                    className="form-input w-full pr-10 rounded-xl border-emerald-300 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm text-lg"
+                    className="form-input w-full rounded-xl border-emerald-300 pr-10 text-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
                     popperClassName="z-50"
                     calendarClassName="rounded-xl shadow-lg border border-emerald-200"
                     placeholderText="Select end date"
@@ -696,16 +547,17 @@ function MultiYearCalculator() {
                     showMonthDropdown
                     dateFormatCalendar="MMMM yyyy"
                   />
-                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-blue-400 pointer-events-none" />
+                  <Calendar className="-translate-y-1/2 pointer-events-none absolute top-1/2 right-3 h-5 w-5 text-blue-400" />
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Between {getFormattedDateRange()}</div>
+                <div className="mt-1 text-gray-500 text-xs">Between {getFormattedDateRange()}</div>
               </div>
 
               <div>
-                <label className="form-label text-gray-800">
+                <label htmlFor={`period-${index}-salary`} className="form-label text-gray-800">
                   Monthly Salary (Rs.)
                 </label>
                 <input
+                  id={`period-${index}-salary`}
                   type="number"
                   value={period.salary}
                   onChange={(e) => updatePeriod(index, 'salary', e.target.value)}
@@ -719,52 +571,57 @@ function MultiYearCalculator() {
           </div>
         ))}
 
-        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+        <div className="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
           <button
+            type="button"
             onClick={addPeriod}
-            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-emerald-200 text-emerald-700 font-semibold hover:border-emerald-400 hover:bg-emerald-50 transition-colors"
+            className="flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-200 border-dashed px-4 py-2.5 font-semibold text-emerald-700 transition-colors hover:border-emerald-400 hover:bg-emerald-50"
           >
             <PlusCircle className="h-5 w-5" />
             Add Another Period
           </button>
 
           <button
+            type="button"
             onClick={handleCalculate}
             className="btn-calculate sm:w-auto"
-            disabled={periods.some(p => !p.startDate || !p.endDate || !p.salary)}
+            disabled={periods.some((p) => !(p.startDate && p.endDate && p.salary))}
           >
             Calculate Total Tax
           </button>
         </div>
 
         {result && (
-          <div className="space-y-8 animate-fade-up">
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-6 sm:p-8 rounded-2xl">
-              <h3 className="text-lg font-bold text-gray-900 mb-5">Tax Breakdown by Fiscal Year</h3>
+          <div className="animate-fade-up space-y-8">
+            <div className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 p-6 sm:p-8">
+              <h3 className="mb-5 font-bold text-gray-900 text-lg">Tax Breakdown by Fiscal Year</h3>
 
               <div className="space-y-3">
                 {result.breakdown.map((item, index) => (
-                  <div key={index} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-white/70 rounded-xl px-4 py-3 border border-emerald-100/60">
+                  <div
+                    key={index}
+                    className="flex flex-col gap-2 rounded-xl border border-emerald-100/60 bg-white/70 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                  >
                     <div className="space-y-1">
-                      <p className="text-base font-semibold text-gray-900">{item.period}</p>
+                      <p className="font-semibold text-base text-gray-900">{item.period}</p>
                       <div className="flex flex-wrap gap-x-4 gap-y-1">
-                        <span className="text-sm text-gray-500">
+                        <span className="text-gray-500 text-sm">
                           Gross: Rs. {Math.round(item.salary).toLocaleString()}
                         </span>
-                        <span className="text-sm text-emerald-600 font-medium">
+                        <span className="font-medium text-emerald-600 text-sm">
                           Net: Rs. {Math.round(item.netIncome).toLocaleString()}
                         </span>
                       </div>
                     </div>
-                    <span className="text-base font-semibold text-red-600 whitespace-nowrap">
+                    <span className="whitespace-nowrap font-semibold text-base text-red-600">
                       Tax: Rs. {Math.round(item.tax).toLocaleString()}
                     </span>
                   </div>
                 ))}
 
-                <div className="mt-2 pt-4 border-t border-emerald-200 flex justify-between items-center">
-                  <span className="text-lg font-semibold text-gray-900">Total Tax</span>
-                  <span className="text-xl sm:text-2xl font-semibold text-emerald-700">
+                <div className="mt-2 flex items-center justify-between border-emerald-200 border-t pt-4">
+                  <span className="font-semibold text-gray-900 text-lg">Total Tax</span>
+                  <span className="font-semibold text-emerald-700 text-xl sm:text-2xl">
                     Rs. {Math.round(result.totalTax).toLocaleString()}
                   </span>
                 </div>
@@ -773,30 +630,35 @@ function MultiYearCalculator() {
 
             <div className="flex flex-wrap gap-2">
               <button
+                type="button"
                 onClick={() => setActiveChart('comparison')}
                 className={`chip ${activeChart === 'comparison' ? 'chip-active' : 'chip-inactive'}`}
               >
                 Income &amp; Tax
               </button>
               <button
+                type="button"
                 onClick={() => setActiveChart('taxRate')}
                 className={`chip ${activeChart === 'taxRate' ? 'chip-active' : 'chip-inactive'}`}
               >
                 Tax Rate
               </button>
               <button
+                type="button"
                 onClick={() => setActiveChart('distribution')}
                 className={`chip ${activeChart === 'distribution' ? 'chip-active' : 'chip-inactive'}`}
               >
                 Distribution
               </button>
               <button
+                type="button"
                 onClick={() => setActiveChart('monthlyBreakdown')}
                 className={`chip ${activeChart === 'monthlyBreakdown' ? 'chip-active' : 'chip-inactive'}`}
               >
                 Monthly Averages
               </button>
               <button
+                type="button"
                 onClick={() => setActiveChart('timeline')}
                 className={`chip ${activeChart === 'timeline' ? 'chip-active' : 'chip-inactive'}`}
               >
@@ -805,7 +667,14 @@ function MultiYearCalculator() {
             </div>
 
             <div className="space-y-6">
-              {renderActiveChart()}
+              <MultiYearCharts
+                activeChart={activeChart}
+                isMobile={isMobile}
+                comparisonData={getComparisonChartData()}
+                taxRateData={getTaxRateChartData()}
+                distributionData={getDistributionChartData()}
+                monthlyBreakdownData={getMonthlyBreakdownData()}
+              />
             </div>
           </div>
         )}
