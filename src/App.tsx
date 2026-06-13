@@ -183,14 +183,14 @@ function SlabsAnswer() {
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="bg-emerald-50 text-emerald-800">
-              <th scope="col" className="px-4 py-2.5 font-semibold">Annual Taxable Income</th>
-              <th scope="col" className="px-4 py-2.5 font-semibold">Tax</th>
+              <th scope="col" className="w-[45%] px-4 py-2.5 font-semibold">Annual Taxable Income</th>
+              <th scope="col" className="w-[55%] px-4 py-2.5 font-semibold">Tax</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {slabs.map((slab) => (
               <tr key={`${slab.min}-${slab.max}`} className="even:bg-gray-50/60">
-                <td className="px-4 py-2.5 text-gray-700 whitespace-nowrap">{formatSlabRange(slab.min, slab.max)}</td>
+                <td className="px-4 py-2.5 text-gray-700">{formatSlabRange(slab.min, slab.max)}</td>
                 <td className="px-4 py-2.5 text-gray-900">{formatTaxRate(slab)}</td>
               </tr>
             ))}
