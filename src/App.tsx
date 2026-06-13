@@ -3,6 +3,7 @@ import { Calculator, History, Zap, ShieldCheck, LineChart, Sparkles, HelpCircle,
 import { Outlet, Navigate } from 'react-router-dom';
 import type { RouteRecord } from 'vite-react-ssg';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import SingleYearCalculator from './components/SingleYearCalculator';
 import MultiYearCalculator from './components/MultiYearCalculator';
 import { CalculatorProvider } from './context/CalculatorContext';
@@ -256,6 +257,7 @@ function Layout() {
         <Footer />
       </div>
       <Analytics />
+      <SpeedInsights />
     </CalculatorProvider>
   );
 }
