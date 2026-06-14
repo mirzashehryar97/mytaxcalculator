@@ -106,7 +106,7 @@ function SingleYearCalculator() {
         {result && (
           <div className="animate-fade-up space-y-8">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="stat-card border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50">
+              <div className="stat-card border-emerald-100 bg-[#ecfdf5]">
                 <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">
                   Monthly Breakdown
                 </h3>
@@ -132,7 +132,7 @@ function SingleYearCalculator() {
                 </div>
               </div>
 
-              <div className="stat-card border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50">
+              <div className="stat-card border-emerald-100 bg-[#ecfdf5]">
                 <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">
                   Annual Breakdown
                 </h3>
