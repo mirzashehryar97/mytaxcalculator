@@ -9,6 +9,7 @@ import { BarChart2 } from 'lucide-react';
 import { useCalculator } from '@/context/useCalculator';
 
 import { calculateTax } from '../utils/taxCalculator';
+import SingleYearBudgetSavingsNote from './SingleYearBudgetSavingsNote';
 import SingleYearChartsLoading from './SingleYearChartsLoading';
 
 const SingleYearCharts = dynamic(() => import('./single-year-charts/SingleYearCharts'), {
@@ -157,6 +158,11 @@ function SingleYearCalculator() {
                 </div>
               </div>
             </div>
+
+            <SingleYearBudgetSavingsNote
+              monthlySalary={result.monthlyIncome}
+              selectedYear={selectedYear}
+            />
 
             <div className="section-divider" />
 

@@ -226,4 +226,36 @@ export function getBudgetComparisonExamples(): BudgetExampleRow[] {
   });
 }
 
+export type BudgetYearComparison =
+  | { type: 'save'; monthlyAmount: number; annualAmount: number; previousYear: string }
+  | { type: 'pay-more'; monthlyAmount: number; annualAmount: number; previousYear: string };
+
+export function getPreviousFiscalYear(fiscalYear: string): string | null {
+  const startYear = Number.parseInt(fiscalYear.split('-')[0] ?? '', 10);
+  if (Number.isNaN(startYear)) return null;
+
+  const previousYear = `${startYear - 1}-${startYear}`;
+  return previousYear in taxSlabs ? previousYear : null;
+}
+
+/** Compare selected fiscal year tax against the immediately preceding fiscal year. */
+export function compareWithPreviousFiscalYear(
+  monthlySalary: number,
+  selectedYear: string,
+): BudgetYearComparison | null {
+  const previousYear = getPreviousFiscalYear(selectedYear);
+  if (!previousYear) return null;
+
+  const baseline = calculateBudgetYearTax(monthlySalary, previousYear);
+  const selected = calculateBudgetYearTax(monthlySalary, selectedYear);
+  const annualDiff = selected.yearlyTax - baseline.yearlyTax;
+  const monthlyAmount = Math.round(Math.abs(annualDiff) / 12);
+
+  if (monthlyAmount === 0) return null;
+
+  return annualDiff > 0
+    ? { type: 'pay-more', monthlyAmount, annualAmount: annualDiff, previousYear }
+    : { type: 'save', monthlyAmount, annualAmount: Math.abs(annualDiff), previousYear };
+}
+
 export { formatPkr };
