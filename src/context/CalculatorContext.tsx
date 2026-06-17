@@ -11,6 +11,8 @@ export interface SingleYearState {
     yearlyTax: number;
     yearlyIncomeAfterTax: number;
     taxRate: number;
+    baseTax?: number;
+    surcharge?: number;
   } | null;
 }
 

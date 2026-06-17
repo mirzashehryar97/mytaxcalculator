@@ -8,6 +8,8 @@ import { BarChart2 } from 'lucide-react';
 
 import { useCalculator } from '@/context/useCalculator';
 
+import { calculateBudgetYearTax } from '@/lib/budgetComparison';
+
 import { calculateTax } from '../utils/taxCalculator';
 import SingleYearBudgetSavingsNote from './SingleYearBudgetSavingsNote';
 import SingleYearChartsLoading from './SingleYearChartsLoading';
@@ -51,7 +53,19 @@ function SingleYearCalculator() {
   const calculateTaxResult = () => {
     const salaryNum = Number.parseFloat(salary);
     if (!Number.isNaN(salaryNum) && salaryNum > 0) {
-      const tax = calculateTax(salaryNum, selectedYear);
+      const budgetTax = calculateBudgetYearTax(salaryNum, selectedYear);
+      const baseTax = calculateTax(salaryNum, selectedYear);
+      const tax = {
+        monthlyIncome: salaryNum,
+        monthlyTax: budgetTax.monthlyTax,
+        salaryAfterTax: budgetTax.monthlyTakeHome,
+        yearlyIncome: budgetTax.yearlyIncome,
+        yearlyTax: budgetTax.yearlyTax,
+        yearlyIncomeAfterTax: budgetTax.yearlyTakeHome,
+        taxRate: budgetTax.effectiveRate,
+        baseTax: baseTax.yearlyTax,
+        surcharge: budgetTax.surcharge,
+      };
       setSingleYear((prev) => ({ ...prev, result: tax }));
     } else {
       setSingleYear((prev) => ({ ...prev, result: null }));
@@ -122,6 +136,12 @@ function SingleYearCalculator() {
                     <p className="font-semibold text-2xl text-red-600">
                       Rs. {result.monthlyTax.toLocaleString()}
                     </p>
+                    {!!result.surcharge && (
+                      <p className="mt-1 text-gray-500 text-xs">
+                        Includes Rs. {Math.round(result.surcharge / 12).toLocaleString()} monthly
+                        surcharge
+                      </p>
+                    )}
                   </div>
                   <div>
                     <p className="text-gray-500 text-sm">Net Income</p>
@@ -148,6 +168,11 @@ function SingleYearCalculator() {
                     <p className="font-semibold text-2xl text-red-600">
                       Rs. {result.yearlyTax.toLocaleString()}
                     </p>
+                    {!!result.surcharge && (
+                      <p className="mt-1 text-gray-500 text-xs">
+                        Includes Rs. {result.surcharge.toLocaleString()} surcharge
+                      </p>
+                    )}
                   </div>
                   <div>
                     <p className="text-gray-500 text-sm">Net Income</p>
