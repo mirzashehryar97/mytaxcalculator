@@ -2,6 +2,12 @@
 
 import { useState } from 'react';
 
+import {
+  BUDGET_YEARS,
+  FY_2025_26_SURCHARGE_RATE,
+  FY_2025_26_SURCHARGE_THRESHOLD,
+} from '@/lib/budgetComparison';
+
 import { taxSlabs } from '@/utils/taxCalculator';
 
 const FISCAL_YEARS = Object.keys(taxSlabs);
@@ -90,6 +96,14 @@ export default function SlabsAnswer() {
           </tbody>
         </table>
       </div>
+
+      {year === BUDGET_YEARS.previous && (
+        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900 text-sm leading-relaxed">
+          <span className="font-semibold">Surcharge:</span> {FY_2025_26_SURCHARGE_RATE * 100}% of
+          the income tax payable applies when annual taxable income exceeds{' '}
+          {formatPkr(FY_2025_26_SURCHARGE_THRESHOLD)}.
+        </p>
+      )}
     </div>
   );
 }
