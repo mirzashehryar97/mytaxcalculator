@@ -185,6 +185,7 @@ function SingleYearCalculator() {
             </div>
 
             <SingleYearBudgetSavingsNote
+              key={selectedYear}
               monthlySalary={result.monthlyIncome}
               selectedYear={selectedYear}
             />

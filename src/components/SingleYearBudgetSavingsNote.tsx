@@ -1,9 +1,16 @@
-import type { ReactNode } from 'react';
+'use client';
+
+import { type ReactNode, useState } from 'react';
 
 import type { LucideIcon } from 'lucide-react';
 import { Check, Info, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 
-import { type BudgetYearComparison, compareWithPreviousFiscalYear } from '@/lib/budgetComparison';
+import {
+  type BudgetYearComparison,
+  comparableFiscalYears,
+  compareWithFiscalYear,
+  getPreviousFiscalYear,
+} from '@/lib/budgetComparison';
 
 interface SingleYearBudgetSavingsNoteProps {
   monthlySalary: number;
@@ -90,7 +97,11 @@ export default function SingleYearBudgetSavingsNote({
   monthlySalary,
   selectedYear,
 }: SingleYearBudgetSavingsNoteProps) {
-  const comparison = compareWithPreviousFiscalYear(monthlySalary, selectedYear);
+  const comparisonOptions = comparableFiscalYears(selectedYear);
+  const [comparisonYear, setComparisonYear] = useState(
+    () => getPreviousFiscalYear(selectedYear) ?? comparisonOptions[0] ?? '',
+  );
+  const comparison = compareWithFiscalYear(monthlySalary, selectedYear, comparisonYear);
 
   if (!comparison) return null;
 
@@ -135,11 +146,23 @@ export default function SingleYearBudgetSavingsNote({
               <p className="font-bold text-gray-900 text-lg leading-snug max-[400px]:text-sm">
                 {config.headline(monthlyFormatted, config.amountClass)}
               </p>
-              <p className="mt-1 text-gray-500 text-sm">
-                compared with{' '}
-                <span className="font-semibold text-gray-600">
-                  {formatFyLabel(comparison.previousYear)}.
-                </span>
+              <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-gray-500 text-sm">
+                compared with
+                <label htmlFor="single-year-comparison-year" className="sr-only">
+                  Comparison fiscal year
+                </label>
+                <select
+                  id="single-year-comparison-year"
+                  value={comparisonYear}
+                  onChange={(event) => setComparisonYear(event.target.value)}
+                  className="cursor-pointer rounded-md border border-gray-300 bg-white px-2 py-0.5 font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+                >
+                  {comparisonOptions.map((year) => (
+                    <option key={year} value={year}>
+                      {formatFyLabel(year)}
+                    </option>
+                  ))}
+                </select>
               </p>
             </div>
           </div>

@@ -238,6 +238,36 @@ export function getPreviousFiscalYear(fiscalYear: string): string | null {
   return previousYear in taxSlabs ? previousYear : null;
 }
 
+/** Fiscal years available to compare against — every stored year except the selected one, newest first. */
+export function comparableFiscalYears(selectedYear: string): string[] {
+  return Object.keys(taxSlabs).filter((year) => year !== selectedYear);
+}
+
+/** Compare selected fiscal year tax against an explicit comparison year. */
+export function compareWithFiscalYear(
+  monthlySalary: number,
+  selectedYear: string,
+  comparisonYear: string,
+): BudgetYearComparison | null {
+  if (!(comparisonYear in taxSlabs) || comparisonYear === selectedYear) return null;
+
+  const baseline = calculateBudgetYearTax(monthlySalary, comparisonYear);
+  const selected = calculateBudgetYearTax(monthlySalary, selectedYear);
+  const annualDiff = selected.yearlyTax - baseline.yearlyTax;
+  const monthlyAmount = Math.round(Math.abs(annualDiff) / 12);
+
+  if (monthlyAmount === 0) return null;
+
+  return annualDiff > 0
+    ? { type: 'pay-more', monthlyAmount, annualAmount: annualDiff, previousYear: comparisonYear }
+    : {
+        type: 'save',
+        monthlyAmount,
+        annualAmount: Math.abs(annualDiff),
+        previousYear: comparisonYear,
+      };
+}
+
 /** Compare selected fiscal year tax against the immediately preceding fiscal year. */
 export function compareWithPreviousFiscalYear(
   monthlySalary: number,
@@ -246,16 +276,7 @@ export function compareWithPreviousFiscalYear(
   const previousYear = getPreviousFiscalYear(selectedYear);
   if (!previousYear) return null;
 
-  const baseline = calculateBudgetYearTax(monthlySalary, previousYear);
-  const selected = calculateBudgetYearTax(monthlySalary, selectedYear);
-  const annualDiff = selected.yearlyTax - baseline.yearlyTax;
-  const monthlyAmount = Math.round(Math.abs(annualDiff) / 12);
-
-  if (monthlyAmount === 0) return null;
-
-  return annualDiff > 0
-    ? { type: 'pay-more', monthlyAmount, annualAmount: annualDiff, previousYear }
-    : { type: 'save', monthlyAmount, annualAmount: Math.abs(annualDiff), previousYear };
+  return compareWithFiscalYear(monthlySalary, selectedYear, previousYear);
 }
 
 export { formatPkr };
