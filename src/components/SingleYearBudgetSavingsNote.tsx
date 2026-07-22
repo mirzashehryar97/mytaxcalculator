@@ -3,7 +3,7 @@
 import { type ReactNode, useState } from 'react';
 
 import type { LucideIcon } from 'lucide-react';
-import { Check, Info, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
+import { Check, Equal, Info, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 
 import {
   type BudgetYearComparison,
@@ -91,6 +91,21 @@ const VARIANTS: Record<BudgetYearComparison['type'], VariantConfig> = {
       </>
     ),
   },
+  same: {
+    ariaLabel: (_monthly, _annual, previousYear) =>
+      `Your salary tax is unchanged compared with ${formatFyLabel(previousYear)}`,
+    containerClass:
+      'border-slate-200 bg-gradient-to-br from-slate-100/90 via-slate-50/60 to-white sm:bg-gradient-to-r',
+    dividerClass: 'bg-gray-200 sm:w-px',
+    icon: Equal,
+    iconClass: 'bg-slate-500 text-white',
+    badgeIcon: Equal,
+    badgeClass: 'bg-slate-200 text-slate-700',
+    badgeText: 'No change',
+    amountClass: 'text-slate-700',
+    walletClass: 'bg-slate-100/80 ring-slate-200/60 text-slate-700',
+    headline: () => <>Your salary tax is unchanged</>,
+  },
 };
 
 export default function SingleYearBudgetSavingsNote({
@@ -106,6 +121,7 @@ export default function SingleYearBudgetSavingsNote({
   if (!comparison) return null;
 
   const config = VARIANTS[comparison.type];
+  const isSame = comparison.type === 'same';
   const Icon = config.icon;
   const BadgeIcon = config.badgeIcon;
   const monthlyFormatted = formatAmount(comparison.monthlyAmount);
@@ -168,37 +184,41 @@ export default function SingleYearBudgetSavingsNote({
           </div>
         </div>
 
-        <div
-          aria-hidden
-          className={`mx-3.5 h-px shrink-0 sm:mx-0 sm:h-14 ${config.dividerClass}`}
-        />
+        {!isSame && (
+          <>
+            <div
+              aria-hidden
+              className={`mx-3.5 h-px shrink-0 sm:mx-0 sm:h-14 ${config.dividerClass}`}
+            />
 
-        <div className="flex items-center justify-center gap-3 px-3.5 pt-3.5 pb-3.5 sm:justify-end sm:gap-5 sm:px-5 sm:py-4">
-          <div className="min-w-0 text-center">
-            <p className="text-base text-gray-500 max-[400px]:text-sm sm:hidden">
-              That&apos;s{' '}
-              <span className={`font-semibold tabular-nums ${config.amountClass}`}>
-                {annualFormatted}
-              </span>{' '}
-              <span className="whitespace-nowrap">per year</span>
-            </p>
+            <div className="flex items-center justify-center gap-3 px-3.5 pt-3.5 pb-3.5 sm:justify-end sm:gap-5 sm:px-5 sm:py-4">
+              <div className="min-w-0 text-center">
+                <p className="text-base text-gray-500 max-[400px]:text-sm sm:hidden">
+                  That&apos;s{' '}
+                  <span className={`font-semibold tabular-nums ${config.amountClass}`}>
+                    {annualFormatted}
+                  </span>{' '}
+                  <span className="whitespace-nowrap">per year</span>
+                </p>
 
-            <div className="hidden sm:block">
-              <p className="text-gray-400 text-xs">That&apos;s</p>
-              <p className={`font-semibold text-xl tabular-nums ${config.amountClass}`}>
-                {annualFormatted}
-              </p>
-              <p className="text-gray-400 text-xs">per year</p>
+                <div className="hidden sm:block">
+                  <p className="text-gray-400 text-xs">That&apos;s</p>
+                  <p className={`font-semibold text-xl tabular-nums ${config.amountClass}`}>
+                    {annualFormatted}
+                  </p>
+                  <p className="text-gray-400 text-xs">per year</p>
+                </div>
+              </div>
+
+              <div
+                aria-hidden
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ring-1 sm:h-12 sm:w-12 ${config.walletClass}`}
+              >
+                <Wallet className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
+              </div>
             </div>
-          </div>
-
-          <div
-            aria-hidden
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ring-1 sm:h-12 sm:w-12 ${config.walletClass}`}
-          >
-            <Wallet className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2} />
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </aside>
   );

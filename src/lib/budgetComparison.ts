@@ -228,7 +228,8 @@ export function getBudgetComparisonExamples(): BudgetExampleRow[] {
 
 export type BudgetYearComparison =
   | { type: 'save'; monthlyAmount: number; annualAmount: number; previousYear: string }
-  | { type: 'pay-more'; monthlyAmount: number; annualAmount: number; previousYear: string };
+  | { type: 'pay-more'; monthlyAmount: number; annualAmount: number; previousYear: string }
+  | { type: 'same'; monthlyAmount: number; annualAmount: number; previousYear: string };
 
 export function getPreviousFiscalYear(fiscalYear: string): string | null {
   const startYear = Number.parseInt(fiscalYear.split('-')[0] ?? '', 10);
@@ -256,7 +257,9 @@ export function compareWithFiscalYear(
   const annualDiff = selected.yearlyTax - baseline.yearlyTax;
   const monthlyAmount = Math.round(Math.abs(annualDiff) / 12);
 
-  if (monthlyAmount === 0) return null;
+  if (monthlyAmount === 0) {
+    return { type: 'same', monthlyAmount: 0, annualAmount: 0, previousYear: comparisonYear };
+  }
 
   return annualDiff > 0
     ? { type: 'pay-more', monthlyAmount, annualAmount: annualDiff, previousYear: comparisonYear }
