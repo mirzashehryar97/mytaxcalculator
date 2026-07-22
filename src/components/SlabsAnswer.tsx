@@ -37,7 +37,7 @@ export default function SlabsAnswer() {
         <p className="text-gray-600">
           Pakistan&rsquo;s salaried income tax slabs for the selected fiscal year:
         </p>
-        <div className="relative inline-flex items-center">
+        <div className="relative inline-flex w-fit items-center">
           <select
             value={year}
             onChange={(e) => setYear(e.target.value)}
