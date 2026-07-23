@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import './globals.css';
@@ -78,6 +79,8 @@ export const viewport: Viewport = {
   themeColor: '#0f3d2e',
 };
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-PK">
@@ -100,6 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Analytics />
         <SpeedInsights />
       </body>
+      {GA_ID ? <GoogleAnalytics gaId={GA_ID} /> : null}
     </html>
   );
 }
