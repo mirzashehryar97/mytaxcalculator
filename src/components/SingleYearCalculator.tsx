@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
+import { sendGAEvent } from '@next/third-parties/google';
 import { BarChart2 } from 'lucide-react';
 
 import { useCalculator } from '@/context/useCalculator';
@@ -40,6 +41,7 @@ function SingleYearCalculator() {
   const { salary, selectedYear, result } = singleYear;
   const [activeChart, setActiveChart] = useState<string>('distribution');
   const [showCharts, setShowCharts] = useState(false);
+  const hasTrackedUse = useRef(false);
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth < 640 : false,
   );
@@ -76,6 +78,14 @@ function SingleYearCalculator() {
   useEffect(() => {
     calculateTaxResult();
   }, [salary, selectedYear]);
+
+  // Track a single-year "use" once per visit, the first time a valid result appears.
+  useEffect(() => {
+    if (result && !hasTrackedUse.current) {
+      hasTrackedUse.current = true;
+      sendGAEvent('event', 'calculator_use', { calculator: 'single' });
+    }
+  }, [result]);
 
   return (
     <div className="mx-auto max-w-4xl">

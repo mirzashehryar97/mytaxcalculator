@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
+import { sendGAEvent } from '@next/third-parties/google';
 import { AlertTriangle, Calendar, Info, MinusCircle, PlusCircle } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 
@@ -118,12 +119,21 @@ function MultiYearCalculator() {
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth < 640 : false,
   );
+  const hasTrackedUse = useRef(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Track a multi-year "use" once per visit, on the first successful calculation.
+  const trackUseOnce = () => {
+    if (!hasTrackedUse.current) {
+      hasTrackedUse.current = true;
+      sendGAEvent('event', 'calculator_use', { calculator: 'multi' });
+    }
+  };
 
   const addPeriod = () => {
     setMultiYear((prev) => ({
@@ -326,6 +336,8 @@ function MultiYearCalculator() {
     if (!validatePeriods()) {
       return;
     }
+
+    trackUseOnce();
 
     const allBreakdowns: FiscalYearBreakdown[] = [];
 

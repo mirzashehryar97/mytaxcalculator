@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
+import { sendGAEvent } from '@next/third-parties/google';
 import { Calculator, History } from 'lucide-react';
 
 import CalculatorProvider from '@/context/CalculatorProvider';
@@ -18,6 +19,13 @@ const MultiYearCalculator = dynamic(() => import('./MultiYearCalculator'), {
 export default function CalculatorTabs() {
   const [activeTab, setActiveTab] = useState<'single' | 'multi'>('single');
 
+  const selectTab = (tab: 'single' | 'multi') => {
+    if (tab !== activeTab) {
+      sendGAEvent('event', 'calculator_tab_select', { tab });
+    }
+    setActiveTab(tab);
+  };
+
   return (
     <CalculatorProvider>
       <div
@@ -28,7 +36,7 @@ export default function CalculatorTabs() {
           <div className="mx-auto flex max-w-md gap-2 rounded-2xl bg-gray-100 p-1.5">
             <button
               type="button"
-              onClick={() => setActiveTab('single')}
+              onClick={() => selectTab('single')}
               className={`calculator-tab ${activeTab === 'single' ? 'calculator-tab-active' : 'calculator-tab-inactive'}`}
             >
               <Calculator className="h-5 w-5" />
@@ -37,7 +45,7 @@ export default function CalculatorTabs() {
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('multi')}
+              onClick={() => selectTab('multi')}
               className={`calculator-tab ${activeTab === 'multi' ? 'calculator-tab-active' : 'calculator-tab-inactive'}`}
             >
               <History className="h-5 w-5" />
