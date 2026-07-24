@@ -41,15 +41,7 @@ export default function CalculatorMenu({
       >
         <span className="text-left">
           <span className="inline-flex items-center gap-2 whitespace-nowrap">
-            <span
-              className={
-                isCalculatorRoute
-                  ? 'underline decoration-2 decoration-emerald-600 underline-offset-8'
-                  : undefined
-              }
-            >
-              Calculators
-            </span>
+            <span>Calculators</span>
             <span
               className={`inline-flex animate-badge-pop items-center rounded-full px-1.5 py-0.5 font-bold text-[10px] uppercase leading-none tracking-wide shadow-sm ${
                 isCalculatorRoute ? 'bg-emerald-100 text-emerald-900' : 'bg-emerald-600 text-white'

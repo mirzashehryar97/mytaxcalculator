@@ -43,7 +43,7 @@ export function getCalculatorTriggerClass(active: boolean, mobile: boolean): str
     : 'inline-flex items-center gap-1 rounded-full px-2 py-2 font-semibold text-xs transition-all duration-200 lg:text-sm xl:px-3';
 
   if (active) {
-    return `${base} text-emerald-700 hover:bg-emerald-50`;
+    return `${base} animate-calculator-pulse text-emerald-700 hover:bg-emerald-50`;
   }
   return mobile
     ? `${base} animate-calculator-pulse bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-900 ring-1 ring-emerald-300/80 hover:from-emerald-100 hover:to-teal-100`

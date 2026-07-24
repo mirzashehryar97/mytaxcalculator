@@ -93,7 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-PK" className={openSans.variable}>
       <body className={openSans.className}>
         <JsonLd data={[organizationLd, websiteLd]} />
-        <div className="relative flex min-h-screen flex-col overflow-hidden">
+        <div className="relative flex min-h-screen flex-col overflow-x-clip">
           <div className="grid-pattern" />
           <div className="grid-squares" />
           <Header />
