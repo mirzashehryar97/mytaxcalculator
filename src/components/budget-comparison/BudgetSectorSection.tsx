@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import type { BudgetSector } from '@/lib/budgetSectors';
 import { impactBadgeClass } from '@/lib/budgetSectors';
 
@@ -8,6 +10,14 @@ export default function BudgetSectorSection({ sector }: { sector: BudgetSector }
         {sector.title}
       </h2>
       <p className="mb-5 text-gray-600 leading-relaxed">{sector.summary}</p>
+      {sector.relatedLink ? (
+        <Link
+          href={sector.relatedLink.href}
+          className="mb-5 inline-flex font-semibold text-emerald-700 text-sm underline decoration-emerald-300 underline-offset-4 transition-colors hover:text-emerald-900"
+        >
+          {sector.relatedLink.label}
+        </Link>
+      ) : null}
 
       <div className="overflow-x-auto rounded-xl border border-gray-200">
         <table className="w-full min-w-[720px] text-left text-sm">

@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from 'next';
+import { Open_Sans } from 'next/font/google';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import './globals.css';
 
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
 import JsonLd from '@/components/JsonLd';
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 
 import {
   OG_IMAGE,
@@ -80,16 +81,19 @@ export const viewport: Viewport = {
 };
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const openSans = Open_Sans({
+  weight: 'variable',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-open-sans',
+});
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-PK">
-      <body>
+    <html lang="en-PK" className={openSans.variable}>
+      <body className={openSans.className}>
         <JsonLd data={[organizationLd, websiteLd]} />
-        <div
-          className="relative flex min-h-screen flex-col overflow-hidden font-open-sans"
-          style={{ fontFamily: '"Open Sans", serif' }}
-        >
+        <div className="relative flex min-h-screen flex-col overflow-hidden">
           <div className="grid-pattern" />
           <div className="grid-squares" />
           <Header />

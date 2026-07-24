@@ -1,28 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  html,
-  body,
-  #root,
-  #root *,
-  *::before,
-  *::after {
-    font-family: "Open Sans", serif !important;
-  }
-}
-
-* {
-  font-family: "Open Sans", serif !important;
-}
-
-html,
-body {
-  font-family: "Open Sans", serif !important;
-}
 
 html {
   scroll-behavior: smooth;
@@ -102,10 +80,6 @@ html {
 }
 
 @layer utilities {
-  .font-open-sans {
-    font-family: "Open Sans", serif;
-  }
-
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out both;
   }
@@ -114,13 +88,13 @@ html {
     animation: fadeUp 0.5s ease-out both;
   }
 
-  @keyframes hotPulse {
+  @keyframes calculatorPulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.35);
+      box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.35);
     }
     50% {
-      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.14);
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.14);
     }
   }
 
@@ -135,8 +109,8 @@ html {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .animate-hot-pulse {
-      animation: hotPulse 2.5s ease-in-out infinite;
+    .animate-calculator-pulse {
+      animation: calculatorPulse 2.5s ease-in-out infinite;
     }
 
     .animate-badge-pop {

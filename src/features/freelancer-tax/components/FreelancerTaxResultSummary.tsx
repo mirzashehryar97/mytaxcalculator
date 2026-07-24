@@ -1,0 +1,92 @@
+import { Info, ShieldCheck } from 'lucide-react';
+
+import ResultCard from '@/components/calculator/ResultCard';
+import TaxBreakdownCard from '@/components/calculator/TaxBreakdownCard';
+
+import {
+  FREELANCER_PAGE_COPY,
+  FREELANCER_RESULT_COPY,
+} from '@/features/freelancer-tax/lib/content';
+import { formatFreelancerRate, formatPkr } from '@/features/freelancer-tax/lib/formatting';
+import {
+  getFreelancerRateBadge,
+  getFreelancerTaxCaveat,
+} from '@/features/freelancer-tax/lib/presentation';
+import type { FreelancerTaxResult } from '@/features/freelancer-tax/types';
+
+interface FreelancerTaxResultSummaryProps {
+  result: FreelancerTaxResult;
+}
+
+export default function FreelancerTaxResultSummary({ result }: FreelancerTaxResultSummaryProps) {
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-gray-100 border-b pb-5">
+        <h2 className="font-bold text-gray-900 text-xl">{FREELANCER_PAGE_COPY.resultTitle}</h2>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 font-semibold text-emerald-700 text-xs">
+          <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+          {getFreelancerRateBadge(result)}
+        </span>
+      </div>
+
+      <div>
+        <ResultCard
+          label={FREELANCER_RESULT_COPY.appliedRate}
+          value={formatFreelancerRate(result.rate)}
+          last
+        />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <TaxBreakdownCard
+          title={FREELANCER_RESULT_COPY.monthlyBreakdownTitle}
+          grossValue={formatPkr(result.monthlyGrossPkr)}
+          taxValue={formatPkr(result.monthlyTax)}
+          netValue={formatPkr(result.monthlyNet)}
+        />
+        <TaxBreakdownCard
+          title={FREELANCER_RESULT_COPY.annualBreakdownTitle}
+          grossValue={formatPkr(result.grossPkr)}
+          taxValue={formatPkr(result.tax)}
+          netValue={formatPkr(result.net)}
+        />
+      </div>
+
+      <div className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-4 sm:p-5">
+        <h3 className="text-center font-semibold text-emerald-900 text-sm">
+          {FREELANCER_RESULT_COPY.comparisonTitle}
+        </h3>
+        <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+          <div className="text-center">
+            <p className="text-emerald-800 text-xs">{FREELANCER_RESULT_COPY.concessionLabel}</p>
+            <p className="mt-1 font-bold text-emerald-700 text-xl tabular-nums sm:text-2xl">
+              {formatPkr(result.concessionTax)}
+            </p>
+          </div>
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-300 bg-white font-bold text-emerald-700 text-xs">
+            VS
+          </span>
+          <div className="text-center">
+            <p className="text-gray-600 text-xs">{FREELANCER_RESULT_COPY.standardLabel}</p>
+            <p className="mt-1 font-bold text-gray-800 text-xl tabular-nums sm:text-2xl">
+              {formatPkr(result.standardTax)}
+            </p>
+          </div>
+        </div>
+        <div className="mt-5 border-emerald-200 border-t pt-4 text-center">
+          <p className="text-emerald-800 text-xs">{FREELANCER_RESULT_COPY.savingsLabel}</p>
+          <p className="mt-1 font-bold text-2xl text-emerald-700 tabular-nums">
+            {formatPkr(result.potentialTaxSavings)} / year
+          </p>
+        </div>
+      </div>
+
+      <div className="flex gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-950 text-sm leading-relaxed">
+        <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" aria-hidden="true" />
+        <p>{FREELANCER_PAGE_COPY.bankDeductionNote}</p>
+      </div>
+
+      <p className="text-gray-500 text-xs leading-relaxed">{getFreelancerTaxCaveat(result)}</p>
+    </div>
+  );
+}

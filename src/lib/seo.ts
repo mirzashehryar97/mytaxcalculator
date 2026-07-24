@@ -37,6 +37,10 @@ export const SITE_KEYWORDS = [
   'multi-year tax calculator Pakistan',
   'FBR tax calculator',
   'historical tax calculator Pakistan',
+  'freelancer tax calculator Pakistan',
+  'PSEB freelancer tax calculator',
+  'Section 154A tax calculator',
+  'IT export tax Pakistan',
 ];
 
 export interface HomeFaqItem {
@@ -98,6 +102,10 @@ export interface RouteMeta {
   datePublished?: string;
   /** Date the content was last reviewed/updated (ISO). */
   dateModified?: string;
+  /** Route-specific Open Graph/Twitter image path. */
+  socialImage?: string;
+  /** Accessible description for the route-specific social image. */
+  socialImageAlt?: string;
   /** Sitemap priority (0.0–1.0). */
   sitemapPriority?: number;
   /** Sitemap change frequency. */
@@ -118,6 +126,18 @@ export const routeMeta: Record<string, RouteMeta> = {
       'Free Pakistan income tax calculator with the latest FBR tax slabs for FY 2026-2027. Calculate your salary tax and take-home pay, or compare fiscal years 2014 to 2027.',
     breadcrumb: 'Home',
     sitemapPriority: 1.0,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/freelancer-tax-calculator': {
+    title: 'Freelancer Tax Calculator Pakistan 2026-27',
+    description:
+      'Calculate Pakistan freelancer and IT export tax for FY 2026-27. Compare PSEB filer (0.25%), general filer (1%) and non-filer rates under Section 154A.',
+    breadcrumb: 'Freelancer Tax Calculator',
+    datePublished: '2026-07-24',
+    dateModified: '2026-07-24',
+    socialImage: '/freelancer-tax-calculator/opengraph-image',
+    socialImageAlt: 'Pakistan Freelancer Tax Calculator 2026-27 — PSEB and Section 154A rates',
+    sitemapPriority: 0.9,
     sitemapChangeFrequency: 'weekly',
   },
   '/about': {
@@ -227,6 +247,8 @@ function getPageTitle(pathname: string, title: string): string {
 export function getMetadata(pathname: string): Metadata {
   const meta = routeMeta[pathname] ?? routeMeta['/'];
   const url = absoluteUrl(pathname);
+  const socialImage = meta.socialImage ? absoluteUrl(meta.socialImage) : OG_IMAGE;
+  const socialImageAlt = meta.socialImageAlt ?? `${meta.title} — ${SITE_NAME}`;
   const published = meta.datePublished ?? meta.dateModified;
   const modified = meta.dateModified;
 
@@ -239,10 +261,10 @@ export function getMetadata(pathname: string): Metadata {
     locale: 'en_PK',
     images: [
       {
-        url: OG_IMAGE,
+        url: socialImage,
         width: 1200,
         height: 630,
-        alt: `${meta.title} — ${SITE_NAME}`,
+        alt: socialImageAlt,
       },
     ],
     ...(meta.isArticle && published && modified
@@ -263,7 +285,7 @@ export function getMetadata(pathname: string): Metadata {
       card: 'summary_large_image',
       title: meta.title,
       description: meta.description,
-      images: [OG_IMAGE],
+      images: [socialImage],
     },
   };
 }
@@ -339,7 +361,7 @@ export const BUDGET_COMPARISON_FAQS = [
   {
     question: 'Do freelancers get tax relief in Budget 2026-27?',
     answer:
-      'Yes for PSEB-registered IT exporters: the 0.25% Final Tax Regime is extended to 30 June 2029, export tax drops from 2% to 1.25%, and international card withholding falls from 5% to 0.5%. Non-PSEB freelancers still face non-salaried slabs. A new 5% withholding tax on social media earnings is proposed.',
+      'Yes for PSEB-registered IT exporters: the 0.25% Final Tax Regime is extended to 30 June 2029. Other qualifying IT and IT-enabled export receipts use the 1% general filer rate under Section 154A, while local or non-qualifying income follows the applicable business-income rules.',
   },
   {
     question: 'Is there new tax on solar panels in Budget 2026-27?',
@@ -485,11 +507,13 @@ export function buildArticle(pathname: string): JsonLd {
 /** Builds sitemap entries from the central route table. */
 export function getSitemapEntries(): Array<{
   path: string;
+  lastModified: string;
   changeFrequency: NonNullable<RouteMeta['sitemapChangeFrequency']>;
   priority: number;
 }> {
   return Object.entries(routeMeta).map(([path, meta]) => ({
     path,
+    lastModified: meta.dateModified ?? LAST_UPDATED,
     changeFrequency: meta.sitemapChangeFrequency ?? 'monthly',
     priority: meta.sitemapPriority ?? 0.5,
   }));

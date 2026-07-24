@@ -20,6 +20,10 @@ export interface BudgetSector {
   summary: string;
   rows: BudgetMeasureRow[];
   notes?: string[];
+  relatedLink?: {
+    href: string;
+    label: string;
+  };
 }
 
 export const BUDGET_OVERVIEW_ROWS: BudgetMeasureRow[] = [
@@ -157,6 +161,13 @@ export const BUDGET_SECTORS: BudgetSector[] = [
         impactLabel: 'Extended 3 years',
       },
       {
+        measure: 'General IT/ITeS export rate (Section 154A)',
+        fy2025_26: '1% for filers without PSEB registration',
+        fy2026_27: '1% for filers without PSEB registration',
+        impact: 'unchanged',
+        impactLabel: 'No change',
+      },
+      {
         measure: 'Combined export tax on proceeds',
         fy2025_26: '2% (1% WHT + 1% advance tax)',
         fy2026_27: '1.25% (proposed)',
@@ -171,7 +182,7 @@ export const BUDGET_SECTORS: BudgetSector[] = [
         impactLabel: '5% → 0.5%',
       },
       {
-        measure: 'Non-PSEB freelance / business income',
+        measure: 'Local or non-qualifying freelance income',
         fy2025_26: 'Non-salaried progressive slabs (15%–45%) + 10% surcharge above Rs. 10M',
         fy2026_27:
           'Same slab structure; salaried surcharge abolition does not apply to business income',
@@ -202,8 +213,12 @@ export const BUDGET_SECTORS: BudgetSector[] = [
     ],
     notes: [
       'Freelancers remitting through Pakistani banks with PSEB registration benefit most from the extended 0.25% FTR.',
-      'Without PSEB registration, foreign receipts fall under non-salaried slabs — significantly higher above Rs. 2.2M annually.',
+      'Qualifying IT and ITeS export receipts without PSEB registration use the 1% general filer rate; local or non-qualifying income follows the applicable business-income rules.',
     ],
+    relatedLink: {
+      href: '/freelancer-tax-calculator',
+      label: 'Calculate freelancer and IT export tax under Section 154A',
+    },
   },
   {
     id: 'business-corporate',

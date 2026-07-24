@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Open Sans"', 'serif'],
+        sans: ['var(--font-open-sans)', 'Arial', 'sans-serif'],
       },
       screens: {
         950: '950px',
