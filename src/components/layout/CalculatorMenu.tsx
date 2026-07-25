@@ -62,60 +62,62 @@ export default function CalculatorMenu({
         />
       </button>
 
-      {isOpen ? (
-        <div
-          id={menuId}
-          className={
-            mobile
-              ? 'mt-1 space-y-1 rounded-xl bg-gray-50 p-2'
-              : '-translate-x-1/2 absolute top-full left-1/2 z-50 mt-3 w-72 rounded-2xl border border-gray-100 bg-white p-2 shadow-emerald-950/10 shadow-xl'
-          }
-        >
-          {CALCULATOR_NAV_LINKS.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={active ? 'page' : undefined}
-                onClick={() => {
-                  close();
-                  onNavigate?.();
-                }}
-                className={`block rounded-xl px-3 py-3 transition-colors ${
-                  active
-                    ? 'text-emerald-700 hover:bg-emerald-50'
-                    : 'text-gray-700 hover:bg-emerald-50'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <span
-                    className={`font-semibold text-sm ${
-                      active
-                        ? 'underline decoration-2 decoration-emerald-600 underline-offset-4'
-                        : ''
-                    }`}
-                  >
-                    {link.label}
-                  </span>
-                  {link.isNew ? (
-                    <span className="inline-flex items-center rounded-full bg-emerald-100 px-1.5 py-0.5 font-bold text-[9px] text-emerald-900 uppercase leading-none tracking-wide">
-                      {NEW_NAV_BADGE_LABEL}
-                    </span>
-                  ) : null}
-                </span>
+      {/*
+        Rendered unconditionally (hidden via the `hidden` attribute when closed) so the
+        calculator links stay in the server HTML on every page. This gives search engines a
+        site-wide, keyword-rich internal link to each calculator instead of a JS-gated menu.
+      */}
+      <div
+        id={menuId}
+        hidden={!isOpen}
+        className={
+          mobile
+            ? 'mt-1 space-y-1 rounded-xl bg-gray-50 p-2'
+            : '-translate-x-1/2 absolute top-full left-1/2 z-50 mt-3 w-72 rounded-2xl border border-gray-100 bg-white p-2 shadow-emerald-950/10 shadow-xl'
+        }
+      >
+        {CALCULATOR_NAV_LINKS.map((link) => {
+          const active = pathname === link.href;
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={active ? 'page' : undefined}
+              onClick={() => {
+                close();
+                onNavigate?.();
+              }}
+              className={`block rounded-xl px-3 py-3 transition-colors ${
+                active
+                  ? 'text-emerald-700 hover:bg-emerald-50'
+                  : 'text-gray-700 hover:bg-emerald-50'
+              }`}
+            >
+              <span className="flex items-center gap-2">
                 <span
-                  className={`mt-0.5 block text-xs ${
-                    active ? 'text-emerald-700/80' : 'text-gray-500'
+                  className={`font-semibold text-sm ${
+                    active ? 'underline decoration-2 decoration-emerald-600 underline-offset-4' : ''
                   }`}
                 >
-                  {link.description}
+                  {link.label}
                 </span>
-              </Link>
-            );
-          })}
-        </div>
-      ) : null}
+                {link.isNew ? (
+                  <span className="inline-flex items-center rounded-full bg-emerald-100 px-1.5 py-0.5 font-bold text-[9px] text-emerald-900 uppercase leading-none tracking-wide">
+                    {NEW_NAV_BADGE_LABEL}
+                  </span>
+                ) : null}
+              </span>
+              <span
+                className={`mt-0.5 block text-xs ${
+                  active ? 'text-emerald-700/80' : 'text-gray-500'
+                }`}
+              >
+                {link.description}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

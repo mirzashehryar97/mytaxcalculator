@@ -74,6 +74,16 @@ export default function BudgetComparison() {
               {BUDGET_SUMMARY.financeBill} (June 2026), effective {BUDGET_SUMMARY.effectiveFrom}{' '}
               pending parliamentary approval.
             </p>
+            <p className="mt-3 text-gray-500 text-sm">
+              Running a business, partnership or AOP? Estimate your own bill with the{' '}
+              <Link
+                href="/business-tax-calculator"
+                className="font-medium text-emerald-700 underline decoration-emerald-300 underline-offset-2 hover:text-emerald-800"
+              >
+                business tax calculator
+              </Link>
+              .
+            </p>
           </header>
 
           <GuideCard color="blue">

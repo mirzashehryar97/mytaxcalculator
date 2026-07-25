@@ -10,6 +10,8 @@ interface NumberInputProps {
   min?: number;
   step?: number | 'any';
   disabled?: boolean;
+  /** Optional element rendered after the label text (e.g. an info tooltip). */
+  labelAdornment?: React.ReactNode;
 }
 
 export default function NumberInput({
@@ -24,11 +26,13 @@ export default function NumberInput({
   min = 0,
   step = 'any',
   disabled = false,
+  labelAdornment,
 }: NumberInputProps) {
   return (
     <div>
-      <label htmlFor={id} className="form-label">
+      <label htmlFor={id} className="form-label flex items-center gap-1.5">
         {label}
+        {labelAdornment}
       </label>
       <div className="relative">
         {prefix ? (

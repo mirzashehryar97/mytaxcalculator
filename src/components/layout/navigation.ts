@@ -1,12 +1,18 @@
 export const BUDGET_PATH = '/budget-2025-26-vs-2026-27';
 export const NEW_NAV_BADGE_LABEL = 'New';
-export const NEW_CALCULATOR_MOBILE_NOTICE = 'Freelancer tax calculator now available';
+export const NEW_CALCULATOR_MOBILE_NOTICE = 'Business tax calculator now available';
 
 export const STANDARD_NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Us' },
   { href: '/tax-guides', label: 'Tax Guides' },
 ] as const;
+
+export const RELATED_CALCULATORS_COPY = {
+  title: 'More Pakistan tax calculators',
+  description:
+    'Pick the calculator that matches how you earn — every one uses the latest FBR rates.',
+} as const;
 
 export const CALCULATOR_NAV_LINKS = [
   {
@@ -19,6 +25,12 @@ export const CALCULATOR_NAV_LINKS = [
     href: '/freelancer-tax-calculator',
     label: 'Freelancer Tax Calculator',
     description: 'IT export tax under Section 154A',
+    isNew: true,
+  },
+  {
+    href: '/business-tax-calculator',
+    label: 'Business Tax Calculator',
+    description: 'Business, self-employed & AOP tax',
     isNew: true,
   },
 ] as const;

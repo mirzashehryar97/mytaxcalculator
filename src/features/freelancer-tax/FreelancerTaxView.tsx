@@ -1,3 +1,5 @@
+import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+
 import FreelancerCalculationGuide from '@/features/freelancer-tax/components/FreelancerCalculationGuide';
 import FreelancerEligibilityAndIncome from '@/features/freelancer-tax/components/FreelancerEligibilityAndIncome';
 import FreelancerFaq from '@/features/freelancer-tax/components/FreelancerFaq';
@@ -19,6 +21,7 @@ export default function FreelancerTaxView() {
       <FreelancerCalculationGuide />
       <FreelancerSources />
       <FreelancerFaq />
+      <RelatedCalculators currentHref="/freelancer-tax-calculator" />
     </>
   );
 }

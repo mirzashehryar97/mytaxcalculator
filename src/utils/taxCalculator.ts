@@ -1,9 +1,4 @@
-interface TaxBracket {
-  min: number;
-  max: number | null;
-  rate: number;
-  fixed: number;
-}
+import { calcSlabTax, type TaxBracket } from '@/utils/slabEngine';
 
 export const taxSlabs: Record<string, TaxBracket[]> = {
   '2026-2027': [
@@ -189,16 +184,6 @@ function calculateTax2018_2019(totalAmount: number): number {
   return 1_090_000 + (totalAmount - 8_000_000) * 0.25;
 }
 
-function findTaxBracket(slabs: TaxBracket[], totalAmount: number): TaxBracket {
-  for (const slab of slabs) {
-    if (totalAmount >= slab.min && (!slab.max || totalAmount <= slab.max)) {
-      return slab;
-    }
-  }
-
-  return slabs.at(-1) ?? slabs[0];
-}
-
 /**
  * Calculate tax for a specific total amount using the appropriate tax bracket
  * @param totalAmount The total income amount to calculate tax on
@@ -211,10 +196,8 @@ export function calculateTaxForTotalAmount(totalAmount: number, fiscalYear: stri
   }
 
   const slabs = taxSlabs[fiscalYear] || taxSlabs['2026-2027'];
-  const taxBracket = findTaxBracket(slabs, totalAmount);
-  const tax = taxBracket.fixed + (totalAmount - taxBracket.min) * (taxBracket.rate / 100);
 
-  return Math.round(tax);
+  return Math.round(calcSlabTax(totalAmount, slabs));
 }
 
 /**

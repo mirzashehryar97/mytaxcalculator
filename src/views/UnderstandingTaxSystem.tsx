@@ -227,7 +227,21 @@ const UnderstandingTaxSystem = () => {
               <span className="font-semibold">Salary:</span> Income from employment
             </li>
             <li>
-              <span className="font-semibold">Business:</span> Income from business activities
+              <span className="font-semibold">Business:</span> Income from business activities —
+              sole traders, partnerships and AOPs can estimate this with the{' '}
+              <Link
+                href="/business-tax-calculator"
+                className="font-medium text-emerald-700 underline decoration-emerald-300 underline-offset-2 hover:text-emerald-800"
+              >
+                business tax calculator
+              </Link>
+              , while freelancers and IT exporters can use the{' '}
+              <Link
+                href="/freelancer-tax-calculator"
+                className="font-medium text-emerald-700 underline decoration-emerald-300 underline-offset-2 hover:text-emerald-800"
+              >
+                freelancer tax calculator
+              </Link>
             </li>
             <li>
               <span className="font-semibold">Property:</span> Rental income from property

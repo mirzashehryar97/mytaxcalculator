@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { ArrowRight, CheckCircle2, Info } from 'lucide-react';
 
 import {
@@ -40,10 +42,13 @@ export default function FreelancerEligibilityAndIncome() {
             <p className="font-semibold text-blue-800 text-sm">
               {FREELANCER_PAGE_COPY.localIncomeLinkLabel}
             </p>
-            <span className="mt-1 inline-flex items-center gap-1 font-semibold text-blue-600 text-xs">
-              {FREELANCER_PAGE_COPY.localIncomeLinkStatus}
+            <Link
+              href={FREELANCER_PAGE_COPY.localIncomeLinkHref}
+              className="mt-1 inline-flex items-center gap-1 font-semibold text-blue-600 text-xs hover:text-blue-700"
+            >
+              {FREELANCER_PAGE_COPY.localIncomeLinkCta}
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </span>
+            </Link>
           </div>
         </div>
       </section>

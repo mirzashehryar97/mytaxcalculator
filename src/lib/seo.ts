@@ -96,6 +96,14 @@ export interface RouteMeta {
   description: string;
   /** Human-readable label used to build the breadcrumb trail. */
   breadcrumb: string;
+  /** Route-specific keyword list; falls back to the site-wide keywords when omitted. */
+  keywords?: string[];
+  /**
+   * When false, the document `<title>` uses `title` verbatim instead of appending
+   * `| ${SITE_NAME}`. Use for routes whose title is already long enough that the brand
+   * suffix would push it past the SERP truncation limit.
+   */
+  appendSiteName?: boolean;
   /** Treated as an article/guide for Article structured data. */
   isArticle?: boolean;
   /** Date the content was first published (ISO). */
@@ -129,14 +137,52 @@ export const routeMeta: Record<string, RouteMeta> = {
     sitemapChangeFrequency: 'weekly',
   },
   '/freelancer-tax-calculator': {
-    title: 'Freelancer Tax Calculator Pakistan 2026-27',
+    title: 'Freelancer Tax Calculator Pakistan 2026-27 | PSEB & IT Export',
     description:
       'Calculate Pakistan freelancer and IT export tax for FY 2026-27. Compare PSEB filer (0.25%), general filer (1%) and non-filer rates under Section 154A.',
     breadcrumb: 'Freelancer Tax Calculator',
+    appendSiteName: false,
+    keywords: [
+      'freelancer tax calculator Pakistan',
+      'IT export tax calculator Pakistan',
+      'Section 154A tax calculator',
+      'PSEB tax calculator Pakistan',
+      'IT exporter tax Pakistan 2026-27',
+      'freelance income tax Pakistan',
+      'Upwork Fiverr tax Pakistan',
+      'remote worker tax calculator Pakistan',
+      '0.25% IT export final tax Pakistan',
+      'foreign income tax calculator Pakistan',
+    ],
     datePublished: '2026-07-24',
     dateModified: '2026-07-24',
     socialImage: '/freelancer-tax-calculator/opengraph-image',
     socialImageAlt: 'Pakistan Freelancer Tax Calculator 2026-27 — PSEB and Section 154A rates',
+    sitemapPriority: 0.9,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/business-tax-calculator': {
+    title: 'Business Tax Calculator Pakistan 2026-27 | AOP & Self-Employed',
+    description:
+      'Calculate Pakistan business, self-employed & AOP income tax for FY 2026-27. Non-salaried slabs, 10% surcharge & effective rate, tax years 2021-22 to 2026-27.',
+    breadcrumb: 'Business Tax Calculator',
+    appendSiteName: false,
+    keywords: [
+      'business tax calculator Pakistan',
+      'AOP tax calculator Pakistan',
+      'self-employed tax calculator Pakistan',
+      'non-salaried income tax calculator Pakistan',
+      'sole proprietor tax calculator Pakistan',
+      'partnership tax calculator Pakistan',
+      'business income tax calculator 2026-27',
+      'AOP tax rates 2026-2027',
+      'FBR non-salaried tax slabs 2026-2027',
+      'professional firm tax Pakistan',
+    ],
+    datePublished: '2026-07-25',
+    dateModified: '2026-07-25',
+    socialImage: '/business-tax-calculator/opengraph-image',
+    socialImageAlt: 'Pakistan Business Tax Calculator 2026-27 — non-salaried and AOP slab rates',
     sitemapPriority: 0.9,
     sitemapChangeFrequency: 'weekly',
   },
@@ -230,11 +276,12 @@ export function absoluteUrl(pathname: string): string {
   return pathname === '/' ? `${SITE_URL}/` : `${SITE_URL}${pathname}`;
 }
 
-function getPageTitle(pathname: string, title: string): string {
+function getPageTitle(pathname: string, meta: RouteMeta): string {
+  const { title } = meta;
   if (pathname === '/') {
     return title;
   }
-  if (title.includes(SITE_NAME)) {
+  if (meta.appendSiteName === false || title.includes(SITE_NAME)) {
     return title;
   }
   return `${title} | ${SITE_NAME}`;
@@ -274,9 +321,10 @@ export function getMetadata(pathname: string): Metadata {
 
   return {
     title: {
-      absolute: getPageTitle(pathname, meta.title),
+      absolute: getPageTitle(pathname, meta),
     },
     description: meta.description,
+    ...(meta.keywords ? { keywords: meta.keywords } : {}),
     alternates: {
       canonical: url,
     },

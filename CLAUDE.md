@@ -70,6 +70,17 @@ The repo is **mid-migration** to the feature-first layout. New/feature-first cod
 
 Every sector calculator is **data + a thin wrapper**, never copy-pasted markup. The fiscal-year `<select>` (driven by `Object.keys(rates)`, defaulting to the current year, recomputing on change) is the cross-cutting requirement on every calculator.
 
+### Result colour convention (all calculators)
+
+Money in every result is coloured by meaning, **regardless of what a design mockup shows**. This mirrors the salary calculator (`SingleYearCalculator`) and freelancer `TaxBreakdownCard`, where gross is grey, tax is red, and net is green:
+
+- **Tax you owe is red** (`text-red-600` / `ResultCard tone="negative"`) — slab/base tax, surcharge, total tax, tax still to pay.
+- **Money the taxpayer keeps or is credited is green** (`text-emerald-600` / `ResultCard tone="positive"`) — net / after-tax income (take-home), and a credit that reduces the bill such as tax already paid/withheld (it counts in the taxpayer's favour, so it is not red).
+- **The pre-tax income base is neutral/black** (`text-gray-900` / `ResultCard tone="neutral"`) — gross income and taxable income (net profit *before* tax).
+- Percentages (effective rate, marginal-band rate) are **not** amounts — leave them on their existing tone (`info`/themed), don't force them red.
+
+Use the shared `ResultCard` tones so this stays consistent; don't hand-code result colours per calculator.
+
 ## SEO system
 
 `src/lib/seo.ts` is the central registry. `routeMeta` (keyed by pathname) drives `getMetadata()`, sitemap entries, breadcrumb trails, and Article structured data. Reusable JSON-LD blocks (`organizationLd`, `websiteLd`, `webApplicationLd`, `faqLd`, HowTo, etc.) and `routeStructuredData(pathname)` are rendered through the `<JsonLd>` component. Site-wide constants: `SITE_URL`, `SITE_NAME`, `LAST_UPDATED`, `SITE_KEYWORDS`.
@@ -79,6 +90,8 @@ Every sector calculator is **data + a thin wrapper**, never copy-pasted markup. 
 `src/utils/taxCalculator.ts` holds `taxSlabs: Record<fiscalYear, TaxBracket[]>` (fiscal years like `'2026-2027'`, back to `'2014-2015'`) and the progressive slab formula: `fixed + (amount - min) * rate/100`. FY `'2018-2019'` is a hard-coded special case (fixed-amount slabs). The multi-sector plan extracts the pure core into `src/utils/slabEngine.ts` (`calcSlabTax(amount, brackets)`) with `taxCalculator.ts` delegating to it — preserve salary-calc behavior when doing so.
 
 **Tax rate source of truth:** the verified per-sector docs in `docs/tax-sectors/*.md` (and the PDFs in `docs/tax-sectors/sources/`). The full-page mockups in `screenshots/calculator-redesign-2026-current-design/` (one subfolder per calculator) are **UI direction only** — every rate, section number, and date in them is hallucinated placeholder content. Never copy a rate from a mockup.
+
+**"Sources used" card (every calculator):** the `*_SOURCE_LINKS` list in each feature's `lib/content.ts` must **lead with the primary official FBR source** — the Finance Act / Income Tax Ordinance the rates actually come from (e.g. `Finance Act 2026 (FBR)`) — before any secondary summary (PwC, ICMA, etc.). Only cite a source that applies to *that* calculator's regime: a withholding rate card belongs on a withholding-regime calculator (e.g. freelancer §154A), not on a net-profit slab calculator (business/AOP). Keep `sourcesDescription` consistent with the links, official source named first.
 
 ## Stack facts
 

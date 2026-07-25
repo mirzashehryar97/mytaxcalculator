@@ -13,7 +13,7 @@ interface FooterLinkColumnProps {
 export default function FooterLinkColumn({ title, links, externalLinks }: FooterLinkColumnProps) {
   return (
     <div>
-      <h2 className="mb-4 font-bold text-sm text-white uppercase tracking-wider">{title}</h2>
+      <h3 className="mb-4 font-bold text-sm text-white uppercase tracking-wider">{title}</h3>
       <ul className="space-y-3">
         {links.map((link) => (
           <li key={link.href}>

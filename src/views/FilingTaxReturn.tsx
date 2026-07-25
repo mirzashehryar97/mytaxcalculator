@@ -114,6 +114,16 @@ const FilingTaxReturn = () => {
                   <li>Withholding tax statements</li>
                   <li>Documentation of fixed assets</li>
                 </ul>
+                <p className="mt-3 text-gray-600 text-sm">
+                  Estimate the tax due first with the{' '}
+                  <Link
+                    href="/business-tax-calculator"
+                    className="font-medium text-emerald-700 underline decoration-emerald-300 underline-offset-2 hover:text-emerald-800"
+                  >
+                    business &amp; AOP tax calculator
+                  </Link>
+                  .
+                </p>
               </div>
             </div>
 

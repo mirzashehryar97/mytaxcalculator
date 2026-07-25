@@ -1,5 +1,7 @@
 import { LineChart, ShieldCheck, Sparkles, Zap } from 'lucide-react';
 
+import RelatedCalculators from '@/components/calculator/RelatedCalculators';
+
 import CalculatorTabs from './CalculatorTabs';
 import FaqSection from './FaqSection';
 import FeatureCard from './FeatureCard';
@@ -41,6 +43,8 @@ export default function HomeContent() {
           description="See your tax breakdown instantly with our real-time calculator."
         />
       </div>
+
+      <RelatedCalculators currentHref="/" />
 
       <FaqSection />
     </>

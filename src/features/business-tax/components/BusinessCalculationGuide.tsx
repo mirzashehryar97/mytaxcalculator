@@ -1,12 +1,12 @@
 import { Calculator } from 'lucide-react';
 
-import { FREELANCER_GUIDE_COPY } from '@/features/freelancer-tax/lib/content';
+import { BUSINESS_GUIDE_COPY } from '@/features/business-tax/lib/content';
 
-export default function FreelancerCalculationGuide() {
+export default function BusinessCalculationGuide() {
   return (
     <section
       className="mt-6 rounded-3xl border border-emerald-200 bg-emerald-50/95 p-5 shadow-emerald-950/10 shadow-lg sm:p-8"
-      aria-labelledby="freelancer-calculation-guide-heading"
+      aria-labelledby="business-calculation-guide-heading"
     >
       <div className="flex items-start gap-4">
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-sm">
@@ -14,13 +14,13 @@ export default function FreelancerCalculationGuide() {
         </span>
         <div>
           <h2
-            id="freelancer-calculation-guide-heading"
+            id="business-calculation-guide-heading"
             className="font-bold text-emerald-950 text-xl tracking-tight sm:text-2xl"
           >
-            {FREELANCER_GUIDE_COPY.calculationTitle}
+            {BUSINESS_GUIDE_COPY.calculationTitle}
           </h2>
           <p className="mt-3 text-emerald-950/75 leading-relaxed">
-            {FREELANCER_GUIDE_COPY.calculationDescription}
+            {BUSINESS_GUIDE_COPY.calculationDescription}
           </p>
         </div>
       </div>
@@ -28,16 +28,16 @@ export default function FreelancerCalculationGuide() {
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         <div className="rounded-2xl border border-emerald-200 bg-white/80 p-5">
           <p className="font-semibold text-emerald-800 text-sm uppercase tracking-wide">
-            {FREELANCER_GUIDE_COPY.formulaLabel}
+            {BUSINESS_GUIDE_COPY.formulaLabel}
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <span className="font-bold text-gray-900 text-lg">
-              {FREELANCER_GUIDE_COPY.formulaResult}
+              {BUSINESS_GUIDE_COPY.formulaResult}
             </span>
             <span className="font-medium text-emerald-600 text-lg">=</span>
-            {FREELANCER_GUIDE_COPY.formulaTerms.map((term, index) => (
+            {BUSINESS_GUIDE_COPY.formulaTerms.map((term, index) => (
               <span className="inline-flex items-center gap-2" key={term.id}>
-                {index > 0 && <span className="font-medium text-emerald-600 text-lg">×</span>}
+                {index > 0 && <span className="font-medium text-emerald-600 text-lg">+</span>}
                 <span className="rounded-lg bg-emerald-50 px-2.5 py-1 font-medium text-emerald-900 text-sm ring-1 ring-emerald-200">
                   {term.text}
                 </span>
@@ -46,31 +46,32 @@ export default function FreelancerCalculationGuide() {
           </div>
         </div>
         <div className="rounded-2xl border border-emerald-200 bg-white/80 p-5">
-          <h3 className="font-bold text-emerald-900 text-lg">
-            {FREELANCER_GUIDE_COPY.exampleTitle}
-          </h3>
+          <h3 className="font-bold text-emerald-900 text-lg">{BUSINESS_GUIDE_COPY.exampleTitle}</h3>
           <p className="mt-2 text-gray-600 text-sm leading-relaxed">
-            {FREELANCER_GUIDE_COPY.exampleIntro}
+            {BUSINESS_GUIDE_COPY.exampleIntro}
           </p>
           <dl className="mt-4 space-y-2 text-sm">
-            {FREELANCER_GUIDE_COPY.exampleRows.map((row) => (
+            {BUSINESS_GUIDE_COPY.exampleRows.map((row) => (
               <div className="flex items-baseline justify-between gap-4" key={row.id}>
                 <dt className="text-gray-600">{row.label}</dt>
-                <dd className="shrink-0 font-medium text-red-600 tabular-nums">{row.value}</dd>
+                <dd className="shrink-0 font-medium text-gray-900 tabular-nums">{row.value}</dd>
               </div>
             ))}
             <div className="flex items-baseline justify-between gap-4 border-emerald-100 border-t pt-2">
               <dt className="font-semibold text-gray-900">
-                {FREELANCER_GUIDE_COPY.exampleSavingLabel}
+                {BUSINESS_GUIDE_COPY.exampleTotalLabel}
               </dt>
-              <dd className="shrink-0 font-bold text-emerald-600 text-lg tabular-nums">
-                {FREELANCER_GUIDE_COPY.exampleSavingValue}
+              <dd className="shrink-0 font-bold text-lg text-red-600 tabular-nums">
+                {BUSINESS_GUIDE_COPY.exampleTotalValue}
+              </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4">
+              <dt className="text-gray-600">{BUSINESS_GUIDE_COPY.exampleEffectiveLabel}</dt>
+              <dd className="shrink-0 font-medium text-emerald-700 tabular-nums">
+                {BUSINESS_GUIDE_COPY.exampleEffectiveValue}
               </dd>
             </div>
           </dl>
-          <p className="mt-3 text-gray-500 text-xs leading-relaxed">
-            {FREELANCER_GUIDE_COPY.exchangeRateCaveat}
-          </p>
         </div>
       </div>
     </section>

@@ -40,7 +40,7 @@ export const FREELANCER_PAGE_COPY = {
   eyebrow: `Fiscal Year 2026-27 · Section 154A · ${FREELANCER_PSEB_RATE_PERCENT}% PSEB rate extended through Tax Year 2029`,
   title: 'Pakistan Freelancer Tax Calculator 2026-27',
   subtitle:
-    'Estimate the tax your bank may deduct each month and year from eligible IT and IT-enabled export income. Compare PSEB-registered filer and non-filer rates under Section 154A.',
+    'Estimate the tax your bank deducts on IT export income, and compare PSEB filer vs non-filer rates under Section 154A.',
   badges: ['Section 154A', 'Final tax when conditions are met', 'Foreign clients'],
   formTitle: 'Export income details',
   resultTitle: 'Your freelancer tax estimate',
@@ -56,7 +56,8 @@ export const FREELANCER_PAGE_COPY = {
   localIncomeBody:
     'This calculator is only for income from foreign clients. Calculate income from Pakistani clients separately as business income.',
   localIncomeLinkLabel: 'Business Tax Calculator for local-client income',
-  localIncomeLinkStatus: 'Coming soon',
+  localIncomeLinkCta: 'Open the business calculator',
+  localIncomeLinkHref: '/business-tax-calculator',
 } as const;
 
 export const FREELANCER_SOCIAL_IMAGE_COPY = {
@@ -122,10 +123,20 @@ export const FREELANCER_GUIDE_COPY = {
   calculationDescription:
     'Convert the foreign payment to PKR using the exchange rate from the day it reached your bank account. The tax rate applies to the full amount before platform fees, bank charges, or business expenses.',
   formulaLabel: 'Formula',
-  formula: 'Tax = export income in PKR before fees and expenses × tax rate',
+  formulaResult: 'Tax',
+  formulaTerms: [
+    { id: 'income', text: 'export income in PKR before fees and expenses' },
+    { id: 'rate', text: 'tax rate' },
+  ],
   exampleTitle: 'FY 2026-27 worked example',
-  exampleBody:
-    'USD 2,000 per month at an example rate of PKR 280 per USD equals PKR 6,720,000 per year. Tax is PKR 16,800 at 0.25% or PKR 67,200 at 1%, so a PSEB-registered filer saves PKR 50,400 per year.',
+  exampleIntro:
+    'USD 2,000 a month at an example rate of PKR 280/USD is PKR 6,720,000 of export income per year.',
+  exampleRows: [
+    { id: 'filer', label: 'PSEB-registered filer (0.25%)', value: 'PKR 16,800' },
+    { id: 'non-filer', label: 'Non-filer (1%)', value: 'PKR 67,200' },
+  ],
+  exampleSavingLabel: 'Filer saves',
+  exampleSavingValue: 'PKR 50,400',
   exchangeRateCaveat:
     'PKR 280 is only an example, not a live exchange rate. Enter the rate from the day the payment reached your bank account.',
   sourcesTitle: 'Sources used',
