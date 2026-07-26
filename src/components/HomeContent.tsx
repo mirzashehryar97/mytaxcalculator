@@ -1,10 +1,12 @@
-import { LineChart, ShieldCheck, Sparkles, Zap } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 
+import PlanNextSalary from '@/features/salary-tax/components/PlanNextSalary';
+import SalarySources from '@/features/salary-tax/components/SalarySources';
+
 import CalculatorTabs from './CalculatorTabs';
 import FaqSection from './FaqSection';
-import FeatureCard from './FeatureCard';
 
 export default function HomeContent() {
   return (
@@ -26,25 +28,11 @@ export default function HomeContent() {
 
       <CalculatorTabs />
 
-      <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
-        <FeatureCard
-          icon={<ShieldCheck className="h-6 w-6 text-emerald-600" />}
-          title="Accurate Calculations"
-          description="Precise tax results based on the latest FBR tax slabs for FY 2026-2027."
-        />
-        <FeatureCard
-          icon={<LineChart className="h-6 w-6 text-emerald-600" />}
-          title="Multi-Year Support"
-          description="Calculate tax across multiple fiscal years with varying salary ranges."
-        />
-        <FeatureCard
-          icon={<Zap className="h-6 w-6 text-emerald-600" />}
-          title="Instant Results"
-          description="See your tax breakdown instantly with our real-time calculator."
-        />
-      </div>
+      <PlanNextSalary />
 
       <RelatedCalculators currentHref="/" />
+
+      <SalarySources />
 
       <FaqSection />
     </>

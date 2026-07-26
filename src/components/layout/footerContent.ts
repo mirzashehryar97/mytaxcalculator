@@ -29,7 +29,7 @@ export const FOOTER_EXTERNAL_LINKS = [
 
 export const FOOTER_COPY = {
   description:
-    'Free salary and freelancer tax calculators for Pakistan, updated with FY 2026-2027 FBR rates.',
+    'Free Pakistan tax and salary-planning calculators, updated with FY 2026-2027 FBR rates.',
   quickLinksTitle: 'Quick Links',
   calculatorsTitle: 'Calculators',
   guidesTitle: 'Tax Guides',

@@ -10,6 +10,8 @@ interface NumberInputProps {
   min?: number;
   step?: number | 'any';
   disabled?: boolean;
+  /** Extra classes for the label row (e.g. a min-height to align inputs across a grid). */
+  labelClassName?: string;
   /** Optional element rendered after the label text (e.g. an info tooltip). */
   labelAdornment?: React.ReactNode;
 }
@@ -26,11 +28,15 @@ export default function NumberInput({
   min = 0,
   step = 'any',
   disabled = false,
+  labelClassName,
   labelAdornment,
 }: NumberInputProps) {
   return (
     <div>
-      <label htmlFor={id} className="form-label flex items-center gap-1.5">
+      <label
+        htmlFor={id}
+        className={`form-label flex items-center gap-1.5${labelClassName ? ` ${labelClassName}` : ''}`}
+      >
         {label}
         {labelAdornment}
       </label>

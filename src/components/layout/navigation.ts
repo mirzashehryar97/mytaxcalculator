@@ -1,6 +1,20 @@
+import type { LucideIcon } from 'lucide-react';
+import {
+  ArrowLeftRight,
+  Briefcase,
+  Building2,
+  Landmark,
+  Laptop,
+  RotateCcw,
+  Sparkles,
+  Star,
+  TrendingUp,
+  UserRound,
+} from 'lucide-react';
+
 export const BUDGET_PATH = '/budget-2025-26-vs-2026-27';
 export const NEW_NAV_BADGE_LABEL = 'New';
-export const NEW_CALCULATOR_MOBILE_NOTICE = 'Business tax calculator now available';
+export const NEW_CALCULATOR_MOBILE_NOTICE = 'New salary-planning calculators now available';
 
 export const STANDARD_NAV_LINKS = [
   { href: '/', label: 'Home' },
@@ -9,31 +23,73 @@ export const STANDARD_NAV_LINKS = [
 ] as const;
 
 export const RELATED_CALCULATORS_COPY = {
+  eyebrow: 'Trusted. Accurate. Updated.',
   title: 'More Pakistan tax calculators',
   description:
-    'Pick the calculator that matches how you earn — every one uses the latest FBR rates.',
+    'Pick the calculator for your income or salary decision — each one uses current FBR rates.',
 } as const;
 
-export const CALCULATOR_NAV_LINKS = [
+export interface CalculatorNavLink {
+  href: string;
+  label: string;
+  description: string;
+  isNew: boolean;
+  /** Card icon shown in the "More Pakistan tax calculators" grid. */
+  icon: LucideIcon;
+  /** Category pill (icon + label) shown above the card title. */
+  badge: { label: string; icon: LucideIcon };
+}
+
+export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
   {
     href: '/',
     label: 'Salary Tax Calculator',
     description: 'Salary tax and take-home pay',
     isNew: false,
+    icon: Briefcase,
+    badge: { label: 'Popular', icon: Star },
   },
   {
     href: '/freelancer-tax-calculator',
     label: 'Freelancer Tax Calculator',
     description: 'IT export tax under Section 154A',
     isNew: true,
+    icon: Laptop,
+    badge: { label: 'For freelancers', icon: UserRound },
   },
   {
     href: '/business-tax-calculator',
     label: 'Business Tax Calculator',
     description: 'Business, self-employed & AOP tax',
     isNew: true,
+    icon: Building2,
+    badge: { label: 'For businesses', icon: Landmark },
   },
-] as const;
+  {
+    href: '/salary-increment-calculator',
+    label: 'Salary Increment Calculator',
+    description: 'See how much of your raise you keep',
+    isNew: true,
+    icon: TrendingUp,
+    badge: { label: 'New', icon: Sparkles },
+  },
+  {
+    href: '/job-offer-comparison-calculator',
+    label: 'Job Offer Comparison',
+    description: 'Compare two roles by take-home pay',
+    isNew: true,
+    icon: ArrowLeftRight,
+    badge: { label: 'New', icon: Sparkles },
+  },
+  {
+    href: '/reverse-salary-calculator',
+    label: 'Reverse Salary Calculator',
+    description: 'Gross salary from your target take-home',
+    isNew: true,
+    icon: RotateCcw,
+    badge: { label: 'New', icon: Sparkles },
+  },
+];
 
 export function getNavLinkClass(active: boolean, mobile: boolean): string {
   const base = mobile

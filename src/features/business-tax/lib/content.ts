@@ -188,8 +188,7 @@ export const BUSINESS_GUIDE_COPY = {
   exampleEffectiveLabel: 'Effective rate',
   exampleEffectiveValue: '≈ 19.67%',
   sourcesTitle: 'Sources used',
-  sourcesDescription:
-    'Rates were checked against the official Finance Act 2026 and the PwC Pakistan individual & AOP tax summary.',
+  sourcesDescription: 'Rates were checked against the official FBR Finance Act 2026.',
   reviewedLabel: 'Last reviewed 25 July 2026',
   reviewedDateTime: '2026-07-25',
 } as const;
@@ -232,10 +231,6 @@ export const BUSINESS_SOURCE_LINKS = [
   {
     href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
     label: 'Finance Act 2026 (FBR)',
-  },
-  {
-    href: 'https://taxsummaries.pwc.com/pakistan/individual/taxes-on-personal-income',
-    label: 'PwC — Pakistan individual & AOP tax rates',
   },
 ] as const satisfies readonly BusinessSourceLink[];
 

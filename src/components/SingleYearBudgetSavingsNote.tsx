@@ -200,7 +200,7 @@ export default function SingleYearBudgetSavingsNote({
 
             <div className="flex items-center justify-center gap-3 px-3.5 pt-3.5 pb-3.5 sm:justify-end sm:gap-5 sm:px-5 sm:py-4">
               <div className="min-w-0 text-center">
-                <p className="text-base text-gray-500 max-[400px]:text-sm sm:hidden">
+                <p className="text-left text-base text-gray-500 max-[400px]:text-sm sm:hidden">
                   That&apos;s{' '}
                   <span className={`font-semibold tabular-nums ${config.amountClass}`}>
                     {annualFormatted}
