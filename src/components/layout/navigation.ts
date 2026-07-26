@@ -1,16 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import {
-  ArrowLeftRight,
-  Briefcase,
-  Building2,
-  Landmark,
-  Laptop,
-  RotateCcw,
-  Sparkles,
-  Star,
-  TrendingUp,
-  UserRound,
-} from 'lucide-react';
+import { Briefcase, Building2, Laptop, Target, TrendingUp, Wallet } from 'lucide-react';
 
 export const BUDGET_PATH = '/budget-2025-26-vs-2026-27';
 export const NEW_NAV_BADGE_LABEL = 'New';
@@ -36,8 +25,6 @@ export interface CalculatorNavLink {
   isNew: boolean;
   /** Card icon shown in the "More Pakistan tax calculators" grid. */
   icon: LucideIcon;
-  /** Category pill (icon + label) shown above the card title. */
-  badge: { label: string; icon: LucideIcon };
 }
 
 export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
@@ -46,8 +33,7 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
     label: 'Salary Tax Calculator',
     description: 'Salary tax and take-home pay',
     isNew: false,
-    icon: Briefcase,
-    badge: { label: 'Popular', icon: Star },
+    icon: Wallet,
   },
   {
     href: '/freelancer-tax-calculator',
@@ -55,7 +41,6 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
     description: 'IT export tax under Section 154A',
     isNew: true,
     icon: Laptop,
-    badge: { label: 'For freelancers', icon: UserRound },
   },
   {
     href: '/business-tax-calculator',
@@ -63,7 +48,6 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
     description: 'Business, self-employed & AOP tax',
     isNew: true,
     icon: Building2,
-    badge: { label: 'For businesses', icon: Landmark },
   },
   {
     href: '/salary-increment-calculator',
@@ -71,23 +55,20 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
     description: 'See how much of your raise you keep',
     isNew: true,
     icon: TrendingUp,
-    badge: { label: 'New', icon: Sparkles },
   },
   {
     href: '/job-offer-comparison-calculator',
     label: 'Job Offer Comparison',
     description: 'Compare two roles by take-home pay',
     isNew: true,
-    icon: ArrowLeftRight,
-    badge: { label: 'New', icon: Sparkles },
+    icon: Briefcase,
   },
   {
     href: '/reverse-salary-calculator',
     label: 'Reverse Salary Calculator',
     description: 'Gross salary from your target take-home',
     isNew: true,
-    icon: RotateCcw,
-    badge: { label: 'New', icon: Sparkles },
+    icon: Target,
   },
 ];
 

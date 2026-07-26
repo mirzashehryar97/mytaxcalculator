@@ -42,7 +42,6 @@ export default function RelatedCalculators({ currentHref }: RelatedCalculatorsPr
       <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 sm:gap-5">
         {links.map((link) => {
           const Icon = link.icon;
-          const BadgeIcon = link.badge.icon;
           return (
             <Link
               key={link.href}
@@ -54,11 +53,7 @@ export default function RelatedCalculators({ currentHref }: RelatedCalculatorsPr
               </span>
 
               <span className="min-w-0 flex-1">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 font-semibold text-emerald-700 text-xs ring-1 ring-emerald-200/70">
-                  <BadgeIcon className="h-3.5 w-3.5" aria-hidden="true" />
-                  {link.badge.label}
-                </span>
-                <span className="mt-1 block font-bold text-gray-900 text-lg group-hover:text-emerald-700">
+                <span className="block font-bold text-gray-900 text-lg group-hover:text-emerald-700">
                   {link.label}
                 </span>
                 <span className="mt-0.5 block text-gray-500 text-sm">{link.description}</span>
