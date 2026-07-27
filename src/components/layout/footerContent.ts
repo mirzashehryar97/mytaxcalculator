@@ -22,6 +22,10 @@ export const FOOTER_GUIDE_LINKS = [
   { href: '/tax-guides/filing-tax-return', label: 'Filing Your Tax Return' },
 ] as const satisfies readonly FooterLink[];
 
+export const FOOTER_PUBLISHER_LINKS = [
+  { href: '/embed/salary-tax', label: 'Embed Salary Calculator' },
+] as const satisfies readonly FooterLink[];
+
 export const FOOTER_EXTERNAL_LINKS = [
   { href: 'https://www.fbr.gov.pk/', label: 'FBR Website' },
   { href: 'https://iris.fbr.gov.pk/', label: 'IRIS Portal' },
@@ -33,6 +37,7 @@ export const FOOTER_COPY = {
   quickLinksTitle: 'Quick Links',
   calculatorsTitle: 'Calculators',
   guidesTitle: 'Tax Guides',
+  publishersTitle: 'For Publishers',
   copyrightYear: new Date().getFullYear(),
   copyrightLabel: 'My Tax Calculator. All rights reserved.',
   locationLabel: 'Designed with ❤️ in Pakistan',

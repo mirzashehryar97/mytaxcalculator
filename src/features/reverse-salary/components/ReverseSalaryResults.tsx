@@ -27,13 +27,13 @@ export default function ReverseSalaryResults({ result }: ReverseSalaryResultsPro
         <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-emerald-900/20 shadow-md">
           <Target className="h-7 w-7" aria-hidden="true" />
         </span>
-        <p className="text-emerald-950 text-lg leading-relaxed max-[400px]:text-sm">
+        <p className="amount-wrap text-emerald-950 text-lg leading-relaxed max-[400px]:text-sm">
           {REVERSE_SALARY_RESULT_COPY.headlineLead}{' '}
-          <strong className="font-bold text-emerald-700 tabular-nums">
+          <strong className="amount-wrap font-bold text-emerald-700 tabular-nums">
             {formatPkr(result.desiredMonthlyNet)}
           </strong>{' '}
           {REVERSE_SALARY_RESULT_COPY.headlineMiddle}{' '}
-          <strong className="font-bold text-gray-900 tabular-nums">
+          <strong className="amount-wrap font-bold text-gray-900 tabular-nums">
             {formatPkr(result.requiredMonthlyGross)}
           </strong>{' '}
           {REVERSE_SALARY_RESULT_COPY.headlineTrail}
@@ -42,7 +42,7 @@ export default function ReverseSalaryResults({ result }: ReverseSalaryResultsPro
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {sections.map((section) => (
-          <div key={section.id} className="stat-card border-emerald-100 bg-[#ecfdf5]">
+          <div key={section.id} className="stat-card min-w-0 border-emerald-100 bg-[#ecfdf5]">
             <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">
               {section.title}
             </h3>
@@ -50,7 +50,9 @@ export default function ReverseSalaryResults({ result }: ReverseSalaryResultsPro
               {section.rows.map((row) => (
                 <div key={row.label}>
                   <p className="text-gray-500 text-sm">{row.label}</p>
-                  <p className={`font-semibold text-2xl tabular-nums ${TONE_TEXT[row.tone]}`}>
+                  <p
+                    className={`amount-wrap font-semibold text-2xl tabular-nums ${TONE_TEXT[row.tone]}`}
+                  >
                     {row.value}
                   </p>
                 </div>

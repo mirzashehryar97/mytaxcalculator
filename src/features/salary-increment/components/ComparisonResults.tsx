@@ -67,15 +67,15 @@ export default function ComparisonResults({ comparison }: ComparisonResultsProps
 
               <div className="min-w-0 flex-1">
                 <p className="mb-1.5 hidden sm:block">{improvementBadge}</p>
-                <p className="font-bold text-gray-900 text-lg leading-snug max-[400px]:text-sm sm:text-xl">
+                <p className="amount-wrap font-bold text-gray-900 text-lg leading-snug max-[400px]:text-sm sm:text-xl">
                   {leadLabel}{' '}
-                  <span className="text-emerald-700 tabular-nums">
+                  <span className="amount-wrap text-emerald-700 tabular-nums">
                     {formatPkr(comparison.grossIncreaseMonthly)}
                   </span>
                 </p>
-                <p className="mt-1 text-gray-600 text-sm sm:text-base">
+                <p className="amount-wrap mt-1 text-gray-600 text-sm sm:text-base">
                   {SALARY_COMPARISON_RESULT_COPY.takeHomeConnector}{' '}
-                  <span className="font-semibold text-emerald-700 tabular-nums">
+                  <span className="amount-wrap font-semibold text-emerald-700 tabular-nums">
                     {formatPkr(comparison.takeHomeIncreaseMonthly)}
                   </span>{' '}
                   {SALARY_COMPARISON_RESULT_COPY.afterTax}
@@ -86,11 +86,11 @@ export default function ComparisonResults({ comparison }: ComparisonResultsProps
 
           <div aria-hidden className="mx-4 h-px shrink-0 bg-gray-200 sm:mx-0 sm:h-14 sm:w-px" />
 
-          <div className="flex items-center justify-center gap-3 p-4 sm:justify-end sm:gap-5 sm:px-5 sm:py-4">
+          <div className="flex min-w-0 items-center justify-center gap-3 p-4 sm:max-w-[50%] sm:flex-none sm:justify-end sm:gap-5 sm:px-5 sm:py-4">
             <div className="min-w-0 text-center">
               <p className="text-left text-base text-gray-500 max-[400px]:text-sm sm:hidden">
                 That&apos;s{' '}
-                <span className="font-semibold text-emerald-700 tabular-nums">
+                <span className="amount-wrap font-semibold text-emerald-700 tabular-nums">
                   {formatPkr(comparison.takeHomeIncreaseAnnual)}
                 </span>{' '}
                 <span className="whitespace-nowrap">take-home per year</span>
@@ -98,7 +98,7 @@ export default function ComparisonResults({ comparison }: ComparisonResultsProps
 
               <div className="hidden sm:block">
                 <p className="text-gray-400 text-xs">That&apos;s</p>
-                <p className="font-semibold text-emerald-700 text-xl tabular-nums">
+                <p className="amount-wrap font-semibold text-emerald-700 text-xl tabular-nums">
                   {formatPkr(comparison.takeHomeIncreaseAnnual)}
                 </p>
                 <p className="text-gray-400 text-xs">take-home per year</p>

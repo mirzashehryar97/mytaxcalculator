@@ -2,6 +2,7 @@ import { Sparkles } from 'lucide-react';
 
 import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 
+import PublisherEmbedCard from '@/features/embed-salary-tax/components/PublisherEmbedCard';
 import PlanNextSalary from '@/features/salary-tax/components/PlanNextSalary';
 import SalarySources from '@/features/salary-tax/components/SalarySources';
 
@@ -33,6 +34,8 @@ export default function HomeContent() {
       <RelatedCalculators currentHref="/" />
 
       <SalarySources />
+
+      <PublisherEmbedCard />
 
       <FaqSection />
     </>

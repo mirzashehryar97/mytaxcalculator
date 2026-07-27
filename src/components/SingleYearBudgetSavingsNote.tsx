@@ -58,7 +58,7 @@ const VARIANTS: Record<BudgetYearComparison['type'], VariantConfig> = {
       <>
         You save{' '}
         <span
-          className={`inline font-semibold text-xl tabular-nums max-[400px]:text-sm sm:text-2xl ${amountClass}`}
+          className={`amount-wrap inline font-semibold text-xl tabular-nums max-[400px]:text-sm sm:text-2xl ${amountClass}`}
         >
           {amount}
         </span>{' '}
@@ -83,7 +83,7 @@ const VARIANTS: Record<BudgetYearComparison['type'], VariantConfig> = {
       <>
         You pay{' '}
         <span
-          className={`inline font-semibold text-xl tabular-nums max-[400px]:text-sm sm:text-2xl ${amountClass}`}
+          className={`amount-wrap inline font-semibold text-xl tabular-nums max-[400px]:text-sm sm:text-2xl ${amountClass}`}
         >
           {amount}
         </span>{' '}
@@ -159,7 +159,7 @@ export default function SingleYearBudgetSavingsNote({
 
             <div className="min-w-0 flex-1">
               <p className="mb-1.5 hidden sm:block">{badge}</p>
-              <p className="font-bold text-gray-900 text-lg leading-snug max-[400px]:text-sm">
+              <p className="amount-wrap font-bold text-gray-900 text-lg leading-snug max-[400px]:text-sm">
                 {config.headline(monthlyFormatted, config.amountClass)}
               </p>
               <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-gray-500 text-sm">
@@ -198,11 +198,11 @@ export default function SingleYearBudgetSavingsNote({
               className={`mx-3.5 h-px shrink-0 sm:mx-0 sm:h-14 ${config.dividerClass}`}
             />
 
-            <div className="flex items-center justify-center gap-3 px-3.5 pt-3.5 pb-3.5 sm:justify-end sm:gap-5 sm:px-5 sm:py-4">
+            <div className="flex min-w-0 items-center justify-center gap-3 px-3.5 pt-3.5 pb-3.5 sm:max-w-[50%] sm:flex-none sm:justify-end sm:gap-5 sm:px-5 sm:py-4">
               <div className="min-w-0 text-center">
                 <p className="text-left text-base text-gray-500 max-[400px]:text-sm sm:hidden">
                   That&apos;s{' '}
-                  <span className={`font-semibold tabular-nums ${config.amountClass}`}>
+                  <span className={`amount-wrap font-semibold tabular-nums ${config.amountClass}`}>
                     {annualFormatted}
                   </span>{' '}
                   <span className="whitespace-nowrap">per year</span>
@@ -210,7 +210,9 @@ export default function SingleYearBudgetSavingsNote({
 
                 <div className="hidden sm:block">
                   <p className="text-gray-400 text-xs">That&apos;s</p>
-                  <p className={`font-semibold text-xl tabular-nums ${config.amountClass}`}>
+                  <p
+                    className={`amount-wrap font-semibold text-xl tabular-nums ${config.amountClass}`}
+                  >
                     {annualFormatted}
                   </p>
                   <p className="text-gray-400 text-xs">per year</p>

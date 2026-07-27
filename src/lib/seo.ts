@@ -128,6 +128,12 @@ export interface RouteMeta {
     | 'monthly'
     | 'yearly'
     | 'never';
+  /** Canonical route when this page is a utility or alternate presentation. */
+  canonicalPath?: string;
+  /** Set false for utility routes that should not appear in search results. */
+  indexable?: boolean;
+  /** Set false for routes that should be omitted from the generated sitemap. */
+  includeInSitemap?: boolean;
 }
 
 export const routeMeta: Record<string, RouteMeta> = {
@@ -265,6 +271,16 @@ export const routeMeta: Record<string, RouteMeta> = {
     sitemapPriority: 0.8,
     sitemapChangeFrequency: 'weekly',
   },
+  '/embed/salary-tax': {
+    title: 'Embeddable Pakistan Salary Tax Calculator',
+    description:
+      'A compact Pakistan salary tax calculator widget using the latest FBR salary slabs.',
+    breadcrumb: 'Embeddable Salary Tax Calculator',
+    appendSiteName: false,
+    canonicalPath: '/',
+    indexable: false,
+    includeInSitemap: false,
+  },
   '/about': {
     title: 'About My Tax Calculator | Pakistan Income Tax Tool',
     description:
@@ -373,6 +389,7 @@ function getPageTitle(pathname: string, meta: RouteMeta): string {
 export function getMetadata(pathname: string): Metadata {
   const meta = routeMeta[pathname] ?? routeMeta['/'];
   const url = absoluteUrl(pathname);
+  const canonicalUrl = absoluteUrl(meta.canonicalPath ?? pathname);
   const socialImage = meta.socialImage ? absoluteUrl(meta.socialImage) : OG_IMAGE;
   const socialImageAlt = meta.socialImageAlt ?? `${meta.title} — ${SITE_NAME}`;
   const published = meta.datePublished ?? meta.dateModified;
@@ -405,8 +422,9 @@ export function getMetadata(pathname: string): Metadata {
     description: meta.description,
     ...(meta.keywords ? { keywords: meta.keywords } : {}),
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
     },
+    ...(meta.indexable === false ? { robots: { index: false, follow: true } } : {}),
     openGraph,
     twitter: {
       card: 'summary_large_image',
@@ -638,12 +656,14 @@ export function getSitemapEntries(): Array<{
   changeFrequency: NonNullable<RouteMeta['sitemapChangeFrequency']>;
   priority: number;
 }> {
-  return Object.entries(routeMeta).map(([path, meta]) => ({
-    path,
-    lastModified: meta.dateModified ?? LAST_UPDATED,
-    changeFrequency: meta.sitemapChangeFrequency ?? 'monthly',
-    priority: meta.sitemapPriority ?? 0.5,
-  }));
+  return Object.entries(routeMeta)
+    .filter(([, meta]) => meta.includeInSitemap !== false)
+    .map(([path, meta]) => ({
+      path,
+      lastModified: meta.dateModified ?? LAST_UPDATED,
+      changeFrequency: meta.sitemapChangeFrequency ?? 'monthly',
+      priority: meta.sitemapPriority ?? 0.5,
+    }));
 }
 
 /**

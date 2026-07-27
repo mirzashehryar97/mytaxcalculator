@@ -612,28 +612,28 @@ function MultiYearCalculator() {
                 {result.breakdown.map((item, index) => (
                   <div
                     key={index}
-                    className="flex flex-col gap-2 rounded-xl border border-emerald-100/60 bg-white/70 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                    className="flex min-w-0 flex-col gap-2 rounded-xl border border-emerald-100/60 bg-white/70 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
                   >
-                    <div className="space-y-1">
+                    <div className="min-w-0 space-y-1">
                       <p className="font-semibold text-base text-gray-900">{item.period}</p>
                       <div className="flex flex-wrap gap-x-4 gap-y-1">
-                        <span className="text-gray-500 text-sm">
+                        <span className="amount-wrap text-gray-500 text-sm">
                           Gross: Rs. {Math.round(item.salary).toLocaleString()}
                         </span>
-                        <span className="font-medium text-emerald-600 text-sm">
+                        <span className="amount-wrap font-medium text-emerald-600 text-sm">
                           Net: Rs. {Math.round(item.netIncome).toLocaleString()}
                         </span>
                       </div>
                     </div>
-                    <span className="whitespace-nowrap font-semibold text-base text-red-600">
+                    <span className="amount-wrap font-semibold text-base text-red-600 sm:max-w-[45%] sm:text-right">
                       Tax: Rs. {Math.round(item.tax).toLocaleString()}
                     </span>
                   </div>
                 ))}
 
-                <div className="mt-2 flex items-center justify-between border-emerald-200 border-t pt-4">
-                  <span className="font-semibold text-gray-900 text-lg">Total Tax</span>
-                  <span className="font-semibold text-emerald-700 text-xl sm:text-2xl">
+                <div className="mt-2 flex min-w-0 items-start justify-between gap-4 border-emerald-200 border-t pt-4">
+                  <span className="shrink-0 font-semibold text-gray-900 text-lg">Total Tax</span>
+                  <span className="amount-wrap text-right font-semibold text-emerald-700 text-xl sm:text-2xl">
                     Rs. {Math.round(result.totalTax).toLocaleString()}
                   </span>
                 </div>

@@ -39,7 +39,7 @@ export default function BusinessYearComparison({
                 style={{ width: `${Math.max(row.share * 100, row.totalTax > 0 ? 4 : 0)}%` }}
               />
             </span>
-            <span className="w-28 shrink-0 text-right font-bold text-red-600 text-sm tabular-nums">
+            <span className="amount-wrap w-28 shrink-0 text-right font-bold text-red-600 text-sm tabular-nums">
               {row.formattedTax}
             </span>
           </li>

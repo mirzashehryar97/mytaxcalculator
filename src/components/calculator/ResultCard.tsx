@@ -43,14 +43,14 @@ export default function ResultCard({
 }: ResultCardProps) {
   return (
     <div
-      className={`flex items-start justify-between gap-4 py-4 ${last ? '' : 'border-gray-100 border-b'}`}
+      className={`flex min-w-0 items-start justify-between gap-4 py-4 ${last ? '' : 'border-gray-100 border-b'}`}
     >
       <span className="flex max-w-[65%] items-center gap-1.5 text-gray-600 text-sm leading-relaxed">
         {label}
         {labelAdornment}
       </span>
       <strong
-        className={`min-w-0 break-words text-right tabular-nums ${WEIGHT_CLASS[weight]} ${TONE_CLASS[tone]} ${highlight ? 'text-xl' : ''}`}
+        className={`amount-wrap text-right tabular-nums ${WEIGHT_CLASS[weight]} ${TONE_CLASS[tone]} ${highlight ? 'text-xl' : ''}`}
       >
         {value}
       </strong>

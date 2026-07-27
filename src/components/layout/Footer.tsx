@@ -8,6 +8,7 @@ import {
   FOOTER_COPY,
   FOOTER_EXTERNAL_LINKS,
   FOOTER_GUIDE_LINKS,
+  FOOTER_PUBLISHER_LINKS,
   FOOTER_QUICK_LINKS,
 } from '@/components/layout/footerContent';
 
@@ -15,8 +16,8 @@ export default function Footer() {
   return (
     <footer className="relative z-10 mt-8 border-white/10 border-t bg-emerald-950/80">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
-          <div className="col-span-1 lg:col-span-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+          <div className="col-span-1 md:col-span-2 lg:col-span-4 xl:col-span-2">
             <div className="flex items-center">
               <Image
                 src="/main-logo.png"
@@ -61,6 +62,8 @@ export default function Footer() {
             links={FOOTER_GUIDE_LINKS}
             externalLinks={FOOTER_EXTERNAL_LINKS}
           />
+
+          <FooterLinkColumn title={FOOTER_COPY.publishersTitle} links={FOOTER_PUBLISHER_LINKS} />
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-white/10 border-t pt-8 md:flex-row">

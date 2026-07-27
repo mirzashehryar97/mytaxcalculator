@@ -7,8 +7,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import './globals.css';
 
 import JsonLd from '@/components/JsonLd';
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
+import AppShell from '@/components/layout/AppShell';
 
 import {
   OG_IMAGE,
@@ -93,17 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-PK" className={openSans.variable}>
       <body className={openSans.className}>
         <JsonLd data={[organizationLd, websiteLd]} />
-        <div className="relative flex min-h-screen flex-col overflow-x-clip">
-          <div className="grid-pattern" />
-          <div className="grid-squares" />
-          <Header />
-
-          <main className="relative z-10 mx-auto w-full max-w-7xl flex-grow px-4 py-12 sm:px-6 lg:px-8">
-            {children}
-          </main>
-
-          <Footer />
-        </div>
+        <AppShell>{children}</AppShell>
         <Analytics />
         <SpeedInsights />
       </body>

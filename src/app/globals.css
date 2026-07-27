@@ -195,6 +195,11 @@ html {
   .stat-card {
     @apply p-6 rounded-2xl border transition-all duration-200;
   }
+
+  .amount-wrap {
+    @apply min-w-0;
+    overflow-wrap: anywhere;
+  }
 }
 
 /* Hide number input spinners */

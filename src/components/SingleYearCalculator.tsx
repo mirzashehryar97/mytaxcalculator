@@ -130,24 +130,24 @@ function SingleYearCalculator() {
         {result && (
           <div className="animate-fade-up space-y-8">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="stat-card border-emerald-100 bg-[#ecfdf5]">
+              <div className="stat-card min-w-0 border-emerald-100 bg-[#ecfdf5]">
                 <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">
                   Monthly Breakdown
                 </h3>
                 <div className="space-y-5">
                   <div>
                     <p className="text-gray-500 text-sm">Gross Income</p>
-                    <p className="font-semibold text-2xl text-gray-900">
+                    <p className="amount-wrap font-semibold text-2xl text-gray-900 tabular-nums">
                       Rs. {result.monthlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-500 text-sm">Tax</p>
-                    <p className="font-semibold text-2xl text-red-600">
+                    <p className="amount-wrap font-semibold text-2xl text-red-600 tabular-nums">
                       Rs. {result.monthlyTax.toLocaleString()}
                     </p>
                     {!!result.surcharge && (
-                      <p className="mt-1 text-gray-500 text-xs">
+                      <p className="amount-wrap mt-1 text-gray-500 text-xs tabular-nums">
                         Includes Rs. {Math.round(result.surcharge / 12).toLocaleString()} monthly
                         surcharge
                       </p>
@@ -155,38 +155,38 @@ function SingleYearCalculator() {
                   </div>
                   <div>
                     <p className="text-gray-500 text-sm">Net Income</p>
-                    <p className="font-semibold text-2xl text-emerald-600">
+                    <p className="amount-wrap font-semibold text-2xl text-emerald-600 tabular-nums">
                       Rs. {result.salaryAfterTax.toLocaleString()}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="stat-card border-emerald-100 bg-[#ecfdf5]">
+              <div className="stat-card min-w-0 border-emerald-100 bg-[#ecfdf5]">
                 <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">
                   Annual Breakdown
                 </h3>
                 <div className="space-y-5">
                   <div>
                     <p className="text-gray-500 text-sm">Gross Income</p>
-                    <p className="font-semibold text-2xl text-gray-900">
+                    <p className="amount-wrap font-semibold text-2xl text-gray-900 tabular-nums">
                       Rs. {result.yearlyIncome.toLocaleString()}
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-500 text-sm">Tax</p>
-                    <p className="font-semibold text-2xl text-red-600">
+                    <p className="amount-wrap font-semibold text-2xl text-red-600 tabular-nums">
                       Rs. {result.yearlyTax.toLocaleString()}
                     </p>
                     {!!result.surcharge && (
-                      <p className="mt-1 text-gray-500 text-xs">
+                      <p className="amount-wrap mt-1 text-gray-500 text-xs tabular-nums">
                         Includes Rs. {result.surcharge.toLocaleString()} surcharge
                       </p>
                     )}
                   </div>
                   <div>
                     <p className="text-gray-500 text-sm">Net Income</p>
-                    <p className="font-semibold text-2xl text-emerald-600">
+                    <p className="amount-wrap font-semibold text-2xl text-emerald-600 tabular-nums">
                       Rs. {result.yearlyIncomeAfterTax.toLocaleString()}
                     </p>
                   </div>

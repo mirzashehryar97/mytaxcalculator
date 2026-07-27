@@ -57,25 +57,25 @@ export default function FreelancerTaxResultSummary({ result }: FreelancerTaxResu
           {FREELANCER_RESULT_COPY.comparisonTitle}
         </h3>
         <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-          <div className="text-center">
+          <div className="min-w-0 text-center">
             <p className="text-emerald-800 text-xs">{FREELANCER_RESULT_COPY.concessionLabel}</p>
-            <p className="mt-1 font-bold text-emerald-700 text-xl tabular-nums sm:text-2xl">
+            <p className="amount-wrap mt-1 font-bold text-emerald-700 text-xl tabular-nums sm:text-2xl">
               {formatPkr(result.concessionTax)}
             </p>
           </div>
           <span className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-300 bg-white font-bold text-emerald-700 text-xs">
             VS
           </span>
-          <div className="text-center">
+          <div className="min-w-0 text-center">
             <p className="text-gray-600 text-xs">{FREELANCER_RESULT_COPY.standardLabel}</p>
-            <p className="mt-1 font-bold text-gray-800 text-xl tabular-nums sm:text-2xl">
+            <p className="amount-wrap mt-1 font-bold text-gray-800 text-xl tabular-nums sm:text-2xl">
               {formatPkr(result.standardTax)}
             </p>
           </div>
         </div>
         <div className="mt-5 border-emerald-200 border-t pt-4 text-center">
           <p className="text-emerald-800 text-xs">{FREELANCER_RESULT_COPY.savingsLabel}</p>
-          <p className="mt-1 font-bold text-2xl text-emerald-700 tabular-nums">
+          <p className="amount-wrap mt-1 font-bold text-2xl text-emerald-700 tabular-nums">
             {formatPkr(result.potentialTaxSavings)} / year
           </p>
         </div>
