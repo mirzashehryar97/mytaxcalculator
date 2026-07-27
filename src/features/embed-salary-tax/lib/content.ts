@@ -26,7 +26,6 @@ export const EMBED_SALARY_TAX_COPY = {
 } as const;
 
 export const EMBED_SALARY_TAX_DISCOVERY_COPY = {
-  calculatorHeaderLink: 'Embed calculator',
   publisherEyebrow: 'For publishers & website owners',
   publisherTitle: 'Add our salary tax calculator to your website',
   publisherDescription:
