@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { sendGAEvent } from '@next/third-parties/google';
+import { trackAnalyticsEvent } from '@/lib/analytics';
 
 import {
   BUSINESS_ANALYTICS_CONTEXT,
@@ -21,7 +21,7 @@ export default function useBusinessAnalytics(formState: BusinessTaxFormState, is
       return;
     }
 
-    sendGAEvent('event', BUSINESS_ANALYTICS_EVENTS.pageView, BUSINESS_ANALYTICS_CONTEXT);
+    trackAnalyticsEvent(BUSINESS_ANALYTICS_EVENTS.pageView, BUSINESS_ANALYTICS_CONTEXT);
     hasTrackedPageView.current = true;
   }, []);
 
@@ -30,8 +30,7 @@ export default function useBusinessAnalytics(formState: BusinessTaxFormState, is
       return;
     }
 
-    sendGAEvent(
-      'event',
+    trackAnalyticsEvent(
       BUSINESS_ANALYTICS_EVENTS.calculatorUse,
       buildBusinessUseEventParameters(formState),
     );

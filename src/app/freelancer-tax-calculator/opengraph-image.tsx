@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-import CalculatorSocialCard from '@/components/calculator/CalculatorSocialCard';
+import SocialCard from '@/components/ui/SocialCard';
 
 import { FREELANCER_SOCIAL_IMAGE_COPY } from '@/features/freelancer-tax/lib/content';
 
@@ -9,5 +9,5 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default function OpenGraphImage() {
-  return new ImageResponse(<CalculatorSocialCard copy={FREELANCER_SOCIAL_IMAGE_COPY} />, size);
+  return new ImageResponse(<SocialCard copy={FREELANCER_SOCIAL_IMAGE_COPY} />, size);
 }

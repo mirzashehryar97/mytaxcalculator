@@ -4,8 +4,11 @@ import { useEffect, useState } from 'react';
 
 import { Check, Code2 } from 'lucide-react';
 
+import { trackAnalyticsEvent } from '@/lib/analytics';
+
 import {
   EMBED_SALARY_TAX_COPY,
+  EMBED_SALARY_TAX_ROUTE,
   EMBED_SALARY_TAX_SNIPPET,
 } from '@/features/embed-salary-tax/lib/content';
 
@@ -23,6 +26,10 @@ export default function EmbedCodeButton() {
         <button
           type="button"
           onClick={async () => {
+            trackAnalyticsEvent('embed_calculator_click', {
+              calculator: 'embed_salary_tax',
+              page_path: EMBED_SALARY_TAX_ROUTE,
+            });
             await navigator.clipboard.writeText(EMBED_SALARY_TAX_SNIPPET);
             setCopied(true);
           }}

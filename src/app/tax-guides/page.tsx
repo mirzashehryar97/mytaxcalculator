@@ -4,7 +4,7 @@ import JsonLd from '@/components/JsonLd';
 
 import { getMetadata, routeStructuredData } from '@/lib/seo';
 
-import TaxGuides from '@/views/TaxGuides';
+import TaxGuidesView from '@/features/tax-guides/TaxGuidesView';
 
 export const metadata: Metadata = getMetadata('/tax-guides');
 
@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <JsonLd data={routeStructuredData('/tax-guides')} />
-      <TaxGuides />
+      <TaxGuidesView />
     </>
   );
 }

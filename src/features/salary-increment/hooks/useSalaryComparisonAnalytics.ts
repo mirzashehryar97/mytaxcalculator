@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { sendGAEvent } from '@next/third-parties/google';
+import { trackAnalyticsEvent } from '@/lib/analytics';
 
 import {
   buildSalaryComparisonUseParameters,
@@ -28,7 +28,7 @@ export default function useSalaryComparisonAnalytics(
       return;
     }
 
-    sendGAEvent('event', analytics.events.pageView, analytics.context);
+    trackAnalyticsEvent(analytics.events.pageView, analytics.context);
     hasTrackedPageView.current = true;
   }, [analytics]);
 
@@ -37,8 +37,7 @@ export default function useSalaryComparisonAnalytics(
       return;
     }
 
-    sendGAEvent(
-      'event',
+    trackAnalyticsEvent(
       analytics.events.calculatorUse,
       buildSalaryComparisonUseParameters(mode, formState),
     );

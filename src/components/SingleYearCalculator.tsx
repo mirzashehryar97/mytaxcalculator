@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import { sendGAEvent } from '@next/third-parties/google';
 import { BarChart2 } from 'lucide-react';
 
 import { useCalculator } from '@/context/useCalculator';
 
+import { trackAnalyticsEvent } from '@/lib/analytics';
 import { calculateBudgetYearTax } from '@/lib/budgetComparison';
 
 import { calculateTax } from '../utils/taxCalculator';
@@ -83,7 +83,7 @@ function SingleYearCalculator() {
   useEffect(() => {
     if (result && !hasTrackedUse.current) {
       hasTrackedUse.current = true;
-      sendGAEvent('event', 'calculator_use', { calculator: 'single' });
+      trackAnalyticsEvent('calculator_use', { calculator: 'single' });
     }
   }, [result]);
 

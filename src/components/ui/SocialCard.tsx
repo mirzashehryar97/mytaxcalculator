@@ -1,4 +1,4 @@
-export interface CalculatorSocialCardCopy {
+export interface SocialCardCopy {
   eyebrow: string;
   title: string;
   subtitle: string;
@@ -6,11 +6,11 @@ export interface CalculatorSocialCardCopy {
   brand: string;
 }
 
-interface CalculatorSocialCardProps {
-  copy: CalculatorSocialCardCopy;
+interface SocialCardProps {
+  copy: SocialCardCopy;
 }
 
-export default function CalculatorSocialCard({ copy }: CalculatorSocialCardProps) {
+export default function SocialCard({ copy }: SocialCardProps) {
   return (
     <div
       style={{

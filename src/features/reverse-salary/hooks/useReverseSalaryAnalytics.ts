@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { sendGAEvent } from '@next/third-parties/google';
+import { trackAnalyticsEvent } from '@/lib/analytics';
 
 import {
   buildReverseSalaryUseParameters,
@@ -24,11 +24,7 @@ export default function useReverseSalaryAnalytics(
       return;
     }
 
-    sendGAEvent(
-      'event',
-      REVERSE_SALARY_ANALYTICS_EVENTS.pageView,
-      REVERSE_SALARY_ANALYTICS_CONTEXT,
-    );
+    trackAnalyticsEvent(REVERSE_SALARY_ANALYTICS_EVENTS.pageView, REVERSE_SALARY_ANALYTICS_CONTEXT);
     hasTrackedPageView.current = true;
   }, []);
 
@@ -37,8 +33,7 @@ export default function useReverseSalaryAnalytics(
       return;
     }
 
-    sendGAEvent(
-      'event',
+    trackAnalyticsEvent(
       REVERSE_SALARY_ANALYTICS_EVENTS.calculatorUse,
       buildReverseSalaryUseParameters(formState),
     );

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { sendGAEvent } from '@next/third-parties/google';
+import { trackAnalyticsEvent } from '@/lib/analytics';
 
 import { calcEmbedSalaryTax } from '@/features/embed-salary-tax/lib/calculation';
 import {
@@ -45,7 +45,7 @@ export default function useEmbedSalaryTax() {
     if (!(hasInteracted.current && isValid)) return;
 
     const timeout = window.setTimeout(() => {
-      sendGAEvent('event', 'calculation_completed', {
+      trackAnalyticsEvent('calculation_completed', {
         calculator: 'embed_salary_tax',
         fiscal_year: formState.fiscalYear,
         calculation_mode: 'automatic',

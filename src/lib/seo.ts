@@ -109,6 +109,10 @@ export interface RouteMeta {
   appendSiteName?: boolean;
   /** Treated as an article/guide for Article structured data. */
   isArticle?: boolean;
+  /** Visible article headline when it differs from the search-focused document title. */
+  articleHeadline?: string;
+  /** Topical section used by Article structured data. */
+  articleSection?: string;
   /** Date the content was first published (ISO). */
   datePublished?: string;
   /** Date the content was last reviewed/updated (ISO). */
@@ -290,43 +294,90 @@ export const routeMeta: Record<string, RouteMeta> = {
     sitemapChangeFrequency: 'monthly',
   },
   '/tax-guides': {
-    title: 'Pakistan Tax Guides & Resources | FBR Filing Help',
+    title: 'Pakistan Tax Guides 2026-27 | FBR Filing & Tax Help',
     description:
-      'Pakistani tax guides covering income tax slabs, deductions, credits, and how to file your return with FBR. Updated for FY 2026-2027.',
+      'Practical Pakistan tax guides for FY 2026-27: understand FBR salary slabs, deductions and credits, filing duties, ATL and how to file in IRIS.',
     breadcrumb: 'Tax Guides',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan tax guide 2026-27',
+      'FBR tax guide Pakistan',
+      'income tax Pakistan',
+      'how to file tax return Pakistan',
+      'tax deductions Pakistan',
+    ],
+    dateModified: '2026-07-28',
+    socialImage: '/tax-guides/opengraph-image',
+    socialImageAlt: 'Pakistan tax guides for FY 2026-27 covering FBR filing, tax slabs and reliefs',
     sitemapPriority: 0.8,
     sitemapChangeFrequency: 'monthly',
   },
   '/tax-guides/understanding-tax-system': {
-    title: 'Pakistan Income Tax Slabs FY 2026-2027 | Tax System Guide',
+    title: 'Pakistan Income Tax Slabs 2026-27 | Complete FBR Guide',
     description:
-      "Complete guide to Pakistan's income tax system with current FBR tax slabs for FY 2026-2027, filing requirements, and important deadlines.",
+      "Understand Pakistan's income tax system for FY 2026-27: eight salary tax slabs, tax year and residency rules, income heads, filing duties and records.",
     breadcrumb: "Understanding Pakistan's Tax System",
+    appendSiteName: false,
+    keywords: [
+      'Pakistan income tax slabs 2026-27',
+      'FBR salary tax slabs',
+      'Pakistan income tax system',
+      'tax year 2027 Pakistan',
+      'who must file tax return Pakistan',
+    ],
     isArticle: true,
+    articleHeadline: 'Pakistan Income Tax System & Salary Tax Slabs',
+    articleSection: 'Pakistan income tax fundamentals',
     datePublished: LAST_UPDATED,
-    dateModified: LAST_UPDATED,
+    dateModified: '2026-07-28',
+    socialImage: '/tax-guides/understanding-tax-system/opengraph-image',
+    socialImageAlt: 'Pakistan income tax system and salary tax slabs for fiscal year 2026-27',
     sitemapPriority: 0.8,
     sitemapChangeFrequency: 'monthly',
   },
   '/tax-guides/deductions-credits': {
-    title: 'Pakistan Tax Deductions & Credits | Reduce Your Tax',
+    title: 'Tax Deductions & Credits in Pakistan | 2026-27 Guide',
     description:
-      'Learn about tax deductions and credits available to Pakistani taxpayers to reduce your income tax liability.',
+      'Learn how Pakistan tax deductions and credits work for FY 2026-27, including Zakat, donations, pension contributions, education relief and records.',
     breadcrumb: 'Tax Deductions & Credits',
+    appendSiteName: false,
+    keywords: [
+      'tax deductions Pakistan',
+      'tax credits Pakistan',
+      'Zakat deduction Pakistan income tax',
+      'donation tax credit Pakistan',
+      'pension tax credit Pakistan',
+    ],
     isArticle: true,
+    articleHeadline: 'Tax Deductions & Credits in Pakistan',
+    articleSection: 'Pakistan tax deductions and credits',
     datePublished: LAST_UPDATED,
-    dateModified: LAST_UPDATED,
+    dateModified: '2026-07-28',
+    socialImage: '/tax-guides/deductions-credits/opengraph-image',
+    socialImageAlt: 'Tax deductions and credits in Pakistan for fiscal year 2026-27',
     sitemapPriority: 0.7,
     sitemapChangeFrequency: 'monthly',
   },
   '/tax-guides/filing-tax-return': {
     title: 'How to File Income Tax Return in Pakistan | FBR IRIS Guide',
     description:
-      'Step-by-step guide to filing your income tax return in Pakistan through the FBR IRIS portal.',
+      'Follow the FBR IRIS process to file an income tax return in Pakistan: deadlines, documents, seven filing steps, wealth reconciliation, payment and ATL.',
     breadcrumb: 'Filing Your Tax Return',
+    appendSiteName: false,
+    keywords: [
+      'how to file income tax return Pakistan',
+      'FBR IRIS filing guide',
+      'income tax return deadline Pakistan',
+      'wealth statement IRIS',
+      'ATL status Pakistan',
+    ],
     isArticle: true,
+    articleHeadline: 'How to File an Income Tax Return in Pakistan',
+    articleSection: 'Pakistan income tax return filing',
     datePublished: LAST_UPDATED,
-    dateModified: LAST_UPDATED,
+    dateModified: '2026-07-28',
+    socialImage: '/tax-guides/filing-tax-return/opengraph-image',
+    socialImageAlt: 'How to file an income tax return in Pakistan through FBR IRIS',
     sitemapPriority: 0.7,
     sitemapChangeFrequency: 'monthly',
   },
@@ -442,6 +493,7 @@ export function getMetadata(pathname: string): Metadata {
 export const organizationLd: JsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/main-logo.png`,
@@ -453,11 +505,12 @@ export const organizationLd: JsonLd = {
 export const websiteLd: JsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
   name: SITE_NAME,
   alternateName: 'Pakistan Income Tax Calculator',
   url: `${SITE_URL}/`,
   inLanguage: 'en-PK',
-  publisher: { '@type': 'Organization', name: SITE_NAME },
+  publisher: { '@id': `${SITE_URL}/#organization` },
 };
 
 export const webApplicationLd: JsonLd = {
@@ -551,51 +604,53 @@ export const budgetComparisonFaqLd: JsonLd = {
 export const filingHowToLd: JsonLd = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
+  '@id': `${SITE_URL}/tax-guides/filing-tax-return#how-to`,
   name: 'How to File Your Income Tax Return in Pakistan (FBR IRIS)',
   description:
     'Step-by-step guide to e-filing your income tax return in Pakistan through the FBR IRIS portal.',
-  totalTime: 'PT30M',
+  url: `${SITE_URL}/tax-guides/filing-tax-return`,
+  inLanguage: 'en-PK',
   step: [
     {
       '@type': 'HowToStep',
-      name: 'Register on the IRIS portal',
-      text: 'Visit the FBR IRIS portal, register a new account with your CNIC and complete email/SMS verification.',
+      name: 'Sign in and choose the tax year',
+      text: 'Log in to IRIS, choose the correct tax year and verify your personal details.',
       url: `${SITE_URL}/tax-guides/filing-tax-return#step1`,
     },
     {
       '@type': 'HowToStep',
-      name: 'Log in and access the return form',
-      text: 'Log in to IRIS, choose "File Income Tax Return", select the tax year and the correct return form for your status.',
+      name: 'Open the income tax return',
+      text: 'Select the applicable return for your taxpayer type and start a new return.',
       url: `${SITE_URL}/tax-guides/filing-tax-return#step2`,
     },
     {
       '@type': 'HowToStep',
-      name: 'Fill in personal information',
-      text: 'Complete all mandatory personal, contact, employment and business details.',
+      name: 'Report every source of income',
+      text: 'Declare salary, business, property, capital gains and other income that applies.',
       url: `${SITE_URL}/tax-guides/filing-tax-return#step3`,
     },
     {
       '@type': 'HowToStep',
-      name: 'Enter income details',
-      text: 'Report salary, business income and other income sources along with tax already withheld.',
+      name: 'Enter deductions, credits and tax withheld',
+      text: 'Claim eligible relief and reconcile each withholding entry with your evidence.',
       url: `${SITE_URL}/tax-guides/filing-tax-return#step4`,
     },
     {
       '@type': 'HowToStep',
-      name: 'Claim deductions and tax credits',
-      text: 'Enter all eligible deductions and tax credits such as Zakat, donations and pension contributions.',
+      name: 'Complete assets, liabilities and wealth reconciliation',
+      text: 'Complete the wealth statement and explain the movement in your closing wealth.',
       url: `${SITE_URL}/tax-guides/filing-tax-return#step5`,
     },
     {
       '@type': 'HowToStep',
-      name: 'Declare assets and liabilities',
-      text: 'Provide complete details of your assets and liabilities to match your declared income.',
+      name: 'Review tax payable and create payment if needed',
+      text: 'Review IRIS calculations and create the required payment before submission.',
       url: `${SITE_URL}/tax-guides/filing-tax-return#step6`,
     },
     {
       '@type': 'HowToStep',
-      name: 'Review, verify and submit',
-      text: 'Review all entries, calculate your tax, pay any balance due and submit your return.',
+      name: 'Submit and save the acknowledgements',
+      text: 'Submit the return and wealth statement, then download proof of completion.',
       url: `${SITE_URL}/tax-guides/filing-tax-return#step7`,
     },
   ],
@@ -630,21 +685,66 @@ export function buildBreadcrumb(pathname: string): JsonLd {
 export function buildArticle(pathname: string): JsonLd {
   const meta = routeMeta[pathname] ?? routeMeta['/'];
   const datePublished = meta.datePublished ?? meta.dateModified;
+  const socialImage = absoluteUrl(meta.socialImage ?? '/og-image.png');
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: meta.title,
+    '@id': `${absoluteUrl(pathname)}#article`,
+    url: absoluteUrl(pathname),
+    headline: meta.articleHeadline ?? meta.title,
     description: meta.description,
     inLanguage: 'en-PK',
-    image: OG_IMAGE,
+    image: socialImage,
+    thumbnailUrl: socialImage,
     mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(pathname) },
     datePublished,
     dateModified: meta.dateModified,
-    author: { '@type': 'Organization', name: SITE_NAME },
-    publisher: {
+    ...(meta.articleSection ? { articleSection: meta.articleSection } : {}),
+    ...(meta.keywords ? { keywords: meta.keywords.join(', ') } : {}),
+    isAccessibleForFree: true,
+    author: {
       '@type': 'Organization',
       name: SITE_NAME,
+      url: `${SITE_URL}/about`,
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/main-logo.png` },
+    },
+  };
+}
+
+export function buildTaxGuidesCollection(): JsonLd {
+  const pathname = '/tax-guides';
+  const meta = routeMeta[pathname];
+  const guidePaths = [
+    '/tax-guides/understanding-tax-system',
+    '/tax-guides/deductions-credits',
+    '/tax-guides/filing-tax-return',
+  ];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${absoluteUrl(pathname)}#collection`,
+    url: absoluteUrl(pathname),
+    name: meta.title,
+    description: meta.description,
+    inLanguage: 'en-PK',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: guidePaths.length,
+      itemListElement: guidePaths.map((path, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: routeMeta[path].articleHeadline ?? routeMeta[path].title,
+        url: absoluteUrl(path),
+      })),
     },
   };
 }
@@ -673,6 +773,7 @@ export function getSitemapEntries(): Array<{
 export function routeStructuredData(pathname: string): JsonLd[] {
   const meta = routeMeta[pathname] ?? routeMeta['/'];
   const blocks: JsonLd[] = [buildBreadcrumb(pathname)];
+  if (pathname === '/tax-guides') blocks.push(buildTaxGuidesCollection());
   if (meta.isArticle) blocks.push(buildArticle(pathname));
   return blocks;
 }

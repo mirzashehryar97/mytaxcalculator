@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import { sendGAEvent } from '@next/third-parties/google';
 import { AlertTriangle, Calendar, Info, MinusCircle, PlusCircle } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 
 import { useCalculator } from '@/context/useCalculator';
+
+import { trackAnalyticsEvent } from '@/lib/analytics';
 
 import { calculateTaxForTotalAmount, taxSlabs } from '../utils/taxCalculator';
 import MultiYearChartsLoading from './MultiYearChartsLoading';
@@ -131,7 +132,7 @@ function MultiYearCalculator() {
   const trackUseOnce = () => {
     if (!hasTrackedUse.current) {
       hasTrackedUse.current = true;
-      sendGAEvent('event', 'calculator_use', { calculator: 'multi' });
+      trackAnalyticsEvent('calculator_use', { calculator: 'multi' });
     }
   };
 

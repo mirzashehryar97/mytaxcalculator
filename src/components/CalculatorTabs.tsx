@@ -4,10 +4,11 @@ import { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import { sendGAEvent } from '@next/third-parties/google';
 import { Calculator, History } from 'lucide-react';
 
 import CalculatorProvider from '@/context/CalculatorProvider';
+
+import { trackAnalyticsEvent } from '@/lib/analytics';
 
 import MultiYearCalculatorLoading from './MultiYearCalculatorLoading';
 import SingleYearCalculator from './SingleYearCalculator';
@@ -21,7 +22,7 @@ export default function CalculatorTabs() {
 
   const selectTab = (tab: 'single' | 'multi') => {
     if (tab !== activeTab) {
-      sendGAEvent('event', 'calculator_tab_select', { tab });
+      trackAnalyticsEvent('calculator_tab_select', { tab });
     }
     setActiveTab(tab);
   };

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-import { sendGAEvent } from '@next/third-parties/google';
+import { trackAnalyticsEvent } from '@/lib/analytics';
 
 import {
   buildFreelancerUseEventParameters,
@@ -24,7 +24,7 @@ export default function useFreelancerAnalytics(
       return;
     }
 
-    sendGAEvent('event', FREELANCER_ANALYTICS_EVENTS.pageView, FREELANCER_ANALYTICS_CONTEXT);
+    trackAnalyticsEvent(FREELANCER_ANALYTICS_EVENTS.pageView, FREELANCER_ANALYTICS_CONTEXT);
     hasTrackedPageView.current = true;
   }, []);
 
@@ -33,8 +33,7 @@ export default function useFreelancerAnalytics(
       return;
     }
 
-    sendGAEvent(
-      'event',
+    trackAnalyticsEvent(
       FREELANCER_ANALYTICS_EVENTS.calculatorUse,
       buildFreelancerUseEventParameters(formState),
     );
