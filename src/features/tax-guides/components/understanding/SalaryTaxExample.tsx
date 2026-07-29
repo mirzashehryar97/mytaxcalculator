@@ -28,7 +28,7 @@ export default function SalaryTaxExample() {
                   step.id === 'total' ? 'font-bold text-emerald-800' : 'text-slate-600'
                 }`}
               >
-                Tax = {step.value}
+                {step.value}
               </p>
             </div>
           </li>

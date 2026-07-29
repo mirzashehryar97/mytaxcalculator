@@ -97,7 +97,7 @@ Those cards must cite **only official FBR sources** — the Finance Act / Income
 
 ## Stack facts
 
-Next.js 15.3 App Router · React 18.3 · TypeScript strict · Tailwind CSS 3 · Biome/ultracite (lint + format, 2-space indent, 100-col; CSS files are excluded from Biome) · `lucide-react`, `recharts`, `react-datepicker`. Charts live in `src/components/{single-year,multi-year}-charts/` (dispatcher + `colors.ts` + `types.ts`, lazy-loaded — clone the folder per calculator that needs charts). Shared CSS component classes are defined in `src/app/globals.css` (`.surface-card`, `.form-input`, `.form-select`, `.form-label`, `.btn-calculate`, `.stat-card`, `.chip`, `.section-divider`, `.no-spinner`).
+Next.js 15.3 App Router · React 18.3 · TypeScript strict · Tailwind CSS 3 · Biome/ultracite (lint + format, 2-space indent, 100-col; CSS files are excluded from Biome) · `lucide-react`, `recharts` (`react-datepicker` is still in `package.json` but nothing imports it since the multi-year calculator moved to its own day/month/year dropdowns). Charts belong to the feature that uses them — `src/features/<feature>/components/<Xxx>Chart.tsx`, lazy-loaded with `next/dynamic` and `ssr: false`, colours in the feature's `lib/chartColors.ts` (see `features/multi-year-tax`). The legacy single-year charts still live in `src/components/single-year-charts/` (dispatcher + `colors.ts` + `types.ts`) until that calculator is migrated. Shared CSS component classes are defined in `src/app/globals.css` (`.surface-card`, `.form-input`, `.form-select`, `.form-label`, `.btn-calculate`, `.stat-card`, `.chip`, `.section-divider`, `.no-spinner`).
 
 ## Out of scope (Phase 3, parked)
 

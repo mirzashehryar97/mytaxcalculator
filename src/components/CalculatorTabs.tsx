@@ -10,12 +10,14 @@ import CalculatorProvider from '@/context/CalculatorProvider';
 
 import { trackAnalyticsEvent } from '@/lib/analytics';
 
-import MultiYearCalculatorLoading from './MultiYearCalculatorLoading';
+import MultiYearTaxLoading from '@/features/multi-year-tax/components/MultiYearTaxLoading';
+
 import SingleYearCalculator from './SingleYearCalculator';
 
-const MultiYearCalculator = dynamic(() => import('./MultiYearCalculator'), {
-  loading: () => <MultiYearCalculatorLoading />,
-});
+const MultiYearTaxCalculator = dynamic(
+  () => import('@/features/multi-year-tax/MultiYearTaxCalculator'),
+  { loading: () => <MultiYearTaxLoading /> },
+);
 
 export default function CalculatorTabs() {
   const [activeTab, setActiveTab] = useState<'single' | 'multi'>('single');
@@ -29,11 +31,10 @@ export default function CalculatorTabs() {
 
   return (
     <CalculatorProvider>
-      <div
-        className="surface-card animate-fade-up overflow-hidden"
-        style={{ animationDelay: '80ms' }}
-      >
-        <div className="border-gray-100 border-b bg-gray-50/80 p-2 sm:p-3">
+      {/* No overflow clipping here: the multi-year date dropdowns open past the
+          card edge, so the tab strip rounds its own top corners instead. */}
+      <div className="surface-card animate-fade-up" style={{ animationDelay: '80ms' }}>
+        <div className="rounded-t-3xl border-gray-100 border-b bg-gray-50/80 p-2 sm:p-3">
           <div className="mx-auto flex max-w-md gap-2 rounded-2xl bg-gray-100 p-1.5">
             <button
               type="button"
@@ -57,7 +58,7 @@ export default function CalculatorTabs() {
         </div>
 
         <div className="p-4 sm:p-8">
-          {activeTab === 'single' ? <SingleYearCalculator /> : <MultiYearCalculator />}
+          {activeTab === 'single' ? <SingleYearCalculator /> : <MultiYearTaxCalculator />}
         </div>
       </div>
     </CalculatorProvider>

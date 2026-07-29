@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { createInitialMultiYearState } from '@/features/multi-year-tax/lib/input';
+
 import { CalculatorContext, type CalculatorContextType } from './CalculatorContext';
 
 export default function CalculatorProvider({ children }: { children: React.ReactNode }) {
@@ -11,10 +13,9 @@ export default function CalculatorProvider({ children }: { children: React.React
     result: null,
   });
 
-  const [multiYear, setMultiYear] = useState<CalculatorContextType['multiYear']>({
-    periods: [{ startDate: '', endDate: '', salary: '' }],
-    result: null,
-  });
+  const [multiYear, setMultiYear] = useState<CalculatorContextType['multiYear']>(
+    createInitialMultiYearState,
+  );
 
   return (
     <CalculatorContext.Provider value={{ singleYear, setSingleYear, multiYear, setMultiYear }}>

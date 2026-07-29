@@ -22,10 +22,10 @@ export default function SalaryTaxSlabs() {
           <thead className="bg-[#f2f6f4] text-[#0b1736]">
             <tr>
               <th scope="col" className="w-[46%] border-slate-200 border-r px-2.5 py-2 font-bold">
-                Taxable income (annual)
+                Yearly salary subject to tax
               </th>
               <th scope="col" className="px-2.5 py-2 font-bold">
-                Rate
+                How tax is calculated
               </th>
             </tr>
           </thead>
