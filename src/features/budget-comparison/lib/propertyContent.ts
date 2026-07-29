@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  Building2,
   Calculator,
   CalendarDays,
   FileText,
@@ -8,6 +9,8 @@ import {
   Home,
   ShieldCheck,
 } from 'lucide-react';
+
+import { FBR_LOGO } from '@/lib/officialSources';
 
 import { BUDGET_SOURCES } from '@/features/budget-comparison/lib/content';
 import type {
@@ -51,6 +54,12 @@ export const PROPERTY_TOC = [
 ] as const satisfies readonly BudgetTocItem[];
 
 export const PROPERTY_TOOLS = [
+  {
+    id: 'rental-calculator',
+    label: 'Rental income tax calculator',
+    href: '/rental-income-tax-calculator',
+    icon: Building2,
+  },
   {
     id: 'property-example',
     label: 'Property rate example',
@@ -214,14 +223,14 @@ export const PROPERTY_SOURCES = [
     title: 'Finance Act 2022 — FBR',
     description: 'Official prior CVT law',
     href: 'https://www.fbr.gov.pk/Budget2022-23/FinanceAct/Finance-Act-2022.pdf',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
   {
     id: 'income-tax-ordinance',
     title: 'Income Tax Ordinance — FBR',
     description: 'Official consolidated law library',
     href: 'https://fbr.gov.pk/Categ/Income-Tax-Ordinance/326',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
 ] as const satisfies readonly BudgetSource[];
 

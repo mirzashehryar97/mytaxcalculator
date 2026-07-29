@@ -89,11 +89,6 @@ export interface FreelancerRateGuideRow {
   treatment: string;
 }
 
-export interface FreelancerSourceLink {
-  href: string;
-  label: string;
-}
-
 export type FreelancerScenarioId = 'all-export-income' | 'mixed-income' | 'standard-rate';
 
 export interface FreelancerScenario {

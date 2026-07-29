@@ -80,6 +80,12 @@ export const UNDERSTANDING_TAX_SYSTEM_TOOLS = [
     href: '/freelancer-tax-calculator',
     icon: Laptop,
   },
+  {
+    id: 'rental',
+    label: 'Rental income tax calculator',
+    href: '/rental-income-tax-calculator',
+    icon: Building2,
+  },
 ] as const satisfies readonly TaxGuideArticleTool[];
 
 export const UNDERSTANDING_TAX_SYSTEM_SOURCES = [

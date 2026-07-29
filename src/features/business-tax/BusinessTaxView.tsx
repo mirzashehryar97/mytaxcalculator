@@ -4,8 +4,8 @@ import BusinessCalculationGuide from '@/features/business-tax/components/Busines
 import BusinessClassificationCards from '@/features/business-tax/components/BusinessClassificationCards';
 import BusinessFaq from '@/features/business-tax/components/BusinessFaq';
 import BusinessHero from '@/features/business-tax/components/BusinessHero';
+import BusinessOfficialSources from '@/features/business-tax/components/BusinessOfficialSources';
 import BusinessRateGuide from '@/features/business-tax/components/BusinessRateGuide';
-import BusinessSources from '@/features/business-tax/components/BusinessSources';
 import BusinessTaxCalculator from '@/features/business-tax/components/BusinessTaxCalculator';
 
 export default function BusinessTaxView() {
@@ -17,9 +17,9 @@ export default function BusinessTaxView() {
       </BusinessTaxCalculator>
       <BusinessRateGuide />
       <BusinessCalculationGuide />
-      <BusinessSources />
       <BusinessFaq />
       <RelatedCalculators currentHref="/business-tax-calculator" />
+      <BusinessOfficialSources />
     </>
   );
 }

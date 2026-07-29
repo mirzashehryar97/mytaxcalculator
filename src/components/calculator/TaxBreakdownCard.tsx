@@ -5,6 +5,10 @@ interface TaxBreakdownCardProps {
   grossValue: string;
   taxValue: string;
   netValue: string;
+  /** Row labels. Default to the salary/freelancer wording; override per sector. */
+  grossLabel?: ReactNode;
+  taxLabel?: ReactNode;
+  netLabel?: ReactNode;
   taxNote?: ReactNode;
 }
 
@@ -13,6 +17,9 @@ export default function TaxBreakdownCard({
   grossValue,
   taxValue,
   netValue,
+  grossLabel = 'Gross Income',
+  taxLabel = 'Tax',
+  netLabel = 'Net Income',
   taxNote,
 }: TaxBreakdownCardProps) {
   return (
@@ -20,18 +27,18 @@ export default function TaxBreakdownCard({
       <h3 className="mb-5 font-bold text-emerald-700 text-sm uppercase tracking-wider">{title}</h3>
       <div className="space-y-5">
         <div>
-          <p className="text-gray-500 text-sm">Gross Income</p>
+          <p className="flex items-center gap-1.5 text-gray-500 text-sm">{grossLabel}</p>
           <p className="amount-wrap font-semibold text-2xl text-gray-900 tabular-nums">
             {grossValue}
           </p>
         </div>
         <div>
-          <p className="text-gray-500 text-sm">Tax</p>
+          <p className="flex items-center gap-1.5 text-gray-500 text-sm">{taxLabel}</p>
           <p className="amount-wrap font-semibold text-2xl text-red-600 tabular-nums">{taxValue}</p>
           {taxNote}
         </div>
         <div>
-          <p className="text-gray-500 text-sm">Net Income</p>
+          <p className="flex items-center gap-1.5 text-gray-500 text-sm">{netLabel}</p>
           <p className="amount-wrap font-semibold text-2xl text-emerald-600 tabular-nums">
             {netValue}
           </p>

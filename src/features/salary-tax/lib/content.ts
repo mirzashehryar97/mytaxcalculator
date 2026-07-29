@@ -1,5 +1,3 @@
-import type { SourceLink } from '@/components/calculator/SourcesCard';
-
 export const PLAN_NEXT_SALARY_COPY = {
   title: 'Plan Your Next Salary',
   description: 'Smart tools to help you make better salary decisions.',
@@ -41,15 +39,6 @@ export const PLAN_NEXT_SALARY_TOOLS = [
 ] as const satisfies readonly PlanNextSalaryTool[];
 
 export const SALARY_GUIDE_COPY = {
-  sourcesTitle: 'Sources used',
-  sourcesDescription: 'Rates were checked against the official FBR Finance Act 2026.',
   reviewedLabel: 'Last reviewed 26 July 2026',
   reviewedDateTime: '2026-07-26',
 } as const;
-
-export const SALARY_SOURCE_LINKS = [
-  {
-    href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
-    label: 'Finance Act 2026 (FBR)',
-  },
-] as const satisfies readonly SourceLink[];

@@ -1,10 +1,13 @@
+import type { OfficialSource } from '@/components/calculator/OfficialSourcesGrid';
+
+import { FBR_DOC_URLS, FBR_LOGO, IRIS_LOGO } from '@/lib/officialSources';
+
 import type {
   BusinessClassificationCard,
   BusinessFaqItem,
   BusinessIncomeMode,
   BusinessOption,
   BusinessRateGuideRow,
-  BusinessSourceLink,
   BusinessTaxpayerType,
 } from '@/features/business-tax/types';
 
@@ -187,8 +190,6 @@ export const BUSINESS_GUIDE_COPY = {
   exampleTotalValue: 'Rs. 590,000',
   exampleEffectiveLabel: 'Effective rate',
   exampleEffectiveValue: '≈ 19.67%',
-  sourcesTitle: 'Sources used',
-  sourcesDescription: 'Rates were checked against the official FBR Finance Act 2026.',
   reviewedLabel: 'Last reviewed 25 July 2026',
   reviewedDateTime: '2026-07-25',
 } as const;
@@ -227,12 +228,31 @@ export const BUSINESS_RATE_GUIDE_ROWS = [
   },
 ] as const satisfies readonly BusinessRateGuideRow[];
 
-export const BUSINESS_SOURCE_LINKS = [
+export const BUSINESS_OFFICIAL_SOURCES = [
   {
-    href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
-    label: 'Finance Act 2026 (FBR)',
+    id: 'finance-act-2026',
+    title: 'Finance Act 2026',
+    description:
+      'The enacted budget law for 2026-27. It leaves the business and AOP slab rates unchanged.',
+    href: FBR_DOC_URLS.financeAct2026,
+    logo: FBR_LOGO,
   },
-] as const satisfies readonly BusinessSourceLink[];
+  {
+    id: 'income-tax-ordinance',
+    title: 'Income Tax Ordinance 2001',
+    description:
+      'Business income under Section 18, with the slab rates for individuals and AOPs in the First Schedule.',
+    href: FBR_DOC_URLS.incomeTaxOrdinance,
+    logo: FBR_LOGO,
+  },
+  {
+    id: 'iris',
+    title: 'FBR IRIS Portal',
+    description: 'File the yearly return for your business or AOP.',
+    href: FBR_DOC_URLS.iris,
+    logo: IRIS_LOGO,
+  },
+] as const satisfies readonly OfficialSource[];
 
 export const BUSINESS_FAQS = [
   {

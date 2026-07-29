@@ -1,5 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 
+import type { SourceLogo } from '@/components/calculator/OfficialSourcesGrid';
+
 export interface BudgetMetric {
   id: string;
   label: string;
@@ -32,10 +34,7 @@ export interface BudgetSource {
   title: string;
   description: string;
   href: string;
-  logo?: {
-    src: string;
-    alt: string;
-  };
+  logo?: SourceLogo;
   icon?: LucideIcon;
 }
 

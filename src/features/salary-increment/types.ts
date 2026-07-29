@@ -1,5 +1,3 @@
-import type { SourceLink } from '@/components/calculator/SourcesCard';
-
 /** Which comparison the user is running. */
 export type SalaryComparisonMode = 'increment' | 'job-offer';
 
@@ -80,5 +78,3 @@ export interface SalaryIncrementFaqItem {
   question: string;
   answer: string;
 }
-
-export type SalaryIncrementSourceLink = SourceLink;

@@ -1,5 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 
+import type { SourceLogo } from '@/components/calculator/OfficialSourcesGrid';
+
 export interface TaxGuideCardContent {
   id: string;
   title: string;
@@ -44,13 +46,7 @@ export interface TaxGuideResource {
   description: string;
   href: string;
   icon?: LucideIcon;
-  image?: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-    cropToMark: boolean;
-  };
+  image?: SourceLogo;
 }
 
 export interface TaxGuideSearchEntry {

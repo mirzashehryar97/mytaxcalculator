@@ -1,5 +1,3 @@
-import type { SourceLink } from '@/components/calculator/SourcesCard';
-
 import type {
   IncrementInputType,
   SalaryComparisonMode,
@@ -113,8 +111,6 @@ export const SALARY_COMPARISON_CROSS_LINK = {
 } as const;
 
 export const SALARY_INCREMENT_GUIDE_COPY = {
-  sourcesTitle: 'Sources used',
-  sourcesDescription: 'Rates were checked against the official FBR Finance Act 2026.',
   reviewedLabel: 'Last reviewed 26 July 2026',
   reviewedDateTime: '2026-07-26',
   faqEyebrow: 'Got questions?',
@@ -125,8 +121,6 @@ export const SALARY_INCREMENT_GUIDE_COPY = {
 } as const;
 
 export const JOB_OFFER_COMPARISON_GUIDE_COPY = {
-  sourcesTitle: 'Sources used',
-  sourcesDescription: 'Rates were checked against the official FBR Finance Act 2026.',
   reviewedLabel: 'Last reviewed 26 July 2026',
   reviewedDateTime: '2026-07-26',
   faqEyebrow: 'Got questions?',
@@ -183,13 +177,6 @@ export const JOB_OFFER_COMPARISON_METHODOLOGY_COPY = {
     },
   ],
 } as const;
-
-export const SALARY_INCREMENT_SOURCE_LINKS = [
-  {
-    href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
-    label: 'Finance Act 2026 (FBR)',
-  },
-] as const satisfies readonly SourceLink[];
 
 export const SALARY_INCREMENT_FAQS = [
   {

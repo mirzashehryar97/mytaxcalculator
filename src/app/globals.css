@@ -79,9 +79,27 @@ html {
   }
 }
 
+@keyframes drawerIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out both;
+  }
+
+  /* Mobile navigation drawer: panel slides in from the right, backdrop fades in. */
+  .animate-drawer-in {
+    animation: drawerIn 0.28s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  .animate-backdrop-in {
+    animation: fadeIn 0.25s ease-out both;
   }
 
   .animate-fade-up {

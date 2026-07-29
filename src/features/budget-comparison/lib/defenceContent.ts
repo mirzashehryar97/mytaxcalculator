@@ -1,17 +1,17 @@
 import {
   BookOpen,
-  Building2,
   Calculator,
   CalendarDays,
   Construction,
   FileCheck2,
-  FileText,
   Landmark,
   Settings,
   ShieldCheck,
   TrendingUp,
   Users,
 } from 'lucide-react';
+
+import { FINANCE_DIVISION_LOGO } from '@/lib/officialSources';
 
 import type {
   BudgetComparisonRow,
@@ -209,14 +209,14 @@ export const DEFENCE_SOURCES = [
     title: 'Budget in Brief 2026–27 — Finance Division',
     description: 'Official federal budget document',
     href: 'https://www.finance.gov.pk/budget/budget_2026_27/Budget_in_Brief.pdf',
-    icon: Building2,
+    logo: FINANCE_DIVISION_LOGO,
   },
   {
     id: 'annual-budget-statement',
     title: 'Annual Budget Statement 2026–27 — Finance Division',
     description: 'Official expenditure-head comparison',
     href: 'https://www.finance.gov.pk/budget/budget_2026_27/Annual_Budget_Statement.pdf',
-    icon: FileText,
+    logo: FINANCE_DIVISION_LOGO,
   },
 ] as const satisfies readonly BudgetSource[];
 

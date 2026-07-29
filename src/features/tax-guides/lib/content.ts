@@ -1,8 +1,8 @@
 import {
   BadgePercent,
   BarChart3,
-  BookOpen,
   Briefcase,
+  Building2,
   CalendarDays,
   Gift,
   Laptop,
@@ -13,6 +13,8 @@ import {
   User,
   WalletCards,
 } from 'lucide-react';
+
+import { FBR_LOGO, IRIS_LOGO } from '@/lib/officialSources';
 
 import GuideDeductionsIcon from '@/features/tax-guides/components/icons/GuideDeductionsIcon';
 import GuideFilingIcon from '@/features/tax-guides/components/icons/GuideFilingIcon';
@@ -119,6 +121,12 @@ export const TAX_GUIDE_TOPICS = [
     icon: Briefcase,
   },
   {
+    id: 'rental',
+    label: 'Rental income',
+    href: '/rental-income-tax-calculator',
+    icon: Building2,
+  },
+  {
     id: 'budget',
     label: 'Budget 2026',
     href: '/budget-2025-26-vs-2026-27',
@@ -182,41 +190,29 @@ export const TAX_GUIDES_FAQS = [
   },
 ] as const satisfies readonly TaxGuideFaqItem[];
 
-export const OFFICIAL_TAX_RESOURCES = [
+export const OFFICIAL_TAX_RESOURCES: readonly TaxGuideResource[] = [
   {
     id: 'fbr',
     title: 'Federal Board of Revenue',
     description: 'Official Pakistan tax authority',
     href: 'https://www.fbr.gov.pk/',
-    image: {
-      src: '/images/tax-guides/fbr-logo.png',
-      alt: 'Federal Board of Revenue Pakistan',
-      width: 532,
-      height: 77,
-      cropToMark: true,
-    },
+    image: FBR_LOGO,
   },
   {
     id: 'iris',
     title: 'IRIS e-filing portal',
     description: 'Official online return-filing system',
     href: 'https://iris.fbr.gov.pk/',
-    image: {
-      src: '/images/tax-guides/iris-logo.png',
-      alt: 'IRIS e-filing portal',
-      width: 148,
-      height: 33,
-      cropToMark: false,
-    },
+    image: IRIS_LOGO,
   },
   {
     id: 'ordinance',
     title: 'Income Tax Ordinance 2001',
     description: 'Current and historical official versions',
     href: 'https://fbr.gov.pk/Categ/Income-Tax-Ordinance/326',
-    icon: BookOpen,
+    image: FBR_LOGO,
   },
-] as const satisfies readonly TaxGuideResource[];
+];
 
 export const FINANCE_ACT_2026_SOURCE = {
   href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
@@ -251,6 +247,13 @@ export const TAX_GUIDE_SEARCH_ENTRIES = [
     description: 'Estimate tax on business, professional or AOP net income.',
     href: '/business-tax-calculator',
     keywords: ['business', 'AOP', 'self employed', 'professional'],
+  },
+  {
+    id: 'rental-calculator',
+    title: 'Rental income tax calculator',
+    description: 'Estimate the tax your tenant deducts from rent under Section 155.',
+    href: '/rental-income-tax-calculator',
+    keywords: ['rent', 'rental income', 'property', 'landlord', 'section 155'],
   },
   ...TAX_GUIDES_FAQS.map((faq) => ({
     id: `faq-${faq.id}`,

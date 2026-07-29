@@ -2,7 +2,7 @@ import SalaryComparisonPage from '@/features/salary-increment/components/SalaryC
 import SalaryIncrementFaq from '@/features/salary-increment/components/SalaryIncrementFaq';
 import SalaryIncrementHero from '@/features/salary-increment/components/SalaryIncrementHero';
 import SalaryIncrementMethodology from '@/features/salary-increment/components/SalaryIncrementMethodology';
-import SalaryIncrementSources from '@/features/salary-increment/components/SalaryIncrementSources';
+import SalaryIncrementOfficialSources from '@/features/salary-increment/components/SalaryIncrementOfficialSources';
 import { SALARY_INCREMENT_ROUTE } from '@/features/salary-increment/lib/content';
 
 export default function SalaryIncrementView() {
@@ -12,7 +12,7 @@ export default function SalaryIncrementView() {
       currentHref={SALARY_INCREMENT_ROUTE}
       hero={<SalaryIncrementHero />}
       methodology={<SalaryIncrementMethodology />}
-      sources={<SalaryIncrementSources />}
+      sources={<SalaryIncrementOfficialSources />}
       faq={<SalaryIncrementFaq />}
     />
   );

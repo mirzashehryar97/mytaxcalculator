@@ -1,3 +1,7 @@
+import type { OfficialSource } from '@/components/calculator/OfficialSourcesGrid';
+
+import { FBR_DOC_URLS, FBR_LOGO, IRIS_LOGO } from '@/lib/officialSources';
+
 import type {
   FreelancerCurrency,
   FreelancerEligibilityRequirement,
@@ -5,7 +9,6 @@ import type {
   FreelancerOption,
   FreelancerRateGuideRow,
   FreelancerScenario,
-  FreelancerSourceLink,
   FreelancerTaxInputs,
 } from '@/features/freelancer-tax/types';
 
@@ -139,9 +142,6 @@ export const FREELANCER_GUIDE_COPY = {
   exampleSavingValue: 'PKR 50,400',
   exchangeRateCaveat:
     'PKR 280 is only an example, not a live exchange rate. Enter the rate from the day the payment reached your bank account.',
-  sourcesTitle: 'Sources used',
-  sourcesDescription:
-    'Rates were checked using the official Finance Act 2026 and FBR withholding tax rate card.',
   reviewedLabel: 'Last reviewed 24 July 2026',
   reviewedDateTime: '2026-07-24',
 } as const;
@@ -177,16 +177,36 @@ export const FREELANCER_RATE_GUIDE_ROWS = [
   },
 ] as const satisfies readonly FreelancerRateGuideRow[];
 
-export const FREELANCER_SOURCE_LINKS = [
+export const FREELANCER_OFFICIAL_SOURCES = [
   {
-    href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
-    label: 'Finance Act 2026 (FBR)',
+    id: 'wht-rate-card',
+    title: 'FBR Withholding Income Tax Rate Card',
+    description: 'The Section 154A export rates your bank deducts, for filers and non-filers.',
+    href: FBR_DOC_URLS.whtRateCard,
+    logo: FBR_LOGO,
   },
   {
-    href: 'https://download1.fbr.gov.pk/Docs/20258181281745641WHT-RateCard.pdf',
-    label: 'FBR withholding tax rate card',
+    id: 'finance-act-2026',
+    title: 'Finance Act 2026',
+    description: 'The enacted budget law for 2026-27. It extends the 0.25% PSEB rate through 2029.',
+    href: FBR_DOC_URLS.financeAct2026,
+    logo: FBR_LOGO,
   },
-] as const satisfies readonly FreelancerSourceLink[];
+  {
+    id: 'income-tax-ordinance',
+    title: 'Income Tax Ordinance 2001',
+    description: 'Section 154A — the final tax on exports of IT and IT-enabled services.',
+    href: FBR_DOC_URLS.incomeTaxOrdinance,
+    logo: FBR_LOGO,
+  },
+  {
+    id: 'iris',
+    title: 'FBR IRIS Portal',
+    description: 'File your yearly return and declare your export income.',
+    href: FBR_DOC_URLS.iris,
+    logo: IRIS_LOGO,
+  },
+] as const satisfies readonly OfficialSource[];
 
 export const FREELANCER_ELIGIBILITY_REQUIREMENTS = [
   {

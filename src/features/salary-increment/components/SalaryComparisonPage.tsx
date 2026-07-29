@@ -28,9 +28,9 @@ export default function SalaryComparisonPage({
       {hero}
       <SalaryComparisonCalculator mode={mode} />
       {methodology}
-      {sources}
       {faq}
       <RelatedCalculators currentHref={currentHref} />
+      {sources}
     </>
   );
 }

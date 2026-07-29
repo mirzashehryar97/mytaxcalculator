@@ -4,7 +4,7 @@ import JsonLd from '@/components/JsonLd';
 
 import { getMetadata, routeStructuredData } from '@/lib/seo';
 
-import AboutUs from '@/views/AboutUs';
+import AboutView from '@/features/about/AboutView';
 
 export const metadata: Metadata = getMetadata('/about');
 
@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <JsonLd data={routeStructuredData('/about')} />
-      <AboutUs />
+      <AboutView />
     </>
   );
 }

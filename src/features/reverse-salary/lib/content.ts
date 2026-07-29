@@ -1,5 +1,3 @@
-import type { SourceLink } from '@/components/calculator/SourcesCard';
-
 import type { ReverseSalaryFaqItem } from '@/features/reverse-salary/types';
 
 export const REVERSE_SALARY_ROUTE = '/reverse-salary-calculator';
@@ -50,8 +48,6 @@ export const REVERSE_SALARY_CROSS_LINK = {
 } as const;
 
 export const REVERSE_SALARY_GUIDE_COPY = {
-  sourcesTitle: 'Sources used',
-  sourcesDescription: 'Rates were checked against the official FBR Finance Act 2026.',
   reviewedLabel: 'Last reviewed 26 July 2026',
   reviewedDateTime: '2026-07-26',
   faqEyebrow: 'Got questions?',
@@ -84,13 +80,6 @@ export const REVERSE_SALARY_METHODOLOGY_COPY = {
     },
   ],
 } as const;
-
-export const REVERSE_SALARY_SOURCE_LINKS = [
-  {
-    href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
-    label: 'Finance Act 2026 (FBR)',
-  },
-] as const satisfies readonly SourceLink[];
 
 export const REVERSE_SALARY_FAQS = [
   {

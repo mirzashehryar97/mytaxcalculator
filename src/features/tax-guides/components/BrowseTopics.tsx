@@ -9,7 +9,7 @@ export default function BrowseTopics() {
         title={TAX_GUIDES_PAGE_COPY.topicsTitle}
         status={TAX_GUIDES_PAGE_COPY.topicsStatus}
       />
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
         {TAX_GUIDE_TOPICS.map((topic) => {
           const Icon = topic.icon;
 

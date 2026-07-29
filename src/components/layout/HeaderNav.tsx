@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import BudgetNavLink from '@/components/layout/BudgetNavLink';
 import CalculatorMenu from '@/components/layout/CalculatorMenu';
 import useHeaderNavigation from '@/components/layout/hooks/useHeaderNavigation';
+import MobileNavDrawer from '@/components/layout/MobileNavDrawer';
 import {
   BUDGET_PATH,
   getNavLinkClass,
@@ -62,39 +63,7 @@ export default function HeaderNav() {
         </button>
       </div>
 
-      {isMobileMenuOpen ? (
-        <nav
-          id="mobile-navigation"
-          className="absolute top-16 right-0 left-0 animate-fade-in border-gray-100 border-t md:hidden"
-          aria-label="Mobile navigation"
-        >
-          <div className="space-y-1 bg-white px-3 py-3 shadow-sm">
-            <Link
-              href="/"
-              onClick={closeMobileMenu}
-              className={getNavLinkClass(pathname === '/', true)}
-            >
-              Home
-            </Link>
-            <CalculatorMenu pathname={pathname} mobile onNavigate={closeMobileMenu} />
-            {STANDARD_NAV_LINKS.filter((link) => link.href !== '/').map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={closeMobileMenu}
-                className={getNavLinkClass(pathname === link.href, true)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <BudgetNavLink
-              active={pathname === BUDGET_PATH}
-              variant="mobile"
-              onClick={closeMobileMenu}
-            />
-          </div>
-        </nav>
-      ) : null}
+      {isMobileMenuOpen ? <MobileNavDrawer pathname={pathname} onClose={closeMobileMenu} /> : null}
     </>
   );
 }

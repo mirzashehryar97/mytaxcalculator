@@ -200,6 +200,32 @@ export const routeMeta: Record<string, RouteMeta> = {
     sitemapPriority: 0.9,
     sitemapChangeFrequency: 'weekly',
   },
+  '/rental-income-tax-calculator': {
+    title: 'Rental Income Tax Calculator Pakistan 2026-27 | Tax on Rent',
+    description:
+      'Calculate Pakistan rental income tax for FY 2026-27. See the Section 155 tax your tenant deducts from rent, filer vs non-filer rates and company rates.',
+    breadcrumb: 'Rental Income Tax Calculator',
+    appendSiteName: false,
+    keywords: [
+      'rental income tax calculator Pakistan',
+      'tax on rental income Pakistan',
+      'Section 155 tax calculator',
+      'property rent tax calculator Pakistan',
+      'rent withholding tax Pakistan 2026-27',
+      'landlord tax calculator Pakistan',
+      'rental income tax rates Pakistan 2026-2027',
+      'FBR rent tax slabs',
+      'non filer rent tax Pakistan',
+      'commercial property rent tax Pakistan',
+    ],
+    datePublished: '2026-07-29',
+    dateModified: '2026-07-29',
+    socialImage: '/rental-income-tax-calculator/opengraph-image',
+    socialImageAlt:
+      'Pakistan Rental Income Tax Calculator 2026-27 — Section 155 rent rates for landlords',
+    sitemapPriority: 0.9,
+    sitemapChangeFrequency: 'weekly',
+  },
   '/salary-increment-calculator': {
     title: 'Salary Increment Calculator Pakistan 2026-27 | After Tax',
     description:
@@ -288,8 +314,19 @@ export const routeMeta: Record<string, RouteMeta> = {
   '/about': {
     title: 'About My Tax Calculator | Pakistan Income Tax Tool',
     description:
-      'Learn about My Tax Calculator — a free, privacy-focused Pakistan income tax calculator updated with FBR tax slabs through FY 2026-2027.',
-    breadcrumb: 'About',
+      'Learn how My Tax Calculator turns official FBR rules into free, private calculators for salary, freelance, business and rental income in Pakistan.',
+    breadcrumb: 'About Us',
+    keywords: [
+      'about My Tax Calculator',
+      'Pakistan income tax calculator',
+      'FBR tax calculator Pakistan',
+      'free tax calculator Pakistan',
+      'privacy-first tax calculator',
+    ],
+    dateModified: '2026-07-29',
+    socialImage: '/about/opengraph-image',
+    socialImageAlt:
+      'About My Tax Calculator — free Pakistan tax calculators built on official FBR sources',
     sitemapPriority: 0.7,
     sitemapChangeFrequency: 'monthly',
   },
@@ -905,6 +942,30 @@ export function buildArticle(pathname: string): JsonLd {
   };
 }
 
+/**
+ * `AboutPage` node for /about. Naming the site Organization as the page's main
+ * entity is what lets search engines attribute every calculator and guide (whose
+ * Article schema already points its author at /about) to a publisher.
+ */
+export function buildAboutPage(): JsonLd {
+  const pathname = '/about';
+  const meta = routeMeta[pathname];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    '@id': `${absoluteUrl(pathname)}#webpage`,
+    url: absoluteUrl(pathname),
+    name: meta.title,
+    description: meta.description,
+    inLanguage: 'en-PK',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    primaryImageOfPage: absoluteUrl(meta.socialImage ?? '/og-image.png'),
+    ...(meta.dateModified ? { dateModified: meta.dateModified } : {}),
+    mainEntity: { '@id': `${SITE_URL}/#organization` },
+  };
+}
+
 export function buildTaxGuidesCollection(): JsonLd {
   const pathname = '/tax-guides';
   const meta = routeMeta[pathname];
@@ -991,6 +1052,7 @@ export function getSitemapEntries(): Array<{
 export function routeStructuredData(pathname: string): JsonLd[] {
   const meta = routeMeta[pathname] ?? routeMeta['/'];
   const blocks: JsonLd[] = [buildBreadcrumb(pathname)];
+  if (pathname === '/about') blocks.push(buildAboutPage());
   if (pathname === '/tax-guides') blocks.push(buildTaxGuidesCollection());
   if (pathname === '/budget-2025-26-vs-2026-27') blocks.push(buildBudgetSectorList());
   if (meta.isArticle) blocks.push(buildArticle(pathname));

@@ -1,5 +1,3 @@
-import type { SourceLink } from '@/components/calculator/SourcesCard';
-
 export interface ReverseSalaryFormState {
   fiscalYear: string;
   /** Desired monthly take-home (net) pay, as a raw string. */
@@ -31,5 +29,3 @@ export interface ReverseSalaryFaqItem {
   question: string;
   answer: string;
 }
-
-export type ReverseSalarySourceLink = SourceLink;

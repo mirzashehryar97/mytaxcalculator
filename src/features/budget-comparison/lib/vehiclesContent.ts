@@ -11,6 +11,8 @@ import {
   Tag,
 } from 'lucide-react';
 
+import { FBR_LOGO } from '@/lib/officialSources';
+
 import { BUDGET_SOURCES } from '@/features/budget-comparison/lib/content';
 import type {
   BudgetComparisonRow,
@@ -217,14 +219,14 @@ export const VEHICLES_SOURCES = [
     title: 'Federal Excise Act 2005 — FBR',
     description: 'Official excise-law library',
     href: 'https://www.fbr.gov.pk/categ/federal-excise-act/302',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
   {
     id: 'sales-tax-act',
     title: 'Sales Tax Act 1990 — FBR',
     description: 'Official sales-tax law library',
     href: 'https://www.fbr.gov.pk/categ/sales-tax-act/301',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
 ] as const satisfies readonly BudgetSource[];
 

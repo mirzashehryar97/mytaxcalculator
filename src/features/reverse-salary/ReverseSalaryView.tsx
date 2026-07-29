@@ -4,7 +4,7 @@ import ReverseSalaryCalculator from '@/features/reverse-salary/components/Revers
 import ReverseSalaryFaq from '@/features/reverse-salary/components/ReverseSalaryFaq';
 import ReverseSalaryHero from '@/features/reverse-salary/components/ReverseSalaryHero';
 import ReverseSalaryMethodology from '@/features/reverse-salary/components/ReverseSalaryMethodology';
-import ReverseSalarySources from '@/features/reverse-salary/components/ReverseSalarySources';
+import ReverseSalaryOfficialSources from '@/features/reverse-salary/components/ReverseSalaryOfficialSources';
 import { REVERSE_SALARY_ROUTE } from '@/features/reverse-salary/lib/content';
 
 export default function ReverseSalaryView() {
@@ -13,9 +13,9 @@ export default function ReverseSalaryView() {
       <ReverseSalaryHero />
       <ReverseSalaryCalculator />
       <ReverseSalaryMethodology />
-      <ReverseSalarySources />
       <ReverseSalaryFaq />
       <RelatedCalculators currentHref={REVERSE_SALARY_ROUTE} />
+      <ReverseSalaryOfficialSources />
     </>
   );
 }

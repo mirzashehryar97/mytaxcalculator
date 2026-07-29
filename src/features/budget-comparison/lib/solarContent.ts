@@ -12,6 +12,8 @@ import {
   WalletCards,
 } from 'lucide-react';
 
+import { FBR_LOGO } from '@/lib/officialSources';
+
 import { BUDGET_SOURCES } from '@/features/budget-comparison/lib/content';
 import type {
   BudgetComparisonRow,
@@ -199,7 +201,7 @@ export const SOLAR_SOURCES = [
     title: 'Circular No. 02 of 2025–26 — FBR',
     description: 'Official explanation of the 10% panel rate',
     href: 'https://download1.fbr.gov.pk/Docs/202584118361586CircularNO02of2025-26SalesTax%26FederalExcise.pdf',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
   ...BUDGET_SOURCES.filter((source) => source.id === 'finance-act'),
   {
@@ -207,7 +209,7 @@ export const SOLAR_SOURCES = [
     title: 'Sales Tax Act 1990 — FBR',
     description: 'Official sales-tax law library',
     href: 'https://www.fbr.gov.pk/categ/sales-tax-act/301',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
 ] as const satisfies readonly BudgetSource[];
 

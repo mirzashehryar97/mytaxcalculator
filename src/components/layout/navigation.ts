@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { Briefcase, Building2, Laptop, Target, TrendingUp, Wallet } from 'lucide-react';
+import { Briefcase, Building2, Home, Laptop, Target, TrendingUp, Wallet } from 'lucide-react';
 
 export const BUDGET_PATH = '/budget-2025-26-vs-2026-27';
 export const NEW_NAV_BADGE_LABEL = 'New';
@@ -48,6 +48,13 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
     description: 'Business, self-employed & AOP tax',
     isNew: true,
     icon: Building2,
+  },
+  {
+    href: '/rental-income-tax-calculator',
+    label: 'Rental Income Tax Calculator',
+    description: 'Tax on rent under Section 155',
+    isNew: true,
+    icon: Home,
   },
   {
     href: '/salary-increment-calculator',

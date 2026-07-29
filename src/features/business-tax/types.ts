@@ -109,11 +109,6 @@ export interface BusinessRateGuideRow {
   note: string;
 }
 
-export interface BusinessSourceLink {
-  href: string;
-  label: string;
-}
-
 export interface BusinessClassificationCard {
   id: 'net-income' | 'classification';
   title: string;

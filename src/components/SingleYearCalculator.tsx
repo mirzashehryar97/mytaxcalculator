@@ -11,12 +11,13 @@ import { useCalculator } from '@/context/useCalculator';
 import { trackAnalyticsEvent } from '@/lib/analytics';
 import { calculateBudgetYearTax } from '@/lib/budgetComparison';
 
+import SalaryInsightsLoading from '@/features/salary-tax/components/SalaryInsightsLoading';
+
 import { calculateTax } from '../utils/taxCalculator';
 import SingleYearBudgetSavingsNote from './SingleYearBudgetSavingsNote';
-import SingleYearChartsLoading from './SingleYearChartsLoading';
 
-const SingleYearCharts = dynamic(() => import('./single-year-charts/SingleYearCharts'), {
-  loading: () => <SingleYearChartsLoading />,
+const SalaryInsights = dynamic(() => import('@/features/salary-tax/components/SalaryInsights'), {
+  loading: () => <SalaryInsightsLoading />,
   ssr: false,
 });
 
@@ -39,18 +40,8 @@ const fiscalYears = [
 function SingleYearCalculator() {
   const { singleYear, setSingleYear } = useCalculator();
   const { salary, selectedYear, result } = singleYear;
-  const [activeChart, setActiveChart] = useState<string>('distribution');
-  const [showCharts, setShowCharts] = useState(false);
+  const [showInsights, setShowInsights] = useState(false);
   const hasTrackedUse = useRef(false);
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined' ? window.innerWidth < 640 : false,
-  );
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 640);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const calculateTaxResult = () => {
     const salaryNum = Number.parseFloat(salary);
@@ -71,7 +62,7 @@ function SingleYearCalculator() {
       setSingleYear((prev) => ({ ...prev, result: tax }));
     } else {
       setSingleYear((prev) => ({ ...prev, result: null }));
-      setShowCharts(false);
+      setShowInsights(false);
     }
   };
 
@@ -202,7 +193,13 @@ function SingleYearCalculator() {
 
             <div className="section-divider" />
 
-            <div className="space-y-6">
+            {showInsights ? (
+              <SalaryInsights
+                onHide={() => setShowInsights(false)}
+                result={result}
+                selectedYear={selectedYear}
+              />
+            ) : (
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <span className="font-medium text-gray-500 text-sm">Effective Tax Rate</span>
@@ -212,44 +209,20 @@ function SingleYearCalculator() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setShowCharts(!showCharts)}
-                  className="flex items-center space-x-2 rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+                  onClick={() => {
+                    trackAnalyticsEvent('show_insights_click', {
+                      calculator: 'salary_tax',
+                      page_path: '/',
+                    });
+                    setShowInsights(true);
+                  }}
+                  className="flex min-h-11 items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-600/20"
                 >
-                  <BarChart2 className="h-5 w-5" />
-                  <span>{showCharts ? 'Hide Charts' : 'Show Charts'}</span>
+                  <BarChart2 aria-hidden className="h-5 w-5" />
+                  <span>Show insights</span>
                 </button>
               </div>
-
-              {showCharts && (
-                <div className="animate-fade-up space-y-6">
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setActiveChart('distribution')}
-                      className={`chip ${activeChart === 'distribution' ? 'chip-active' : 'chip-inactive'}`}
-                    >
-                      Distribution
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setActiveChart('monthlyBreakdown')}
-                      className={`chip ${activeChart === 'monthlyBreakdown' ? 'chip-active' : 'chip-inactive'}`}
-                    >
-                      Monthly Breakdown
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setActiveChart('salaryComponents')}
-                      className={`chip ${activeChart === 'salaryComponents' ? 'chip-active' : 'chip-inactive'}`}
-                    >
-                      Salary Components
-                    </button>
-                  </div>
-
-                  <SingleYearCharts result={result} activeChart={activeChart} isMobile={isMobile} />
-                </div>
-              )}
-            </div>
+            )}
           </div>
         )}
       </div>

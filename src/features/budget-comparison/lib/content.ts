@@ -1,7 +1,6 @@
 import {
   BarChart3,
   Briefcase,
-  Building2,
   Calculator,
   CalendarDays,
   Car,
@@ -14,6 +13,8 @@ import {
   Target,
   User,
 } from 'lucide-react';
+
+import { FBR_LOGO, FINANCE_DIVISION_LOGO } from '@/lib/officialSources';
 
 import type {
   BudgetImpactList,
@@ -245,21 +246,21 @@ export const BUDGET_SOURCES: readonly BudgetSource[] = [
     title: 'Finance Act 2026 — FBR',
     description: 'Official external link',
     href: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
   {
     id: 'budget-in-brief',
     title: 'Budget in Brief 2026–27 — Finance Division',
     description: 'Official external link',
     href: 'https://www.finance.gov.pk/budget/budget_2026_27/Budget_in_Brief.pdf',
-    icon: Building2,
+    logo: FINANCE_DIVISION_LOGO,
   },
   {
     id: 'salient-features',
     title: 'Salient Features 2026–27 — FBR',
     description: 'Official external link',
     href: 'https://www.fbr.gov.pk/Budget2026-27/SalientFeatures/Salient-Feature.pdf',
-    logo: { src: '/images/tax-guides/fbr-logo.png', alt: 'Federal Board of Revenue Pakistan' },
+    logo: FBR_LOGO,
   },
 ];
 
