@@ -390,14 +390,195 @@ export const routeMeta: Record<string, RouteMeta> = {
     sitemapChangeFrequency: 'weekly',
   },
   '/budget-2025-26-vs-2026-27': {
-    title: 'Budget 2025-26 vs 2026-27 | Complete Pakistan Federal Budget Comparison',
+    title: 'Pakistan Budget 2025-26 vs 2026-27 | Enacted Finance Act Comparison',
     description:
-      'Full FY 2025-26 vs 2026-27 budget comparison: salaried tax, freelancers, IT, property, cars, solar, defence, retail, super tax and Finance Bill 2026 changes explained.',
+      'Verified FY 2025-26 vs 2026-27 Pakistan budget comparison covering enacted salary tax, freelancer, business, property, vehicle, solar and defence changes.',
     breadcrumb: 'Budget 2025-26 vs 2026-27',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan budget 2025-26 vs 2026-27',
+      'Finance Act 2026 Pakistan',
+      'Pakistan budget 2026-27 tax changes',
+      'salary tax slabs FY 2026-27 Pakistan',
+      'salaried surcharge abolished Pakistan',
+      'Pakistan federal budget comparison',
+      'FBR budget 2026-27 salient features',
+      'Pakistan budget 2026-27 sector comparison',
+      'budget 2026-27 property freelancer vehicle solar tax',
+      'Pakistan defence budget 2026-27',
+    ],
     isArticle: true,
+    articleHeadline: 'Pakistan Budget 2025–26 vs 2026–27',
+    articleSection: 'Pakistan Budget 2026–27 comparison',
     datePublished: LAST_UPDATED,
-    dateModified: LAST_UPDATED,
+    dateModified: '2026-07-28',
+    socialImage: '/budget-2025-26-vs-2026-27/opengraph-image',
+    socialImageAlt:
+      'Pakistan Budget 2025-26 vs 2026-27 comparison covering salary, freelancer, property, vehicle, solar and defence changes',
     sitemapPriority: 0.9,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/budget-2025-26-vs-2026-27/freelancers-it': {
+    title: 'Pakistan Freelancer & IT Tax Changes 2026-27 | Budget Comparison',
+    description:
+      'Compare enacted Pakistan freelancer and IT tax changes for FY 2026-27: PSEB 0.25%, Section 154A, foreign-card tax, creator WHT and export collection.',
+    breadcrumb: 'Freelancers & IT',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan budget 2026-27 freelancer tax',
+      'IT exporter tax Pakistan 2026-27',
+      'PSEB 0.25% tax Tax Year 2029',
+      'Section 154A rate Pakistan 2026',
+      'Section 154B social media tax Pakistan',
+      'foreign card advance tax Pakistan 0.5%',
+      'freelancer tax changes Pakistan Finance Act 2026',
+      'IT export tax FY 2025-26 vs 2026-27',
+    ],
+    isArticle: true,
+    articleHeadline: 'Freelancers & IT: Pakistan Budget 2025–26 vs 2026–27',
+    articleSection: 'Pakistan Budget 2026–27 sector comparison',
+    datePublished: '2026-07-28',
+    dateModified: '2026-07-28',
+    socialImage: '/budget-2025-26-vs-2026-27/freelancers-it/opengraph-image',
+    socialImageAlt:
+      'Pakistan freelancer and IT tax changes in Budget 2026-27, including PSEB and Section 154A rates',
+    sitemapPriority: 0.8,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/budget-2025-26-vs-2026-27/business-super-tax': {
+    title: 'Pakistan Business & Super Tax Changes 2026-27 | Budget Comparison',
+    description:
+      'Compare enacted Pakistan business and super-tax changes for FY 2026-27: Section 4C relief up to PKR 500M, 8% above, company rates and distributor minimum tax.',
+    breadcrumb: 'Business & Super Tax',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan budget 2026-27 business tax',
+      'Pakistan super tax 2026-27',
+      'Section 4C super tax Pakistan',
+      'super tax PKR 500 million Pakistan',
+      'company tax rate Pakistan 2026-27',
+      'AOP tax rate Pakistan 2026-27',
+      'distributor minimum tax Pakistan 0.5%',
+      'Finance Act 2026 business tax changes',
+    ],
+    isArticle: true,
+    articleHeadline: 'Business & Super Tax: Pakistan Budget 2025–26 vs 2026–27',
+    articleSection: 'Pakistan Budget 2026–27 sector comparison',
+    datePublished: '2026-07-28',
+    dateModified: '2026-07-28',
+    socialImage: '/budget-2025-26-vs-2026-27/business-super-tax/opengraph-image',
+    socialImageAlt:
+      'Pakistan business and super-tax changes in Budget 2026-27, including Section 4C rates',
+    sitemapPriority: 0.8,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/budget-2025-26-vs-2026-27/property': {
+    title: 'Pakistan Property Tax Changes 2026-27 | Budget Comparison',
+    description:
+      'Compare enacted Pakistan property tax changes for FY 2026-27: Section 7E omitted, ATL sale WHT 2.75%, purchase WHT 1.25%, non-ATL rates and CVT relief.',
+    breadcrumb: 'Property',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan property tax changes 2026-27',
+      'Section 7E abolished Pakistan',
+      'Section 236C rate 2026-27',
+      'Section 236K rate 2026-27',
+      'property sale tax Pakistan 2.75%',
+      'property purchase tax Pakistan 1.25%',
+      'non filer property tax Pakistan 2026-27',
+      'foreign asset CVT abolished Pakistan',
+      'Finance Act 2026 property tax changes',
+    ],
+    isArticle: true,
+    articleHeadline: 'Property: Pakistan Budget 2025–26 vs 2026–27',
+    articleSection: 'Pakistan Budget 2026–27 sector comparison',
+    datePublished: '2026-07-28',
+    dateModified: '2026-07-28',
+    socialImage: '/budget-2025-26-vs-2026-27/property/opengraph-image',
+    socialImageAlt:
+      'Pakistan property tax changes in Budget 2026-27, including Sections 7E, 236C and 236K',
+    sitemapPriority: 0.8,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/budget-2025-26-vs-2026-27/vehicles': {
+    title: 'Pakistan Vehicle Tax Changes 2026-27 | Budget Comparison',
+    description:
+      'Compare enacted Pakistan vehicle tax changes for FY 2026-27: imported EV FED bands, special excise duty, ICT motor tax, EV concessions and Section 231B.',
+    breadcrumb: 'Vehicles',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan vehicle tax changes 2026-27',
+      'Pakistan budget 2026-27 car tax',
+      'electric vehicle FED Pakistan 2026',
+      'imported EV tax Pakistan USD 75000',
+      'special excise duty imported cars Pakistan',
+      'ICT motor vehicle tax 2026-27',
+      'Section 231B vehicle tax Pakistan 2026',
+      'Finance Act 2026 vehicle tax changes',
+    ],
+    isArticle: true,
+    articleHeadline: 'Vehicles: Pakistan Budget 2025–26 vs 2026–27',
+    articleSection: 'Pakistan Budget 2026–27 sector comparison',
+    datePublished: '2026-07-28',
+    dateModified: '2026-07-28',
+    socialImage: '/budget-2025-26-vs-2026-27/vehicles/opengraph-image',
+    socialImageAlt:
+      'Pakistan vehicle tax changes in Budget 2026-27, including imported EV FED and ICT motor tax',
+    sitemapPriority: 0.8,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/budget-2025-26-vs-2026-27/solar': {
+    title: 'Pakistan Solar Tax Changes 2026-27 | Budget Comparison',
+    description:
+      'Compare Pakistan solar tax treatment for FY 2026-27: the 10% sales-tax rate on solar panels and PV modules continues with no Finance Act 2026 increase.',
+    breadcrumb: 'Solar',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan solar tax 2026-27',
+      'solar panel sales tax Pakistan 10%',
+      'Pakistan budget 2026-27 solar panels',
+      'PV module tax Pakistan',
+      'solar panel tax exemption Pakistan',
+      'Finance Act 2026 solar tax',
+      'solar sales tax FY 2025-26 vs 2026-27',
+      'FBR solar panel tax rate',
+    ],
+    isArticle: true,
+    articleHeadline: 'Solar: Pakistan Budget 2025–26 vs 2026–27',
+    articleSection: 'Pakistan Budget 2026–27 sector comparison',
+    datePublished: '2026-07-28',
+    dateModified: '2026-07-28',
+    socialImage: '/budget-2025-26-vs-2026-27/solar/opengraph-image',
+    socialImageAlt:
+      'Pakistan solar-panel sales-tax treatment in Budget 2026-27, including the continuing 10 percent rate',
+    sitemapPriority: 0.8,
+    sitemapChangeFrequency: 'weekly',
+  },
+  '/budget-2025-26-vs-2026-27/defence': {
+    title: 'Pakistan Defence Budget 2026-27 | Budget Comparison',
+    description:
+      'Compare Pakistan defence Budget Estimates for FY 2025-26 and 2026-27: PKR 3.0T defence services, expenditure heads and separately budgeted pensions.',
+    breadcrumb: 'Defence',
+    appendSiteName: false,
+    keywords: [
+      'Pakistan defence budget 2026-27',
+      'Pakistan military budget 2026',
+      'defence services PKR 3 trillion',
+      'Pakistan military pensions 2026-27',
+      'Pakistan defence expenditure breakdown',
+      'Pakistan defence physical assets budget',
+      'defence budget FY 2025-26 vs 2026-27',
+      'Finance Division Pakistan defence budget',
+    ],
+    isArticle: true,
+    articleHeadline: 'Defence: Pakistan Budget 2025–26 vs 2026–27',
+    articleSection: 'Pakistan Budget 2026–27 sector comparison',
+    datePublished: '2026-07-28',
+    dateModified: '2026-07-28',
+    socialImage: '/budget-2025-26-vs-2026-27/defence/opengraph-image',
+    socialImageAlt:
+      'Pakistan defence Budget Estimates for FY 2026-27, including defence services and military pensions',
+    sitemapPriority: 0.8,
     sitemapChangeFrequency: 'weekly',
   },
   '/privacy-policy': {
@@ -546,60 +727,67 @@ export const faqLd: JsonLd = {
 
 export const BUDGET_COMPARISON_FAQS = [
   {
-    question: 'What are the main changes in Pakistan Budget 2026-27 vs 2025-26?',
+    question: 'When do these budget changes take effect?',
     answer:
-      'Budget 2026-27 proposes salaried tax relief (restructured slabs, surcharge abolished), property sector cuts (Section 7E and CVT abolished, lower transfer taxes), extended 0.25% IT/freelancer FTR to 2029, super tax abolished for companies up to Rs. 500M, fixed 1% tax for small retailers, stable solar taxes, higher defence allocation (Rs. 3T), and new taxes on luxury imported EVs and social media earnings.',
+      'The Finance Act 2026 received assent on 26 June 2026. Its income-tax and budget measures generally apply from 1 July 2026 for FY 2026-27, subject to the commencement wording of each provision.',
   },
   {
-    question:
-      'What changed in Pakistan income tax from FY 2025-26 to FY 2026-27 for salaried workers?',
+    question: 'Who should file an income tax return under the new rules?',
     answer:
-      'Salaried tax slabs expand from 6 to 8 bands. Rates fall for incomes between Rs. 2.2M and Rs. 7M, the 35% top rate now starts above Rs. 7M, and the 9% surcharge above Rs. 10M is proposed abolished. Federal employees get 7% salary and pension increases; minimum wage rises 10%.',
+      'The Finance Act changes rates and some treatments, but filing depends on the Income Tax Ordinance requirements for your income, assets, registration and other circumstances. Check current FBR rules or obtain professional advice for your filing position.',
   },
   {
-    question: 'Do freelancers get tax relief in Budget 2026-27?',
+    question: 'How do I calculate my salary tax under the new slabs?',
     answer:
-      'Yes for PSEB-registered IT exporters: the 0.25% Final Tax Regime is extended to 30 June 2029. Other qualifying IT and IT-enabled export receipts use the 1% general filer rate under Section 154A, while local or non-qualifying income follows the applicable business-income rules.',
+      'Apply the FY 2026-27 progressive salaried rates to annual taxable salary: 0% up to PKR 600,000, then marginal rates of 1%, 11%, 20%, 25%, 29%, 32% and 35%. Use the salary calculator for an automatic annual and monthly estimate.',
   },
   {
-    question: 'Is there new tax on solar panels in Budget 2026-27?',
+    question: 'Where can I find the official budget documents?',
     answer:
-      'No. Despite proposals to raise GST to 18%, the government maintained the existing solar tax structure. FBR confirmed no fresh taxes on solar panels or photovoltaic cells in Finance Bill 2026.',
+      'Use the official Finance Act 2026 and Salient Features published by FBR, together with the Budget in Brief and Annual Budget Statement published by the Finance Division. The source links on this page go directly to those documents.',
   },
   {
-    question: 'How does Budget 2026-27 affect cars and electric vehicles?',
+    question: 'What are the main enacted changes in Budget 2026-27?',
     answer:
-      'Local EV/HEV concessions are extended to June 2027. Imported CBU EVs face tiered FED: 0% up to Rs. 20M, 30% for Rs. 20–30M, 40% above Rs. 30M. New FED applies to imported 2000cc–3000cc petrol vehicles. Islamabad token taxes increase, with value-based tax above 1000cc.',
+      'The enacted changes include lower middle-income salary rates and abolition of the salaried surcharge, repeal of Section 7E, lower property transfer withholding, extension of the 0.25% PSEB export rate, super-tax relief for most persons up to PKR 500 million, new social-media withholding, revised vehicle levies and a PKR 3 trillion defence-services allocation.',
+  },
+  {
+    question: 'Do freelancers and IT exporters get tax relief?',
+    answer:
+      'The 0.25% rate for qualifying PSEB-registered IT and IT-enabled services exporters is extended through Tax Year 2029. The general ATL collection rate under Section 154A remains 1%, while non-ATL rates remain higher.',
+  },
+  {
+    question: 'What property tax changes were enacted?',
+    answer:
+      'Section 7E was omitted. For ATL persons, advance tax on property sales under Section 236C is 2.75% and advance tax on purchases under Section 236K is 1.25%. The late-filer property category was also removed.',
   },
   {
     question: "What is Pakistan's defence budget for FY 2026-27?",
     answer:
-      'Rs. 3 trillion is proposed for defence services (+17.65%), with Rs. 926 billion for physical assets/procurement (+39.6%). Military pensions are separate at Rs. 822 billion (+10.8%), not included in the Rs. 3T defence total.',
-  },
-  {
-    question: 'What property tax changes are in Finance Bill 2026?',
-    answer:
-      'Section 7E deemed income tax on property is abolished. CVT on foreign assets is removed. Property sale WHT for filers drops to flat 2.75% and purchase WHT to 1.25%, roughly halving combined transaction costs.',
-  },
-  {
-    question: 'When do Budget 2026-27 tax changes take effect?',
-    answer:
-      'Proposed measures apply from 1 July 2026 once the Finance Bill 2026 is passed by the National Assembly and notified by FBR. Until then, FY 2025-26 rates under the Finance Act 2025 remain in force.',
+      'The FY 2026-27 budget estimates allocate PKR 3 trillion to defence services, up from PKR 2.55 trillion. Military pensions are budgeted separately at PKR 822 billion and are not included in the PKR 3 trillion figure.',
   },
 ] as const;
 
-export const budgetComparisonFaqLd: JsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: BUDGET_COMPARISON_FAQS.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: faq.answer,
-    },
-  })),
-};
+/**
+ * Builds FAQPage structured data. Only pass questions that are actually rendered
+ * on the page — Google requires the schema to mirror visible content.
+ */
+export function buildFaqLd(faqs: readonly { question: string; answer: string }[]): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+}
+
+export const budgetComparisonFaqLd: JsonLd = buildFaqLd(BUDGET_COMPARISON_FAQS);
 
 export const filingHowToLd: JsonLd = {
   '@context': 'https://schema.org',
@@ -749,6 +937,36 @@ export function buildTaxGuidesCollection(): JsonLd {
   };
 }
 
+/** Sector deep-dives linked from the budget comparison hub. */
+const BUDGET_SECTOR_PATHS = [
+  '/budget-2025-26-vs-2026-27/freelancers-it',
+  '/budget-2025-26-vs-2026-27/business-super-tax',
+  '/budget-2025-26-vs-2026-27/property',
+  '/budget-2025-26-vs-2026-27/vehicles',
+  '/budget-2025-26-vs-2026-27/solar',
+  '/budget-2025-26-vs-2026-27/defence',
+];
+
+/** Advertises the sector deep-dives that the budget hub links to. */
+export function buildBudgetSectorList(): JsonLd {
+  const pathname = '/budget-2025-26-vs-2026-27';
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': `${absoluteUrl(pathname)}#sectors`,
+    name: 'Pakistan Budget 2025–26 vs 2026–27 sector comparisons',
+    itemListOrder: 'https://schema.org/ItemListUnordered',
+    numberOfItems: BUDGET_SECTOR_PATHS.length,
+    itemListElement: BUDGET_SECTOR_PATHS.map((path, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: routeMeta[path].articleHeadline ?? routeMeta[path].title,
+      url: absoluteUrl(path),
+    })),
+  };
+}
+
 /** Builds sitemap entries from the central route table. */
 export function getSitemapEntries(): Array<{
   path: string;
@@ -774,6 +992,7 @@ export function routeStructuredData(pathname: string): JsonLd[] {
   const meta = routeMeta[pathname] ?? routeMeta['/'];
   const blocks: JsonLd[] = [buildBreadcrumb(pathname)];
   if (pathname === '/tax-guides') blocks.push(buildTaxGuidesCollection());
+  if (pathname === '/budget-2025-26-vs-2026-27') blocks.push(buildBudgetSectorList());
   if (meta.isArticle) blocks.push(buildArticle(pathname));
   return blocks;
 }
