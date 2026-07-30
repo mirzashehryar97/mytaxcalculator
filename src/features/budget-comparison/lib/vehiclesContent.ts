@@ -1,7 +1,9 @@
 import {
   BadgeDollarSign,
   Calculator,
+  CalendarClock,
   CalendarDays,
+  Car,
   CarFront,
   Gauge,
   Landmark,
@@ -56,6 +58,18 @@ export const VEHICLES_TOC = [
 ] as const satisfies readonly BudgetTocItem[];
 
 export const VEHICLES_TOOLS = [
+  {
+    id: 'vehicle-tax-calculator',
+    label: 'Vehicle tax calculator (231B)',
+    href: '/vehicle-tax-calculator',
+    icon: Car,
+  },
+  {
+    id: 'vehicle-token-tax-calculator',
+    label: 'Token tax calculator',
+    href: '/vehicle-token-tax-calculator',
+    icon: CalendarClock,
+  },
   {
     id: 'ev-example',
     label: 'Imported-EV example',
@@ -210,6 +224,19 @@ export const VEHICLES_LEVY_NOTE = {
   title: 'Vehicle taxes and duties are separate charges',
   description:
     'Ordinary FED, the new Special Excise Duty, sales tax, customs duties, Section 231B advance tax and ICT or provincial motor-vehicle tax can apply under different rules. Do not treat one displayed percentage as the final all-in tax cost.',
+  calculatorsIntro: 'Work out the two income-tax charges on your own vehicle:',
+  calculators: [
+    {
+      id: 'vehicle-tax-calculator',
+      label: 'Section 231B tax on registering or transferring a vehicle',
+      href: '/vehicle-tax-calculator',
+    },
+    {
+      id: 'vehicle-token-tax-calculator',
+      label: 'Yearly token tax and the Section 234 charge collected with it',
+      href: '/vehicle-token-tax-calculator',
+    },
+  ],
 } as const;
 
 export const VEHICLES_SOURCES = [

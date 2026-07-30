@@ -111,6 +111,10 @@ export interface TaxGuideIncomeHead {
   id: string;
   title: string;
   description: string;
+  /** Calculator that prices this head, linked from the card when present. */
+  href?: string;
+  /** Link text for `href`, e.g. "Property capital gains calculator". */
+  linkLabel?: string;
 }
 
 export interface TaxGuideSlabRow {

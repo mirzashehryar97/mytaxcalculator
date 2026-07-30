@@ -47,6 +47,7 @@ export const PROPERTY_TOC = [
   { id: 'overview', label: 'Overview', href: '#overview' },
   { id: 'comparison', label: 'Rate comparison', href: '#comparison' },
   { id: 'example', label: 'PKR 80M example', href: '#example' },
+  { id: 'calculators', label: 'Property calculators', href: '#calculators' },
   { id: 'tax-note', label: 'Transfer-tax note', href: '#tax-note' },
   { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'explore-sectors', label: 'Explore sectors', href: '#explore-sectors' },
@@ -55,22 +56,28 @@ export const PROPERTY_TOC = [
 
 export const PROPERTY_TOOLS = [
   {
+    id: 'property-purchase-calculator',
+    label: 'Property purchase tax (236K)',
+    href: '/property-purchase-tax-calculator',
+    icon: Home,
+  },
+  {
+    id: 'property-sale-calculator',
+    label: 'Property sale tax (236C)',
+    href: '/property-sale-tax-calculator',
+    icon: Handshake,
+  },
+  {
+    id: 'property-cgt-calculator',
+    label: 'Property capital gains tax',
+    href: '/property-capital-gains-tax-calculator',
+    icon: BarChart3,
+  },
+  {
     id: 'rental-calculator',
     label: 'Rental income tax calculator',
     href: '/rental-income-tax-calculator',
     icon: Building2,
-  },
-  {
-    id: 'property-example',
-    label: 'Property rate example',
-    href: '#example',
-    icon: Home,
-  },
-  {
-    id: 'capital-gains',
-    label: 'Capital-gains rules',
-    href: '#tax-note',
-    icon: BarChart3,
   },
   {
     id: 'budget-comparison',
@@ -79,6 +86,39 @@ export const PROPERTY_TOOLS = [
     icon: Calculator,
   },
 ] as const satisfies readonly BudgetTool[];
+
+/**
+ * In-content bridge from the "what changed" article to the calculators that
+ * price the change for a specific property.
+ */
+export const PROPERTY_CALCULATOR_LINKS = {
+  title: 'Work out the new rates on your own property',
+  description:
+    'The rate changes above are the headline. These calculators apply them to a specific price, filer status and tax year.',
+  items: [
+    {
+      id: 'purchase',
+      label: 'Property purchase tax calculator',
+      detail: 'Section 236K advance tax paid by the buyer, at 1.25% for filers in 2026-27.',
+      href: '/property-purchase-tax-calculator',
+      icon: Home,
+    },
+    {
+      id: 'sale',
+      label: 'Property sale tax calculator',
+      detail: 'Section 236C advance tax deducted from the seller, at 2.75% for filers in 2026-27.',
+      href: '/property-sale-tax-calculator',
+      icon: Handshake,
+    },
+    {
+      id: 'capital-gains',
+      label: 'Property capital gains tax calculator',
+      detail: 'Tax on the profit itself, with the Section 236C already collected set against it.',
+      href: '/property-capital-gains-tax-calculator',
+      icon: BarChart3,
+    },
+  ],
+} as const;
 
 export const PROPERTY_METRICS = [
   {

@@ -25,7 +25,7 @@ export default function TaxGuideArticleSidebar({
   footerContent,
 }: TaxGuideArticleSidebarProps) {
   return (
-    <aside className="hidden space-y-4 md:sticky md:top-24 md:block">
+    <aside className="no-scrollbar hidden space-y-4 md:sticky md:top-24 md:block md:max-h-[calc(100dvh-7rem)] md:overflow-y-auto">
       <TaxGuideArticleTableOfContents items={toc} />
       {extraContent}
       {tools.length > 0 ? <TaxGuideArticleTools title={toolsTitle} tools={tools} /> : null}

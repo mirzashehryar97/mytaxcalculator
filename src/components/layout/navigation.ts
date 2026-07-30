@@ -1,5 +1,18 @@
 import type { LucideIcon } from 'lucide-react';
-import { Briefcase, Building2, Home, Laptop, Target, TrendingUp, Wallet } from 'lucide-react';
+import {
+  Briefcase,
+  Building2,
+  CalendarClock,
+  Car,
+  Handshake,
+  Home,
+  KeyRound,
+  Laptop,
+  LineChart,
+  Target,
+  TrendingUp,
+  Wallet,
+} from 'lucide-react';
 
 export const BUDGET_PATH = '/budget-2025-26-vs-2026-27';
 export const NEW_NAV_BADGE_LABEL = 'New';
@@ -55,6 +68,41 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
     description: 'Tax on rent under Section 155',
     isNew: true,
     icon: Home,
+  },
+  {
+    href: '/property-purchase-tax-calculator',
+    label: 'Property Purchase Tax Calculator',
+    description: 'Buyer advance tax under Section 236K',
+    isNew: true,
+    icon: KeyRound,
+  },
+  {
+    href: '/property-sale-tax-calculator',
+    label: 'Property Sale Tax Calculator',
+    description: 'Seller advance tax under Section 236C',
+    isNew: true,
+    icon: Handshake,
+  },
+  {
+    href: '/property-capital-gains-tax-calculator',
+    label: 'Property Capital Gains Tax',
+    description: 'Tax on the profit from a property sale',
+    isNew: true,
+    icon: LineChart,
+  },
+  {
+    href: '/vehicle-tax-calculator',
+    label: 'Vehicle Tax Calculator',
+    description: 'Registration & transfer tax under Section 231B',
+    isNew: true,
+    icon: Car,
+  },
+  {
+    href: '/vehicle-token-tax-calculator',
+    label: 'Vehicle Token Tax Calculator',
+    description: 'Yearly token tax, province by province',
+    isNew: true,
+    icon: CalendarClock,
   },
   {
     href: '/salary-increment-calculator',

@@ -1,6 +1,7 @@
 import BudgetFaqs from '@/features/budget-comparison/components/BudgetFaqs';
 import BudgetSectorExplorer from '@/features/budget-comparison/components/BudgetSectorExplorer';
 import BudgetSidebar from '@/features/budget-comparison/components/BudgetSidebar';
+import PropertyCalculatorLinks from '@/features/budget-comparison/components/PropertyCalculatorLinks';
 import PropertyComparison from '@/features/budget-comparison/components/PropertyComparison';
 import PropertyExample from '@/features/budget-comparison/components/PropertyExample';
 import PropertyHero from '@/features/budget-comparison/components/PropertyHero';
@@ -23,6 +24,7 @@ export default function BudgetPropertyView() {
           <PropertyOverview />
           <PropertyComparison />
           <PropertyExample />
+          <PropertyCalculatorLinks />
           <PropertyTaxNote />
           <BudgetFaqs faqs={PROPERTY_FAQS} />
           <BudgetSectorExplorer currentSectorId="property" />

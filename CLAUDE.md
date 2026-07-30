@@ -70,6 +70,14 @@ The repo is **mid-migration** to the feature-first layout. New/feature-first cod
 
 Every sector calculator is **data + a thin wrapper**, never copy-pasted markup. The fiscal-year `<select>` (driven by `Object.keys(rates)`, defaulting to the current year, recomputing on change) is the cross-cutting requirement on every calculator.
 
+**The one exception — a calculator that already knows its year.** Where the form asks for a *date* that fixes the tax year by law, the year is derived from that date and the `<select>` is dropped: offering both lets the user state a contradiction the calculator then prices. Property capital gains is the case in the repo — a gain is taxed in the year its disposal falls in, so `getPropertyTaxYearForDate(saleDate)` (`features/property-tax/lib/rates.ts`, tax year = 1 July–30 June) drives both the regime year and the §236C credit, and `PropertyTaxYearNotice` renders the derived year where the dropdown used to sit so it stays visible rather than hidden. Do not "restore" the dropdown there. A derived year can land outside the years we hold rates for, so the resolver returns a `coverage` flag and the UI must warn on `before-range` / `after-range` instead of silently clamping.
+
+### Date fields (all calculators)
+
+Every date input is `components/calculator/DateInput.tsx` — our own field and calendar, never `<input type="date">`. The native control reads the visitor's locale (so it rendered `MM/DD/YYYY` here) and buries the year in a scrolling list, which is useless for a purchase date twenty years back. The replacement is typed **day-first** (`DD/MM/YYYY`, digits auto-grouped, `1/6/2025` also accepted) with a calendar that steps day → month → year: `DatePickerPanel` + `DatePickerHeader`/`DatePickerDayGrid`/`DatePickerMonthGrid`/`DatePickerYearGrid`/`DatePickerActions`, driven by `useDatePicker.ts`, with the calendar maths in `src/utils/calendarDates.ts` and the typing mask in `src/utils/dateMask.ts`.
+
+Pass `min`/`max` as ISO dates and the picker blocks the rest — greyed days, disabled arrows, and a message naming the bound when a *typed* value falls outside it. Half-typed text is never pushed into the calculator (it snaps back to the held date on blur); clearing the field clears the value.
+
 ### Result colour convention (all calculators)
 
 Money in every result is coloured by meaning, **regardless of what a design mockup shows**. This mirrors the salary calculator (`SingleYearCalculator`) and freelancer `TaxBreakdownCard`, where gross is grey, tax is red, and net is green:
@@ -93,7 +101,17 @@ Use the shared `ResultCard` tones so this stays consistent; don't hand-code resu
 
 **"Official sources" section (every calculator):** each calculator ends — after its FAQ, above the footer — with an `<XxxOfficialSources/>` wrapper around the shared `components/calculator/OfficialSourcesSection.tsx` (eyebrow + heading + `OfficialSourcesGrid` card grid + "Last reviewed" date). The cards come from a `*_OFFICIAL_SOURCES` array in the feature's `lib/content.ts`, typed `OfficialSource[]`; shared URLs, logos and the section copy live in `src/lib/officialSources.ts` (`FBR_DOC_URLS`, `FBR_LOGO`, `IRIS_LOGO`, `OFFICIAL_SOURCES_COPY`), and the salary-slab pages (`/`, reverse-salary, increment, job-offer) all reuse `SALARY_OFFICIAL_SOURCES` from there rather than redefining it.
 
-Those cards must cite **only official FBR sources** — the Finance Act / Income Tax Ordinance the rates actually come from and official FBR rate cards (plus the FBR IRIS portal for filing). Do **not** add third-party summaries (PwC, ICMA, blogs, etc.), even as a secondary link. Only cite a source that applies to *that* calculator's regime: a withholding rate card belongs on a withholding-regime calculator (e.g. freelancer §154A), not on a net-profit slab calculator (business/AOP). Each card's one-line `description` must be verifiable in `docs/tax-sectors/*.md` — never invent a section number or a "what changed this year" claim.
+Those cards must cite **only official government sources, and must cite every official source the page actually uses**. "Official" follows **whichever government levies the tax**, not the FBR specifically:
+
+- **Federal taxes** → the Finance Act / Income Tax Ordinance the rates come from, official FBR rate cards, and the FBR IRIS portal for filing.
+- **Provincial and territorial levies** (vehicle token tax, and any provincial levy added later) → **that province's own** published schedule, excise-department page or calculator, or the **provincial Finance Act** that sets it. A provincial rate cited only to an FBR document is a wrong citation — the FBR does not set it. Note the rates are often *not* on the excise website: KP's token table lives in the KP Finance Act, and Sindh's is only exposed through its excise department's own calculator.
+- **Cite the source of every year the calculator computes**, not just the current one. If the page still calculates 2023-24 under an older table, the Act that set that table belongs in the grid too.
+
+Do **not** add third-party summaries (PwC, ICMA, TaxationPK, TaxToday, blogs, etc.), even as a secondary link — aggregators routinely mislabel provincial levies as federal withholding and vice versa. Only cite a source that applies to *that* calculator's regime: a withholding rate card belongs on a withholding-regime calculator (e.g. freelancer §154A), not on a net-profit slab calculator (business/AOP). Each card's one-line `description` must be verifiable in `docs/tax-sectors/*.md` — never invent a section number or a "what changed this year" claim.
+
+`OFFICIAL_SOURCES_COPY` is deliberately government-neutral ("Straight from the source"). A page mixing federal and provincial sources should define its own copy next to its `*_OFFICIAL_SOURCES` array and pass it through — see `VEHICLE_TOKEN_SOURCES_COPY`.
+
+**Where a rate cannot be sourced officially:** do not ship it silently. The vehicle token schedules carry a `source: { tier: 'official' | 'secondary', label, url }`; a `secondary` tier renders a prominent "verified from secondary sources, not official ones" warning above the result. Prefer omitting the year entirely (a missing key means "not covered" and shows an explicit panel) over shipping an unlabelled guess.
 
 ## Stack facts
 

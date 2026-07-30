@@ -15,7 +15,11 @@ interface OfficialSourcesSectionProps {
   reviewedDateTime: string;
 }
 
-/** Official FBR documents behind every rate on a calculator page, shown above the footer. */
+/**
+ * The official documents behind every rate on a calculator page, shown above
+ * the footer. Whichever government sets the tax is the source cited — federal
+ * law for an FBR tax, the province's own schedule for a provincial levy.
+ */
 export default function OfficialSourcesSection({
   id,
   eyebrow,

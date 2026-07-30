@@ -2,10 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-  type DropdownPlacement,
-  getDropdownPlacement,
-} from '@/features/multi-year-tax/lib/dropdownPlacement';
+import { type DropdownPlacement, getDropdownPlacement } from '@/utils/dropdownPlacement';
+
 import {
   getOptionTooltipPosition,
   type OptionTooltipPosition,

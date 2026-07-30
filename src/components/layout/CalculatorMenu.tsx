@@ -73,7 +73,7 @@ export default function CalculatorMenu({
         className={
           mobile
             ? 'mt-1 space-y-1 rounded-xl bg-gray-50 p-2'
-            : '-translate-x-1/2 absolute top-full left-1/2 z-50 mt-3 w-72 rounded-2xl border border-gray-100 bg-white p-2 shadow-emerald-950/10 shadow-xl'
+            : '-translate-x-1/2 absolute top-full left-1/2 z-50 mt-3 max-h-[min(70vh,32rem)] w-72 overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-2 shadow-emerald-950/10 shadow-xl'
         }
       >
         {CALCULATOR_NAV_LINKS.map((link) => {

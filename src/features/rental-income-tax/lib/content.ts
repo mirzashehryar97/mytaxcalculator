@@ -19,7 +19,7 @@ export const RENTAL_PAGE_COPY = {
     'Tax on your yearly rent',
     'Filer vs non-filer',
     'Owners, partners & companies',
-    'Counts towards your yearly tax',
+    'Adjustable withholding tax',
   ],
   formTitle: 'Your rent details',
   resultTitle: 'Tax taken out of your rent',
@@ -51,7 +51,7 @@ export const RENTAL_TERMS = {
   },
   adjustable: {
     label: 'Is this my final tax?',
-    text: 'No. It counts towards the total tax you owe for the year. When you file your yearly return you either get the extra back as a refund, or pay the difference if you owe more.',
+    text: 'This is not your final tax. It is money already paid towards the total you owe for the year. When you file your yearly return you either get the extra back as a refund, or pay the difference if you owe more.',
   },
   filerStatus: {
     label: 'What is a filer?',
@@ -124,7 +124,7 @@ export const RENTAL_RESULT_COPY = {
   rentAfterTaxLabel: 'Rent you keep',
   monthlyTaxNote: 'The yearly deduction spread over twelve months.',
   effectiveRate: 'Effective rate',
-  adjustableBadge: 'Counts towards your yearly tax bill',
+  adjustableBadge: 'Adjustable against your annual tax liability',
   companyRateLabel: 'Flat rate for companies',
   comparisonTitle: 'Filer vs non-filer',
   comparisonSubtitle: 'On the same yearly rent',

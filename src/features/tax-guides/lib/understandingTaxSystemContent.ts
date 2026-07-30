@@ -168,6 +168,8 @@ export const TAX_INCOME_HEADS = [
     id: 'property',
     title: 'Property income',
     description: 'Rent and certain other income you receive from property.',
+    href: '/rental-income-tax-calculator',
+    linkLabel: 'Rental income calculator',
   },
   {
     id: 'business',
@@ -178,6 +180,8 @@ export const TAX_INCOME_HEADS = [
     id: 'capital-gains',
     title: 'Profit from selling assets',
     description: 'Taxable profit from selling certain assets, such as shares or property.',
+    href: '/property-capital-gains-tax-calculator',
+    linkLabel: 'Property capital gains calculator',
   },
   {
     id: 'other',

@@ -248,3 +248,12 @@ html {
   background: rgba(16, 185, 129, 0.55);
   background-clip: content-box;
 }
+
+/* Scrollable region with no visible scrollbar — overrides the refined scrollbar above */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

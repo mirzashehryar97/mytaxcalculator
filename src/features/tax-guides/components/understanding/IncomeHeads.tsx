@@ -1,8 +1,13 @@
+import Link from 'next/link';
+
+import { ArrowRight } from 'lucide-react';
+
 import TaxGuideArticleSectionHeading from '@/features/tax-guides/components/article/TaxGuideArticleSectionHeading';
 import {
   TAX_INCOME_HEADS,
   UNDERSTANDING_SECTION_COPY,
 } from '@/features/tax-guides/lib/understandingTaxSystemContent';
+import type { TaxGuideIncomeHead } from '@/features/tax-guides/types';
 
 export default function IncomeHeads() {
   return (
@@ -11,7 +16,7 @@ export default function IncomeHeads() {
         {UNDERSTANDING_SECTION_COPY.incomeHeadsTitle}
       </TaxGuideArticleSectionHeading>
       <ol className="mt-3 grid overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm sm:grid-cols-2 md:grid-cols-5">
-        {TAX_INCOME_HEADS.map((head, index) => (
+        {TAX_INCOME_HEADS.map((head: TaxGuideIncomeHead, index) => (
           <li
             key={head.id}
             className="border-slate-200 border-b p-3 last:border-b-0 sm:border-r md:border-b-0 md:last:border-r-0 sm:[&:nth-child(even)]:border-r-0 md:[&:nth-child(even)]:border-r"
@@ -20,9 +25,18 @@ export default function IncomeHeads() {
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-800 font-bold text-white text-xs">
                 {index + 1}
               </span>
-              <div>
+              <div className="min-w-0">
                 <h3 className="font-bold text-[#0b1736] text-sm leading-5">{head.title}</h3>
                 <p className="mt-1 text-[13px] text-slate-600 leading-[1.4]">{head.description}</p>
+                {head.href ? (
+                  <Link
+                    href={head.href}
+                    className="mt-1.5 inline-flex items-center gap-1 font-semibold text-[12px] text-emerald-800 hover:underline"
+                  >
+                    {head.linkLabel}
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </Link>
+                ) : null}
               </div>
             </div>
           </li>
