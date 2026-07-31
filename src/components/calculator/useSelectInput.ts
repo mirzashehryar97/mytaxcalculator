@@ -2,52 +2,53 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { type DropdownPlacement, getDropdownPlacement } from '@/utils/dropdownPlacement';
+import {
+  extendTypeahead,
+  findInitialIndex,
+  findTypeaheadIndex,
+  type SelectOption,
+  type TypeaheadState,
+} from '@/components/calculator/select';
 
+import { type DropdownPlacement, getDropdownPlacement } from '@/utils/dropdownPlacement';
 import {
   getOptionTooltipPosition,
   type OptionTooltipPosition,
-} from '@/features/multi-year-tax/lib/tooltipPosition';
-import type { DatePartOption } from '@/features/multi-year-tax/types';
+} from '@/utils/optionTooltipPosition';
 
 interface OptionTooltip extends OptionTooltipPosition {
   reason: string;
 }
 
-interface UseDatePartSelectOptions {
-  options: DatePartOption[];
-  value: string;
-  onChange: (value: string) => void;
+interface UseSelectInputOptions<T extends string> {
+  options: readonly SelectOption<T>[];
+  value: T;
+  onChange: (value: T) => void;
 }
 
 /** Arrow keys walk the list, including over blocked options so they can be read. */
 const MOVE_KEYS: Record<string, number> = { ArrowDown: 1, ArrowUp: -1 };
 
-function findInitialIndex(options: DatePartOption[], value: string): number {
-  const selected = options.findIndex((option) => option.value === value);
-
-  if (selected !== -1) {
-    return selected;
-  }
-
-  const firstAvailable = options.findIndex((option) => !option.disabledReason);
-  return firstAvailable === -1 ? 0 : firstAvailable;
-}
-
 /**
- * Menu behaviour for one date part. Native `<option>` elements can't say why
- * they are unavailable, so this drives a list of buttons where a blocked option
- * stays visible, stays reachable by keyboard, and reveals its reason on hover,
- * focus or tap.
+ * Menu behaviour for one dropdown. The native `<select>` renders an opaque
+ * list we can neither style nor annotate — an `<option>` can't say why it is
+ * unavailable, and on mobile it hands the page over to the platform's own
+ * picker. This drives a list of buttons instead, keeping what the native
+ * control gave us: arrow keys, Home/End, type-to-jump, and Escape to close.
  */
-export default function useDatePartSelect({ options, value, onChange }: UseDatePartSelectOptions) {
+export default function useSelectInput<T extends string>({
+  options,
+  value,
+  onChange,
+}: UseSelectInputOptions<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [placement, setPlacement] = useState<DropdownPlacement>('below');
   const [tooltip, setTooltip] = useState<OptionTooltip | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLSpanElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLSpanElement>(null);
+  const typeahead = useRef<TypeaheadState>({ query: '', at: 0 });
 
   const hideTooltip = useCallback(() => setTooltip(null), []);
 
@@ -99,7 +100,7 @@ export default function useDatePartSelect({ options, value, onChange }: UseDateP
   }, [close, isOpen, open]);
 
   const selectOption = useCallback(
-    (option: DatePartOption, element: HTMLElement) => {
+    (option: SelectOption<T>, element: HTMLElement) => {
       if (option.disabledReason) {
         showTooltip(option.disabledReason, element);
         return;
@@ -121,6 +122,19 @@ export default function useDatePartSelect({ options, value, onChange }: UseDateP
     [open],
   );
 
+  const runTypeahead = useCallback(
+    (key: string) => {
+      const next = extendTypeahead(typeahead.current, key);
+      typeahead.current = next;
+
+      setActiveIndex((current) => {
+        const match = findTypeaheadIndex(options, next.query, current);
+        return match === -1 ? current : match;
+      });
+    },
+    [options],
+  );
+
   const handleListKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
       const step = MOVE_KEYS[event.key];
@@ -139,9 +153,14 @@ export default function useDatePartSelect({ options, value, onChange }: UseDateP
 
       if (event.key === 'Escape' || event.key === 'Tab') {
         closeAndRefocus();
+        return;
+      }
+
+      if (event.key.length === 1 && !(event.altKey || event.ctrlKey || event.metaKey)) {
+        runTypeahead(event.key);
       }
     },
-    [closeAndRefocus, options.length],
+    [closeAndRefocus, options.length, runTypeahead],
   );
 
   useEffect(() => {

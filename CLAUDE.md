@@ -6,6 +6,30 @@ This file provides guidance to AI coding agents (Claude Code, Codex, and other `
 
 `my-tax-calculator` — a stateless, client-side Pakistan income tax calculator and SEO content site (Next.js 15.3 App Router). No backend, no database, no auth: every calculation runs in the browser. Live at https://www.mytaxcalculator.pk. Today it is salary-tax-only and is being expanded into a multi-sector calculator platform (freelancer/IT, rental/property, business/AOP, withholding, etc.) — see `TAX_PLATFORM_TASK_PLAN.md` and `docs/tax-sectors/`.
 
+## Content policy — Islamic compliance (hard constraint)
+
+The site serves a Pakistani Muslim audience and must contain **no un-Islamic financial references anywhere**, **regardless of whether the tax genuinely applies to them**. This is a settled decision about the site's identity, not a tax-accuracy question — a correct rate is not a reason to name a haram instrument. It outranks completeness: where the two conflict, drop the reference.
+
+**Speak up — do not silently comply.** If an instruction, a rate doc, a mockup or a copy suggestion would put something un-Islamic into the site, **say so plainly before building it**, name what the problem is (riba, gharar, maysir, a haram good, haram imagery), and propose the compliant alternative. Assume it was unintentional — the FBR's own material is full of these, so they arrive by default in any faithful transcription of the law. Flagging it is required even when the request is explicit and even when it is legally correct; the user decides after being told, but they must be told.
+
+**Scope is everything user-visible, not just prose:** page copy, tooltips, `disabledReason` text, FAQ answers, option labels, `lib/content.ts` blocks, SEO keywords and descriptions in `src/lib/seo.ts`, OG/social-card copy, lucide icons and any imagery in `public/`. A clean sentence with a pig on it still fails.
+
+### How to apply, in order of preference
+
+1. **Rewrite around the rule when the tax survives without the haram example.** The mutual-fund stock/other split is a real legal test (§2(61A), >70% in shares), so "money market, income and bond funds" became "any fund that keeps less than 70% of its money in shares" — same rule, same rates, nothing haram named.
+2. **Prefer the statute's own halal-compatible wording.** §15A literally says "profit paid on money borrowed" — the Ordinance's phrase is both more accurate and compliant than "interest". Same for premiums "to cover the building" rather than "insurance", which also covers takaful.
+3. **Swap example lists rather than arguing the concept.** Payroll deductions moved from "loan repayments or insurance" to "a salary advance being recovered, welfare fund contributions or society dues".
+4. **Drop the item from a statutory enumeration.** "cigarettes" sat in the §113 minimum-turnover distributor tooltip because the FA2026 table names it; the list already ended "and similar listed goods", so removing the word cost no rate or eligibility meaning.
+5. **Delete the whole route when the instrument itself is the problem and cannot be relabelled.** PMEX futures (gharar, no qabd, leverage, cash settlement) could not be reworded, so `/commodity-trading-tax-calculator` was removed entirely — route, view, components, hook, mode config, rate, nav entry, `routeMeta`, guide cards and prose. Do not re-add it, and do not "convert" a regime you cannot relabel: §37A(3) welds that 5% to PMEX member futures specifically, and physical spot commodity trading is ordinary business income (§18) already covered by the business calculator.
+
+### Deliberately kept — do not "fix" these
+
+Dividends and share capital gains (profit on equity is permissible), approved pension funds, provident fund, the term "mutual fund" itself (Shariah-compliant funds exist), and **"banking company"** in the corporate calculator — a First Schedule taxpayer category that Islamic banks fall under too, so removing it would break a real rate group rather than remove a haram reference. The test is whether the term *names* something haram, not whether something haram can be done with it.
+
+### Before finishing any content change
+
+Sweep the touched files for: `interest`, `bond`, `money market`, `insurance`, `profit on debt`, `futures`, `PMEX`, `riba`, `usury`, gambling/lottery/casino, alcohol/pork/tobacco. Then check the `lucide-react` import list — `PiggyBank` (pig imagery) and `CandlestickChart` (speculative-trading shorthand, and the old PMEX icon) are both banned; use `Wallet` and `Coins`. Expect false positives on `credit` (tax credit), `margin` (marginal rate, CSS), `lend` (calendar), `instalments` (advance tax) and `lease` (ijarah-compatible, and only ever used to exclude leased vehicles from scope).
+
 ## Commands
 
 ```bash
@@ -72,6 +96,14 @@ Every sector calculator is **data + a thin wrapper**, never copy-pasted markup. 
 
 **The one exception — a calculator that already knows its year.** Where the form asks for a *date* that fixes the tax year by law, the year is derived from that date and the `<select>` is dropped: offering both lets the user state a contradiction the calculator then prices. Property capital gains is the case in the repo — a gain is taxed in the year its disposal falls in, so `getPropertyTaxYearForDate(saleDate)` (`features/property-tax/lib/rates.ts`, tax year = 1 July–30 June) drives both the regime year and the §236C credit, and `PropertyTaxYearNotice` renders the derived year where the dropdown used to sit so it stays visible rather than hidden. Do not "restore" the dropdown there. A derived year can land outside the years we hold rates for, so the resolver returns a `coverage` flag and the UI must warn on `before-range` / `after-range` instead of silently clamping.
 
+### Dropdowns (all calculators)
+
+Every dropdown is `components/calculator/SelectInput.tsx` — our own trigger and option list, **never a native `<select>`**, and there is no `.form-select` class any more. The native control hands its list to the platform: unstyleable on desktop, a full-screen wheel on mobile, and an `<option>` can hold nothing but plain text (so it can't say *why* it is unavailable). `SelectInput` keeps what the native one gave us — arrow keys, Home/End, type-to-jump, Escape, and focus returning to the trigger — in `useSelectInput.ts`, with the class maps in `selectStyles.ts` and the pure bits (`SelectOption`, typeahead matching) in `select.ts`.
+
+- `size`: `md` (a normal form field), `sm` (a tight row of fields, e.g. the multi-year day/month/year trio), `inline` (inside a line of text). Every container is a `<span>` so the field is legal inside a `<p>`.
+- An option with `disabledReason` stays visible and reachable but can't be picked; the reason shows on hover, focus or tap via `SelectOptionTooltip`. Use it instead of dropping the option.
+- Fiscal-year fields go through `FiscalYearSelect`, which wraps `SelectInput`. Build option arrays in a `lib/` module — `toSelectOptions` / `toLabelledOptions` from `components/calculator/options.ts` — never map them inline in a component.
+
 ### Date fields (all calculators)
 
 Every date input is `components/calculator/DateInput.tsx` — our own field and calendar, never `<input type="date">`. The native control reads the visitor's locale (so it rendered `MM/DD/YYYY` here) and buries the year in a scrolling list, which is useless for a purchase date twenty years back. The replacement is typed **day-first** (`DD/MM/YYYY`, digits auto-grouped, `1/6/2025` also accepted) with a calendar that steps day → month → year: `DatePickerPanel` + `DatePickerHeader`/`DatePickerDayGrid`/`DatePickerMonthGrid`/`DatePickerYearGrid`/`DatePickerActions`, driven by `useDatePicker.ts`, with the calendar maths in `src/utils/calendarDates.ts` and the typing mask in `src/utils/dateMask.ts`.
@@ -99,6 +131,24 @@ Use the shared `ResultCard` tones so this stays consistent; don't hand-code resu
 
 **Tax rate source of truth:** the verified per-sector docs in `docs/tax-sectors/*.md` (and the PDFs in `docs/tax-sectors/sources/`). The full-page mockups in `screenshots/calculator-redesign-2026-current-design/` (one subfolder per calculator) are **UI direction only** — every rate, section number, and date in them is hallucinated placeholder content. Never copy a rate from a mockup.
 
+### Read an official source → write it down (hard rule)
+
+**Any time you open a primary document — a Finance Act, the Ordinance, a provincial Act, a gazette notification, an FBR rate card or circular — the finding goes into that sector's `docs/tax-sectors/*.md` before the task is finished.** Not into the chat, not only into a code comment: into the file. Each sector doc keeps a **`## Verification log`** section at the end; add a dated entry. `docs/` is gitignored, so these files are the only durable record — a session that verifies a rate and doesn't write it down has destroyed the work, and the next session re-downloads an 839-page PDF to learn the same thing.
+
+An entry records:
+
+- **The document, its URL, and where in it you looked** — PDF page *and* printed page, because they differ by ~18 in the consolidated Ordinance. A page reference is what makes the next check cheap.
+- **The operative text verbatim**, as a blockquote, wherever a rate or a cutoff turns on the wording. Paraphrase drifts; quotes do not. This is how "which Act narrowed rule 10(y)" and "is the FA2025 cut from Rs 200m or Rs 250m" got settled.
+- **What it confirmed, and what it changed** — including "confirmed, nothing changed", which is worth writing so nobody re-verifies it next month.
+- **What you deliberately did not model**, and why (missing input data, needs a form field). Otherwise it reads as an oversight later.
+- **Anything that contradicts what the doc already said** — correct the doc inline *and* note it in the log. A stale doc is worse than no doc: it gets trusted.
+
+Also log **negative findings**, they are cheap to re-suffer: a source that is a scan with no text layer, a host that blocks headless fetches (nccpl.com.pk returns a Cloudflare interstitial), a URL that has moved. Cache the PDF into `docs/tax-sectors/sources/` and add it to that folder's README table.
+
+**Where the statute and an operator/practice figure disagree, say so in the doc and ship neither silently.** Record both readings and which one the code follows. See `investments-capital-gains.md` §4.1 — Division VII sets the non-ATL rate for post-1 July 2024 acquisitions by reference to Division I/II with a 15% floor, while NCCPL publishes a flat doubled figure; the calculator follows the operator and the doc says why. Do not resolve that class of conflict by picking one and deleting the other.
+
+**Keep the doc and the shipped code honest about each other.** `docs/tax-sectors/*.md` describes what is *built*, not what was once planned. If the implementation deviates from the doc's advice, update the doc and explain the reason (see `investments-capital-gains.md` §4.4); if a route was deleted, mark the section rather than leaving a spec that reads like a to-do. Rates that are correct in `lib/rates.ts` but wrong in the on-page rate guide are still wrong — the guide table is a published rate claim and gets verified against the calculator, not eyeballed.
+
 **"Official sources" section (every calculator):** each calculator ends — after its FAQ, above the footer — with an `<XxxOfficialSources/>` wrapper around the shared `components/calculator/OfficialSourcesSection.tsx` (eyebrow + heading + `OfficialSourcesGrid` card grid + "Last reviewed" date). The cards come from a `*_OFFICIAL_SOURCES` array in the feature's `lib/content.ts`, typed `OfficialSource[]`; shared URLs, logos and the section copy live in `src/lib/officialSources.ts` (`FBR_DOC_URLS`, `FBR_LOGO`, `IRIS_LOGO`, `OFFICIAL_SOURCES_COPY`), and the salary-slab pages (`/`, reverse-salary, increment, job-offer) all reuse `SALARY_OFFICIAL_SOURCES` from there rather than redefining it.
 
 Those cards must cite **only official government sources, and must cite every official source the page actually uses**. "Official" follows **whichever government levies the tax**, not the FBR specifically:
@@ -115,7 +165,7 @@ Do **not** add third-party summaries (PwC, ICMA, TaxationPK, TaxToday, blogs, et
 
 ## Stack facts
 
-Next.js 15.3 App Router · React 18.3 · TypeScript strict · Tailwind CSS 3 · Biome/ultracite (lint + format, 2-space indent, 100-col; CSS files are excluded from Biome) · `lucide-react`, `recharts` (`react-datepicker` is still in `package.json` but nothing imports it since the multi-year calculator moved to its own day/month/year dropdowns). Charts belong to the feature that uses them — `src/features/<feature>/components/<Xxx>Chart.tsx`, lazy-loaded with `next/dynamic` and `ssr: false`, colours in the feature's `lib/chartColors.ts` (see `features/multi-year-tax`). The legacy single-year charts still live in `src/components/single-year-charts/` (dispatcher + `colors.ts` + `types.ts`) until that calculator is migrated. Shared CSS component classes are defined in `src/app/globals.css` (`.surface-card`, `.form-input`, `.form-select`, `.form-label`, `.btn-calculate`, `.stat-card`, `.chip`, `.section-divider`, `.no-spinner`).
+Next.js 15.3 App Router · React 18.3 · TypeScript strict · Tailwind CSS 3 · Biome/ultracite (lint + format, 2-space indent, 100-col; CSS files are excluded from Biome) · `lucide-react`, `recharts` (`react-datepicker` is still in `package.json` but nothing imports it since the multi-year calculator moved to its own day/month/year dropdowns). Charts belong to the feature that uses them — `src/features/<feature>/components/<Xxx>Chart.tsx`, lazy-loaded with `next/dynamic` and `ssr: false`, colours in the feature's `lib/chartColors.ts` (see `features/multi-year-tax`). The legacy single-year charts still live in `src/components/single-year-charts/` (dispatcher + `colors.ts` + `types.ts`) until that calculator is migrated. Shared CSS component classes are defined in `src/app/globals.css` (`.surface-card`, `.form-input`, `.form-label`, `.btn-calculate`, `.stat-card`, `.chip`, `.section-divider`, `.no-spinner`).
 
 ## Out of scope (Phase 3, parked)
 

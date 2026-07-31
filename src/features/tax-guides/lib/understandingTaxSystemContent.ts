@@ -1,6 +1,7 @@
 import {
   BookOpen,
   Briefcase,
+  Building,
   Building2,
   Calculator,
   CalendarDays,
@@ -9,6 +10,7 @@ import {
   Laptop,
   ReceiptText,
   ShieldCheck,
+  Sprout,
 } from 'lucide-react';
 
 import GuideDeductionsIcon from '@/features/tax-guides/components/icons/GuideDeductionsIcon';
@@ -90,6 +92,18 @@ export const UNDERSTANDING_TAX_SYSTEM_TOOLS = [
     href: '/rental-income-tax-calculator',
     icon: Building2,
   },
+  {
+    id: 'corporate',
+    label: 'Corporate tax calculator',
+    href: '/corporate-tax-calculator',
+    icon: Building,
+  },
+  {
+    id: 'agricultural',
+    label: 'Agricultural income tax calculator',
+    href: '/agricultural-income-tax-calculator',
+    icon: Sprout,
+  },
 ] as const satisfies readonly TaxGuideArticleTool[];
 
 export const UNDERSTANDING_TAX_SYSTEM_SOURCES = [
@@ -121,9 +135,10 @@ export const TAX_SYSTEM_OVERVIEW_CARDS = [
   },
   {
     id: 'provincial',
-    title: 'Provincial taxes — services and property',
+    title: 'Provincial taxes — services, property and farming',
     description: 'Each province has its own revenue authority for taxes under provincial rules.',
-    detail: 'Examples include sales tax on services and some taxes linked to property.',
+    detail:
+      'Examples include sales tax on services, some taxes linked to property, and income from farming — which is left out of federal tax and charged by the province instead.',
     icon: Building2,
   },
   {
@@ -179,9 +194,10 @@ export const TAX_INCOME_HEADS = [
   {
     id: 'capital-gains',
     title: 'Profit from selling assets',
-    description: 'Taxable profit from selling certain assets, such as shares or property.',
-    href: '/property-capital-gains-tax-calculator',
-    linkLabel: 'Property capital gains calculator',
+    description:
+      'Taxable profit from selling certain assets. Shares and mutual funds are taxed on their own at a fixed rate; property has its own separate calculator.',
+    href: '/capital-gains-tax-calculator',
+    linkLabel: 'Capital gains calculator',
   },
   {
     id: 'other',

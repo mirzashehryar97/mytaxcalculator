@@ -1,4 +1,4 @@
-import { parseIsoDate } from '@/utils/calendarDates';
+import { diffInYears, parseIsoDate } from '@/utils/calendarDates';
 
 import {
   CGT_FLAT_RATE,
@@ -93,40 +93,6 @@ export function calcPropertyTransferTax(
     isFlatRate: rates.filer.kind === 'flat' && rates.nonFiler.kind === 'flat',
     hasLateFilerTier: rates.lateFiler !== null,
   };
-}
-
-/**
- * Elapsed years between two dates, counting whole years by calendar anniversary
- * and adding the part-year on top. The statutory bands turn on whether a period
- * "exceeds" a given number of years, so an exact anniversary has to land on the
- * boundary rather than a day either side of it.
- */
-export function diffInYears(startIso: string, endIso: string): number {
-  const start = parseIsoDate(startIso);
-  const end = parseIsoDate(endIso);
-  if (start === null || end === null || end <= start) {
-    return 0;
-  }
-
-  const startDate = new Date(start);
-  let wholeYears = new Date(end).getUTCFullYear() - startDate.getUTCFullYear();
-
-  const anniversaryAt = (yearsLater: number) =>
-    Date.UTC(
-      startDate.getUTCFullYear() + yearsLater,
-      startDate.getUTCMonth(),
-      startDate.getUTCDate(),
-    );
-
-  if (anniversaryAt(wholeYears) > end) {
-    wholeYears -= 1;
-  }
-
-  const lastAnniversary = anniversaryAt(wholeYears);
-  const nextAnniversary = anniversaryAt(wholeYears + 1);
-  const fraction = (end - lastAnniversary) / (nextAnniversary - lastAnniversary);
-
-  return wholeYears + fraction;
 }
 
 /** The grid band a holding period falls into, defaulting to the "over 6 years" row. */

@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 
+import { toSelectOptions } from '@/components/calculator/options';
+import SelectInput from '@/components/calculator/SelectInput';
+
 import {
   BUDGET_YEARS,
   FY_2025_26_SURCHARGE_RATE,
@@ -11,6 +14,7 @@ import {
 import { taxSlabs } from '@/utils/taxCalculator';
 
 const FISCAL_YEARS = Object.keys(taxSlabs);
+const FISCAL_YEAR_OPTIONS = toSelectOptions(FISCAL_YEARS, (year) => `FY ${year}`);
 
 const formatPkr = (value: number) => `Rs. ${value.toLocaleString('en-IN')}`;
 
@@ -43,35 +47,16 @@ export default function SlabsAnswer() {
         <p className="text-gray-600">
           Pakistan&rsquo;s salaried income tax slabs for the selected fiscal year:
         </p>
-        <div className="relative inline-flex w-fit items-center">
-          <select
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            className="cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-10 pl-3 font-semibold text-gray-900 text-sm shadow-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
-            aria-label="Select fiscal year for tax slabs"
-          >
-            {FISCAL_YEARS.map((fy) => (
-              <option key={fy} value={fy}>
-                FY {fy}
-              </option>
-            ))}
-          </select>
-          <span className="pointer-events-none absolute right-3 text-gray-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </span>
-        </div>
+        <SelectInput
+          ariaLabel="Select fiscal year for tax slabs"
+          hideLabel
+          id="slabs-fiscal-year"
+          label="Fiscal year"
+          onChange={setYear}
+          options={FISCAL_YEAR_OPTIONS}
+          size="inline"
+          value={year}
+        />
       </div>
 
       <div className="overflow-hidden rounded-xl border border-gray-200">

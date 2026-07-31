@@ -99,6 +99,43 @@ export function parseIsoDate(value: string): number | null {
   return Number.isNaN(timestamp) ? null : timestamp;
 }
 
+/**
+ * Whole years between two `YYYY-MM-DD` dates, counting anniversaries rather than
+ * dividing by 365 — leap years would otherwise drift a holding period across a
+ * band boundary. Returns the whole years plus the part-year on top.
+ *
+ * Both the property and securities capital-gains grids turn on whether a period
+ * "exceeds" a given number of years, so an exact anniversary has to land on the
+ * boundary rather than a day either side of it.
+ */
+export function diffInYears(startIso: string, endIso: string): number {
+  const start = parseIsoDate(startIso);
+  const end = parseIsoDate(endIso);
+  if (start === null || end === null || end <= start) {
+    return 0;
+  }
+
+  const startDate = new Date(start);
+  let wholeYears = new Date(end).getUTCFullYear() - startDate.getUTCFullYear();
+
+  const anniversaryAt = (yearsLater: number) =>
+    Date.UTC(
+      startDate.getUTCFullYear() + yearsLater,
+      startDate.getUTCMonth(),
+      startDate.getUTCDate(),
+    );
+
+  if (anniversaryAt(wholeYears) > end) {
+    wholeYears -= 1;
+  }
+
+  const lastAnniversary = anniversaryAt(wholeYears);
+  const nextAnniversary = anniversaryAt(wholeYears + 1);
+  const fraction = (end - lastAnniversary) / (nextAnniversary - lastAnniversary);
+
+  return wholeYears + fraction;
+}
+
 /** Joins numeric parts back into a zero-padded `YYYY-MM-DD` value. */
 export function toIsoDate({ year, month, day }: IsoDateParts): string {
   const paddedMonth = String(month).padStart(2, '0');

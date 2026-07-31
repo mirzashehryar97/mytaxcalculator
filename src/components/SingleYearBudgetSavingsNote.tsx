@@ -3,7 +3,10 @@
 import { type ReactNode, useState } from 'react';
 
 import type { LucideIcon } from 'lucide-react';
-import { Check, ChevronDown, Equal, Info, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
+import { Check, Equal, Info, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
+
+import { toSelectOptions } from '@/components/calculator/options';
+import SelectInput from '@/components/calculator/SelectInput';
 
 import {
   type BudgetYearComparison,
@@ -164,28 +167,15 @@ export default function SingleYearBudgetSavingsNote({
               </p>
               <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-gray-500 text-sm">
                 compared with
-                <label htmlFor="single-year-comparison-year" className="sr-only">
-                  Comparison fiscal year
-                </label>
-                <span className="relative inline-flex items-center">
-                  <select
-                    id="single-year-comparison-year"
-                    value={comparisonYear}
-                    onChange={(event) => setComparisonYear(event.target.value)}
-                    className="cursor-pointer appearance-none rounded-md border border-gray-300 bg-white py-0.5 pr-7 pl-2.5 font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
-                  >
-                    {comparisonOptions.map((year) => (
-                      <option key={year} value={year}>
-                        {formatFyLabel(year)}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    aria-hidden
-                    className="pointer-events-none absolute right-2 h-3.5 w-3.5 text-gray-400"
-                    strokeWidth={2.5}
-                  />
-                </span>
+                <SelectInput
+                  hideLabel
+                  id="single-year-comparison-year"
+                  label="Comparison fiscal year"
+                  onChange={setComparisonYear}
+                  options={toSelectOptions(comparisonOptions, formatFyLabel)}
+                  size="inline"
+                  value={comparisonYear}
+                />
               </p>
             </div>
           </div>

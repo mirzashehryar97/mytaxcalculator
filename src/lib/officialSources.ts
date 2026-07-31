@@ -24,6 +24,18 @@ export const FINANCE_DIVISION_LOGO = {
 } as const satisfies SourceLogo;
 
 /**
+ * For a federal Act read from the gazette the National Assembly publishes
+ * rather than from an FBR reprint — the FBR wordmark would misattribute it.
+ */
+export const NATIONAL_ASSEMBLY_LOGO = {
+  src: '/images/official/pakistan-government-emblem.png',
+  alt: 'National Assembly of Pakistan',
+  width: 192,
+  height: 206,
+  prominent: true,
+} as const satisfies SourceLogo;
+
+/**
  * Provincial emblems, each taken from the website of the department or law
  * portal the card links to — a provincial levy is cited to its own government,
  * so it carries that government's mark rather than the FBR wordmark.
@@ -31,8 +43,8 @@ export const FINANCE_DIVISION_LOGO = {
 export const PUNJAB_EXCISE_LOGO = {
   src: '/images/official/punjab-government-emblem.png',
   alt: 'Punjab Excise & Taxation Department',
-  width: 96,
-  height: 89,
+  width: 264,
+  height: 223,
   prominent: true,
 } as const satisfies SourceLogo;
 
@@ -60,14 +72,64 @@ export const BALOCHISTAN_EXCISE_LOGO = {
   prominent: true,
 } as const satisfies SourceLogo;
 
+/**
+ * The same emblems again, named for the government rather than one of its
+ * departments — a provincial Act or gazette notification is cited to the
+ * province itself, not to its excise office.
+ */
+export const PUNJAB_GOVERNMENT_LOGO = {
+  src: '/images/official/punjab-government-emblem.png',
+  alt: 'Government of the Punjab',
+  width: 264,
+  height: 223,
+  prominent: true,
+} as const satisfies SourceLogo;
+
+export const SINDH_GOVERNMENT_LOGO = {
+  src: '/images/official/sindh-government-emblem.png',
+  alt: 'Government of Sindh',
+  width: 80,
+  height: 86,
+  prominent: true,
+} as const satisfies SourceLogo;
+
+export const BALOCHISTAN_GOVERNMENT_LOGO = {
+  src: '/images/official/balochistan-government-emblem.png',
+  alt: 'Government of Balochistan',
+  width: 240,
+  height: 200,
+  prominent: true,
+} as const satisfies SourceLogo;
+
 /** Official FBR document URLs cited by the calculators. */
 export const FBR_DOC_URLS = {
   financeAct2026: 'https://download1.fbr.gov.pk/Docs/20266291261044366FinanceAct2026.pdf',
+  financeAct2025: 'https://download1.fbr.gov.pk/Docs/2025629106147620FInanceAct2025.pdf',
   financeAct2024: 'https://download1.fbr.gov.pk/Docs/2024630146346801FinanceAct-2024.pdf',
   financeAct2023: 'https://download1.fbr.gov.pk/Docs/20236261762031274FinanceAct,2023.pdf',
+  /** Installed the company table that ran to tax year 2024, and inserted Division IIB. */
+  financeAct2022: 'https://download1.fbr.gov.pk/Docs/2022711571639532FinanceAct2022.pdf',
+  /**
+   * Substituted the whole Division IX minimum-turnover table and clause (24D)
+   * with it — the only place the older 0.25% distributor rate is still written
+   * out, since later Acts substituted the clause rather than amending it.
+   */
+  financeAct2021: 'https://download1.fbr.gov.pk/Docs/2021751375221891FinanceAct2021.pdf',
   incomeTaxOrdinance:
     'https://download1.fbr.gov.pk/Docs/2024751675120641IncomeTaxOrdinance,2001-amended-upto30.06.2024.pdf',
+  /**
+   * The consolidated Ordinance published after the Finance Act 2026, so it is
+   * the only version carrying the current company, minimum-tax and super-tax
+   * tables — along with footnotes recording what each of them replaced.
+   */
+  incomeTaxOrdinance2026:
+    'https://download1.fbr.gov.pk/Docs/2026724177725705IncomeTaxOrdinanace2001.pdf',
+  /** FBR's own explanation of the Finance Act 2025 income tax changes. */
+  incomeTaxCircular2025:
+    'https://download1.fbr.gov.pk/Docs/2025841183918948CircularNo01of2025-26IncomeTax.pdf',
   whtRateCard: 'https://download1.fbr.gov.pk/Docs/20258181281745641WHT-RateCard.pdf',
+  /** The card as it stood under the Finance Act 2023 — the source for the older years. */
+  whtRateCard2023: 'https://download1.fbr.gov.pk/Docs/20238215830342WithholdingRatesCards.pdf',
   iris: 'https://iris.fbr.gov.pk/',
 } as const;
 

@@ -2,9 +2,9 @@ import Image from 'next/image';
 
 import { Linkedin, Twitter } from 'lucide-react';
 
+import BrandWordmark from '@/components/layout/BrandWordmark';
 import FooterLinkColumn from '@/components/layout/FooterLinkColumn';
 import {
-  FOOTER_CALCULATOR_LINKS,
   FOOTER_COPY,
   FOOTER_EXTERNAL_LINKS,
   FOOTER_GUIDE_LINKS,
@@ -14,10 +14,10 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 mt-8 border-white/10 border-t bg-emerald-950/80">
+    <footer className="relative z-10 mt-8 border-white/10 border-t bg-[#052518] bg-[radial-gradient(circle_at_10%_0%,rgba(20,184,166,0.14),transparent_28%),radial-gradient(circle_at_88%_20%,rgba(16,185,129,0.11),transparent_34%),linear-gradient(135deg,#031b12_0%,#083f2e_46%,#031b12_100%)] text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
-          <div className="col-span-1 md:col-span-2 lg:col-span-4 xl:col-span-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-2">
             <div className="flex items-center">
               <Image
                 src="/main-logo.png"
@@ -26,8 +26,8 @@ export default function Footer() {
                 height={36}
                 className="h-9 w-9"
               />
-              <span className="ml-2.5 font-extrabold text-white text-xl tracking-tight">
-                My Tax Calculator
+              <span className="ml-2.5">
+                <BrandWordmark tone="light" />
               </span>
             </div>
             <p className="mt-4 max-w-md text-emerald-100/70 text-sm leading-relaxed">
@@ -38,7 +38,7 @@ export default function Footer() {
                 type="button"
                 aria-label="Twitter"
                 disabled
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-emerald-100 transition-colors hover:bg-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-slate-300 transition-colors hover:border-emerald-300 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Twitter className="h-4 w-4" aria-hidden="true" />
               </button>
@@ -46,7 +46,7 @@ export default function Footer() {
                 type="button"
                 aria-label="LinkedIn"
                 disabled
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-emerald-100 transition-colors hover:bg-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-slate-300 transition-colors hover:border-emerald-300 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Linkedin className="h-4 w-4" aria-hidden="true" />
               </button>
@@ -54,8 +54,6 @@ export default function Footer() {
           </div>
 
           <FooterLinkColumn title={FOOTER_COPY.quickLinksTitle} links={FOOTER_QUICK_LINKS} />
-
-          <FooterLinkColumn title={FOOTER_COPY.calculatorsTitle} links={FOOTER_CALCULATOR_LINKS} />
 
           <FooterLinkColumn
             title={FOOTER_COPY.guidesTitle}

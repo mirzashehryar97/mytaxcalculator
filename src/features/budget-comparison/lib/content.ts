@@ -1,10 +1,12 @@
 import {
+  Banknote,
   BarChart3,
   Briefcase,
   Calculator,
   CalendarDays,
   Car,
   Clock3,
+  Coins,
   Home,
   Landmark,
   Laptop,
@@ -66,6 +68,24 @@ export const BUDGET_TOOLS: readonly BudgetTool[] = [
     label: 'Business & AOP calculator',
     href: '/business-tax-calculator',
     icon: Briefcase,
+  },
+  {
+    id: 'corporate',
+    label: 'Corporate & super tax calculators',
+    href: '/corporate-tax-calculator',
+    icon: Landmark,
+  },
+  {
+    id: 'everyday-withholding',
+    label: 'Everyday tax calculators',
+    href: '/cash-withdrawal-tax-calculator',
+    icon: Banknote,
+  },
+  {
+    id: 'capital-gains',
+    label: 'Capital gains calculators',
+    href: '/capital-gains-tax-calculator',
+    icon: Coins,
   },
 ];
 

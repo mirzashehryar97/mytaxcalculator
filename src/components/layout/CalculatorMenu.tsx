@@ -93,19 +93,12 @@ export default function CalculatorMenu({
                   : 'text-gray-700 hover:bg-emerald-50'
               }`}
             >
-              <span className="flex items-center gap-2">
-                <span
-                  className={`font-semibold text-sm ${
-                    active ? 'underline decoration-2 decoration-emerald-600 underline-offset-4' : ''
-                  }`}
-                >
-                  {link.label}
-                </span>
-                {link.isNew ? (
-                  <span className="inline-flex items-center rounded-full bg-emerald-100 px-1.5 py-0.5 font-bold text-[9px] text-emerald-900 uppercase leading-none tracking-wide">
-                    {NEW_NAV_BADGE_LABEL}
-                  </span>
-                ) : null}
+              <span
+                className={`block font-semibold text-sm ${
+                  active ? 'underline decoration-2 decoration-emerald-600 underline-offset-4' : ''
+                }`}
+              >
+                {link.label}
               </span>
               <span
                 className={`mt-0.5 block text-xs ${

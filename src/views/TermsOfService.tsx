@@ -62,8 +62,8 @@ const TermsOfService = () => {
             <p>
               To the fullest extent permitted by law, My Tax Calculator and its operators shall not
               be liable for any loss or damage arising from your reliance on calculations or
-              information provided by the site, including penalties, interest, or miscalculated tax
-              liabilities.
+              information provided by the site, including penalties, surcharges, or miscalculated
+              tax liabilities.
             </p>
           </section>
 

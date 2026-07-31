@@ -1,3 +1,5 @@
+import type { SelectOption } from '@/components/calculator/select';
+
 /** One date as held by the day / month / year dropdowns. `''` means "not chosen yet". */
 export interface DateParts {
   /** Day of the month, `'1'`–`'31'`. */
@@ -23,12 +25,8 @@ export interface SalaryPeriod {
   salary: string;
 }
 
-export interface DatePartOption {
-  value: string;
-  label: string;
-  /** Set when the option can't be chosen; the tooltip text explaining why. */
-  disabledReason?: string;
-}
+/** One day / month / year choice, including the ones a boundary rules out. */
+export type DatePartOption = SelectOption;
 
 /** One edge of the range a date field may sit in, with the reason it stops there. */
 export interface DateBoundary {

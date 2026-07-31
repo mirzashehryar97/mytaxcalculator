@@ -1,3 +1,5 @@
+import { toLabelledOptions } from '@/components/calculator/options';
+
 import type {
   VehicleAnnualTaxYear,
   VehicleCcTier,
@@ -846,6 +848,11 @@ export const VEHICLE_PROVINCES = [
     ],
   },
 ] as const satisfies readonly VehicleProvinceConfig[];
+
+export const VEHICLE_PROVINCE_OPTIONS = toLabelledOptions(
+  VEHICLE_PROVINCES,
+  (entry) => entry.province,
+);
 
 export const VEHICLE_FISCAL_YEARS = [
   '2026-2027',

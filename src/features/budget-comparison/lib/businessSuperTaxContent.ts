@@ -55,6 +55,24 @@ export const BUSINESS_SUPER_TAX_TOOLS = [
     href: '/business-tax-calculator',
     icon: Briefcase,
   },
+  {
+    id: 'super-tax-calculator',
+    label: 'Super tax calculator',
+    href: '/super-tax-calculator',
+    icon: TrendingUp,
+  },
+  {
+    id: 'corporate-tax-calculator',
+    label: 'Corporate tax calculator',
+    href: '/corporate-tax-calculator',
+    icon: Landmark,
+  },
+  {
+    id: 'minimum-tax-calculator',
+    label: 'Minimum turnover tax calculator',
+    href: '/minimum-turnover-tax-calculator',
+    icon: Factory,
+  },
   { id: 'salary-calculator', label: 'Salary tax calculator', href: '/', icon: Calculator },
   {
     id: 'budget-comparison',

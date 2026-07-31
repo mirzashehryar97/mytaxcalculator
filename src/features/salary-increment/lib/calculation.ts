@@ -16,7 +16,7 @@ function toNonNegative(value: number): number {
 /**
  * Computes the salary tax and take-home figures for one scenario using the salary slab
  * engine. Bonus is treated as taxable salary; deductions reduce take-home after tax
- * (e.g. loan repayments, insurance) and do not lower the taxable amount.
+ * (e.g. a salary advance being recovered, society dues) and do not lower the taxable amount.
  */
 export function computeSalaryScenario(
   input: SalaryScenarioInput,

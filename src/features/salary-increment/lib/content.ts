@@ -65,7 +65,7 @@ export const SALARY_COMPARISON_FORM_COPY = {
   newDeductionsLabel: 'New Monthly Deductions (Optional)',
   optionalFieldsLabel: 'Additional optional fields',
   deductionsHelp:
-    'Post-tax amounts taken from your salary, such as loan repayments or insurance. They lower your take-home but not your taxable income.',
+    'Post-tax amounts taken from your salary, such as a salary advance being recovered or society dues. They lower your take-home but not your taxable income.',
   invalidIncrement: 'Enter your current monthly salary to compare take-home pay.',
   invalidJobOffer: 'Enter your current salary and the new offered salary to compare.',
 } as const;
@@ -168,7 +168,7 @@ export const JOB_OFFER_COMPARISON_METHODOLOGY_COPY = {
     {
       title: 'Include deductions',
       description:
-        'Enter comparable post-tax deductions, such as insurance or loan repayments, for each role instead of comparing gross pay alone.',
+        'Enter comparable post-tax deductions, such as a salary advance being recovered or society dues, for each role instead of comparing gross pay alone.',
     },
     {
       title: 'Compare real take-home',
@@ -195,7 +195,7 @@ export const SALARY_INCREMENT_FAQS = [
     id: 'what-are-deductions',
     question: 'What should I enter under monthly deductions?',
     answer:
-      'Use monthly deductions for after-tax amounts taken from your pay, such as loan repayments, insurance, or society dues. They reduce your take-home pay but do not lower the income your tax is calculated on.',
+      'Use monthly deductions for after-tax amounts taken from your pay, such as a salary advance being recovered, welfare fund contributions or society dues. They reduce your take-home pay but do not lower the income your tax is calculated on.',
   },
   {
     id: 'why-take-home-less-than-raise',
@@ -228,7 +228,7 @@ export const JOB_OFFER_COMPARISON_FAQS = [
     id: 'deductions-and-benefits',
     question: 'How should I compare deductions and employee benefits?',
     answer:
-      'Enter recurring post-tax payroll deductions for each job, such as loan repayments or insurance. Non-cash benefits such as medical cover, transport, equity, leave and remote-work flexibility are not assigned a rupee value, so review them separately before deciding.',
+      'Enter recurring post-tax payroll deductions for each job, such as a salary advance being recovered or society dues. Non-cash benefits such as medical cover, transport, equity, leave and remote-work flexibility are not assigned a rupee value, so review them separately before deciding.',
   },
   {
     id: 'higher-gross-lower-net',

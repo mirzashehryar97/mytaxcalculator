@@ -39,28 +39,30 @@ export default function RelatedCalculators({ currentHref }: RelatedCalculatorsPr
         </p>
       </div>
 
-      <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 sm:gap-5">
+      <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:max-w-7xl xl:grid-cols-5">
         {links.map((link) => {
           const Icon = link.icon;
           return (
             <Link
               key={link.href}
               href={link.href}
-              className="group flex items-center gap-4 rounded-2xl border border-white/60 bg-white/95 p-5 shadow-emerald-950/10 shadow-lg backdrop-blur-sm transition-all hover:border-emerald-200 hover:shadow-xl sm:gap-5 sm:p-6"
+              className="group flex h-full flex-col rounded-2xl border border-white/60 bg-white/95 p-5 shadow-emerald-950/10 shadow-lg backdrop-blur-sm transition-all hover:border-emerald-200 hover:shadow-xl"
             >
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600 ring-1 ring-emerald-200/70">
-                <Icon className="h-7 w-7" aria-hidden="true" />
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20">
+                <Icon className="h-6 w-6" aria-hidden="true" />
               </span>
 
-              <span className="min-w-0 flex-1">
-                <span className="block font-bold text-gray-900 text-lg group-hover:text-emerald-700">
-                  {link.label}
-                </span>
-                <span className="mt-0.5 block text-gray-500 text-sm">{link.description}</span>
+              <span className="mt-4 block text-balance font-bold text-base text-gray-900 group-hover:text-emerald-700">
+                {link.label}
               </span>
+              <span className="mt-1.5 block text-gray-500 text-sm">{link.description}</span>
 
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-1 ring-emerald-200 transition-transform group-hover:translate-x-0.5">
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
+              <span className="mt-auto flex items-center gap-1.5 pt-4 font-semibold text-emerald-700 text-sm group-hover:text-emerald-800">
+                {RELATED_CALCULATORS_COPY.cta}
+                <ArrowRight
+                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
               </span>
             </Link>
           );

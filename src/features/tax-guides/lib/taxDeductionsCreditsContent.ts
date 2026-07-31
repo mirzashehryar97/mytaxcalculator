@@ -232,7 +232,7 @@ export const DEDUCTIONS_SECTION_COPY = {
   categoriesTitle: 'Common relief categories',
   expensesTitle: 'Not every personal expense is deductible',
   expensesDescription:
-    'Tuition fees qualify only when section 60D conditions are met, and interest on a qualifying low-cost housing loan follows separate credit rules. Medical costs, general insurance premiums and ordinary household spending do not automatically qualify.',
+    'Tuition fees qualify only when section 60D conditions are met, and profit paid on qualifying low-cost housing finance follows separate credit rules. Medical costs, general cover premiums and ordinary household spending do not automatically qualify.',
   exampleTitle: 'Worked example: why the distinction matters',
   exampleCreditLabel: 'An eligible tax credit is then applied to calculated tax',
   exampleNotice: 'Illustration only—the statutory formula and limits determine the actual credit.',

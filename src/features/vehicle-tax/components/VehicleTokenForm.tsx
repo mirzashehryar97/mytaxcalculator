@@ -4,6 +4,7 @@ import DateInput from '@/components/calculator/DateInput';
 import FilerToggle from '@/components/calculator/FilerToggle';
 import FiscalYearSelect from '@/components/calculator/FiscalYearSelect';
 import NumberInput from '@/components/calculator/NumberInput';
+import SelectInput from '@/components/calculator/SelectInput';
 import SwitchToggle from '@/components/calculator/SwitchToggle';
 import InfoTooltip from '@/components/ui/InfoTooltip';
 
@@ -20,7 +21,7 @@ import {
   getVehicleProvince,
   resolveVehicleProvince,
   resolveVehicleTokenFiscalYear,
-  VEHICLE_PROVINCES,
+  VEHICLE_PROVINCE_OPTIONS,
   VEHICLE_TOKEN_FISCAL_YEARS,
 } from '@/features/vehicle-tax/lib/rates';
 
@@ -56,25 +57,13 @@ export default function VehicleTokenForm({
           onChange={(value) => updateField('fiscalYear', resolveVehicleTokenFiscalYear(value))}
         />
 
-        <div className="min-w-0">
-          <label htmlFor="vehicle-token-province" className="form-label">
-            {VEHICLE_TOKEN_FORM_COPY.provinceLabel}
-          </label>
-          <select
-            id="vehicle-token-province"
-            value={formState.province}
-            onChange={(event) =>
-              updateField('province', resolveVehicleProvince(event.target.value))
-            }
-            className="form-select"
-          >
-            {VEHICLE_PROVINCES.map((entry) => (
-              <option key={entry.province} value={entry.province}>
-                {entry.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <SelectInput
+          id="vehicle-token-province"
+          label={VEHICLE_TOKEN_FORM_COPY.provinceLabel}
+          onChange={(value) => updateField('province', resolveVehicleProvince(value))}
+          options={VEHICLE_PROVINCE_OPTIONS}
+          value={formState.province}
+        />
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">

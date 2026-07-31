@@ -230,11 +230,14 @@ export const RENTAL_DEDUCTIONS_COPY = {
       id: 'property-tax',
       text: 'Property tax, local rates and other council charges on the property.',
     },
-    { id: 'insurance', text: 'Insurance against damage to the building.' },
+    {
+      id: 'building-cover',
+      text: 'Premiums paid to cover the building against damage or destruction.',
+    },
     { id: 'ground-rent', text: 'Ground rent on the property.' },
     {
-      id: 'interest',
-      text: 'Interest or profit on money you borrowed to buy, build, extend or renovate the property.',
+      id: 'borrowing-profit',
+      text: 'Profit paid on money you borrowed to buy, build, extend or renovate the property.',
     },
     {
       id: 'collection',
@@ -321,7 +324,7 @@ export const RENTAL_FAQS = [
     id: 'deductions',
     question: 'What can I claim against my rental income when I file?',
     answer:
-      'A repairs allowance of one-fifth (20%) of the rent with no receipts needed, plus property tax and local rates, building insurance, ground rent, interest on money borrowed for the property, up to 4% of rent for collection and running costs, legal fees defending your ownership, and rent a tenant never paid. These lower your final tax, not the amount your tenant takes out.',
+      'A repairs allowance of one-fifth (20%) of the rent with no receipts needed, plus property tax and local rates, premiums covering the building against damage, ground rent, profit paid on money borrowed for the property, up to 4% of rent for collection and running costs, legal fees defending your ownership, and rent a tenant never paid. These lower your final tax, not the amount your tenant takes out.',
   },
   {
     id: 'small-rent',

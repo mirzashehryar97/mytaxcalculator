@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { X } from 'lucide-react';
 
+import BrandWordmark from '@/components/layout/BrandWordmark';
 import BudgetNavLink from '@/components/layout/BudgetNavLink';
 import CalculatorMenu from '@/components/layout/CalculatorMenu';
 import { BUDGET_PATH, getNavLinkClass, STANDARD_NAV_LINKS } from '@/components/layout/navigation';
@@ -40,8 +41,8 @@ export default function MobileNavDrawer({ pathname, onClose }: MobileNavDrawerPr
               height={32}
               className="h-8 w-8"
             />
-            <span className="ml-2 font-bold text-base text-gray-900 tracking-tight">
-              My Tax Calculator
+            <span className="ml-2">
+              <BrandWordmark size="sm" />
             </span>
           </Link>
           <button

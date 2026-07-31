@@ -6,6 +6,9 @@ import dynamic from 'next/dynamic';
 
 import { BarChart2 } from 'lucide-react';
 
+import { toSelectOptions } from '@/components/calculator/options';
+import SelectInput from '@/components/calculator/SelectInput';
+
 import { useCalculator } from '@/context/useCalculator';
 
 import { trackAnalyticsEvent } from '@/lib/analytics';
@@ -36,6 +39,8 @@ const fiscalYears = [
   '2015-2016',
   '2014-2015',
 ];
+
+const fiscalYearOptions = toSelectOptions(fiscalYears);
 
 function SingleYearCalculator() {
   const { singleYear, setSingleYear } = useCalculator();
@@ -82,23 +87,13 @@ function SingleYearCalculator() {
     <div className="mx-auto max-w-4xl">
       <div className="space-y-8">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div>
-            <label htmlFor="fiscal-year" className="form-label text-gray-800">
-              Fiscal Year
-            </label>
-            <select
-              id="fiscal-year"
-              value={selectedYear}
-              onChange={(e) => setSingleYear((prev) => ({ ...prev, selectedYear: e.target.value }))}
-              className="form-select"
-            >
-              {fiscalYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SelectInput
+            id="fiscal-year"
+            label="Fiscal Year"
+            onChange={(value) => setSingleYear((prev) => ({ ...prev, selectedYear: value }))}
+            options={fiscalYearOptions}
+            value={selectedYear}
+          />
 
           <div>
             <label htmlFor="monthly-salary" className="form-label text-gray-800">

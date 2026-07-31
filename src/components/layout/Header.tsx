@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import BrandWordmark from '@/components/layout/BrandWordmark';
 import HeaderNav from '@/components/layout/HeaderNav';
 
 export default function Header() {
@@ -17,13 +18,8 @@ export default function Header() {
                 height={36}
                 className="h-9 w-9 transition-transform duration-200 group-hover:scale-105"
               />
-              <div className="ml-2.5 leading-none md:hidden xl:block">
-                <span className="font-bold text-gray-900 text-xl tracking-tight">
-                  My Tax Calculator
-                </span>
-                <span className="ml-1.5 hidden font-semibold text-emerald-600 text-sm 2xl:inline-block">
-                  Pakistan
-                </span>
+              <div className="ml-2.5 md:hidden xl:block">
+                <BrandWordmark />
               </div>
             </Link>
           </div>

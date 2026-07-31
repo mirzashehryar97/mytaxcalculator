@@ -1,4 +1,4 @@
-import { PiggyBank } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 
 import InfoTooltip from '@/components/ui/InfoTooltip';
 
@@ -72,7 +72,7 @@ export default function VehicleFilerComparison({
 
       <p className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
         <span className="inline-flex items-center gap-2 font-semibold text-emerald-800 text-sm">
-          <PiggyBank className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
+          <Wallet className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
           {savingLabel}
         </span>
         <span className="amount-wrap font-bold text-emerald-700 tabular-nums">

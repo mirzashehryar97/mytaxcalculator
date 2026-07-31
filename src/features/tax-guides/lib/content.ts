@@ -1,10 +1,13 @@
 import {
   BadgePercent,
+  Banknote,
   BarChart3,
   Briefcase,
+  Building,
   Building2,
   CalendarDays,
   Car,
+  Coins,
   Gift,
   Home,
   Laptop,
@@ -12,6 +15,7 @@ import {
   Monitor,
   Scale,
   ShieldCheck,
+  Sprout,
   TrendingUp,
   User,
   WalletCards,
@@ -124,6 +128,12 @@ export const TAX_GUIDE_TOPICS = [
     icon: Briefcase,
   },
   {
+    id: 'companies',
+    label: 'Companies',
+    href: '/corporate-tax-calculator',
+    icon: Building,
+  },
+  {
     id: 'rental',
     label: 'Rental income',
     href: '/rental-income-tax-calculator',
@@ -137,15 +147,33 @@ export const TAX_GUIDE_TOPICS = [
   },
   {
     id: 'capital-gains',
-    label: 'Capital gains',
+    label: 'Property capital gains',
     href: '/property-capital-gains-tax-calculator',
     icon: LineChart,
+  },
+  {
+    id: 'investments',
+    label: 'Shares & investments',
+    href: '/capital-gains-tax-calculator',
+    icon: Coins,
   },
   {
     id: 'vehicles',
     label: 'Vehicles',
     href: '/vehicle-tax-calculator',
     icon: Car,
+  },
+  {
+    id: 'farming',
+    label: 'Farm income',
+    href: '/agricultural-income-tax-calculator',
+    icon: Sprout,
+  },
+  {
+    id: 'everyday-deductions',
+    label: 'Everyday deductions',
+    href: '/cash-withdrawal-tax-calculator',
+    icon: Banknote,
   },
   {
     id: 'budget',
@@ -200,6 +228,30 @@ export const TAX_GUIDES_FAQS = [
     answer:
       'Keep income and salary certificates, bank and withholding records, evidence for deductions or credits, and details supporting your wealth statement, assets and liabilities. The exact records depend on your income sources and claims.',
     linkLabel: 'See the document checklist',
+  },
+  {
+    id: 'everyday-deductions',
+    question: 'Why is tax taken from my mobile load, electricity bill and bank cash?',
+    href: '/mobile-internet-tax-calculator',
+    answer:
+      'These are advance income tax collected as you spend: 15% of a mobile load or internet bill under Section 236, 7.5% of a home electricity bill of PKR 25,000 or more for people off the Active Taxpayer List under Section 235, and 0.8% of a day’s bank cash once it passes PKR 50,000 for the same group under Section 231AB. All three count towards your income tax for the year and are claimed on your return.',
+    linkLabel: 'Work out what you are paying',
+  },
+  {
+    id: 'investment-profits',
+    question: 'Do I pay tax on profit from shares or mutual funds?',
+    href: '/capital-gains-tax-calculator',
+    answer:
+      'Yes, but only on the profit, and it is taxed on its own rather than added to your salary. Shares bought on or after 1 July 2024 are charged 15% however long you hold them, while older holdings can be lower or exempt. Mutual funds are 15% for a person. NCCPL or your fund company works it out and collects it, then issues a certificate you file with your return.',
+    linkLabel: 'Work out tax on your investment profit',
+  },
+  {
+    id: 'agricultural-income',
+    question: 'Is income from farming taxed?',
+    href: '/agricultural-income-tax-calculator',
+    answer:
+      'Not by FBR — agricultural income is exempt from federal income tax. Your province taxes it instead, and since 1 January 2025 Punjab, Sindh, Khyber Pakhtunkhwa and Balochistan all use the same scale: nothing on the first PKR 600,000, then 15% rising in steps to 45% above PKR 5,600,000. Punjab, KP and Balochistan also charge a fixed amount per acre on land above 12½ acres.',
+    linkLabel: 'Work out your provincial farm tax',
   },
   {
     id: 'salary-calculation',
@@ -270,6 +322,35 @@ export const TAX_GUIDE_SEARCH_ENTRIES = [
     keywords: ['business', 'AOP', 'self employed', 'professional'],
   },
   {
+    id: 'corporate-tax-calculator',
+    title: 'Corporate tax calculator',
+    description: 'Estimate the income tax a company owes on its yearly taxable profit.',
+    href: '/corporate-tax-calculator',
+    keywords: [
+      'company',
+      'corporate',
+      'Pvt Ltd',
+      'small company',
+      'banking company',
+      '29%',
+      'division II',
+    ],
+  },
+  {
+    id: 'minimum-turnover-tax-calculator',
+    title: 'Minimum turnover tax calculator',
+    description: 'Check the Section 113 tax floor worked out from yearly sales instead of profit.',
+    href: '/minimum-turnover-tax-calculator',
+    keywords: ['minimum tax', 'turnover', 'section 113', 'loss', '1.25%', 'carry forward'],
+  },
+  {
+    id: 'super-tax-calculator',
+    title: 'Super tax calculator',
+    description: 'Estimate the Section 4C extra tax charged on very high income.',
+    href: '/super-tax-calculator',
+    keywords: ['super tax', 'section 4C', 'high income', '500 million', 'banks', '8%'],
+  },
+  {
     id: 'rental-calculator',
     title: 'Rental income tax calculator',
     description: 'Estimate the tax your tenant deducts from rent under Section 155.',
@@ -298,6 +379,39 @@ export const TAX_GUIDE_SEARCH_ENTRIES = [
     keywords: ['capital gains', 'CGT', 'property', 'profit', 'holding period', 'section 37'],
   },
   {
+    id: 'capital-gains-calculator',
+    title: 'Capital gains tax calculator (shares)',
+    description:
+      'Estimate the tax on profit from selling shares on the Pakistan Stock Exchange under Section 37A.',
+    href: '/capital-gains-tax-calculator',
+    keywords: [
+      'capital gains',
+      'CGT',
+      'shares',
+      'stocks',
+      'PSX',
+      'stock exchange',
+      'NCCPL',
+      'section 37A',
+      'investment',
+    ],
+  },
+  {
+    id: 'mutual-fund-calculator',
+    title: 'Mutual fund tax calculator',
+    description: 'Estimate the capital gains tax deducted when you cash in units of a mutual fund.',
+    href: '/mutual-fund-tax-calculator',
+    keywords: [
+      'mutual fund',
+      'units',
+      'redemption',
+      'stock fund',
+      'other fund',
+      'AMC',
+      'investment',
+    ],
+  },
+  {
     id: 'vehicle-tax-calculator',
     title: 'Vehicle tax calculator',
     description:
@@ -312,6 +426,48 @@ export const TAX_GUIDE_SEARCH_ENTRIES = [
       'Estimate the yearly token tax in your province plus the federal Section 234 charge collected with it.',
     href: '/vehicle-token-tax-calculator',
     keywords: ['token tax', 'vehicle', 'car', 'Punjab', 'Islamabad', 'section 234', 'yearly'],
+  },
+  {
+    id: 'cash-withdrawal-calculator',
+    title: 'Cash withdrawal tax calculator',
+    description:
+      'Estimate what a bank deducts on cash withdrawals under Section 231AB, and what filing saves you.',
+    href: '/cash-withdrawal-tax-calculator',
+    keywords: ['cash', 'withdrawal', 'bank', 'ATM', '231AB', 'non filer', 'daily limit'],
+  },
+  {
+    id: 'electricity-bill-calculator',
+    title: 'Electricity bill tax calculator',
+    description:
+      'Estimate the income tax added to a home, shop or factory electricity bill under Section 235.',
+    href: '/electricity-bill-tax-calculator',
+    keywords: ['electricity', 'bill', 'utility', '235', 'domestic', 'commercial', 'industrial'],
+  },
+  {
+    id: 'agricultural-income-calculator',
+    title: 'Agricultural income tax calculator',
+    description:
+      'Work out the tax your province charges on farm income, and the per-acre tax on farmed land.',
+    href: '/agricultural-income-tax-calculator',
+    keywords: [
+      'agriculture',
+      'farm',
+      'farming',
+      'land',
+      'crops',
+      'per acre',
+      'Punjab',
+      'Sindh',
+      'provincial',
+    ],
+  },
+  {
+    id: 'mobile-internet-calculator',
+    title: 'Mobile & internet tax calculator',
+    description:
+      'Estimate the tax inside a mobile load, internet bill or landline bill under Section 236.',
+    href: '/mobile-internet-tax-calculator',
+    keywords: ['mobile', 'load', 'internet', 'telephone', 'landline', '236', 'prepaid', 'balance'],
   },
   ...TAX_GUIDES_FAQS.map((faq) => ({
     id: `faq-${faq.id}`,

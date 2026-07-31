@@ -154,15 +154,6 @@ html {
     @apply invalid:border-red-300 invalid:focus:border-red-500 invalid:focus:ring-red-500/20;
   }
 
-  .form-select {
-    @apply w-full px-4 py-3 text-lg rounded-xl border-2 border-gray-200 bg-white transition-all duration-200 ease-in-out cursor-pointer;
-    @apply focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/15 focus:outline-none hover:border-gray-300;
-    @apply appearance-none bg-no-repeat;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 1rem center;
-    background-size: 1.5em 1.5em;
-  }
-
   .btn-calculate {
     @apply w-full px-6 py-4 text-lg font-semibold text-white rounded-xl transition-all duration-200;
     @apply bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-lg shadow-emerald-900/20;

@@ -1,20 +1,20 @@
-import type { OptionTooltipPosition } from '@/features/multi-year-tax/lib/tooltipPosition';
+import type { OptionTooltipPosition } from '@/utils/optionTooltipPosition';
 
-interface DatePartOptionTooltipProps extends OptionTooltipPosition {
+interface SelectOptionTooltipProps extends OptionTooltipPosition {
   text: string;
 }
 
 /**
- * Explains why a day or month can't be picked. It is anchored to the option but
+ * Explains why an option can't be picked. It is anchored to the option but
  * rendered outside the scrolling list, so it is never clipped.
  */
-export default function DatePartOptionTooltip({
+export default function SelectOptionTooltip({
   left,
   placement,
   text,
   top,
   width,
-}: DatePartOptionTooltipProps) {
+}: SelectOptionTooltipProps) {
   return (
     <span
       className="pointer-events-none absolute z-50 rounded-lg bg-gray-900 px-3 py-2 text-left font-normal text-white text-xs leading-relaxed shadow-lg"

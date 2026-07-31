@@ -1,5 +1,3 @@
-import { CALCULATOR_NAV_LINKS } from '@/components/layout/navigation';
-
 export interface FooterLink {
   href: string;
   label: string;
@@ -13,8 +11,6 @@ export const FOOTER_QUICK_LINKS = [
   { href: '/privacy-policy', label: 'Privacy Policy' },
   { href: '/terms-of-service', label: 'Terms of Service' },
 ] as const satisfies readonly FooterLink[];
-
-export const FOOTER_CALCULATOR_LINKS = CALCULATOR_NAV_LINKS satisfies readonly FooterLink[];
 
 export const FOOTER_GUIDE_LINKS = [
   { href: '/tax-guides/understanding-tax-system', label: 'Income Tax Slabs & System' },
@@ -35,7 +31,6 @@ export const FOOTER_COPY = {
   description:
     'Free Pakistan tax and salary-planning calculators, updated with FY 2026-2027 FBR rates.',
   quickLinksTitle: 'Quick Links',
-  calculatorsTitle: 'Calculators',
   guidesTitle: 'Tax Guides',
   publishersTitle: 'For Publishers',
   copyrightYear: new Date().getFullYear(),
