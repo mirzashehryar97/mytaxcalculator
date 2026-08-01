@@ -1,9 +1,12 @@
 import { calcVehicleRegistrationTax } from '@/features/vehicle-tax/lib/calculation';
 import {
+  VEHICLE_REGISTRATION_FORM_COPY,
   VEHICLE_REGISTRATION_RESULT_COPY,
+  VEHICLE_TOKEN_FORM_COPY,
   VEHICLE_TOKEN_RESULT_COPY,
 } from '@/features/vehicle-tax/lib/content';
 import {
+  formatCc,
   formatCharge,
   formatPercent,
   formatPkr,
@@ -19,7 +22,9 @@ import {
   VEHICLE_TRANSFER_REDUCTION_PER_YEAR,
 } from '@/features/vehicle-tax/lib/rates';
 import type {
+  VehicleCcTier,
   VehicleCharge,
+  VehicleEngineType,
   VehicleFiscalYear,
   VehicleProvince,
   VehicleRateGuideRow,
@@ -72,8 +77,8 @@ export function buildTransferRateRows(fiscalYear: string): VehicleRateGuideRow[]
   }));
 }
 
-export function buildAnnualTaxRows(): VehicleRateGuideRow[] {
-  return VEHICLE_ANNUAL_TAX.perYear.map((tier) => ({
+function buildAnnualTaxRowsFrom(tiers: readonly VehicleCcTier[]): VehicleRateGuideRow[] {
+  return tiers.map((tier) => ({
     id: tier.id,
     band: tier.label,
     filerRate: formatChargeOrNil(tier.charge),
@@ -81,6 +86,25 @@ export function buildAnnualTaxRows(): VehicleRateGuideRow[] {
       scaleCharge(tier.charge, VEHICLE_ANNUAL_TAX.nonFilerMultiplier),
     ),
   }));
+}
+
+/** Division III, clause (3) — the charge collected with a yearly token. */
+export function buildAnnualTaxRows(): VehicleRateGuideRow[] {
+  return buildAnnualTaxRowsFrom(VEHICLE_ANNUAL_TAX.perYear);
+}
+
+/**
+ * Division III, clause (4) — "where the motor vehicle tax is collected in lump
+ * sum". The calculator charges from this table on a lifetime token, so the page
+ * has to print it; showing only the yearly table understates it twelvefold.
+ */
+export function buildAnnualTaxLumpSumRows(): VehicleRateGuideRow[] {
+  return buildAnnualTaxRowsFrom(VEHICLE_ANNUAL_TAX.lumpSum);
+}
+
+/** "Tax on registering a vehicle in Pakistan (2026-27)" — the table is pinned to one year. */
+export function getRateGuideTitle(title: string, fiscalYear: string): string {
+  return `${title} (${formatVehicleFiscalYear(fiscalYear)})`;
 }
 
 export interface VehicleTokenGuideRow {
@@ -116,6 +140,102 @@ export function buildTokenProvinceSummary(
       frequency: tier.frequency === 'lifetime' ? 'Once, for the life of the vehicle' : 'Every year',
     })),
   };
+}
+
+/**
+ * The federal line's label, with its cc band. Where the provincial token is
+ * paid once for the life of the vehicle the federal charge is collected the
+ * same way — from the lump-sum table, not the yearly one — so calling it
+ * "yearly" would contradict the total.
+ */
+export function getFederalLabel(result: VehicleTokenResult): string {
+  const base = result.federalIsOneOff
+    ? VEHICLE_TOKEN_RESULT_COPY.federalOneOffLabel
+    : VEHICLE_TOKEN_RESULT_COPY.federalLabel;
+
+  return result.federalTierLabel ? `${base} (${result.federalTierLabel})` : base;
+}
+
+/**
+ * The early-payment switch's help line. A lifetime token has no yearly amount
+ * to discount, so the switch is disabled and this says why rather than leaving
+ * a live control that changes nothing.
+ */
+export function getEarlyPaymentHelp(
+  provinceLabel: string,
+  discount: number,
+  deadline: string,
+  isLifetime: boolean,
+): string {
+  if (isLifetime) {
+    return VEHICLE_TOKEN_FORM_COPY.payEarlyLifetimeHelp;
+  }
+
+  return `${provinceLabel} takes ${discount}% off the yearly token if you pay it all by ${deadline}.`;
+}
+
+/**
+ * Whether the invoice price is doing any work. Only a percentage band reads it,
+ * so on a set-amount band the field is disabled rather than left live and inert.
+ */
+export function isTokenInvoiceValueUsed(result: VehicleTokenResult): boolean {
+  return result.tokenCharge?.kind === 'percent';
+}
+
+export function getTokenInvoiceValueHelp(result: VehicleTokenResult): string {
+  if (isTokenInvoiceValueUsed(result)) {
+    return VEHICLE_TOKEN_FORM_COPY.invoiceValueHelp;
+  }
+
+  return result.tokenCovered
+    ? VEHICLE_TOKEN_FORM_COPY.invoiceValueSetAmountHelp
+    : VEHICLE_TOKEN_FORM_COPY.invoiceValueNotCoveredHelp;
+}
+
+/**
+ * The date only changes the federal cut-off in most provinces, but in
+ * Balochistan it also picks the band, so calling it optional there would be
+ * wrong.
+ */
+export function getTokenFirstRegistrationHelp(province: VehicleProvince): string {
+  return province === 'balochistan'
+    ? VEHICLE_TOKEN_FORM_COPY.firstRegistrationBalochistanHelp
+    : VEHICLE_TOKEN_FORM_COPY.firstRegistrationHelp;
+}
+
+/** Which missing answer is holding the token result up. */
+export function getTokenInvalidMessage(engineCc: number): string {
+  return engineCc > 0
+    ? VEHICLE_TOKEN_FORM_COPY.invalidValueMessage
+    : VEHICLE_TOKEN_FORM_COPY.invalidEngineMessage;
+}
+
+/** Which missing answer is holding the registration result up. */
+export function getRegistrationInvalidMessage(
+  engineType: VehicleEngineType,
+  engineCc: number,
+): string {
+  return engineType !== 'electric' && engineCc <= 0
+    ? VEHICLE_REGISTRATION_FORM_COPY.invalidEngineMessage
+    : VEHICLE_REGISTRATION_FORM_COPY.invalidValueMessage;
+}
+
+/** The line under the token heading: engine size, and the price only when it counts. */
+export function getTokenVehicleSummary(result: VehicleTokenResult): string {
+  if (!isTokenInvoiceValueUsed(result)) {
+    return formatCc(result.engineCc);
+  }
+  return `${formatCc(result.engineCc)} · invoice price ${formatPkr(result.invoiceValue)}`;
+}
+
+/**
+ * The age rows only make sense once we know the age. `completedYears` is 0 both
+ * for a car registered this year and for one whose date we were never given,
+ * and past the five-year cut-off the taper is overridden entirely — printing
+ * "70% off" beside a nil bill contradicts it.
+ */
+export function showsRegistrationReduction(result: VehicleRegistrationResult): boolean {
+  return result.mode === 'transfer' && result.firstRegistrationKnown && !result.pastFiveYears;
 }
 
 /** One line naming where a province's bands were read from. */
@@ -247,6 +367,8 @@ export interface VehicleTotalBreakdownItem {
   label: string;
   description: string;
   detail: string;
+  /** Money owed reads red and money off reads green, as in the result rows above. */
+  tone: 'negative' | 'positive';
 }
 
 /** The three lines behind the token total, for the "what makes up the total" cards. */
@@ -262,6 +384,7 @@ export function buildTokenBreakdown(result: VehicleTokenResult): VehicleTotalBre
           ? `Your province charges ${formatPercent(result.tokenCharge.percent)} of the invoice price for the ${result.tokenTierLabel} band.`
           : `Your province charges a set amount for the ${result.tokenTierLabel} band.`,
       detail: `${formatCharge(result.tokenCharge)} = ${formatPkr(result.tokenBeforeDiscount)}`,
+      tone: 'negative',
     });
   }
 
@@ -271,17 +394,31 @@ export function buildTokenBreakdown(result: VehicleTokenResult): VehicleTotalBre
       label: VEHICLE_TOKEN_RESULT_COPY.discountLabel,
       description: `Paying the whole year by ${result.earlyPaymentDeadline} takes ${formatPercent(result.earlyPaymentDiscount)} off the token.`,
       detail: `− ${formatPkr(result.discountAmount)}`,
+      tone: 'positive',
     });
   }
 
   items.push({
     id: 'federal',
-    label: VEHICLE_TOKEN_RESULT_COPY.federalLabel,
-    description: result.federalExempt
-      ? 'This car is more than ten years old, so the federal part is no longer collected.'
-      : `A fixed FBR amount for the ${result.federalTierLabel} band, doubled for anyone off the taxpayer list.`,
+    label: result.federalIsOneOff
+      ? VEHICLE_TOKEN_RESULT_COPY.federalOneOffLabel
+      : VEHICLE_TOKEN_RESULT_COPY.federalLabel,
+    description: getFederalBreakdownDescription(result),
     detail: formatPkr(result.federalTax),
+    tone: 'negative',
   });
 
   return items;
+}
+
+function getFederalBreakdownDescription(result: VehicleTokenResult): string {
+  if (result.federalExempt) {
+    return 'This car is more than ten years old, so the federal part is no longer collected.';
+  }
+
+  if (result.federalIsOneOff) {
+    return `A fixed FBR amount for the ${result.federalTierLabel} band, collected once alongside the lifetime token and doubled for a non-filer.`;
+  }
+
+  return `A fixed FBR amount for the ${result.federalTierLabel} band, doubled for a non-filer.`;
 }

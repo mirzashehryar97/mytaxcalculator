@@ -28,8 +28,17 @@ export const VEHICLE_TERMS = {
     text: 'The FBR treats it as income tax you have already paid. Put it on your yearly return and it comes off your final bill, or comes back as a refund if you owe less.',
   },
   filerStatus: {
-    label: 'What is the taxpayer list?',
-    text: 'The FBR keeps a list of everyone who filed their income tax return on time. Being on it means you pay the lower rate. Being off it means three times as much on a vehicle.',
+    label: 'What is a filer?',
+    text: 'Someone whose name is on the FBR Active Taxpayer List, which you get on by filing your yearly return on time. When a vehicle is registered or transferred, a non-filer pays three times what a filer pays.',
+  },
+  /**
+   * Section 234 takes the ordinary Tenth Schedule uplift of 100%, not the 200%
+   * the first proviso reserves for section 231B — so the token page cannot reuse
+   * the registration wording.
+   */
+  tokenFilerStatus: {
+    label: 'What is a filer?',
+    text: 'Someone whose name is on the FBR Active Taxpayer List, which you get on by filing your yearly return on time. On the federal part collected with your token, a non-filer pays double.',
   },
   engineSize: {
     label: 'What is engine size?',
@@ -145,6 +154,9 @@ export const VEHICLE_REGISTRATION_FORM_COPY = {
   invalidEngineMessage: 'Enter the engine size in cc to see the tax.',
   invalidValueMessage: 'Enter the price of the vehicle to see the tax.',
   privacyNote: 'Nothing you type leaves your browser.',
+  awaitingTitle: 'Tell us about the vehicle',
+  awaitingBody:
+    'Every rate band starts at the smallest engine, so we would rather show you nothing than price a vehicle you have not described yet.',
 } as const;
 
 export const VEHICLE_TOKEN_FORM_COPY = {
@@ -155,14 +167,29 @@ export const VEHICLE_TOKEN_FORM_COPY = {
   engineCcHelp: 'The figure printed in your registration book, in cc.',
   invoiceValueLabel: 'Invoice price',
   invoiceValuePlaceholder: '4000000',
-  invoiceValueHelp: 'Needed where your province charges a percentage instead of a set amount.',
+  invoiceValueHelp: 'Your province charges a percentage of this price, so it sets the token.',
+  /** Shown when the band the vehicle falls into is a set amount, so the price changes nothing. */
+  invoiceValueSetAmountHelp:
+    'Not needed for this vehicle — your province charges a set amount for its engine size, whatever the car cost.',
+  /** Shown when we hold no schedule for that province and year, so nothing reads the price. */
+  invoiceValueNotCoveredHelp:
+    'Not needed — we have no checked table for this province in this year, so only the federal part is shown.',
   filerLabel: 'Are you on the Active Taxpayer List?',
-  filerHelp: 'Being on the list halves the federal part of what you pay at the counter.',
+  filerHelp: 'Being a filer halves the federal part of what you pay at the counter.',
   firstRegistrationLabel: 'First registration date',
   firstRegistrationHelp: 'Optional. The federal part stops once a car is more than ten years old.',
+  /** Balochistan is the one province where the date also picks the band, not just the federal part. */
+  firstRegistrationBalochistanHelp:
+    'Worth filling in. In Balochistan a car up to 1,000 cc pays once for the life of the vehicle until it is five years old and a yearly amount after that, so the date decides which. It also stops the federal part once a car is more than ten years old.',
   payEarlyLabel: 'Paying the whole year early',
+  payEarlyLifetimeHelp:
+    'A car this size pays its token once, for the life of the vehicle, so there is no yearly amount for the discount to come off.',
   invalidEngineMessage: 'Enter the engine size in cc to see the tax.',
+  invalidValueMessage: 'Enter the invoice price to see the token for this engine size.',
   privacyNote: 'Nothing you type leaves your browser.',
+  awaitingTitle: 'Tell us about the vehicle',
+  awaitingBody:
+    'Every rate band starts at the smallest engine, so we would rather show you nothing than price a vehicle you have not described yet.',
 } as const;
 
 export const VEHICLE_MODE_OPTIONS = [
@@ -195,21 +222,14 @@ export const VEHICLE_ENGINE_TYPE_OPTIONS = [
 ] as const satisfies readonly VehicleOption<VehicleEngineType>[];
 
 export const VEHICLE_REGISTRATION_RESULT_COPY = {
-  basisLabel: 'How this band is charged',
-  basisPercent: 'A share of the price',
-  basisAmount: 'A set amount',
-  bandLabel: 'Your band',
-  rateLabel: 'Rate for your band',
   taxLabel: 'Tax to pay',
-  filerTaxLabel: 'On the taxpayer list',
-  nonFilerTaxLabel: 'Not on the list',
-  savingLabel: 'You save by being on the list',
+  filerTaxLabel: 'Filer Tax',
+  nonFilerTaxLabel: 'Non-Filer Tax',
+  savingLabel: 'You save as a filer',
   beforeReductionLabel: 'Before the age reduction',
   reductionLabel: 'Taken off for age',
-  afterReductionLabel: 'Tax to pay',
   effectiveRateLabel: 'Tax as a share of the price',
   adjustableBadge: 'Adjustable against your annual tax liability',
-  ageNote: 'The amount drops 10% for every full year, and nothing is collected after five years.',
   pastCutoffTitle: 'Nothing to pay',
   pastCutoffBody:
     'This vehicle was first registered more than five years ago, so no tax is collected when it changes hands.',
@@ -218,7 +238,7 @@ export const VEHICLE_REGISTRATION_RESULT_COPY = {
     'The law only sets a rate for a vehicle with no engine size once it is worth Rs. 5,000,000 or more. Below that, ask your excise office what they will collect.',
   unratedTitle: 'No rate set for this vehicle',
   unratedBody: 'Check the engine size — the bands start at 1 cc and run to above 3,000 cc.',
-  comparisonTitle: 'On the list vs off it',
+  comparisonTitle: 'Filer vs non-filer',
   comparisonSubtitle: 'Same vehicle, both statuses',
   yearComparisonTitle: 'Same vehicle across tax years',
   yearComparisonHelp: 'What this vehicle would have cost in each year we cover.',
@@ -230,6 +250,8 @@ export const VEHICLE_TOKEN_RESULT_COPY = {
   discountLabel: 'Early-payment discount',
   netProvincialLabel: 'Token to pay',
   federalLabel: 'Federal yearly tax',
+  /** Where the token is a one-off, section 234(2) lets the federal part be collected the same way. */
+  federalOneOffLabel: 'Federal one-off tax',
   totalLabel: 'Total to pay',
   oneOffBadge: 'Paid once, not every year',
   annualBadge: 'Paid every year',
@@ -238,7 +260,7 @@ export const VEHICLE_TOKEN_RESULT_COPY = {
     'The token itself is a provincial charge, so it is not adjustable against your FBR tax liability.',
   federalExemptTitle: 'Federal part has stopped',
   federalExemptBody:
-    'This car is more than ten years old, so the federal yearly tax is no longer collected. You still pay your province’s token.',
+    'This car is more than ten years old, so the federal part is no longer collected and there is nothing for filer status to change. You still pay your province’s token.',
   notCoveredTitle: 'We do not estimate this province for this year',
   notCoveredBody:
     'We have no motor-car table we can check line by line for this province in this year, so we show only the federal part rather than guess. Open its official schedule below for the token figure.',
@@ -250,11 +272,11 @@ export const VEHICLE_TOKEN_RESULT_COPY = {
   sourceSecondaryBody:
     'This province does not publish a motor-car table we can read, so these bands come from secondary sources rather than a government publication. Treat the token line as an estimate and confirm it with your excise office before you pay.',
   sourceLink: 'Open the source',
-  comparisonTitle: 'On the list vs off it',
+  comparisonTitle: 'Filer vs non-filer',
   comparisonSubtitle: 'On the federal part of your bill',
-  filerLabel: 'On the taxpayer list',
-  nonFilerLabel: 'Not on the list',
-  savingLabel: 'You save by being on the list',
+  filerLabel: 'Filer Tax',
+  nonFilerLabel: 'Non-Filer Tax',
+  savingLabel: 'You save as a filer',
   workingTitle: 'How this was worked out',
   breakdownTitle: 'What makes up the total',
   reVerifyNote:
@@ -282,12 +304,15 @@ export const VEHICLE_GUIDE_COPY = {
     'A used vehicle is charged a set amount by engine size instead of a share of the price. That amount falls 10% for every full year since the vehicle was first registered, and nothing is collected after five years.',
   annualTaxTitle: 'The federal tax collected with your token',
   annualTaxDescription:
-    'Alongside your province’s token, the excise counter collects a fixed yearly amount for the FBR based on engine size. Being off the taxpayer list doubles it.',
+    'Alongside your province’s token, the excise counter collects a fixed yearly amount for the FBR based on engine size. Being a non-filer doubles it.',
+  annualTaxLumpSumTitle: 'The federal tax where the token is paid once',
+  annualTaxLumpSumDescription:
+    'Section 234(2) lets the federal part be collected in the same way as the token. So where your province takes the token once for the life of the vehicle, this is the figure collected alongside it — once, instead of the yearly amount above.',
   annualTaxLumpSumNote:
-    'Where a province takes its token once for the life of the vehicle, this federal amount is collected once in the same way, at the higher one-off figure.',
+    'This is the table behind a lifetime token: a car up to 1,000 cc in Punjab or Islamabad, and one under five years old in Balochistan. Being a non-filer doubles these amounts too.',
   bandColumn: 'Engine size',
-  filerColumn: 'On the taxpayer list',
-  nonFilerColumn: 'Not on the list',
+  filerColumn: 'Filer',
+  nonFilerColumn: 'Non-filer',
   registrationNote:
     'Up to 2023-24 the smaller bands were set rupee amounts. From 1 July 2024 every band became a share of the price, and the Finance Act 2026 left that table alone.',
   transferNote:
@@ -310,15 +335,15 @@ export const VEHICLE_GUIDE_COPY = {
   ],
   exampleTitle: 'Worked example (2026-27)',
   exampleIntro:
-    'A 1,300 cc car invoiced at Rs. 4,000,000, being registered to someone on the taxpayer list, sits in the 1,001 – 1,300 cc band at 1.5% of the price.',
+    'A 1,300 cc car invoiced at Rs. 4,000,000, being registered to a filer, sits in the 1,001 – 1,300 cc band at 1.5% of the price.',
   exampleRows: [
     { id: 'value', label: 'Price including duties', value: 'Rs. 4,000,000' },
     { id: 'rate', label: 'Rate for the 1,001 – 1,300 cc band', value: '1.5%' },
-    { id: 'non-filer', label: 'Same car, off the taxpayer list (4.5%)', value: 'Rs. 180,000' },
+    { id: 'non-filer', label: 'Same car for a non-filer (4.5%)', value: 'Rs. 180,000' },
   ],
   exampleTotalLabel: 'Tax at registration',
   exampleTotalValue: 'Rs. 60,000',
-  exampleEffectiveLabel: 'Saved by being on the list',
+  exampleEffectiveLabel: 'Saved as a filer',
   exampleEffectiveValue: 'Rs. 120,000',
   tokenTitle: 'Token tax across Pakistan',
   tokenDescription:
@@ -568,7 +593,7 @@ export const VEHICLE_TOKEN_FAQS = [
     id: 'sindh-rates',
     question: 'How much is token tax in Sindh?',
     answer:
-      'Sindh charges a set yearly amount by engine size, not a share of the price: Rs. 1,500 up to 1,000 cc, Rs. 2,000 for 1,001–1,300 cc, Rs. 4,000 for 1,301–1,600 cc, Rs. 4,500 for 1,601–2,000 cc, Rs. 5,000 for 2,001–2,500 cc and Rs. 7,000 above that. A car up to 1,000 cc can instead pay Rs. 20,000 once, for the life of the vehicle.',
+      'Sindh charges a set yearly amount by engine size, not a share of the price: Rs. 1,500 up to 1,000 cc, Rs. 2,000 for 1,001–1,300 cc, Rs. 4,000 for 1,301–1,600 cc, Rs. 4,500 for 1,601–2,000 cc, Rs. 5,000 for 2,001–2,500 cc and Rs. 7,000 above that. The excise department also publishes a one-off figure for a car up to 1,000 cc — Rs. 20,000 when it is not already registered, or Rs. 15,000 for one that has completed three years but not five. That is a choice you make at the counter, so this calculator shows the yearly figure.',
   },
   {
     id: 'kp-rates',
@@ -580,7 +605,7 @@ export const VEHICLE_TOKEN_FAQS = [
     id: 'balochistan-rates',
     question: 'How much is token tax in Balochistan?',
     answer:
-      'Balochistan is the one province where the age of the car changes how it is charged. A car up to 660 cc pays Rs. 10,500 once while it is under five years old, and Rs. 1,000 a year after that; 661–1,000 cc pays Rs. 12,000 once, then Rs. 1,100 a year. Above that it is a flat yearly amount whatever the age — Rs. 1,400 to 1,500 cc, Rs. 1,700 to 2,000 cc and Rs. 2,000 above 2,000 cc.',
+      'Balochistan is the one province where the age of the car changes how it is charged. A car up to 660 cc pays Rs. 10,500 once while it is under five years old, and Rs. 1,000 a year after that; 661–1,000 cc pays Rs. 12,000 once, then Rs. 1,100 a year. Above that the yearly amount does not change with age — Rs. 1,400 to 1,500 cc, Rs. 1,700 to 2,000 cc and Rs. 2,000 above 2,000 cc — though the schedule also offers a one-off figure at every size for anyone who would rather settle it in one go.',
   },
   {
     id: 'early-discount',
@@ -610,7 +635,7 @@ export const VEHICLE_TOKEN_FAQS = [
     id: 'lifetime-token',
     question: 'What is a lifetime token?',
     answer:
-      'Punjab, Islamabad and Sindh let a car up to 1,000 cc settle its token once — Rs. 20,000 — instead of paying every year, and Balochistan charges a small car that way until it is five years old. Where the token is paid once, the federal charge is collected once too, at a higher one-off figure of Rs. 10,000 for a car up to 1,000 cc.',
+      'A token settled once for the whole life of the vehicle instead of every year. Punjab and Islamabad charge every car up to 1,000 cc that way at Rs. 20,000, and Balochistan charges one under five years old that way — Rs. 10,500 up to 660 cc, Rs. 12,000 from 661 to 1,000 cc. Sindh publishes a one-off figure too, but there it is an alternative you can choose rather than the only route, so this calculator prices the yearly amount. Where the token is paid once, Section 234(2) lets the federal charge be collected once as well, at a higher one-off figure of Rs. 10,000 for a car up to 1,000 cc.',
   },
   {
     id: 'other-provinces',
@@ -622,6 +647,6 @@ export const VEHICLE_TOKEN_FAQS = [
     id: 'electric-token',
     question: 'Do electric vehicles pay token tax?',
     answer:
-      'Punjab exempts 95% of both the registration fee and the yearly motor vehicle tax for electric vehicles, and Khyber Pakhtunkhwa charges electric four-wheelers no token tax at all until 30 June 2028. Balochistan charges them by the band their motor power converts to. The calculator works on engine size, so check your province’s concession before you pay.',
+      'Punjab exempts 95% of both the registration fee and the yearly motor vehicle tax for electric vehicles. Khyber Pakhtunkhwa charges electric four-wheelers no token tax at all until 30 June 2028, and the Balochistan Finance Act 2026 waives it there in full until 30 June 2030. The calculator works on engine size, so check your province’s concession before you pay.',
   },
 ] as const satisfies readonly VehicleFaqItem[];

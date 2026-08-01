@@ -4,6 +4,7 @@ import CalculatorLayout from '@/components/calculator/CalculatorLayout';
 
 import { getTodayIso } from '@/utils/calendarDates';
 
+import VehicleAwaitingInput from '@/features/vehicle-tax/components/VehicleAwaitingInput';
 import VehicleModeTabs from '@/features/vehicle-tax/components/VehicleModeTabs';
 import VehicleTokenBreakdown from '@/features/vehicle-tax/components/VehicleTokenBreakdown';
 import VehicleTokenForm from '@/features/vehicle-tax/components/VehicleTokenForm';
@@ -15,7 +16,11 @@ import {
   VEHICLE_ANALYTICS_EVENTS,
   VEHICLE_TOKEN_ANALYTICS_CONTEXT,
 } from '@/features/vehicle-tax/lib/analytics';
-import { VEHICLE_TOKEN_PAGE_COPY } from '@/features/vehicle-tax/lib/content';
+import {
+  VEHICLE_TOKEN_FORM_COPY,
+  VEHICLE_TOKEN_PAGE_COPY,
+} from '@/features/vehicle-tax/lib/content';
+import { getTokenInvalidMessage } from '@/features/vehicle-tax/lib/presentation';
 
 export default function VehicleTokenCalculator() {
   const { formState, result, isValid, updateField } = useVehicleTokenTax();
@@ -38,12 +43,23 @@ export default function VehicleTokenCalculator() {
           formState={formState}
           isValid={isValid}
           todayIso={getTodayIso()}
+          result={result}
           updateField={updateField}
         />
       }
-      result={<VehicleTokenResultSummary result={result} />}
+      result={
+        isValid ? (
+          <VehicleTokenResultSummary result={result} />
+        ) : (
+          <VehicleAwaitingInput
+            title={VEHICLE_TOKEN_FORM_COPY.awaitingTitle}
+            body={VEHICLE_TOKEN_FORM_COPY.awaitingBody}
+            missing={getTokenInvalidMessage(result.engineCc)}
+          />
+        )
+      }
     >
-      <VehicleTokenBreakdown result={result} />
+      {isValid ? <VehicleTokenBreakdown result={result} /> : null}
     </CalculatorLayout>
   );
 }

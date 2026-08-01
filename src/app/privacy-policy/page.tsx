@@ -4,7 +4,7 @@ import JsonLd from '@/components/JsonLd';
 
 import { getMetadata, routeStructuredData } from '@/lib/seo';
 
-import PrivacyPolicy from '@/views/PrivacyPolicy';
+import PrivacyPolicyView from '@/features/privacy-policy/PrivacyPolicyView';
 
 export const metadata: Metadata = getMetadata('/privacy-policy');
 
@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <JsonLd data={routeStructuredData('/privacy-policy')} />
-      <PrivacyPolicy />
+      <PrivacyPolicyView />
     </>
   );
 }

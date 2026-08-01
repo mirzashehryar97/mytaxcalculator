@@ -9,6 +9,7 @@ import {
   VEHICLE_TERMS,
 } from '@/features/vehicle-tax/lib/content';
 import { formatCharge, formatPercent, formatPkr } from '@/features/vehicle-tax/lib/formatting';
+import { showsRegistrationReduction } from '@/features/vehicle-tax/lib/presentation';
 import type { VehicleRegistrationResult } from '@/features/vehicle-tax/types';
 
 interface VehicleRegistrationTaxDetailProps {
@@ -19,7 +20,9 @@ interface VehicleRegistrationTaxDetailProps {
 export default function VehicleRegistrationTaxDetail({
   result,
 }: VehicleRegistrationTaxDetailProps) {
-  const showReduction = result.mode === 'transfer';
+  const showReduction = showsRegistrationReduction(result);
+  // Zero on a used engine-powered car, where the price is not an input at all.
+  const showEffectiveRate = result.vehicleValue > 0;
 
   return (
     <>
@@ -54,43 +57,48 @@ export default function VehicleRegistrationTaxDetail({
         </p>
       ) : null}
 
-      <div>
-        {showReduction ? (
-          <>
+      {showReduction || showEffectiveRate ? (
+        <div>
+          {showReduction ? (
+            <>
+              <ResultCard
+                label={VEHICLE_REGISTRATION_RESULT_COPY.beforeReductionLabel}
+                value={formatPkr(result.taxBeforeReduction)}
+                tone="neutral"
+                weight="semibold"
+              />
+              <ResultCard
+                label={VEHICLE_REGISTRATION_RESULT_COPY.reductionLabel}
+                value={formatPercent(result.reductionPercent)}
+                tone="positive"
+                weight="semibold"
+                last={!showEffectiveRate}
+                labelAdornment={
+                  <InfoTooltip
+                    label={VEHICLE_TERMS.transferReduction.label}
+                    text={VEHICLE_TERMS.transferReduction.text}
+                  />
+                }
+              />
+            </>
+          ) : null}
+          {showEffectiveRate ? (
             <ResultCard
-              label={VEHICLE_REGISTRATION_RESULT_COPY.beforeReductionLabel}
-              value={formatPkr(result.taxBeforeReduction)}
-              tone="neutral"
+              label={VEHICLE_REGISTRATION_RESULT_COPY.effectiveRateLabel}
+              value={formatPercent(result.effectiveRate)}
+              tone="info"
               weight="semibold"
-            />
-            <ResultCard
-              label={VEHICLE_REGISTRATION_RESULT_COPY.reductionLabel}
-              value={formatPercent(result.reductionPercent)}
-              tone="positive"
-              weight="semibold"
+              last
               labelAdornment={
                 <InfoTooltip
-                  label={VEHICLE_TERMS.transferReduction.label}
-                  text={VEHICLE_TERMS.transferReduction.text}
+                  label={VEHICLE_TERMS.effectiveRate.label}
+                  text={VEHICLE_TERMS.effectiveRate.text}
                 />
               }
             />
-          </>
-        ) : null}
-        <ResultCard
-          label={VEHICLE_REGISTRATION_RESULT_COPY.effectiveRateLabel}
-          value={formatPercent(result.effectiveRate)}
-          tone="info"
-          weight="semibold"
-          last
-          labelAdornment={
-            <InfoTooltip
-              label={VEHICLE_TERMS.effectiveRate.label}
-              text={VEHICLE_TERMS.effectiveRate.text}
-            />
-          }
-        />
-      </div>
+          ) : null}
+        </div>
+      ) : null}
 
       <p className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-center font-semibold text-emerald-800 text-sm">
         <BadgeCheck className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
@@ -107,6 +115,7 @@ export default function VehicleRegistrationTaxDetail({
         filerTax={result.filerTax}
         nonFilerTax={result.nonFilerTax}
         saving={result.filerSaving}
+        term={VEHICLE_TERMS.filerStatus}
         filer={result.filer}
       />
     </>

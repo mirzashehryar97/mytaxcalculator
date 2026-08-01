@@ -2,7 +2,6 @@ import { Wallet } from 'lucide-react';
 
 import InfoTooltip from '@/components/ui/InfoTooltip';
 
-import { VEHICLE_TERMS } from '@/features/vehicle-tax/lib/content';
 import { formatPkr } from '@/features/vehicle-tax/lib/formatting';
 
 interface VehicleFilerComparisonProps {
@@ -14,6 +13,11 @@ interface VehicleFilerComparisonProps {
   filerTax: number;
   nonFilerTax: number;
   saving: number;
+  /**
+   * The filer explanation for *this* tax. Section 231B triples for a non-filer
+   * and section 234 only doubles, so the two pages cannot share one wording.
+   */
+  term: { label: string; text: string };
   /** Which side to highlight, from the reader's own answer. */
   filer: boolean;
 }
@@ -28,6 +32,7 @@ export default function VehicleFilerComparison({
   filerTax,
   nonFilerTax,
   saving,
+  term,
   filer,
 }: VehicleFilerComparisonProps) {
   return (
@@ -35,10 +40,7 @@ export default function VehicleFilerComparison({
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <span className="flex items-center gap-1.5">
           <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
-          <InfoTooltip
-            label={VEHICLE_TERMS.filerStatus.label}
-            text={VEHICLE_TERMS.filerStatus.text}
-          />
+          <InfoTooltip label={term.label} text={term.text} />
         </span>
         <p className="text-gray-500 text-xs">{subtitle}</p>
       </div>

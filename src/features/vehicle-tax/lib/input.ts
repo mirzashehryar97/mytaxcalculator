@@ -5,6 +5,7 @@ import {
   DEFAULT_VEHICLE_TOKEN_FISCAL_YEAR,
 } from '@/features/vehicle-tax/lib/rates';
 import type {
+  VehicleCharge,
   VehicleEngineType,
   VehicleFiscalYear,
   VehicleProvince,
@@ -73,18 +74,32 @@ export function parseVehicleNumberInput(value: string): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
 }
 
+/**
+ * The price is only an input where the law charges on it — a new registration,
+ * or any vehicle with no engine size. On a used engine-powered car the form
+ * hides the field, so the held value must not leak into the result and quietly
+ * drive the effective rate.
+ */
+export function vehicleValueApplies(formState: VehicleRegistrationFormState): boolean {
+  return formState.mode !== 'transfer' || formState.engineType === 'electric';
+}
+
 export function buildVehicleRegistrationInputs(
   formState: VehicleRegistrationFormState,
   today: Date = new Date(),
 ): VehicleRegistrationInputs {
+  const isTransfer = formState.mode === 'transfer';
+
   return {
     mode: formState.mode,
     engineType: formState.engineType,
     engineCc: parseVehicleNumberInput(formState.engineCc),
-    vehicleValue: parseVehicleNumberInput(formState.vehicleValue),
+    vehicleValue: vehicleValueApplies(formState)
+      ? parseVehicleNumberInput(formState.vehicleValue)
+      : 0,
     filer: formState.filer,
-    completedYears:
-      formState.mode === 'transfer' ? getCompletedYears(formState.firstRegistrationDate, today) : 0,
+    completedYears: isTransfer ? getCompletedYears(formState.firstRegistrationDate, today) : 0,
+    firstRegistrationKnown: isTransfer && formState.firstRegistrationDate !== '',
   };
 }
 
@@ -104,15 +119,30 @@ export function buildVehicleTokenInputs(
 
 /**
  * An engine-powered vehicle needs its engine size; an electric one needs a value
- * instead, because that is what the law charges it on.
+ * instead, because that is what the law charges it on. Either way a percentage
+ * band cannot be priced without the price, so the resolved charge decides too —
+ * every band starts at 0 cc, so a blank engine size otherwise matches the
+ * smallest band and produces a confident figure for a vehicle nobody described.
  */
-export function isVehicleRegistrationFormValid(inputs: VehicleRegistrationInputs): boolean {
+export function isVehicleRegistrationFormValid(
+  inputs: VehicleRegistrationInputs,
+  charge: VehicleCharge | null,
+): boolean {
   if (inputs.engineType === 'electric') {
     return inputs.vehicleValue > 0;
   }
-  return inputs.engineCc > 0;
+  if (inputs.engineCc <= 0) {
+    return false;
+  }
+  return charge?.kind !== 'percent' || inputs.vehicleValue > 0;
 }
 
-export function isVehicleTokenFormValid(inputs: VehicleTokenInputs): boolean {
-  return inputs.engineCc > 0;
+export function isVehicleTokenFormValid(
+  inputs: VehicleTokenInputs,
+  tokenCharge: VehicleCharge | null,
+): boolean {
+  if (inputs.engineCc <= 0) {
+    return false;
+  }
+  return tokenCharge?.kind !== 'percent' || inputs.invoiceValue > 0;
 }

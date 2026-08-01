@@ -63,9 +63,12 @@ export interface VehicleAnnualTaxYear {
   nonFilerMultiplier: number;
 }
 
+/** Whether a token is charged every year or once for the life of the vehicle. */
+export type VehicleTokenFrequency = 'annual' | 'lifetime';
+
 /** A yearly token band, or a one-off band paid once for the life of the vehicle. */
 export interface VehicleTokenTier extends VehicleCcTier {
-  frequency: 'annual' | 'lifetime';
+  frequency: VehicleTokenFrequency;
   /**
    * Completed years of age the band starts at. Left out where the province
    * charges the same whatever the age of the vehicle.
@@ -118,6 +121,12 @@ export interface VehicleRegistrationInputs {
   filer: boolean;
   /** Full years since the vehicle was first registered. Only used on a transfer. */
   completedYears: number;
+  /**
+   * Whether a first-registration date was actually given. `completedYears` is 0
+   * both for a brand-new vehicle and for one whose date we were never told, and
+   * only the first of those may be shown as "no reduction yet".
+   */
+  firstRegistrationKnown: boolean;
 }
 
 export interface VehicleRegistrationResult {
@@ -136,6 +145,7 @@ export interface VehicleRegistrationResult {
   /** Percentage taken off for the years since first registration. */
   reductionPercent: number;
   completedYears: number;
+  firstRegistrationKnown: boolean;
   /** True once the vehicle is more than five years past first registration. */
   pastFiveYears: boolean;
   tax: number;
@@ -174,7 +184,7 @@ export interface VehicleTokenResult {
   tokenSource: VehicleTokenSource | null;
   tokenTierLabel: string | null;
   tokenCharge: VehicleCharge | null;
-  tokenFrequency: 'annual' | 'lifetime' | null;
+  tokenFrequency: VehicleTokenFrequency | null;
   tokenBeforeDiscount: number;
   earlyPaymentDiscount: number;
   earlyPaymentDeadline: string | null;

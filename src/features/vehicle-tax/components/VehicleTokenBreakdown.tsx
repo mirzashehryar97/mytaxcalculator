@@ -14,6 +14,12 @@ const ITEM_ICONS = {
   federal: ShieldCheck,
 } as const;
 
+/** Matches the result rows above: what you owe is red, what comes off is green. */
+const TONE_CLASSES = {
+  negative: 'text-red-600',
+  positive: 'text-emerald-700',
+} as const;
+
 /** The lines behind the total, spelled out one card at a time. */
 export default function VehicleTokenBreakdown({ result }: VehicleTokenBreakdownProps) {
   const items = buildTokenBreakdown(result);
@@ -35,7 +41,11 @@ export default function VehicleTokenBreakdown({ result }: VehicleTokenBreakdownP
               </span>
               <h4 className="mt-4 font-bold text-gray-900">{item.label}</h4>
               <p className="mt-2 text-gray-600 text-sm leading-relaxed">{item.description}</p>
-              <p className="amount-wrap mt-3 font-bold text-emerald-700 text-sm tabular-nums">
+              <p
+                className={`amount-wrap mt-3 font-bold text-sm tabular-nums ${
+                  TONE_CLASSES[item.tone]
+                }`}
+              >
                 {item.detail}
               </p>
             </article>

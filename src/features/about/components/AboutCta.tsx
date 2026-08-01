@@ -1,12 +1,13 @@
 import Link from 'next/link';
 
-import AboutGridOverlay from '@/features/about/components/AboutGridOverlay';
+import EmeraldGridOverlay from '@/components/ui/EmeraldGridOverlay';
+
 import { ABOUT_CTA_COPY } from '@/features/about/lib/content';
 
 export default function AboutCta() {
   return (
     <section className="relative overflow-hidden bg-[#064e3b]" aria-labelledby="about-cta-heading">
-      <AboutGridOverlay />
+      <EmeraldGridOverlay />
 
       <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-5 py-12 sm:px-10 lg:flex-row lg:items-center lg:justify-between lg:px-12 lg:py-14">
         <div>

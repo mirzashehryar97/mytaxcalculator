@@ -21,7 +21,7 @@ export default function useVehicleRegistrationTax() {
     () => calcVehicleRegistrationTax(inputs, formState.fiscalYear),
     [inputs, formState.fiscalYear],
   );
-  const isValid = isVehicleRegistrationFormValid(inputs);
+  const isValid = isVehicleRegistrationFormValid(inputs, result.charge);
 
   const updateField = useCallback(
     <TField extends VehicleRegistrationFormField>(

@@ -4,6 +4,7 @@ import CalculatorLayout from '@/components/calculator/CalculatorLayout';
 
 import { getTodayIso } from '@/utils/calendarDates';
 
+import VehicleAwaitingInput from '@/features/vehicle-tax/components/VehicleAwaitingInput';
 import VehicleModeTabs from '@/features/vehicle-tax/components/VehicleModeTabs';
 import VehicleRegistrationForm from '@/features/vehicle-tax/components/VehicleRegistrationForm';
 import VehicleRegistrationResultSummary from '@/features/vehicle-tax/components/VehicleRegistrationResultSummary';
@@ -15,7 +16,11 @@ import {
   VEHICLE_ANALYTICS_EVENTS,
   VEHICLE_REGISTRATION_ANALYTICS_CONTEXT,
 } from '@/features/vehicle-tax/lib/analytics';
-import { VEHICLE_REGISTRATION_PAGE_COPY } from '@/features/vehicle-tax/lib/content';
+import {
+  VEHICLE_REGISTRATION_FORM_COPY,
+  VEHICLE_REGISTRATION_PAGE_COPY,
+} from '@/features/vehicle-tax/lib/content';
+import { getRegistrationInvalidMessage } from '@/features/vehicle-tax/lib/presentation';
 
 export default function VehicleRegistrationCalculator() {
   const { formState, inputs, result, isValid, updateField } = useVehicleRegistrationTax();
@@ -41,9 +46,19 @@ export default function VehicleRegistrationCalculator() {
           updateField={updateField}
         />
       }
-      result={<VehicleRegistrationResultSummary result={result} />}
+      result={
+        isValid ? (
+          <VehicleRegistrationResultSummary result={result} />
+        ) : (
+          <VehicleAwaitingInput
+            title={VEHICLE_REGISTRATION_FORM_COPY.awaitingTitle}
+            body={VEHICLE_REGISTRATION_FORM_COPY.awaitingBody}
+            missing={getRegistrationInvalidMessage(result.engineType, result.engineCc)}
+          />
+        )
+      }
     >
-      <VehicleYearComparison inputs={inputs} />
+      {isValid ? <VehicleYearComparison inputs={inputs} /> : null}
     </CalculatorLayout>
   );
 }

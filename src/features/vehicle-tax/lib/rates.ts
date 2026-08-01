@@ -813,7 +813,7 @@ export const VEHICLE_PROVINCES = [
     },
     notes: [
       'Every band is a set yearly amount — Sindh charges the token on engine size, not on the price of the car.',
-      'A car up to 1,000 cc can instead pay Rs. 20,000 once, for the life of the vehicle.',
+      'A car up to 1,000 cc may instead settle it once: Rs. 20,000 if it is not already registered, or Rs. 15,000 once it has completed three years but not five. We show the yearly figure, because which one you pay is your choice at the counter.',
       'There is no early-payment discount on the yearly token.',
     ],
   },
@@ -844,7 +844,8 @@ export const VEHICLE_PROVINCES = [
     notes: [
       'A car up to 1,000 cc pays once for the life of the vehicle while it is under five years old, then a yearly amount after that.',
       'Cars above 1,000 cc pay a set yearly amount that does not change with the age of the car.',
-      'Older cars may instead settle a lifetime figure, which falls the longer the car has been registered.',
+      'The schedule also offers a one-off figure at every size, falling the longer the car has been registered — Rs. 17,000 at 1,001–1,500 cc for a new car, down to Rs. 13,000 past ten years. We show the yearly figure, because taking it is your choice at the counter.',
+      'The Balochistan Finance Act 2026 waives motor vehicle tax in full on electric vehicles until 30 June 2030.',
     ],
   },
 ] as const satisfies readonly VehicleProvinceConfig[];

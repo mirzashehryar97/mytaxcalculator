@@ -18,17 +18,31 @@ import type {
   VehicleTokenFormState,
 } from '@/features/vehicle-tax/lib/input';
 import {
+  getEarlyPaymentHelp,
+  getTokenFirstRegistrationHelp,
+  getTokenInvalidMessage,
+  getTokenInvoiceValueHelp,
+  isTokenInvoiceValueUsed,
+} from '@/features/vehicle-tax/lib/presentation';
+import {
   getVehicleProvince,
   resolveVehicleProvince,
   resolveVehicleTokenFiscalYear,
   VEHICLE_PROVINCE_OPTIONS,
   VEHICLE_TOKEN_FISCAL_YEARS,
 } from '@/features/vehicle-tax/lib/rates';
+import type { VehicleTokenResult } from '@/features/vehicle-tax/types';
 
 interface VehicleTokenFormProps {
   formState: VehicleTokenFormState;
   isValid: boolean;
   todayIso: string;
+  /**
+   * The resolved result, so the fields can tell whether they are doing any work
+   * — the discount cannot apply to a lifetime token, and a set-amount band never
+   * reads the invoice price.
+   */
+  result: VehicleTokenResult;
   updateField: UpdateVehicleTokenField;
 }
 
@@ -36,11 +50,14 @@ export default function VehicleTokenForm({
   formState,
   isValid,
   todayIso,
+  result,
   updateField,
 }: VehicleTokenFormProps) {
   const province = getVehicleProvince(formState.province);
   const schedule = province.schedules[formState.fiscalYear];
   const discount = schedule?.earlyPaymentDiscount ?? 0;
+  const isLifetime = result.tokenFrequency === 'lifetime';
+  const usesInvoiceValue = isTokenInvoiceValueUsed(result);
 
   return (
     <div className="space-y-5">
@@ -91,7 +108,8 @@ export default function VehicleTokenForm({
           onChange={(value) => updateField('invoiceValue', value)}
           prefix="Rs."
           placeholder={VEHICLE_TOKEN_FORM_COPY.invoiceValuePlaceholder}
-          helpText={VEHICLE_TOKEN_FORM_COPY.invoiceValueHelp}
+          disabled={!usesInvoiceValue}
+          helpText={getTokenInvoiceValueHelp(result)}
           labelAdornment={
             <InfoTooltip
               label={VEHICLE_TERMS.invoiceValue.label}
@@ -114,7 +132,7 @@ export default function VehicleTokenForm({
         value={formState.firstRegistrationDate}
         onChange={(value) => updateField('firstRegistrationDate', value)}
         max={todayIso}
-        helpText={VEHICLE_TOKEN_FORM_COPY.firstRegistrationHelp}
+        helpText={getTokenFirstRegistrationHelp(formState.province)}
         labelAdornment={
           <InfoTooltip
             label={VEHICLE_TERMS.firstRegistration.label}
@@ -124,20 +142,30 @@ export default function VehicleTokenForm({
       />
 
       {discount > 0 && schedule?.earlyPaymentDeadline ? (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+        <div
+          className={`rounded-xl border p-4 ${
+            isLifetime ? 'border-gray-200 bg-gray-50' : 'border-emerald-200 bg-emerald-50'
+          }`}
+        >
           <SwitchToggle
             id="vehicle-token-pay-early"
             label={VEHICLE_TOKEN_FORM_COPY.payEarlyLabel}
             checked={formState.payEarly}
+            disabled={isLifetime}
             onChange={(checked) => updateField('payEarly', checked)}
-            description={`${province.label} takes ${discount}% off the yearly token if you pay it all by ${schedule.earlyPaymentDeadline}.`}
+            description={getEarlyPaymentHelp(
+              province.label,
+              discount,
+              schedule.earlyPaymentDeadline,
+              isLifetime,
+            )}
           />
         </div>
       ) : null}
 
       {isValid ? null : (
         <p className="text-red-600 text-sm" role="alert">
-          {VEHICLE_TOKEN_FORM_COPY.invalidEngineMessage}
+          {getTokenInvalidMessage(result.engineCc)}
         </p>
       )}
 

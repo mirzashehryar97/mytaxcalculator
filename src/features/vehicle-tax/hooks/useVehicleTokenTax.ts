@@ -21,7 +21,7 @@ export default function useVehicleTokenTax() {
     () => calcVehicleTokenTax(inputs, formState.fiscalYear),
     [inputs, formState.fiscalYear],
   );
-  const isValid = isVehicleTokenFormValid(inputs);
+  const isValid = isVehicleTokenFormValid(inputs, result.tokenCharge);
 
   const updateField = useCallback(
     <TField extends VehicleTokenFormField>(field: TField, value: VehicleTokenFormState[TField]) => {

@@ -14,10 +14,12 @@ import {
   VEHICLE_REGISTRATION_PAGE_COPY,
   VEHICLE_TERMS,
 } from '@/features/vehicle-tax/lib/content';
-import type {
-  UpdateVehicleRegistrationField,
-  VehicleRegistrationFormState,
+import {
+  parseVehicleNumberInput,
+  type UpdateVehicleRegistrationField,
+  type VehicleRegistrationFormState,
 } from '@/features/vehicle-tax/lib/input';
+import { getRegistrationInvalidMessage } from '@/features/vehicle-tax/lib/presentation';
 import { resolveVehicleFiscalYear, VEHICLE_FISCAL_YEARS } from '@/features/vehicle-tax/lib/rates';
 
 interface VehicleRegistrationFormProps {
@@ -140,9 +142,10 @@ export default function VehicleRegistrationForm({
 
       {isValid ? null : (
         <p className="text-red-600 text-sm" role="alert">
-          {isElectric
-            ? VEHICLE_REGISTRATION_FORM_COPY.invalidValueMessage
-            : VEHICLE_REGISTRATION_FORM_COPY.invalidEngineMessage}
+          {getRegistrationInvalidMessage(
+            formState.engineType,
+            parseVehicleNumberInput(formState.engineCc),
+          )}
         </p>
       )}
 

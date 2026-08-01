@@ -13,12 +13,12 @@ import {
   VEHICLE_TOKEN_PAGE_COPY,
   VEHICLE_TOKEN_RESULT_COPY,
 } from '@/features/vehicle-tax/lib/content';
+import { formatPkr, formatVehicleFiscalYear } from '@/features/vehicle-tax/lib/formatting';
 import {
-  formatCc,
-  formatPkr,
-  formatVehicleFiscalYear,
-} from '@/features/vehicle-tax/lib/formatting';
-import { getTokenWorking } from '@/features/vehicle-tax/lib/presentation';
+  getFederalLabel,
+  getTokenVehicleSummary,
+  getTokenWorking,
+} from '@/features/vehicle-tax/lib/presentation';
 import { getVehicleProvince } from '@/features/vehicle-tax/lib/rates';
 import type { VehicleTokenResult } from '@/features/vehicle-tax/types';
 
@@ -39,9 +39,7 @@ export default function VehicleTokenResultSummary({ result }: VehicleTokenResult
         </span>
       </div>
 
-      <p className="text-gray-500 text-sm">
-        {formatCc(result.engineCc)} · invoice price {formatPkr(result.invoiceValue)}
-      </p>
+      <p className="text-gray-500 text-sm">{getTokenVehicleSummary(result)}</p>
 
       {result.tokenCovered && result.tokenSource ? (
         <>
@@ -54,9 +52,7 @@ export default function VehicleTokenResultSummary({ result }: VehicleTokenResult
         <>
           <VehicleTokenNotCovered province={province} />
           <ResultCard
-            label={`${VEHICLE_TOKEN_RESULT_COPY.federalLabel}${
-              result.federalTierLabel ? ` (${result.federalTierLabel})` : ''
-            }`}
+            label={getFederalLabel(result)}
             value={formatPkr(result.federalTax)}
             tone="negative"
             last
@@ -109,17 +105,20 @@ export default function VehicleTokenResultSummary({ result }: VehicleTokenResult
         <VehicleTokenSourceNote source={result.tokenSource} />
       ) : null}
 
-      <VehicleFilerComparison
-        title={VEHICLE_TOKEN_RESULT_COPY.comparisonTitle}
-        subtitle={VEHICLE_TOKEN_RESULT_COPY.comparisonSubtitle}
-        filerLabel={VEHICLE_TOKEN_RESULT_COPY.filerLabel}
-        nonFilerLabel={VEHICLE_TOKEN_RESULT_COPY.nonFilerLabel}
-        savingLabel={VEHICLE_TOKEN_RESULT_COPY.savingLabel}
-        filerTax={result.federalFilerTax}
-        nonFilerTax={result.federalNonFilerTax}
-        saving={result.filerSaving}
-        filer={result.filer}
-      />
+      {result.federalExempt ? null : (
+        <VehicleFilerComparison
+          title={VEHICLE_TOKEN_RESULT_COPY.comparisonTitle}
+          subtitle={VEHICLE_TOKEN_RESULT_COPY.comparisonSubtitle}
+          filerLabel={VEHICLE_TOKEN_RESULT_COPY.filerLabel}
+          nonFilerLabel={VEHICLE_TOKEN_RESULT_COPY.nonFilerLabel}
+          savingLabel={VEHICLE_TOKEN_RESULT_COPY.savingLabel}
+          filerTax={result.federalFilerTax}
+          nonFilerTax={result.federalNonFilerTax}
+          saving={result.filerSaving}
+          term={VEHICLE_TERMS.tokenFilerStatus}
+          filer={result.filer}
+        />
+      )}
 
       <VehicleWorkingNote
         title={VEHICLE_TOKEN_RESULT_COPY.workingTitle}

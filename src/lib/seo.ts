@@ -1018,8 +1018,18 @@ export const routeMeta: Record<string, RouteMeta> = {
   '/privacy-policy': {
     title: 'Privacy Policy | My Tax Calculator',
     description:
-      'Read the privacy policy for My Tax Calculator. All tax calculations run locally in your browser — we do not store your salary or personal data.',
+      'Learn how My Tax Calculator keeps financial amounts in your browser and handles limited analytics, cookies, technical data and privacy requests.',
     breadcrumb: 'Privacy Policy',
+    keywords: [
+      'My Tax Calculator privacy policy',
+      'Pakistan tax calculator privacy',
+      'private tax calculator Pakistan',
+      'browser based tax calculator',
+    ],
+    dateModified: '2026-08-01',
+    socialImage: '/privacy-policy/opengraph-image',
+    socialImageAlt:
+      'My Tax Calculator privacy policy — browser-based calculations and limited analytics',
     sitemapPriority: 0.3,
     sitemapChangeFrequency: 'yearly',
   },

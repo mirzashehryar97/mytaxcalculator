@@ -166,6 +166,7 @@ export function calcVehicleRegistrationTax(
     taxBeforeReduction: inputs.filer ? filerBeforeReduction : nonFilerBeforeReduction,
     reductionPercent,
     completedYears,
+    firstRegistrationKnown: isTransfer && inputs.firstRegistrationKnown,
     pastFiveYears,
     tax,
     filerTax,
