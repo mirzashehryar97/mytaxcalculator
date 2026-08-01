@@ -1,12 +1,22 @@
-import { ShieldCheck } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-import { PRIVACY_HERO_COPY, PRIVACY_HERO_FACTS } from '@/features/privacy-policy/lib/content';
+import type { PolicyHeroFact } from '@/components/ui/policy/types';
 
-export default function PrivacyHeroSummary() {
+interface PolicyHeroSummaryProps {
+  facts: readonly PolicyHeroFact[];
+  note: string;
+  noteIcon: LucideIcon;
+}
+
+export default function PolicyHeroSummary({
+  facts,
+  note,
+  noteIcon: NoteIcon,
+}: PolicyHeroSummaryProps) {
   return (
     <div className="rounded-2xl bg-white p-4 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.55)] sm:p-5">
       <dl className="space-y-3">
-        {PRIVACY_HERO_FACTS.map((fact) => (
+        {facts.map((fact) => (
           <div
             key={fact.id}
             className="flex items-center justify-between gap-4 rounded-xl border border-slate-100 bg-slate-50 px-4 py-4"
@@ -24,8 +34,8 @@ export default function PrivacyHeroSummary() {
       </dl>
 
       <p className="mt-4 flex items-start gap-2 px-1 text-gray-500 text-xs sm:text-[13px]">
-        <ShieldCheck className="mt-px h-4 w-4 shrink-0 text-emerald-700" aria-hidden="true" />
-        {PRIVACY_HERO_COPY.summaryNote}
+        <NoteIcon className="mt-px h-4 w-4 shrink-0 text-emerald-700" aria-hidden="true" />
+        {note}
       </p>
     </div>
   );

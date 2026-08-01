@@ -1,10 +1,10 @@
-import type { PrivacyHighlight } from '@/features/privacy-policy/types';
+import type { PolicyHighlight } from '@/components/ui/policy/types';
 
-interface PrivacyHighlightCardProps {
-  highlight: PrivacyHighlight;
+interface PolicyHighlightCardProps {
+  highlight: PolicyHighlight;
 }
 
-export default function PrivacyHighlightCard({ highlight }: PrivacyHighlightCardProps) {
+export default function PolicyHighlightCard({ highlight }: PolicyHighlightCardProps) {
   const Icon = highlight.icon;
 
   return (

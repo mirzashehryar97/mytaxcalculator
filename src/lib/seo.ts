@@ -1038,6 +1038,9 @@ export const routeMeta: Record<string, RouteMeta> = {
     description:
       'The terms of service for using My Tax Calculator, a free Pakistan income tax calculator and guide. For estimation purposes only — not professional tax advice.',
     breadcrumb: 'Terms of Service',
+    dateModified: '2026-06-12',
+    socialImage: '/terms-of-service/opengraph-image',
+    socialImageAlt: 'My Tax Calculator terms of service — tax estimates, verification and fair use',
     sitemapPriority: 0.3,
     sitemapChangeFrequency: 'yearly',
   },

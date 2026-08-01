@@ -1,24 +1,17 @@
 import type { LucideIcon } from 'lucide-react';
 
-export interface PrivacyHeroFact {
-  id: string;
-  label: string;
-  value: string;
-  tone: 'neutral' | 'positive';
-}
+import type {
+  PolicyHeroFact,
+  PolicyHighlight,
+  PolicySectionContent,
+  PolicyTrustBadge,
+} from '@/components/ui/policy/types';
 
-export interface PrivacyTrustBadge {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-}
+export type PrivacyHeroFact = PolicyHeroFact;
 
-export interface PrivacyHighlight {
-  id: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-}
+export type PrivacyTrustBadge = PolicyTrustBadge;
+
+export type PrivacyHighlight = PolicyHighlight;
 
 export interface PrivacyProvider {
   id: string;
@@ -30,17 +23,6 @@ export interface PrivacyProvider {
   icon: LucideIcon;
 }
 
-export interface PrivacyBullet {
-  label: string;
-  href?: string;
-}
-
-export interface PrivacySection {
-  id: string;
-  number: string;
-  title: string;
-  paragraphs: readonly string[];
-  bullets?: readonly PrivacyBullet[];
+export interface PrivacySection extends PolicySectionContent {
   providers?: readonly PrivacyProvider[];
-  icon: LucideIcon;
 }
