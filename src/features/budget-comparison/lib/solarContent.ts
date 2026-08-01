@@ -51,8 +51,9 @@ export const SOLAR_TOC = [
   { id: 'comparison', label: 'Sales-tax treatment', href: '#comparison' },
   { id: 'example', label: 'Worked example', href: '#example' },
   { id: 'scope', label: 'Scope', href: '#scope' },
-  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'explore-sectors', label: 'Explore sectors', href: '#explore-sectors' },
+  { id: 'quick-tools', label: 'Quick tools', href: '#quick-tools' },
+  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'official-sources', label: 'Official sources', href: '#official-sources' },
 ] as const satisfies readonly BudgetTocItem[];
 

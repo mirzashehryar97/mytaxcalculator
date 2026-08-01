@@ -49,8 +49,9 @@ export const PROPERTY_TOC = [
   { id: 'example', label: 'PKR 80M example', href: '#example' },
   { id: 'calculators', label: 'Property calculators', href: '#calculators' },
   { id: 'tax-note', label: 'Transfer-tax note', href: '#tax-note' },
-  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'explore-sectors', label: 'Explore sectors', href: '#explore-sectors' },
+  { id: 'quick-tools', label: 'Quick tools', href: '#quick-tools' },
+  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'official-sources', label: 'Official sources', href: '#official-sources' },
 ] as const satisfies readonly BudgetTocItem[];
 

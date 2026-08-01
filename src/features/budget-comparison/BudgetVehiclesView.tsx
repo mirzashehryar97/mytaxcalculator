@@ -1,6 +1,9 @@
+import BudgetArticleLayout from '@/features/budget-comparison/components/BudgetArticleLayout';
 import BudgetFaqs from '@/features/budget-comparison/components/BudgetFaqs';
+import BudgetHighlightsBand from '@/features/budget-comparison/components/BudgetHighlightsBand';
+import BudgetPageShell from '@/features/budget-comparison/components/BudgetPageShell';
+import BudgetQuickTools from '@/features/budget-comparison/components/BudgetQuickTools';
 import BudgetSectorExplorer from '@/features/budget-comparison/components/BudgetSectorExplorer';
-import BudgetSidebar from '@/features/budget-comparison/components/BudgetSidebar';
 import VehiclesComparison from '@/features/budget-comparison/components/VehiclesComparison';
 import VehiclesExample from '@/features/budget-comparison/components/VehiclesExample';
 import VehiclesHero from '@/features/budget-comparison/components/VehiclesHero';
@@ -9,32 +12,26 @@ import VehiclesOverview from '@/features/budget-comparison/components/VehiclesOv
 import VehiclesSources from '@/features/budget-comparison/components/VehiclesSources';
 import {
   VEHICLES_FAQS,
-  VEHICLES_PAGE_LABELS,
   VEHICLES_TOC,
   VEHICLES_TOOLS,
 } from '@/features/budget-comparison/lib/vehiclesContent';
 
 export default function BudgetVehiclesView() {
   return (
-    <div className="-mb-20 -mt-12 -translate-x-1/2 relative left-1/2 w-screen bg-[#fbfcfb] text-slate-800">
+    <BudgetPageShell>
       <VehiclesHero />
-      <article className="mx-auto grid max-w-7xl gap-6 px-5 py-10 sm:px-10 lg:px-12 xl:grid-cols-[minmax(0,1fr)_280px]">
-        <div className="min-w-0 space-y-10">
-          <VehiclesOverview />
-          <VehiclesComparison />
-          <VehiclesExample />
-          <VehiclesLevyNote />
-          <BudgetFaqs faqs={VEHICLES_FAQS} />
-          <BudgetSectorExplorer currentSectorId="vehicles" />
-          <VehiclesSources />
-        </div>
-        <BudgetSidebar
-          toc={VEHICLES_TOC}
-          tools={VEHICLES_TOOLS}
-          sourceStatusTitle={VEHICLES_PAGE_LABELS.sourceStatusTitle}
-          sourceStatusDetail={VEHICLES_PAGE_LABELS.sourceStatusDetail}
-        />
-      </article>
-    </div>
+      <BudgetHighlightsBand>
+        <VehiclesOverview />
+      </BudgetHighlightsBand>
+      <BudgetArticleLayout toc={VEHICLES_TOC}>
+        <VehiclesComparison />
+        <VehiclesExample />
+        <VehiclesLevyNote />
+        <BudgetSectorExplorer currentSectorId="vehicles" />
+        <BudgetQuickTools tools={VEHICLES_TOOLS} />
+        <BudgetFaqs faqs={VEHICLES_FAQS} />
+        <VehiclesSources />
+      </BudgetArticleLayout>
+    </BudgetPageShell>
   );
 }

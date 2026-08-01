@@ -52,8 +52,9 @@ export const VEHICLES_TOC = [
   { id: 'comparison', label: 'Vehicle changes', href: '#comparison' },
   { id: 'example', label: 'Imported-EV example', href: '#example' },
   { id: 'levy-note', label: 'Separate levies', href: '#levy-note' },
-  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'explore-sectors', label: 'Explore sectors', href: '#explore-sectors' },
+  { id: 'quick-tools', label: 'Quick tools', href: '#quick-tools' },
+  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'official-sources', label: 'Official sources', href: '#official-sources' },
 ] as const satisfies readonly BudgetTocItem[];
 

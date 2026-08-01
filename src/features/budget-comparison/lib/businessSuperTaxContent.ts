@@ -43,8 +43,9 @@ export const BUSINESS_SUPER_TAX_TOC = [
   { id: 'comparison', label: 'Comparison', href: '#comparison' },
   { id: 'example', label: 'Example', href: '#example' },
   { id: 'retailer-note', label: 'Retailer note', href: '#retailer-note' },
-  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'explore-sectors', label: 'Explore sectors', href: '#explore-sectors' },
+  { id: 'quick-tools', label: 'Quick tools', href: '#quick-tools' },
+  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'official-sources', label: 'Official sources', href: '#official-sources' },
 ] as const satisfies readonly BudgetTocItem[];
 

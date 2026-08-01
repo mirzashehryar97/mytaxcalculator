@@ -48,8 +48,9 @@ export const DEFENCE_TOC = [
   { id: 'comparison', label: 'Expenditure heads', href: '#comparison' },
   { id: 'increase-breakdown', label: 'Increase breakdown', href: '#increase-breakdown' },
   { id: 'pensions', label: 'Pensions', href: '#pensions' },
-  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'explore-sectors', label: 'Explore sectors', href: '#explore-sectors' },
+  { id: 'quick-tools', label: 'Quick tools', href: '#quick-tools' },
+  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'official-sources', label: 'Official sources', href: '#official-sources' },
 ] as const satisfies readonly BudgetTocItem[];
 

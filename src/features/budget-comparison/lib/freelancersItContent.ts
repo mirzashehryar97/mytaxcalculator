@@ -46,8 +46,9 @@ export const FREELANCERS_IT_TOC = [
   { id: 'comparison', label: 'Comparison', href: '#comparison' },
   { id: 'example', label: 'Example', href: '#example' },
   { id: 'scope', label: 'Scope', href: '#scope' },
-  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'explore-sectors', label: 'Explore sectors', href: '#explore-sectors' },
+  { id: 'quick-tools', label: 'Quick tools', href: '#quick-tools' },
+  { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'official-sources', label: 'Official sources', href: '#official-sources' },
 ] as const satisfies readonly BudgetTocItem[];
 

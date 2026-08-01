@@ -51,6 +51,7 @@ export const BUDGET_TOC: readonly BudgetTocItem[] = [
   { id: 'winners', label: 'Winners & higher costs', href: '#winners' },
   { id: 'salary-tax', label: 'Salary tax', href: '#salary-tax' },
   { id: 'sector-comparison', label: 'Sector comparison', href: '#sector-comparison' },
+  { id: 'quick-tools', label: 'Quick tools', href: '#quick-tools' },
   { id: 'faqs', label: 'FAQs', href: '#faqs' },
   { id: 'official-sources', label: 'Official sources', href: '#official-sources' },
 ];
@@ -88,6 +89,13 @@ export const BUDGET_TOOLS: readonly BudgetTool[] = [
     icon: Coins,
   },
 ];
+
+export const BUDGET_QUICK_TOOLS_COPY = {
+  eyebrow: 'Quick tools',
+  title: 'Calculate what the budget means for you',
+  description:
+    'Move from the headline comparison to your own estimate with calculators matched to this page.',
+} as const;
 
 export const BUDGET_METRICS: readonly BudgetMetric[] = [
   {
@@ -297,6 +305,8 @@ export const BUDGET_SOCIAL_IMAGE_COPY = {
 
 export const BUDGET_PAGE_LABELS = {
   glanceTitle: 'What changed at a glance',
+  glanceDescription:
+    'The headline numbers from the enacted federal budget, compared year over year.',
   impactTitle: 'Who benefits — and who pays more?',
   salaryTitle: 'Salary tax: the biggest personal impact',
   sectorsTitle: 'Budget impact by sector',
