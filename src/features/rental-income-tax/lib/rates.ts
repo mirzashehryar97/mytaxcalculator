@@ -52,30 +52,30 @@ const UPLIFTED_YEAR: RentalRateYear = {
   nonFilerSlabs: doubleBrackets(FILER_SLABS),
   companyFilerRate: COMPANY_FILER_RATE,
   companyNonFilerRate: COMPANY_NON_FILER_RATE,
-  nonFilerUpliftApplies: true,
 };
 
 /**
- * 2021-22 used the same slab, but the Tenth Schedule did not reach section 155:
- * the FBR rate card for tax year 2022 notes that the Schedule "shall not apply
- * on tax deducted under section 155", and the Finance Act 2022 removed that
- * exclusion from rule 10. So non-filers paid the filer rate that year.
+ * Every year we cover carries the uplift, 2021-22 included.
+ *
+ * Section 155 was clause (d) of Tenth Schedule rule 10 — the list of sections
+ * the Schedule does not reach — and the Finance Act 2021 omitted it, in force
+ * 1 July 2021, which is tax year 2022 = FY 2021-22. So there is no un-uplifted
+ * year in the offered range.
+ *
+ * 2021-22 used to be shipped without the uplift, on the strength of footnote 17
+ * of the FBR rate card for tax year 2022. That footnote does exclude section
+ * 155, but credits the *Finance Act 2019* — the position before the omission —
+ * while footnote 18 on the same row picks up the Finance Act 2021's change to
+ * the rent table. The card also yields to the Ordinance on every page. Full
+ * verification, with source links, in calculator-docs/rental-income-tax.md.
  */
-const NO_UPLIFT_YEAR: RentalRateYear = {
-  filerSlabs: FILER_SLABS,
-  nonFilerSlabs: FILER_SLABS,
-  companyFilerRate: COMPANY_FILER_RATE,
-  companyNonFilerRate: COMPANY_FILER_RATE,
-  nonFilerUpliftApplies: false,
-};
-
 export const RENTAL_RATES = {
   '2026-2027': UPLIFTED_YEAR,
   '2025-2026': UPLIFTED_YEAR,
   '2024-2025': UPLIFTED_YEAR,
   '2023-2024': UPLIFTED_YEAR,
   '2022-2023': UPLIFTED_YEAR,
-  '2021-2022': NO_UPLIFT_YEAR,
+  '2021-2022': UPLIFTED_YEAR,
 } as const satisfies Record<RentalFiscalYear, RentalRateYear>;
 
 export const RENTAL_FISCAL_YEARS = [

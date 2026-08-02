@@ -80,7 +80,6 @@ export function calcRentalTax(inputs: RentalTaxInputs, fiscalYear: string): Rent
     filerSaving: Math.max(0, nonFilerTax - filerTax),
     usesFlatRate: isCompany,
     flatRate: isCompany ? (inputs.filer ? year.companyFilerRate : year.companyNonFilerRate) : null,
-    nonFilerUpliftApplies: year.nonFilerUpliftApplies,
     taxFree: !isCompany && marginalBracket.rate === 0,
     marginalRate: isCompany ? 0 : marginalBracket.rate,
     marginalFixed: isCompany ? 0 : marginalBracket.fixed,

@@ -82,9 +82,11 @@ export const FREELANCER_FORM_COPY = {
   exchangeRatePlaceholder: '280',
   psebLabel: 'PSEB registered',
   psebDescription: 'Your PSEB registration must be active to get the lower rate.',
+  psebUnavailableDescription:
+    'There was no lower PSEB rate in 2021-22 — every export payment was taxed at the same rate that year, whether you were registered or not.',
   atlLabel: 'Active Taxpayer List (ATL) status',
   atlDescription:
-    'You must be on ATL to get the 0.25% rate and have it count as final tax. Banks deduct more tax from non-filers from FY 2025-26.',
+    'You must be on ATL to get the 0.25% rate and have it count as final tax. Banks deduct double from non-filers in 2021-22 and again from 2025-26 onwards.',
   invalidMessage: 'Enter an income amount above zero and a valid exchange rate.',
 } as const;
 
@@ -93,12 +95,15 @@ export const FREELANCER_RESULT_COPY = {
   monthlyBreakdownTitle: 'Monthly Breakdown',
   annualBreakdownTitle: 'Annual Breakdown',
   comparisonTitle: 'Compare your annual tax',
-  concessionLabel: `PSEB-registered filer (${FREELANCER_PSEB_RATE_PERCENT}%)`,
-  standardLabel: `Filer without PSEB (${FREELANCER_STANDARD_RATE_PERCENT}%)`,
+  concessionLabel: 'PSEB-registered filer',
+  standardLabel: 'Filer without PSEB',
   savingsLabel: 'Yearly tax saved with PSEB registration',
   eligibleBadge: 'Lower PSEB rate used',
   standardBadge: 'General rate used',
   nonAtlBadge: 'Higher non-filer rate used',
+  noPsebRateTitle: 'PSEB registration made no difference this year',
+  noPsebRateBody:
+    'The lower 0.25% rate for PSEB-registered exporters started in 2022-23. Before that the law set one rate for every export payment, so there is nothing to compare here.',
 } as const;
 
 export const FREELANCER_SECTION_COPY = {
@@ -166,14 +171,14 @@ export const FREELANCER_RATE_GUIDE_ROWS = [
     psebStatus: 'Registered',
     filerStatus: 'Non-filer',
     rate: `${FREELANCER_PSEB_NON_ATL_RATE_PERCENT}%`,
-    treatment: 'Higher rate for non-filers from FY 2025-26',
+    treatment: 'Double the filer rate, for non-filers',
   },
   {
     id: 'general-non-filer',
     psebStatus: 'Not registered',
     filerStatus: 'Non-filer',
     rate: `${FREELANCER_STANDARD_NON_ATL_RATE_PERCENT}%`,
-    treatment: 'Higher rate for non-filers from FY 2025-26',
+    treatment: 'Double the filer rate, for non-filers',
   },
 ] as const satisfies readonly FreelancerRateGuideRow[];
 
@@ -193,10 +198,31 @@ export const FREELANCER_OFFICIAL_SOURCES = [
     logo: FBR_LOGO,
   },
   {
+    id: 'finance-act-2022',
+    title: 'Finance Act 2022',
+    description: 'It replaced the single flat rate with the 0.25% PSEB and 1% general rates.',
+    href: FBR_DOC_URLS.financeAct2022,
+    logo: FBR_LOGO,
+  },
+  {
+    id: 'finance-act-2021',
+    title: 'Finance Act 2021',
+    description: 'It created Section 154A and set its first rate: a flat 1%, with no PSEB rate.',
+    href: FBR_DOC_URLS.financeAct2021,
+    logo: FBR_LOGO,
+  },
+  {
+    id: 'wht-rate-card-2022',
+    title: 'FBR Withholding Tax Rate Card 2022',
+    description: 'The FBR rate card updated to 30 June 2021, behind the 2021-22 figures.',
+    href: FBR_DOC_URLS.whtRateCardTy2022,
+    logo: FBR_LOGO,
+  },
+  {
     id: 'income-tax-ordinance',
     title: 'Income Tax Ordinance 2001',
     description: 'Section 154A — the final tax on exports of IT and IT-enabled services.',
-    href: FBR_DOC_URLS.incomeTaxOrdinance,
+    href: FBR_DOC_URLS.incomeTaxOrdinance2026,
     logo: FBR_LOGO,
   },
   {
@@ -292,6 +318,11 @@ export const FREELANCER_FAQS = [
     question: 'Do payments from Upwork, Fiverr, Payoneer, or Wise qualify?',
     answer:
       'The platform alone does not decide this. The payment must be for eligible IT or IT-enabled services and must reach Pakistan in foreign currency through a bank. Ask your bank how it records the payment.',
+  },
+  {
+    id: 'earlier-years',
+    question: 'Were the rates different in earlier years?',
+    answer: `Yes, in two ways. In 2021-22 there was one flat rate of ${FREELANCER_STANDARD_RATE_PERCENT}% on every export payment — the lower PSEB rate did not exist yet — and non-filers paid double, so ${FREELANCER_STANDARD_NON_ATL_RATE_PERCENT}%. The ${FREELANCER_PSEB_RATE_PERCENT}% PSEB rate arrived in 2022-23, and from then until 2024-25 non-filers paid the same rate as filers. The doubled non-filer rates you see today start in 2025-26. Pick a year in the calculator and it uses that year's rates.`,
   },
   {
     id: 'bank-deduction',

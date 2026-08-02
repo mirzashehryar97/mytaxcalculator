@@ -1,86 +1,90 @@
 # Open questions, gaps and known conflicts
 
 Everywhere the shipped code and the primary source do not line up, or where a figure could not be
-traced. Written 2 August 2026 against the code at that date.
+traced. Written 2 August 2026 against the code at that date, and revised the same day — first when
+the §4AB surcharge entries below were fixed, then when the Finance Acts 2021 and 2022 were read in
+the gazette and settled who removed §155 from the Tenth Schedule (and showed the freelancer entry to
+be pointing at the wrong years).
 
-Three kinds of entry:
+Revised again **3 August 2026**, when FBR's download host came back and the withholding rate cards
+for tax years 2022, 2023, 2025 and 2026 were read directly. That closed the rental entry and the
+freelancer entry, and left one genuine conflict (§154A from FY 2025-26) recorded rather than
+resolved.
+
+Four kinds of entry:
 
 - 🔴 **Defect** — the calculator produces a figure the law does not support.
 - 🟡 **Unverified** — the figure is probably right but nothing in this pass confirmed it.
 - 🔵 **Deliberate** — a known departure that was decided on purpose. Do not "fix" without reading why.
+- ✅ **Resolved** — was a defect, now fixed. Kept so the reasoning is not lost.
 
 ---
 
-## 🔴 Salary FY 2024-25 surcharge
+## 🟡 Surcharge is not itemised on four of the six salary surfaces
 
-**Page:** [salary-tax.md](salary-tax.md) · **Code:** `src/lib/budgetComparison.ts`
+**Pages:** [multi-year-salary-tax.md](multi-year-salary-tax.md),
+[reverse-salary.md](reverse-salary.md),
+[salary-increment-and-job-offer.md](salary-increment-and-job-offer.md),
+[budget-comparison](salary-tax.md#every-caller-of-the-salary-engine)
 
-`calculateBudgetYearTax` applies the §4AB surcharge **only** when `fiscalYear === '2025-2026'`
-(9%). For FY 2024-25 it applies none.
+Every salary surface now **charges** the §4AB surcharge, but only the single-year home tab and the
+embed **show** it ("Includes Rs. X surcharge"). On the other four it is folded into one tax figure.
 
-§4AB was **inserted by the Finance Act 2024** — i.e. from tax year 2025 = FY 2024-25 — at **10% of
-the tax where taxable income exceeds Rs 10 million**, for *"every individual and association of
-persons"*. The salaried carve-out did not exist until the Finance Act 2025 added the 9% proviso, and
-the Finance Act 2026 replaced that with "no surcharge shall be payable".
+Not a wrong number — a number a reader cannot reconcile. Someone above Rs 10 million who checks the
+multi-year tab against the published slab table will find the tax higher than the slabs give and no
+explanation on the page. The surcharge is also the one part of the bill that behaves like a cliff
+rather than a slab, which is exactly what a reader would want flagged.
 
-Source: Income Tax Ordinance 2001 (amended to 30 Jun 2026), PDF p. 53, §4AB and footnotes 4, 6, 7.
-
-**Effect:** salaries above Rs 10 million in FY 2024-25 are understated by 10% of the slab tax.
-**Fix:** add a per-year surcharge config (`{ rate, threshold }` keyed by fiscal year) rather than the
-current single hard-coded year, with 10% at 2024-25, 9% at 2025-26 and none at 2026-27.
-
-The **business/AOP calculator gets this right** — `BUSINESS_SURCHARGE` is 10% from 2024-25 onwards,
-which is the correct treatment for a non-salaried individual or AOP in every one of those years.
+**Fix:** surface `salaryTaxForYear`'s `surcharge` in those four result shapes and render the same
+note the single-year tab uses. The data is already computed; only the view-models drop it.
 
 ---
 
-## 🔴 Multi-year tab omits the §4AB surcharge
+## ✅ §4AB surcharge was applied on some salary pages and not others
 
-**Page:** [multi-year-salary-tax.md](multi-year-salary-tax.md) · **Code:**
-`src/features/multi-year-tax/lib/calculation.ts`
+**Pages:** [salary-tax.md](salary-tax.md#surcharge--4ab), and every other salary doc ·
+**Code:** `src/utils/taxCalculator.ts` → `salaryTaxForYear`
 
-`calcMultiYearTax` calls `calculateTaxForTotalAmount` directly instead of `calculateBudgetYearTax`,
-so no surcharge is ever applied. The single-year tab on the **same page** does apply it for
-FY 2025-26, so the two tabs disagree above Rs 10 million.
+Filed as four separate 🔴 defects, all one bug: **six callers of the salary engine, three of which
+applied the surcharge and three of which did not.**
 
-**Fix:** route the per-year tax through `calculateBudgetYearTax` (after the FY 2024-25 fix above), or
-extract a single `salaryTaxForYear(annualGross, fiscalYear)` that every salary-engine caller uses.
+- The multi-year tab, reverse salary and increment/job offer called `calculateTaxForTotalAmount`
+  directly, so they charged no surcharge at all. The two tabs of the home page disagreed above
+  Rs 10 million, and reverse salary quoted a gross that was **too low** — it told people to ask for
+  less than they needed.
+- The three that did apply it hard-coded `fiscalYear === '2025-2026'`, so **FY 2024-25 was
+  understated everywhere**, including the pages that were otherwise right. §4AB was inserted by the
+  Finance Act 2024 — tax year 2025 = FY 2024-25 — at 10% of the tax where taxable income exceeds
+  Rs 10 million, for *"every individual and association of persons"*; the salaried proviso cutting it
+  to 9% did not arrive until the Finance Act 2025. Source: Income Tax Ordinance 2001 (amended to
+  30 Jun 2026), PDF p. 53, §4AB and footnotes 4, 6, 7.
+- `features/budget-comparison/lib/calculation.ts` kept its **own** copy of the rate and threshold,
+  a second place for the two to drift apart.
 
----
+**Fixed** by `salaryTaxForYear(annualGross, fiscalYear)` in `utils/taxCalculator.ts`, which owns both
+the slab lookup and a per-year `salarySurcharges` table (10% at 2024-25, 9% at 2025-26, absent
+thereafter). All six callers go through it; the duplicate constants are gone; and the slab page's
+prose figures are read off the same table. The old `calculateTax` wrapper, which returned the
+slab tax with no surcharge, was **deleted** rather than left as a second entry point.
 
-## 🔴 Reverse salary omits the §4AB surcharge
+Two things fell out of the fix that were not in the original reports:
 
-**Page:** [reverse-salary.md](reverse-salary.md) · **Code:**
-`src/features/reverse-salary/lib/calculation.ts`
+- **Take-home is not monotonic in gross.** The surcharge lands on the whole slab tax at once, so
+  crossing Rs 10 million *drops* take-home by the full surcharge — Rs 7,319,000 at Rs 10,000,000
+  becomes Rs 7,077,710 one rupee later, and nothing in between is reachable. Reverse salary's
+  bisection assumed monotonicity, so it now searches below the threshold first; see
+  [reverse-salary.md](reverse-salary.md#why-step-1-splits-at-the-threshold). The earlier claim that
+  "the binary search itself is unaffected" was wrong.
+- **The multi-year threshold is per slice, not per career.** §4AB turns on the taxable income of a
+  tax year, so each fiscal-year slice is tested on its own.
 
-`annualNetFor` inverts `calculateTaxForTotalAmount`, not the surcharged figure. For an FY 2025-26
-target implying a gross above Rs 10 million, the required gross comes out **too low** — the user
-would be told to ask for less than they need.
-
-**Fix:** invert the same `salaryTaxForYear` the forward calculators use. The binary search itself is
-unaffected; take-home stays monotonic with the surcharge in place.
-
----
-
-## 🔴 Increment and job offer omit the §4AB surcharge
-
-**Page:** [salary-increment-and-job-offer.md](salary-increment-and-job-offer.md) · **Code:**
-`src/features/salary-increment/lib/calculation.ts`
-
-`computeSalaryScenario` calls `calculateTaxForTotalAmount` directly. The error partly cancels when
-both scenarios are above Rs 10 million, but not when a raise crosses the threshold — which is
-exactly the comparison someone would come to the page to make.
-
-**Fix:** same shared helper as above.
-
-> The four entries above are one bug with four faces: **five callers of the salary engine, two of
-> which apply the surcharge and three of which do not.** The real fix is a single
-> `salaryTaxForYear(annualGross, fiscalYear)` in `utils/taxCalculator.ts` that owns both the slab
-> lookup and the surcharge, with every caller going through it.
+The **business/AOP calculator was already right** — `BUSINESS_SURCHARGE` is a flat 10% from 2024-25
+onwards, which is correct for a non-salaried individual or AOP in every one of those years, because
+the FA2025 and FA2026 changes are provisos for salary only. The two tables stay separate.
 
 ---
 
-## 🔴 Rental FY 2021-22 non-filer uplift
+## ✅ Rental FY 2021-22 non-filer uplift
 
 **Page:** [rental-income-tax.md](rental-income-tax.md) · **Code:**
 `src/features/rental-income-tax/lib/rates.ts` → `NO_UPLIFT_YEAR`
@@ -88,40 +92,96 @@ exactly the comparison someone would come to the page to make.
 The code gives FY 2021-22 the filer rates for both statuses, on the basis that §155 was excluded from
 the Tenth Schedule that year and that the **Finance Act 2022** removed the exclusion.
 
-The Ordinance attributes the removal to the **Finance Act 2021**. Tenth Schedule rule 10, PDF p. 803,
-footnote 5:
+**Updated 2 August 2026 — half of this is now settled, and the code's stated reason is false.**
+Both Finance Acts were read in the gazette:
 
-> Clauses (d), (f), (g), (h), (j), (m), (r) and (s) omitted **by the Finance Act, 2021**. The omitted
-> clauses read as follows: **(d) tax deducted under section 155;** …
+- **FA2021 item (104)** (PDF p. 106): *"in the Tenth Schedule, in rule 10, clauses **(d)**, (f), (g),
+  (h), (j), (m), (r) and (s) shall be omitted"*. Commencement §1(2) is 1 July 2021, nothing specified
+  otherwise → **tax year 2022 = FY 2021-22**.
+- **FA2022 item (58)(b)** (PDF p. 102) is its only rule 10 edit: it *inserts* **(ca) §154A** and omits
+  **(e), (p), (t)**. **Clause (d) is not mentioned.**
 
-The Finance Act 2021 takes effect for tax year 2022 = FY 2021-22, so on that reading there is no
-un-uplifted year in the offered range and `NO_UPLIFT_YEAR` should not exist.
+So the Finance Act 2022 never touched §155, and the comment in `lib/rates.ts` — plus the FAQ answer
+`nonFilerRent`, which tells users "this has applied to rent since 2022-23" — is wrong on the law
+regardless of how the rate question lands. Rule 1 (PDF p. 798) has no §155 carve-out; its only
+provisos are §231B and §236K.
 
-**Before changing it:** check the FBR withholding rate card for tax year 2022 (updated to
-30 June 2021). The code comment says that card carries a note that the Schedule "shall not apply on
-tax deducted under section 155" — if the card really says that, the conflict is card-versus-statute
-and should be recorded both ways rather than silently resolved, per the repo's own rule on
-statute/operator conflicts.
+**Settled 3 August 2026 — the card was read, and it does not save the code.** TY2022 card now cached
+at `docs/tax-sectors/sources/ty2022-wht-card.pdf`, §155 on PDF pp. 24-25. Footnote 17 exists:
 
-**Effect if the statute is right:** FY 2021-22 non-filer rent tax is understated by half.
+> **17** As per **Finance Act, 2019**, the provisions of newly inserted 10th schedule of the Income
+> Tax Ordinance, 2001 shall not apply on tax deducted under section 155.
+
+It cites the **Finance Act 2019** — the 2019 position, when clause (d) was still in rule 10. Two
+years stale, and contradicted by footnote **18** on the same row (*"Table Substituted through Finance
+Act, 2021"*): the card picked up FA2021's Division V change and missed FA2021's rule 10 change. §156
+and §156A on the next page both print the *"increased by 100% (Rule-1 of Tenth Schedule)"* line that
+§155 lacks.
+
+And the card disclaims itself on every page: *"The original Statue (Income Tax Ordinance, 2001, as
+amended) **shall always prevail in case of any contradiction/error herein**."* That is the FBR
+resolving the conflict against its own card, so this never became a genuine card-versus-statute
+standoff of the NCCPL kind — a facilitation guide expressly yields to the Ordinance.
+
+The **TY2026 card** (cached, PDF p. 7) confirms the other side: every §155 row cites *"Division-V …
+**read with R.1 of Tenth Schedule**"*, and company rent is printed **ATL 15.00% / Non-ATL 30.00%**.
+
+**Applied 3 August 2026.** `NO_UPLIFT_YEAR` deleted, `'2021-2022'` mapped to `UPLIFTED_YEAR`, the
+now-always-true `nonFilerUpliftApplies` flag removed along with its dead UI branch, and the four
+pieces of copy that told users the uplift began in 2022-23 corrected. Non-filer rent for that year was
+understated by half and the company rate was 15% instead of 30%.
+
+Full source list with links: [rental-income-tax.md](rental-income-tax.md#sources-this-page-is-verified-against).
+
+**One thing left over:** the on-page official-sources grid does not cite the **Finance Act 2021**,
+which is now the source of both the Division V table (all six years) and the FY 2021-22 uplift.
+`FBR_DOC_URLS.financeAct2021` already exists. See
+[rental-income-tax.md](rental-income-tax.md#official-sources-cited-on-the-page).
 
 ---
 
-## 🟡 Freelancer non-filer rates before FY 2025-26
+## ✅ Freelancer FY 2021-22 non-filer rate and PSEB rate
 
-**Page:** [freelancer-tax.md](freelancer-tax.md) · **Code:**
-`src/features/freelancer-tax/lib/rates.ts` → `VERIFIED_BASE_FREELANCER_RATE`
+**Applied 3 August 2026.** **Page:** [freelancer-tax.md](freelancer-tax.md) · **Code:**
+`src/features/freelancer-tax/lib/rates.ts` → `FA2021_FLAT_FREELANCER_RATE`
 
-The shipped table gives FY 2021-22 → FY 2024-25 the **same** rate for filers and non-filers (0.25%
-PSEB, 1% standard), and only doubles from FY 2025-26.
+FY 2021-22 shipped as 0.25% PSEB / 1% standard with no non-filer increase. Both halves were wrong,
+and the statute and the FBR's own card for that year agreed against the code — which is what made it
+safe to change.
 
-Tenth Schedule rule 10 has never listed §154A, so rule 1's "+100%" applies on the face of the
-Ordinance in **every** one of those years. Nothing in the 2026 consolidation supports an
-un-uplifted period.
+> ⚠️ **This entry was wrong twice, in opposite directions.** v1 said "rule 10 has never listed
+> §154A" — false. v2 (2 Aug 2026) concluded the *current* years were over-charged — also false. The
+> rate cards read 3 Aug 2026 settle it. **The current years are correct; do not re-derive them from
+> the Ordinance alone.**
 
-**To settle it:** read the §154A row on the FBR withholding rate cards for tax years 2022, 2023,
-2024 and 2025. If they print a single rate, record the card-versus-statute conflict; if they print
-two, the code is simply wrong for four years.
+**The fix.** Division IVA as inserted by **FA2021** (gazette PDF p. 75, printed p. 283) is a single
+sentence — *"The rate of tax to be deducted under section 154A shall be one percent of the proceeds
+of the export"* — with **no PSEB row**; the two-row table arrives only when **FA2022** substitutes
+the whole Division (PDF p. 88), in force 1 July 2022. Rule 10's `(ca)` is also an FA2022 insertion,
+so rule 1's 100% increase still applied in FY 2021-22, and the **TY2022 card** (PDF p. 23) prints
+exactly that: *"1% of the proceeds of the export"* plus *"Persons not appearing in the Active
+Taxpayers' List: … increased by 100% (Rule-1 of Tenth Schedule)"*.
+
+FY 2021-22 now ships **1% filer / 2% non-filer with no PSEB rate at all** (`psebRateAvailable:
+false`), the PSEB-saving panel is replaced by an explanation for that year, and the PSEB control says
+registration made no difference.
+
+**The middle years are now verified too, and were already right.** The TY2023 and TY2025 cards came
+down on the retry and both print **"No Change"** in the Not-on-ATL column against both §154A rows,
+matching rule 10(ca) and the shipped 0.25% / 1%. FY 2023-24's own card (TY2024) is **404 on FBR's
+server** despite being listed on their index page; it rests on the Ordinance plus the two cards
+either side.
+
+**Still a live conflict, deliberately unresolved: FY 2025-26 and FY 2026-27.** Rule 10(ca) excludes
+§154A, but the **TY2026 card** (PDF p. 7) prints PSEB **0.25% / 0.5%** and other **1% / 2%**, each
+cited to *"Division-IVA … **read with R.1 of Tenth Schedule**"*. Not sloppiness about rule 10 either:
+the row above cites **§154 exports** to *"R.10(c)"* — the exclusion clause, by number — and still
+doubles. The code follows the card. Same shape as the NCCPL disagreement in
+`investments-capital-gains.md` §4.1.
+
+**And one source not to trust.** FBR's consolidated *"Withholding Tax Rates From Tax Year 2021 to
+Tax Year 2025"* spreadsheet prints 0.5% / 2% for §154A in every year from TY2022, contradicting the
+contemporaneous cards it consolidates. Its TY2022 row even carries FA2023 wording. Do not cite it.
 
 ---
 
@@ -246,11 +306,18 @@ grids.
 The 2024 link is not *wrong* — it is a real official document — but it cannot be used to check the
 FY 2025-26 or FY 2026-27 rows the pages display.
 
-### Business tax sources omit the Finance Act 2024
+### The Finance Act 2024 is missing from the business *and* salary source grids
 
 `BUSINESS_OFFICIAL_SOURCES` cites Finance Act 2026, the Ordinance and IRIS. The Finance Act 2024 is
 where **both** the current slab table and §4AB came from, and it is not in the grid — so the 2024-25,
 2025-26 and 2026-27 rows have no Act behind them that a reader can open.
+
+`SALARY_OFFICIAL_SOURCES` has the same gap, and it is **newly load-bearing**: until the surcharge fix
+above, the salary pages charged nothing under §4AB in FY 2024-25, so the Act that created it was not
+behind any salary figure. Now it is — the 10% surcharge on FY 2024-25 salaries above Rs 10 million
+rests on the Finance Act 2024 alone, and neither that Act nor the FA2025 proviso that cut the rate to
+9% appears in the grid the six salary surfaces share. The repo's rule is to cite the source of every
+year the page computes, so this one is a real omission rather than a nicety.
 
 ### Property sources do not cover the older years
 

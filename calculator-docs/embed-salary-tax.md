@@ -13,12 +13,12 @@ chrome.
 ## Rate behaviour
 
 Identical to the main salary calculator, **including the §4AB surcharge**, because it routes through
-`calculateBudgetYearTax` rather than calling `calculateTaxForTotalAmount` directly. So the FY 2025-26
-9% surcharge above Rs 10 million is applied here, and the FY 2024-25 10% surcharge is missing here
-too — the same gap described in [salary-tax.md](salary-tax.md#surcharge--4ab).
+`calculateBudgetYearTax` and so through the shared `salaryTaxForYear` — 9% above Rs 10 million in
+FY 2025-26 and 10% in FY 2024-25. See [salary-tax.md](salary-tax.md#surcharge--4ab).
 
-Of the five salary-engine pages on the site, this and the single-year home tab are the two that
-apply any surcharge at all. The multi-year tab, reverse-salary and increment/job-offer pages do not.
+This matters more here than anywhere else on the site: the embed is the copy that runs on **someone
+else's page**, where a wrong figure is not ours to correct after the fact. All six salary surfaces
+now share one code path, so the embed cannot fall behind the calculator it mirrors.
 
 ## Rates
 

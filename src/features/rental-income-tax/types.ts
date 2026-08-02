@@ -23,12 +23,6 @@ export interface RentalRateYear {
   companyFilerRate: number;
   /** Flat percentage charged to companies not on the Active Taxpayer List. */
   companyNonFilerRate: number;
-  /**
-   * Whether the Tenth Schedule non-filer uplift reached section 155 that year.
-   * It did not until the Finance Act 2022 removed section 155 from the rule 10
-   * exclusions, so 2021-22 charges non-filers the same as filers.
-   */
-  nonFilerUpliftApplies: boolean;
 }
 
 export interface RentalTaxInputs {
@@ -82,8 +76,6 @@ export interface RentalTaxResult {
   usesFlatRate: boolean;
   /** The flat percentage applied, when the owner is a company. */
   flatRate: number | null;
-  /** Whether non-filers were charged extra in the selected year. */
-  nonFilerUpliftApplies: boolean;
   /** True when a slab owner's rent sits inside the tax-free band. */
   taxFree: boolean;
   /** Marginal band the rent falls into. */

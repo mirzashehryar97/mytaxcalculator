@@ -1,5 +1,7 @@
 import { Info, Target } from 'lucide-react';
 
+import SurchargeIncludedNote from '@/components/calculator/SurchargeIncludedNote';
+
 import { REVERSE_SALARY_RESULT_COPY } from '@/features/reverse-salary/lib/content';
 import { formatPercent, formatPkr } from '@/features/reverse-salary/lib/formatting';
 import {
@@ -55,6 +57,12 @@ export default function ReverseSalaryResults({ result }: ReverseSalaryResultsPro
                   >
                     {row.value}
                   </p>
+                  {row.surcharge ? (
+                    <SurchargeIncludedNote
+                      amount={row.surcharge.amount}
+                      monthly={row.surcharge.monthly}
+                    />
+                  ) : null}
                 </div>
               ))}
             </div>

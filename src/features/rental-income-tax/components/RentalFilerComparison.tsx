@@ -1,4 +1,4 @@
-import { Info, Wallet } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 
 import InfoTooltip from '@/components/ui/InfoTooltip';
 
@@ -56,22 +56,15 @@ export default function RentalFilerComparison({ result }: RentalFilerComparisonP
         </div>
       </div>
 
-      {result.nonFilerUpliftApplies ? (
-        <p className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
-          <span className="inline-flex items-center gap-2 font-semibold text-emerald-800 text-sm">
-            <Wallet className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
-            {RENTAL_RESULT_COPY.savingLabel}
-          </span>
-          <span className="amount-wrap font-bold text-emerald-700 tabular-nums">
-            {formatPkr(result.filerSaving)}
-          </span>
-        </p>
-      ) : (
-        <p className="mt-3 flex gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-600 text-sm leading-relaxed">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" aria-hidden="true" />
-          <span>{RENTAL_RESULT_COPY.noUpliftNote}</span>
-        </p>
-      )}
+      <p className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+        <span className="inline-flex items-center gap-2 font-semibold text-emerald-800 text-sm">
+          <Wallet className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
+          {RENTAL_RESULT_COPY.savingLabel}
+        </span>
+        <span className="amount-wrap font-bold text-emerald-700 tabular-nums">
+          {formatPkr(result.filerSaving)}
+        </span>
+      </p>
     </section>
   );
 }

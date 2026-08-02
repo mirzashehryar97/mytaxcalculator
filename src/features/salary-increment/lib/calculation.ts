@@ -1,4 +1,4 @@
-import { calculateTaxForTotalAmount } from '@/utils/taxCalculator';
+import { salaryTaxForYear } from '@/utils/taxCalculator';
 
 import type {
   SalaryComparison,
@@ -27,7 +27,8 @@ export function computeSalaryScenario(
   const deductionMonthly = toNonNegative(input.deductionMonthly);
 
   const annualGross = grossMonthly * MONTHS_IN_YEAR;
-  const annualTax = calculateTaxForTotalAmount(annualGross, fiscalYear);
+  const tax = salaryTaxForYear(annualGross, fiscalYear);
+  const annualTax = tax.totalTax;
   const monthlyTax = annualTax / MONTHS_IN_YEAR;
   const netMonthly = grossMonthly - monthlyTax - deductionMonthly;
   const effectiveRate = annualGross > 0 ? (annualTax / annualGross) * 100 : 0;
@@ -36,6 +37,7 @@ export function computeSalaryScenario(
     grossMonthly,
     bonusMonthly,
     monthlyTax,
+    monthlySurcharge: tax.surcharge / MONTHS_IN_YEAR,
     netMonthly,
     annualGross,
     annualTax,

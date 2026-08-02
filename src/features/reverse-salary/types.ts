@@ -18,6 +18,8 @@ export interface ReverseSalaryResult {
   requiredAnnualGross: number;
   monthlyTax: number;
   annualTax: number;
+  monthlySurcharge: number;
+  annualSurcharge: number;
   monthlyNet: number;
   annualNet: number;
   /** Effective tax rate on the required gross, as a percentage (e.g. 13.55). */

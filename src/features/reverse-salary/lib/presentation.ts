@@ -12,6 +12,10 @@ export interface ReverseBreakdownRow {
   label: string;
   value: string;
   tone: ReverseResultTone;
+  surcharge?: {
+    amount: string;
+    monthly: boolean;
+  };
 }
 
 export interface ReverseBreakdownSection {
@@ -38,7 +42,15 @@ export function buildReverseBreakdownSections(
           value: formatPkr(result.requiredMonthlyGross),
           tone: 'neutral',
         },
-        { label: copy.taxRowLabel, value: formatPkr(result.monthlyTax), tone: 'negative' },
+        {
+          label: copy.taxRowLabel,
+          value: formatPkr(result.monthlyTax),
+          tone: 'negative',
+          surcharge:
+            result.monthlySurcharge > 0
+              ? { amount: formatPkr(result.monthlySurcharge), monthly: true }
+              : undefined,
+        },
         { label: copy.netRowLabel, value: formatPkr(result.monthlyNet), tone: 'positive' },
       ],
     },
@@ -51,7 +63,15 @@ export function buildReverseBreakdownSections(
           value: formatPkr(result.requiredAnnualGross),
           tone: 'neutral',
         },
-        { label: copy.taxRowLabel, value: formatPkr(result.annualTax), tone: 'negative' },
+        {
+          label: copy.taxRowLabel,
+          value: formatPkr(result.annualTax),
+          tone: 'negative',
+          surcharge:
+            result.annualSurcharge > 0
+              ? { amount: formatPkr(result.annualSurcharge), monthly: false }
+              : undefined,
+        },
         { label: copy.netRowLabel, value: formatPkr(result.annualNet), tone: 'positive' },
       ],
     },

@@ -47,6 +47,7 @@ export interface SalaryScenario {
   grossMonthly: number;
   bonusMonthly: number;
   monthlyTax: number;
+  monthlySurcharge: number;
   netMonthly: number;
   annualGross: number;
   annualTax: number;

@@ -46,7 +46,7 @@ export function calcFreelancerTax(
   const resolvedFiscalYear = resolveFreelancerFiscalYear(fiscalYear);
   const rates = getFreelancerRate(resolvedFiscalYear);
   const grossPkr = calculateAnnualGrossPkr(inputs);
-  const eligibleForPsebRate = inputs.psebRegistered && inputs.atl;
+  const eligibleForPsebRate = rates.psebRateAvailable && inputs.psebRegistered && inputs.atl;
   let rate: number;
   if (inputs.psebRegistered) {
     rate = inputs.atl ? rates.psebAtl : rates.psebNonAtl;
@@ -70,6 +70,9 @@ export function calcFreelancerTax(
     monthlyNet: net / MONTHS_IN_YEAR,
     rate,
     eligibleForPsebRate,
+    psebRateAvailable: rates.psebRateAvailable,
+    psebRatePercent: rates.psebAtl,
+    standardRatePercent: rates.standardAtl,
     atlRateApplied: inputs.atl,
     concessionTax,
     standardTax,

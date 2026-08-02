@@ -127,9 +127,21 @@ export const FBR_DOC_URLS = {
   /** FBR's own explanation of the Finance Act 2025 income tax changes. */
   incomeTaxCircular2025:
     'https://download1.fbr.gov.pk/Docs/2025841183918948CircularNo01of2025-26IncomeTax.pdf',
+  /**
+   * The withholding rate cards, keyed by the tax year each one governs. FBR
+   * publishes a card just after each Finance Act, so the card for tax year N
+   * is the one "updated up to 30 June" of the calendar year N-1.
+   *
+   * The tax-year-2024 card (updated to 30 June 2023) is listed on fbr.gov.pk
+   * but its document URL now returns 404, so FY 2023-24 has no card to cite.
+   */
   whtRateCard: 'https://download1.fbr.gov.pk/Docs/20258181281745641WHT-RateCard.pdf',
-  /** The card as it stood under the Finance Act 2023 — the source for the older years. */
-  whtRateCard2023: 'https://download1.fbr.gov.pk/Docs/20238215830342WithholdingRatesCards.pdf',
+  whtRateCardTy2025:
+    'https://download1.fbr.gov.pk/Docs/20248211184455183WithholdingTaxRegimeRatesCard2024.pdf',
+  whtRateCardTy2023:
+    'https://download1.fbr.gov.pk/Docs/20229131493643904WithholdingRatesCardsUpdated30.06.2022.pdf',
+  whtRateCardTy2022:
+    'https://download1.fbr.gov.pk/Docs/20218151182834653202189138454560UPDATEDWHTRateCardupto30thJune2021.pdf',
   iris: 'https://iris.fbr.gov.pk/',
 } as const;
 

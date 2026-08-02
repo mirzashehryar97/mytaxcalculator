@@ -465,9 +465,9 @@ const RATE_CARD_2026: OfficialSource = {
 
 const RATE_CARD_2024: OfficialSource = {
   id: 'wht-rate-card-2024',
-  title: 'FBR Withholding Tax Rate Card 2023',
-  description: 'The FBR rate card updated to 30 June 2023, behind the 2023-24 and 2024-25 figures.',
-  href: FBR_DOC_URLS.whtRateCard2023,
+  title: 'FBR Withholding Tax Rate Card 2025',
+  description: 'The FBR rate card updated to 30 June 2024, behind the 2024-25 figures.',
+  href: FBR_DOC_URLS.whtRateCardTy2025,
   logo: FBR_LOGO,
 };
 

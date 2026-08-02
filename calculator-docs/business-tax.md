@@ -98,6 +98,11 @@ under the head Salary" for this purpose.
 Note the surcharge is charged on the **tax**, not the income, and it is a cliff: at
 Rs 10,000,000.01 of income the whole slab tax gains 10%.
 
+Salary keeps a **separate** table — `salarySurcharges` in `utils/taxCalculator.ts` — because the
+provisos move its rate year to year (10%, then 9%, then nil) while this one stays flat. See
+[salary-tax.md](salary-tax.md#surcharge--4ab). Do not merge them: the years read the same for
+2024-25 and diverge from 2025-26 onwards.
+
 ## The algorithm
 
 ```

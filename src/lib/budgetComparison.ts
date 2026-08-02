@@ -1,13 +1,18 @@
-import { calculateTax, taxSlabs } from '@/utils/taxCalculator';
+import { getSalarySurcharge, salaryTaxForYear, taxSlabs } from '@/utils/taxCalculator';
 
 export const BUDGET_YEARS = {
   previous: '2025-2026',
   current: '2026-2027',
 } as const;
 
-/** 9% surcharge on income tax when annual income exceeds PKR 10M (Finance Act 2025). */
-export const FY_2025_26_SURCHARGE_RATE = 0.09;
-export const FY_2025_26_SURCHARGE_THRESHOLD = 10_000_000;
+/**
+ * 9% surcharge on income tax when annual income exceeds PKR 10M (Finance Act 2025).
+ * Read off the engine's per-year §4AB table so the copy on the slabs page and the
+ * figure the calculators charge can never drift apart.
+ */
+const FY_2025_26_SURCHARGE = getSalarySurcharge(BUDGET_YEARS.previous);
+export const FY_2025_26_SURCHARGE_RATE = FY_2025_26_SURCHARGE?.rate ?? 0;
+export const FY_2025_26_SURCHARGE_THRESHOLD = FY_2025_26_SURCHARGE?.threshold ?? 0;
 
 export const BUDGET_SUMMARY = {
   financeBill: 'Finance Bill 2026',
@@ -180,29 +185,20 @@ export function getSlabRows(fiscalYear: string): SlabRow[] {
   }));
 }
 
-/** FY 2025-26 tax including 9% surcharge when annual income exceeds PKR 10 million. */
+/** A year's salary tax on a monthly figure, including the §4AB surcharge where it applies. */
 export function calculateBudgetYearTax(monthlySalary: number, fiscalYear: string) {
-  const result = calculateTax(monthlySalary, fiscalYear);
-  let surcharge = 0;
-
-  if (
-    fiscalYear === BUDGET_YEARS.previous &&
-    result.yearlyIncome > FY_2025_26_SURCHARGE_THRESHOLD
-  ) {
-    surcharge = Math.round(result.yearlyTax * FY_2025_26_SURCHARGE_RATE);
-  }
-
-  const totalYearlyTax = result.yearlyTax + surcharge;
+  const yearlyIncome = Math.round(monthlySalary * 12);
+  const { baseTax, surcharge, totalTax } = salaryTaxForYear(yearlyIncome, fiscalYear);
 
   return {
-    yearlyIncome: result.yearlyIncome,
-    baseTax: result.yearlyTax,
+    yearlyIncome,
+    baseTax,
     surcharge,
-    yearlyTax: totalYearlyTax,
-    monthlyTax: Math.round(totalYearlyTax / 12),
-    yearlyTakeHome: result.yearlyIncome - totalYearlyTax,
-    monthlyTakeHome: Math.round(monthlySalary - totalYearlyTax / 12),
-    effectiveRate: (totalYearlyTax / result.yearlyIncome) * 100,
+    yearlyTax: totalTax,
+    monthlyTax: Math.round(totalTax / 12),
+    yearlyTakeHome: yearlyIncome - totalTax,
+    monthlyTakeHome: Math.round(monthlySalary - totalTax / 12),
+    effectiveRate: (totalTax / yearlyIncome) * 100,
   };
 }
 

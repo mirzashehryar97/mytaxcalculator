@@ -16,7 +16,6 @@ import { calculateBudgetYearTax } from '@/lib/budgetComparison';
 
 import SalaryInsightsLoading from '@/features/salary-tax/components/SalaryInsightsLoading';
 
-import { calculateTax } from '../utils/taxCalculator';
 import SingleYearBudgetSavingsNote from './SingleYearBudgetSavingsNote';
 
 const SalaryInsights = dynamic(() => import('@/features/salary-tax/components/SalaryInsights'), {
@@ -52,7 +51,6 @@ function SingleYearCalculator() {
     const salaryNum = Number.parseFloat(salary);
     if (!Number.isNaN(salaryNum) && salaryNum > 0) {
       const budgetTax = calculateBudgetYearTax(salaryNum, selectedYear);
-      const baseTax = calculateTax(salaryNum, selectedYear);
       const tax = {
         monthlyIncome: salaryNum,
         monthlyTax: budgetTax.monthlyTax,
@@ -61,7 +59,7 @@ function SingleYearCalculator() {
         yearlyTax: budgetTax.yearlyTax,
         yearlyIncomeAfterTax: budgetTax.yearlyTakeHome,
         taxRate: budgetTax.effectiveRate,
-        baseTax: baseTax.yearlyTax,
+        baseTax: budgetTax.baseTax,
         surcharge: budgetTax.surcharge,
       };
       setSingleYear((prev) => ({ ...prev, result: tax }));

@@ -48,12 +48,17 @@ it is why this calculator gives a lower answer than annualising would.
 
 ## Surcharge
 
-**Not applied.** `calcMultiYearTax` calls `calculateTaxForTotalAmount` directly and never routes
-through `calculateBudgetYearTax`, so the §4AB surcharge is absent even in FY 2025-26 where the
-single-year tab does apply it. A person earning over Rs 10 million in FY 2025-26 gets a different
-answer on the two tabs of the same page.
+**Applied**, through the shared `salaryTaxForYear` — see
+[salary-tax.md](salary-tax.md#surcharge--4ab) for the statute and the per-year rates. The two tabs of
+the home page now give the same answer for the same year and salary.
 
-⚠️ Recorded in [open-questions.md](open-questions.md#multi-year-tab-omits-the-4ab-surcharge).
+The threshold is tested against **each year's slice**, not the career total, which is the right
+reading: §4AB turns on the taxable income *of a tax year*, so someone who earned Rs 8 million in each
+of two years crosses nothing, and the calculator charges no surcharge in either.
+
+Because a slice is that year's whole salary income, a **partial** year is compared against the full
+Rs 10 million threshold rather than a prorated one — the same principle as step 4 above, and for the
+same reason.
 
 ## Official sources
 

@@ -152,14 +152,45 @@ export const taxSlabs: Record<string, TaxBracket[]> = {
   ],
 };
 
-interface TaxCalculation {
-  monthlyIncome: number;
-  monthlyTax: number;
-  salaryAfterTax: number;
-  yearlyIncome: number;
-  yearlyTax: number;
-  yearlyIncomeAfterTax: number;
-  taxRate: number;
+/** The §4AB surcharge as it stood for salary income in one fiscal year. */
+export interface SalarySurcharge {
+  /** Share of the slab tax added on top, e.g. `0.09` for nine percent. */
+  rate: number;
+  /** Annual taxable income the surcharge starts *above*, not at. */
+  threshold: number;
+}
+
+export interface SalaryTaxBreakdown {
+  /** Progressive slab tax, before the surcharge. */
+  baseTax: number;
+  /** §4AB surcharge, `0` in a year or below an income where it does not apply. */
+  surcharge: number;
+  /** What is actually owed: `baseTax + surcharge`. */
+  totalTax: number;
+}
+
+/**
+ * §4AB surcharge on the slab tax for a salaried individual, by fiscal year.
+ *
+ * §4AB was inserted by the Finance Act 2024 at ten percent of the tax imposed
+ * under Division I of Part I of the First Schedule "where the taxable income
+ * exceeds rupees ten million", for every individual and AOP — no salaried
+ * carve-out existed yet, so FY 2024-25 salaries above the threshold pay it. The
+ * Finance Act 2025 added a proviso cutting the salaried rate to nine percent,
+ * and the Finance Act 2026 replaced that proviso with "no surcharge shall be
+ * payable". A year that is absent from this table charges no surcharge.
+ *
+ * Non-salaried individuals and AOPs keep the flat ten percent throughout — that
+ * is the business/AOP calculator's own `BUSINESS_SURCHARGE`, not this table.
+ */
+export const salarySurcharges: Record<string, SalarySurcharge> = {
+  '2025-2026': { rate: 0.09, threshold: 10_000_000 },
+  '2024-2025': { rate: 0.1, threshold: 10_000_000 },
+};
+
+/** The §4AB surcharge for a salary year, or `null` where none applied. */
+export function getSalarySurcharge(fiscalYear: string): SalarySurcharge | null {
+  return salarySurcharges[fiscalYear] ?? null;
 }
 
 function calculateTax2018_2019(totalAmount: number): number {
@@ -201,36 +232,18 @@ export function calculateTaxForTotalAmount(totalAmount: number, fiscalYear: stri
 }
 
 /**
- * Calculate tax based on monthly salary
- * @param monthlySalary The monthly salary amount
- * @param fiscalYear The fiscal year to use for tax brackets
- * @param months Optional: Number of months to calculate for (defaults to 12)
- * @returns A complete tax calculation result
+ * The one entry point for salary tax: the progressive slab tax plus the §4AB
+ * surcharge for that year. Every salary calculator — both home tabs, the embed,
+ * reverse salary, increment/job offer and the budget comparison — goes through
+ * this, so the surcharge cannot be applied on one page and skipped on another.
  */
-export function calculateTax(
-  monthlySalary: number,
-  fiscalYear: string,
-  months = 12,
-): TaxCalculation {
-  // Calculate the total income for the specified number of months
-  const totalIncome = monthlySalary * months;
+export function salaryTaxForYear(annualGross: number, fiscalYear: string): SalaryTaxBreakdown {
+  const baseTax = calculateTaxForTotalAmount(annualGross, fiscalYear);
+  const surchargeRule = getSalarySurcharge(fiscalYear);
+  const surcharge =
+    surchargeRule && annualGross > surchargeRule.threshold
+      ? Math.round(baseTax * surchargeRule.rate)
+      : 0;
 
-  // Calculate tax on the total income
-  const yearlyTax = calculateTaxForTotalAmount(totalIncome, fiscalYear);
-
-  // Calculate monthly tax (for display purposes)
-  const monthlyTax = yearlyTax / months;
-
-  // Calculate tax rate
-  const taxRate = (yearlyTax / totalIncome) * 100;
-
-  return {
-    monthlyIncome: monthlySalary,
-    monthlyTax: Math.round(monthlyTax),
-    salaryAfterTax: Math.round(monthlySalary - monthlyTax),
-    yearlyIncome: Math.round(totalIncome),
-    yearlyTax: Math.round(yearlyTax),
-    yearlyIncomeAfterTax: Math.round(totalIncome - yearlyTax),
-    taxRate,
-  };
+  return { baseTax, surcharge, totalTax: baseTax + surcharge };
 }

@@ -3,6 +3,7 @@ import { Info, ShieldCheck } from 'lucide-react';
 import ResultCard from '@/components/calculator/ResultCard';
 import TaxBreakdownCard from '@/components/calculator/TaxBreakdownCard';
 
+import FreelancerPsebComparison from '@/features/freelancer-tax/components/FreelancerPsebComparison';
 import {
   FREELANCER_PAGE_COPY,
   FREELANCER_RESULT_COPY,
@@ -52,34 +53,7 @@ export default function FreelancerTaxResultSummary({ result }: FreelancerTaxResu
         />
       </div>
 
-      <div className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-4 sm:p-5">
-        <h3 className="text-center font-semibold text-emerald-900 text-sm">
-          {FREELANCER_RESULT_COPY.comparisonTitle}
-        </h3>
-        <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-          <div className="min-w-0 text-center">
-            <p className="text-emerald-800 text-xs">{FREELANCER_RESULT_COPY.concessionLabel}</p>
-            <p className="amount-wrap mt-1 font-bold text-emerald-700 text-xl tabular-nums sm:text-2xl">
-              {formatPkr(result.concessionTax)}
-            </p>
-          </div>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-300 bg-white font-bold text-emerald-700 text-xs">
-            VS
-          </span>
-          <div className="min-w-0 text-center">
-            <p className="text-gray-600 text-xs">{FREELANCER_RESULT_COPY.standardLabel}</p>
-            <p className="amount-wrap mt-1 font-bold text-gray-800 text-xl tabular-nums sm:text-2xl">
-              {formatPkr(result.standardTax)}
-            </p>
-          </div>
-        </div>
-        <div className="mt-5 border-emerald-200 border-t pt-4 text-center">
-          <p className="text-emerald-800 text-xs">{FREELANCER_RESULT_COPY.savingsLabel}</p>
-          <p className="amount-wrap mt-1 font-bold text-2xl text-emerald-700 tabular-nums">
-            {formatPkr(result.potentialTaxSavings)} / year
-          </p>
-        </div>
-      </div>
+      <FreelancerPsebComparison result={result} />
 
       <div className="flex gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-950 text-sm leading-relaxed">
         <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" aria-hidden="true" />

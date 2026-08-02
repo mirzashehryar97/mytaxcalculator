@@ -1,5 +1,7 @@
 import { Gift, type LucideIcon } from 'lucide-react';
 
+import SurchargeIncludedNote from '@/components/calculator/SurchargeIncludedNote';
+
 import { SALARY_COMPARISON_RESULT_COPY } from '@/features/salary-increment/lib/content';
 import { formatPkr } from '@/features/salary-increment/lib/formatting';
 import type { SalaryScenario } from '@/features/salary-increment/types';
@@ -39,6 +41,9 @@ export default function ScenarioCard({
           <p className="amount-wrap font-semibold text-2xl text-red-600 tabular-nums">
             {formatPkr(scenario.monthlyTax)}
           </p>
+          {scenario.monthlySurcharge > 0 ? (
+            <SurchargeIncludedNote amount={formatPkr(scenario.monthlySurcharge)} monthly />
+          ) : null}
         </div>
         <div>
           <p className="text-gray-500 text-sm">{SALARY_COMPARISON_RESULT_COPY.netLabel}</p>

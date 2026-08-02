@@ -1,4 +1,4 @@
-import { calculateTaxForTotalAmount } from '@/utils/taxCalculator';
+import { salaryTaxForYear } from '@/utils/taxCalculator';
 
 import {
   addDays,
@@ -146,7 +146,9 @@ function buildBreakdown(slices: Map<string, FiscalYearSlice>): FiscalYearBreakdo
   return [...slices.values()]
     .sort((a, b) => a.fiscalYear.localeCompare(b.fiscalYear))
     .map((slice) => {
-      const tax = calculateTaxForTotalAmount(slice.gross, slice.fiscalYear);
+      // Each slice is that tax year's whole salary income, so the §4AB
+      // threshold is tested against the slice rather than the career total.
+      const { totalTax: tax } = salaryTaxForYear(slice.gross, slice.fiscalYear);
       const taxPercent = toPercent(tax, slice.gross);
 
       return {

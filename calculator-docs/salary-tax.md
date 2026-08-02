@@ -128,8 +128,9 @@ source — the 2026 consolidated Ordinance only prints back as far as the pre-20
 
 ## Surcharge — §4AB
 
-`calculateBudgetYearTax` adds a **9% surcharge on the tax** (not the income) when the annual income
-exceeds Rs 10,000,000 — and **only for the fiscal year `2025-2026`**.
+`salaryTaxForYear` in `utils/taxCalculator.ts` adds the surcharge **on the tax** (not on the income)
+when annual income exceeds the year's threshold. It is the single entry point every salary
+calculator on the site goes through — see [the callers table](#every-caller-of-the-salary-engine).
 
 The statute, Ordinance PDF p. 53 (printed p. 34):
 
@@ -144,24 +145,68 @@ with footnotes recording that §4AB was **inserted by the Finance Act 2024**, th
 the taxable income exceeds rupees ten million in a tax year"*, and that the Finance Act 2026
 substituted that with the flat "no surcharge shall be payable".
 
-So the true position for a salaried individual is:
+So the position for a salaried individual, which is what `salarySurcharges` holds:
 
 | Year | Salaried surcharge | Shipped |
 |---|---|---|
 | FY 2026-27 | none | none ✅ |
 | FY 2025-26 | 9% of the slab tax above Rs 10m | 9% ✅ |
-| FY 2024-25 | **10%** of the slab tax above Rs 10m (no salaried proviso existed yet) | **none ❌** |
+| FY 2024-25 | 10% of the slab tax above Rs 10m (no salaried proviso existed yet) | 10% ✅ |
 | FY 2023-24 and earlier | none (§4AB did not exist) | none ✅ |
 
-⚠️ **FY 2024-25 is understated for salaries above Rs 10 million.** This is a code defect, not a
-documentation one — see [open-questions.md](open-questions.md#salary-fy-2024-25-surcharge).
+A year absent from the table charges nothing, so the pre-2024 years need no entries.
+
+Two things the wording settles, both of which the code follows:
+
+- It is **not** a slab. The surcharge applies to the *whole* slab tax once taxable income passes
+  Rs 10 million, not to the part above it. Crossing the line therefore costs a step, not a taper —
+  which is why a raise across it can lower take-home. Reverse salary has to search around that
+  discontinuity explicitly; see [reverse-salary.md](reverse-salary.md#why-step-1-splits-at-the-threshold).
+- The threshold is `>`, not `≥` — *"exceeds rupees ten million"*. A gross of exactly Rs 10,000,000
+  pays no surcharge.
+
+The **non-salaried** rate is a different table: the FA2025 and FA2026 changes above are provisos for
+salary only, so an individual or AOP taxed on business income keeps the flat 10% throughout. That
+lives in the business calculator's own `BUSINESS_SURCHARGE` — see
+[business-tax.md](business-tax.md#surcharge--4ab). Do not merge the two.
+
+### Every caller of the salary engine
+
+The surcharge was previously bolted on at three call sites and missing from three others, so the two
+tabs of this page disagreed above Rs 10 million and reverse salary quoted a gross that was too low.
+All six now route through `salaryTaxForYear`:
+
+| Surface | Code |
+|---|---|
+| Home, Single year tab | `components/SingleYearCalculator.tsx` → `calculateBudgetYearTax` |
+| Home, Multiple years tab | `features/multi-year-tax/lib/calculation.ts` |
+| Reverse salary | `features/reverse-salary/lib/calculation.ts` |
+| Increment / job offer | `features/salary-increment/lib/calculation.ts` |
+| Budget comparison | `features/budget-comparison/lib/calculation.ts` |
+| Embed | `features/embed-salary-tax/lib/calculation.ts` → `calculateBudgetYearTax` |
+
+`FY_2025_26_SURCHARGE_RATE` and `FY_2025_26_SURCHARGE_THRESHOLD` in `lib/budgetComparison.ts` are the
+figures the slabs page quotes in prose. They are **read off `salarySurcharges`** rather than typed
+again, so the rate the site claims and the rate it charges cannot drift apart.
+
+⚠️ Only the single-year tab and the embed *itemise* the surcharge for the reader ("Includes
+Rs. X surcharge"). On the other four it is folded into the tax figure — correct, but a reader cannot
+see why the number exceeds the slab table. Recorded in
+[open-questions.md](open-questions.md#surcharge-is-not-itemised-on-four-of-the-six-salary-surfaces).
 
 ## What comes out
 
-`calculateTax(monthlySalary, fiscalYear, months = 12)` returns yearly income, yearly tax, monthly
-tax (`yearlyTax / 12`), take-home on both cadences, and the effective rate `yearlyTax / totalIncome`.
-`SingleYearCalculator` then layers the surcharge on top via `calculateBudgetYearTax` and passes
-`{ baseTax, surcharge }` into the insights panels so the tax-band chart can show them separately.
+`salaryTaxForYear(annualGross, fiscalYear)` returns `{ baseTax, surcharge, totalTax }`.
+`calculateBudgetYearTax` wraps it for the monthly-salary surfaces, adding yearly income, monthly tax
+(`totalTax / 12`), take-home on both cadences and the effective rate `totalTax / yearlyIncome`.
+`SingleYearCalculator` passes `{ baseTax, surcharge }` straight into the insights panels so the
+tax-band chart can show the two separately.
+
+The old `calculateTax(monthlySalary, fiscalYear, months)` wrapper has been **removed**. It returned
+the slab tax with no surcharge, and having a second entry point that quietly skipped §4AB is what
+produced the disagreement between pages in the first place. `calculateTaxForTotalAmount` is still
+exported, but only for the band-contribution maths in `insights.ts`, where a surcharge would be
+wrong: it is not attributable to any band.
 
 The insights panel (`features/salary-tax/lib/insights.ts`) additionally derives:
 

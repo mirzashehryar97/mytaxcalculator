@@ -1,21 +1,12 @@
-import { calculateTaxForTotalAmount } from '@/utils/taxCalculator';
+import { salaryTaxForYear } from '@/utils/taxCalculator';
 
 import type { SalaryBudgetResult } from '@/features/budget-comparison/types';
 
 export const PREVIOUS_FISCAL_YEAR = '2025-2026';
 export const CURRENT_FISCAL_YEAR = '2026-2027';
-const PREVIOUS_SURCHARGE_THRESHOLD = 10_000_000;
-const PREVIOUS_SURCHARGE_RATE = 0.09;
 
 function calculateAnnualSalaryTax(monthlySalary: number, fiscalYear: string): number {
-  const annualSalary = monthlySalary * 12;
-  const baseTax = calculateTaxForTotalAmount(annualSalary, fiscalYear);
-
-  if (fiscalYear === PREVIOUS_FISCAL_YEAR && annualSalary > PREVIOUS_SURCHARGE_THRESHOLD) {
-    return Math.round(baseTax * (1 + PREVIOUS_SURCHARGE_RATE));
-  }
-
-  return baseTax;
+  return salaryTaxForYear(monthlySalary * 12, fiscalYear).totalTax;
 }
 
 export function calculateSalaryBudgetComparison(monthlySalary: number): SalaryBudgetResult {

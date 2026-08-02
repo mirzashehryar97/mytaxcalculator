@@ -9,6 +9,11 @@ export type FreelancerFiscalYear =
 export type FreelancerCurrency = 'USD' | 'PKR';
 
 export interface FreelancerRate {
+  /**
+   * Whether Division IVA offered a concessional PSEB rate that year. False for
+   * FY 2021-22, whose Division IVA was a single flat rate with no PSEB row.
+   */
+  psebRateAvailable: boolean;
   /** PSEB-registered exporter appearing on ATL. */
   psebAtl: number;
   /** PSEB-registered exporter not appearing on ATL. */
@@ -58,10 +63,16 @@ export interface FreelancerTaxResult {
   /** Applied percentage, expressed as 0.25 or 1 rather than a decimal fraction. */
   rate: number;
   eligibleForPsebRate: boolean;
+  /** False when the selected year had no PSEB concession to be eligible for. */
+  psebRateAvailable: boolean;
+  /** The year's PSEB + ATL rate, for labelling the comparison. */
+  psebRatePercent: number;
+  /** The year's general ATL rate, for labelling the comparison. */
+  standardRatePercent: number;
   atlRateApplied: boolean;
-  /** Comparison amount at the 0.25% PSEB + ATL rate. */
+  /** Comparison amount at the PSEB + ATL rate. */
   concessionTax: number;
-  /** Comparison amount at the verified 1% general rate. */
+  /** Comparison amount at the general ATL rate. */
   standardTax: number;
   /** Actual saving for an eligible taxpayer; zero when the general rate applies. */
   taxSavings: number;

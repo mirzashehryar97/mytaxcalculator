@@ -57,12 +57,14 @@ that pushes across a band boundary converts a larger share of itself into tax, a
 
 ## Surcharge
 
-**Not applied** — this module calls `calculateTaxForTotalAmount` directly. For FY 2025-26 scenarios
-above Rs 10 million a year, both sides of the comparison are understated. Because the error applies
-to *both* scenarios it partly cancels in the delta, but not cleanly: if one scenario crosses
-Rs 10 million and the other does not, the comparison is wrong in the direction that matters most.
+**Applied** to each scenario, through the shared `salaryTaxForYear` — see
+[salary-tax.md](salary-tax.md#surcharge--4ab) for the statute and the per-year rates.
 
-⚠️ Recorded in [open-questions.md](open-questions.md#increment-and-job-offer-omit-the-4ab-surcharge).
+It matters most exactly where this page is used. A raise that carries someone across Rs 10 million
+in FY 2025-26 or FY 2024-25 triggers the surcharge on the **whole** slab tax, not just the part above
+the line, so the take-home increase can be far smaller than the gross increase suggests — and in a
+narrow band above the threshold a raise can lower take-home outright. The comparison now shows that
+instead of hiding it.
 
 ## Official sources cited on the pages
 

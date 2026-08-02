@@ -10,6 +10,7 @@ import {
   FREELANCER_PSEB_OPTIONS,
 } from '@/features/freelancer-tax/lib/content';
 import { getFreelancerCurrencyPrefix } from '@/features/freelancer-tax/lib/input';
+import { getFreelancerPsebHelpText } from '@/features/freelancer-tax/lib/presentation';
 import {
   FREELANCER_FISCAL_YEARS,
   resolveFreelancerFiscalYear,
@@ -70,7 +71,7 @@ export default function FreelancerTaxForm({
         options={FREELANCER_PSEB_OPTIONS}
         value={formState.psebRegistered ? 'registered' : 'not-registered'}
         onChange={(value) => updateField('psebRegistered', value === 'registered')}
-        helpText={FREELANCER_FORM_COPY.psebDescription}
+        helpText={getFreelancerPsebHelpText(formState.fiscalYear)}
       />
 
       <NumberInput

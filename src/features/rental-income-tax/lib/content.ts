@@ -131,8 +131,6 @@ export const RENTAL_RESULT_COPY = {
   filerLabel: 'Filer Tax',
   nonFilerLabel: 'Non-Filer Tax',
   savingLabel: 'You save as a filer',
-  noUpliftNote:
-    'In 2021-22 the extra charge for non-filers did not apply to rent, so both statuses paid the same.',
   workingTitle: 'How this was worked out',
   taxFreeWorking: 'No tax — yearly rent up to Rs. 300,000 has nothing taken out.',
   yearComparisonTitle: 'Same rent across tax years',
@@ -152,8 +150,7 @@ export const RENTAL_GUIDE_COPY = {
   bandColumn: 'Yearly rent',
   filerColumn: 'Filer',
   nonFilerColumn: 'Non-filer',
-  slabNote:
-    'Non-filers have double the tax taken out. This has applied to rent since 2022-23; in 2021-22 both statuses paid the same.',
+  slabNote: 'Non-filers have double the tax taken out, in every year shown here.',
   companyTitle: 'Rent paid to a company',
   companyDescription:
     'A company that owns the property pays a flat percentage of the rent. There are no steps and no tax-free amount.',
@@ -306,7 +303,7 @@ export const RENTAL_FAQS = [
     id: 'non-filer',
     question: 'How much more does a non-filer pay on rent?',
     answer:
-      'Double. Rule 1 of the Tenth Schedule increases the rate by 100% for anyone not on the FBR Active Taxpayer List, so a filer paying Rs. 75,000 on Rs. 1,200,000 of rent would have Rs. 150,000 taken out as a non-filer. This has applied to rent since 2022-23. In 2021-22 rent was left out of that rule, so both statuses paid the same.',
+      'Double. Rule 1 of the Tenth Schedule increases the rate by 100% for anyone not on the FBR Active Taxpayer List, so a filer paying Rs. 75,000 on Rs. 1,200,000 of rent would have Rs. 150,000 taken out as a non-filer. This applies to every year this calculator covers. A company that is not on the list pays 30% instead of 15%.',
   },
   {
     id: 'company',
@@ -336,7 +333,7 @@ export const RENTAL_FAQS = [
     id: 'tax-years',
     question: 'Which tax years does this rent calculator cover?',
     answer:
-      'Tax years 2021-22 through 2026-27. The rate steps have not changed across those years, and the Finance Act 2026 left them alone for 2026-27. What did change is the extra charge for non-filers, which started applying to rent in 2022-23.',
+      'Tax years 2021-22 through 2026-27. The rate steps have not changed across those years — they were set by the Finance Act 2021 and the Finance Act 2026 left them alone for 2026-27 — and the extra charge for non-filers applies throughout.',
   },
   {
     id: 'multiple-properties',
