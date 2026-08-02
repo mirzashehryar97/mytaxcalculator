@@ -98,7 +98,14 @@ text layer), because it already carries the Finance Act 2026 amendments *and* pr
 tables as footnotes — which is how the historical years get confirmed from a single file.
 
 PDF page numbers cited in these docs are **PDF pages**, not printed page numbers; the two differ by
-roughly 18 in that document. To re-read a page without any external tool:
+roughly 19 in that document.
+
+⚠️ **The Ordinance PDF misprints its own folio on some pages.** PDF pages 491, 523 and 550 all print
+"535" where the running sequence calls for 472, 504 and 531. Where a printed number is given in these
+docs it was read off the page itself; where the page misprints it, the doc says so. **Navigate by PDF
+page, not by folio.**
+
+To re-read a page without any external tool:
 
 ```bash
 python3 -m venv venv && venv/bin/pip install pypdf

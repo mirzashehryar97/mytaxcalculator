@@ -40,23 +40,37 @@ It is genuinely **additional** to normal income tax — unlike §113, which subs
 ✅ **Verified** — Ordinance amended to 30 Jun 2026, PDF p. 533 (printed p. 514). The four rows are
 reproduced above almost verbatim from the current Division IIB table.
 
-### FY 2025-26 (TY 2026)
+### FY 2025-26 (TY 2026) and FY 2022-23 → 2024-25 (TY 2023, 2024, 2025)
 
-0% ≤150m · 1% · **1.5%** · **2.5%** · **3.5%** · **5.5%** · **7.5%** · 10% above 500m.
+Both are eight-row tables over the same band boundaries; only the middle rates differ.
 
-✅ Verified — same page, footnote 3 ("Table substituted by the Finance Act, 2026"), whose column (5)
-is headed "For tax year 2026 and onwards" and prints exactly these figures. The Finance Act 2025 took
-0.5 points off every band from Rs 200m to Rs 500m, as the page copy says.
+| Income under §4C | TY 2023 / 2024 / 2025 | TY 2026 |
+|---|---|---|
+| Up to Rs 150 million | 0% | 0% |
+| 150m – 200m | 1% | 1% |
+| 200m – 250m | 2% | **1.5%** |
+| 250m – 300m | 3% | **2.5%** |
+| 300m – 350m | 4% | **3.5%** |
+| 350m – 400m | 6% | **5.5%** |
+| 400m – 500m | 8% | **7.5%** |
+| Above 500m | 10% | 10% |
 
-### FY 2022-23, 2023-24, 2024-25 (TY 2023, 2024, 2025)
+Every cell is "N% **of the income**", not of the excess.
 
-0% ≤150m · 1% · 2% · 3% · 4% · 6% · 8% · 10% above 500m.
-
-✅ Verified — same footnote, column (4), headed "For tax year 2023, 2024 and 2025".
+✅ Verified — same page, footnote 3 ("Table substituted by the Finance Act, 2026"), whose column (4)
+is headed "For tax year 2023, 2024 and 2025" and column (5) "For tax year 2026 and onwards", printing
+exactly these two columns. The Finance Act 2025 took 0.5 points off every band from Rs 200m to
+Rs 500m, as the page copy says.
 
 ### Banking override, FY 2022-23 only
 
-0% ≤150m · 1% · 2% · 3% · then **10% above Rs 300 million**.
+| Income under §4C | Rate |
+|---|---|
+| Up to Rs 150 million | 0% |
+| 150m – 200m | 1% |
+| 200m – 250m | 2% |
+| 250m – 300m | 3% |
+| Above 300m | **10%** |
 
 ✅ Verified — Ordinance PDF p. 533, the proviso under the current table:
 
@@ -68,8 +82,8 @@ replaces only the top.
 
 ### Export exemption, FY 2026-27 only
 
-✅ Verified — **clause (104B) of Part IV of the Second Schedule**, Ordinance PDF p. 715
-(printed p. 696):
+✅ Verified — **clause (104B) of Part IV of the Second Schedule**, Ordinance PDF p. 728
+(printed p. 709):
 
 > **(104B)** The provisions of section 4C shall not apply to a person if the export proceeds
 > realized for the tax year represent **more than eighty percent of his total turnover** for the tax

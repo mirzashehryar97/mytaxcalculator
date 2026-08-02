@@ -55,7 +55,7 @@ received."*
 ✅ **2025-26 verified** — same page, footnote 1 ("Division X substituted by the Finance Act, 2026"),
 printing 4.5 / 5 / 5.5 against the three value bands.
 
-✅ **2024-25 verified** — Ordinance PDF p. 580, footnote 10, printing 3 / 3.5 / 4 against the same
+✅ **2024-25 verified** — Ordinance PDF pp. 580-581, footnote 10, printing 3 / 3.5 / 4 against the same
 bands.
 
 ✅ **2023-24 verified** — same page, footnote 9: the pre-FA2024 Division X was a flat **3%**.

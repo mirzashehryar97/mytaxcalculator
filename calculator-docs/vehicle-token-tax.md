@@ -62,7 +62,7 @@ instalments or lump sum the advance tax may also be collected in instalments or 
 manner."* So `federalIsOneOff = levy.frequency === 'lifetime'` is the statute's own rule, not a
 convenience.
 
-✅ **Ten-year cut-off** — §234(2A), Ordinance PDF p. 344 (printed p. 325): *"In respect of motor cars
+✅ **Ten-year cut-off** — §234(2A), Ordinance PDF p. 497 (printed p. 478): *"In respect of motor cars
 used for more than ten years in Pakistan, no advance tax shall be collected after a period of ten
 years."* → `VEHICLE_ANNUAL_TAX_CUTOFF_YEARS = 10`.
 

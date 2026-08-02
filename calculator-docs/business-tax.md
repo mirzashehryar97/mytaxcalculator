@@ -51,15 +51,30 @@ which are already at or under 40%).
 
 ### FY 2023-24
 
-0% / 7.5% / Rs 15,000 + 15% / Rs 75,000 + 20% / Rs 315,000 + 25% / Rs 465,000 + 30% /
-Rs 765,000 + 35% above 4,000,000.
+| Taxable income | Tax |
+|---|---|
+| Up to 600,000 | 0% |
+| 600,001 – 800,000 | 7.5% of the excess over 600,000 |
+| 800,001 – 1,200,000 | Rs 15,000 + 15% |
+| 1,200,001 – 2,400,000 | Rs 75,000 + 20% |
+| 2,400,001 – 3,000,000 | Rs 315,000 + 25% |
+| 3,000,001 – 4,000,000 | Rs 465,000 + 30% |
+| Above 4,000,000 | Rs 765,000 + 35% |
 
 ✅ Verified — Ordinance PDF p. 525, footnote 1 (substituted by the Finance Act 2024).
 
 ### FY 2021-22 and FY 2022-23 — one table
 
-0% / 5% / Rs 10,000 + 12.5% / Rs 60,000 + 17.5% / Rs 270,000 + 22.5% / Rs 405,000 + 27.5% /
-Rs 680,000 + 32.5% / Rs 1,330,000 + 35% above 6,000,000.
+| Taxable income | Tax |
+|---|---|
+| Up to 600,000 | 0% |
+| 600,001 – 800,000 | 5% of the excess over 600,000 |
+| 800,001 – 1,200,000 | Rs 10,000 + 12.5% |
+| 1,200,001 – 2,400,000 | Rs 60,000 + 17.5% |
+| 2,400,001 – 3,000,000 | Rs 270,000 + 22.5% |
+| 3,000,001 – 4,000,000 | Rs 405,000 + 27.5% |
+| 4,000,001 – 6,000,000 | Rs 680,000 + 32.5% |
+| Above 6,000,000 | Rs 1,330,000 + 35% |
 
 ✅ Verified — Ordinance PDF p. 524, footnote 1 (substituted by the Finance Act 2023). The table is
 headed as the one FA2023 replaced, so it governed the two years before it.
@@ -69,7 +84,7 @@ headed as the one FA2023 replaced, so it governed the two years before it.
 10% of the computed slab tax, applied when net income **exceeds** Rs 10,000,000. Shipped for
 2024-25, 2025-26 and 2026-27; absent for 2023-24 and earlier.
 
-✅ **Verified** — Ordinance PDF p. 54 (printed p. 34):
+✅ **Verified** — Ordinance PDF p. 53 (printed p. 34):
 
 > **4AB.** … a surcharge shall be payable by every individual and association of persons at the rate
 > of **ten percent of the income tax imposed under Division I of Part I of the First Schedule** where

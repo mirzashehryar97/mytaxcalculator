@@ -12,7 +12,7 @@ tax on a phone or internet payment.
 ## No filer toggle — on purpose
 
 Tenth Schedule **rule 10(l)** keeps *"tax collected under section 236"* out of the non-filer regime
-entirely. ✅ Verified — Ordinance amended to 30 Jun 2026, PDF p. 802 (printed p. 783). Filers and
+entirely. ✅ Verified — Ordinance amended to 30 Jun 2026, PDF p. 804 (printed p. 785). Filers and
 non-filers pay the same, so the page offers no toggle rather than offering one that changes nothing.
 
 ## What the user enters

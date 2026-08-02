@@ -44,7 +44,8 @@ million; the pre-2016 figure was fifty million.
 | `low-margin-trades` | **0.25%** | Petroleum agents and distributors registered under the STA 1990; rice mills and dealers; Tier-1 FMCG retailers integrated with the Board; e-commerce and online-marketplace turnover; sellers of used vehicles; flour mills |
 | `specified-goods-distributor` | **0.5%** for 2026-27, **0.25%** for 2022-23 → 2025-26 | Distributors, dealers, sub-dealers and wholesalers of specified goods |
 
-✅ **Division IX verified** — Ordinance PDF p. 548-550 (printed p. 529-531). The current table reads
+✅ **Division IX verified** — Ordinance PDF pp. 548-550 (printed pp. 529-530; p. 550 misprints its
+own folio as 535). The current table reads
 0.75% / 0.5% / 0.25% / 1.25% across those four groups, matching the code exactly. Entry 3(a)
 ("distributors of pharmaceutical products, fast moving consumer goods and cigarettes") was
 **omitted by the Finance Act 2026**.

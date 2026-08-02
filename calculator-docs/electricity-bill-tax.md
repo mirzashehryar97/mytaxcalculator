@@ -19,7 +19,7 @@ Two completely different rules sit inside one section:
 ## Why filer status barely matters here
 
 Tenth Schedule **rule 10(i)** keeps *"tax deducted under section 235"* out of the non-filer regime
-entirely. ✅ Verified — Ordinance amended to 30 Jun 2026, PDF p. 802 (printed p. 783). So the business
+entirely. ✅ Verified — Ordinance amended to 30 Jun 2026, PDF p. 803 (printed p. 784). So the business
 side is `sameForEveryone: true` and there is nothing to double. The domestic charge is not an uplift
 of a filer rate — it is written into Division IV as applying only to a person not on the ATL.
 

@@ -23,7 +23,7 @@ the tax where taxable income exceeds Rs 10 million**, for *"every individual and
 persons"*. The salaried carve-out did not exist until the Finance Act 2025 added the 9% proviso, and
 the Finance Act 2026 replaced that with "no surcharge shall be payable".
 
-Source: Income Tax Ordinance 2001 (amended to 30 Jun 2026), PDF p. 54, §4AB and footnotes 4, 6, 7.
+Source: Income Tax Ordinance 2001 (amended to 30 Jun 2026), PDF p. 53, §4AB and footnotes 4, 6, 7.
 
 **Effect:** salaries above Rs 10 million in FY 2024-25 are understated by 10% of the slab tax.
 **Fix:** add a per-year surcharge config (`{ rate, threshold }` keyed by fiscal year) rather than the

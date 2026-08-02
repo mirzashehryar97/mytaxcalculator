@@ -9,8 +9,8 @@
 **Section 231AB.** Every banking company deducts advance adjustable tax from a person **not
 appearing on the Active Taxpayer List**, on the day's cash withdrawals once they pass Rs 50,000.
 
-✅ **Verified** word for word — Ordinance amended to 30 Jun 2026, PDF pp. 491-492 (printed
-pp. 472-473):
+✅ **Verified** word for word — Ordinance amended to 30 Jun 2026, PDF pp. 491-492 (p. 492 carries the
+folio 473; p. 491 misprints its own as 535):
 
 > **231AB.** Advance tax on cash withdrawal. — (1) Every banking company shall deduct advance
 > adjustable tax at the rate of **0.8%** of the cash withdrawal from a person whose name is not

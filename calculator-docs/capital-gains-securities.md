@@ -73,7 +73,7 @@ below the table read:
 
 `applyNonFilerUplift` returns `filerRate × 2` unless rule 10(y) reaches the purchase.
 
-✅ **Rule 10(y) verified** — Ordinance PDF p. 803 (printed p. 784):
+✅ **Rule 10(y) verified** — Ordinance PDF p. 804 (printed p. 785):
 
 > **7** Sub-rule (y) **omitted by the Finance Act, 2026.** The omitted sub-rule read as follows:
 > "(y) tax collected under section 37A on disposal of securities **acquired on and from 1st day of

@@ -46,30 +46,57 @@ Progressive slabs via `calcSlabTax`. Each row is *fixed amount + rate on the amo
 ✅ **Verified** word for word against the Ordinance (amended to 30 Jun 2026), PDF p. 527-528
 (printed p. 508-509).
 
-### FY 2025-26 (TY 2026)
+### FY 2025-26 (TY 2026) — Finance Act 2025
 
-0% / 1% / Rs 6,000 + 11% / Rs 116,000 + 23% / Rs 346,000 + 30% / Rs 616,000 + 35% above 4,100,000.
+| Taxable income | Tax |
+|---|---|
+| Up to Rs 600,000 | 0% |
+| 600,001 – 1,200,000 | 1% of the excess over 600,000 |
+| 1,200,001 – 2,200,000 | Rs 6,000 + 11% |
+| 2,200,001 – 3,200,000 | Rs 116,000 + 23% |
+| 3,200,001 – 4,100,000 | Rs 346,000 + 30% |
+| Above 4,100,000 | Rs 616,000 + 35% |
 
 ✅ Verified — Ordinance PDF p. 527, footnote 2 ("Table substituted by the Finance Act, 2026. The
 substituted Table read as follows"), which prints exactly this table.
 
-### FY 2024-25 (TY 2025)
+### FY 2024-25 (TY 2025) — Finance Act 2024
 
-0% / 5% / Rs 30,000 + 15% / Rs 180,000 + 25% / Rs 430,000 + 30% / Rs 700,000 + 35% above 4,100,000.
+| Taxable income | Tax |
+|---|---|
+| Up to Rs 600,000 | 0% |
+| 600,001 – 1,200,000 | 5% of the excess over 600,000 |
+| 1,200,001 – 2,200,000 | Rs 30,000 + 15% |
+| 2,200,001 – 3,200,000 | Rs 180,000 + 25% |
+| 3,200,001 – 4,100,000 | Rs 430,000 + 30% |
+| Above 4,100,000 | Rs 700,000 + 35% |
 
 ✅ Verified — same page, footnote 1 (substituted by the Finance Act 2025).
 
-### FY 2023-24 (TY 2024)
+### FY 2023-24 (TY 2024) — Finance Act 2023
 
-0% / 2.5% / Rs 15,000 + 12.5% / Rs 165,000 + 22.5% / Rs 435,000 + 27.5% / Rs 1,095,000 + 35% above
-6,000,000.
+| Taxable income | Tax |
+|---|---|
+| Up to Rs 600,000 | 0% |
+| 600,001 – 1,200,000 | 2.5% of the excess over 600,000 |
+| 1,200,001 – 2,400,000 | Rs 15,000 + 12.5% |
+| 2,400,001 – 3,600,000 | Rs 165,000 + 22.5% |
+| 3,600,001 – 6,000,000 | Rs 435,000 + 27.5% |
+| Above 6,000,000 | Rs 1,095,000 + 35% |
 
 ✅ Verified — Ordinance PDF p. 526, footnote 2 (substituted by the Finance Act 2024).
 
-### FY 2022-23 (TY 2023)
+### FY 2022-23 (TY 2023) — Finance Act 2022
 
-0% / 2.5% / Rs 15,000 + 12.5% / Rs 165,000 + 20% / Rs 405,000 + 25% / Rs 1,005,000 + 32.5% /
-Rs 2,955,000 + 35% above 12,000,000.
+| Taxable income | Tax |
+|---|---|
+| Up to Rs 600,000 | 0% |
+| 600,001 – 1,200,000 | 2.5% of the excess over 600,000 |
+| 1,200,001 – 2,400,000 | Rs 15,000 + 12.5% |
+| 2,400,001 – 3,600,000 | Rs 165,000 + 20% |
+| 3,600,001 – 6,000,000 | Rs 405,000 + 25% |
+| 6,000,001 – 12,000,000 | Rs 1,005,000 + 32.5% |
+| Above 12,000,000 | Rs 2,955,000 + 35% |
 
 ✅ Verified — Ordinance PDF p. 526, footnote 1 (substituted by the Finance Act 2023).
 
@@ -104,7 +131,7 @@ source — the 2026 consolidated Ordinance only prints back as far as the pre-20
 `calculateBudgetYearTax` adds a **9% surcharge on the tax** (not the income) when the annual income
 exceeds Rs 10,000,000 — and **only for the fiscal year `2025-2026`**.
 
-The statute, Ordinance PDF p. 54 (printed p. 34):
+The statute, Ordinance PDF p. 53 (printed p. 34):
 
 > **4AB.** Subject to this Ordinance, a surcharge shall be payable by every individual and
 > association of persons at the rate of ten percent of the income tax imposed under Division I of
