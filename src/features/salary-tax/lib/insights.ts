@@ -195,7 +195,15 @@ export function getFiscalComparisonSecondaryAmount(
   return period === 'monthly' ? summary.annualDifference : summary.monthlyDifference;
 }
 
-export function getTaxBandInsights(result: SalaryTaxResult, selectedYear: string): TaxBandInsights {
+function getPeriodLabel(period: SalaryInsightPeriod): string {
+  return period === 'annual' ? 'Annual' : 'Monthly';
+}
+
+export function getTaxBandInsights(
+  result: SalaryTaxResult,
+  selectedYear: string,
+  period: SalaryInsightPeriod,
+): TaxBandInsights {
   const slabs = taxSlabs[selectedYear] ?? taxSlabs['2026-2027'];
   const rawRows: Omit<TaxBandContribution, 'barPercent'>[] = [];
   let previousTax = 0;
@@ -226,6 +234,7 @@ export function getTaxBandInsights(result: SalaryTaxResult, selectedYear: string
   const maximumContribution = Math.max(...rawRows.map((row) => row.contribution), 1);
   const rows = rawRows.map((row) => ({
     ...row,
+    contribution: getFiscalComparisonPeriodAmount(row.contribution, period),
     barPercent: (row.contribution / maximumContribution) * 100,
   }));
   const activeRow = rows.find((row) => row.isActive) ?? rows.at(-1);
@@ -236,11 +245,12 @@ export function getTaxBandInsights(result: SalaryTaxResult, selectedYear: string
     activeBandLabel: activeRow?.label ?? 'Not available',
     activeRate: activeRow?.rate ?? 0,
     annualIncome: result.yearlyIncome,
-    baseTax,
+    baseTax: getFiscalComparisonPeriodAmount(baseTax, period),
     effectiveRate: result.taxRate,
     fiscalYearLabel: formatFiscalYear(selectedYear),
+    periodLabel: getPeriodLabel(period),
     rows,
-    surcharge,
-    totalTax: result.yearlyTax,
+    surcharge: getFiscalComparisonPeriodAmount(surcharge, period),
+    totalTax: getFiscalComparisonPeriodAmount(result.yearlyTax, period),
   };
 }

@@ -20,8 +20,16 @@ const SalaryTaxBandsPanel = dynamic(() => import('./SalaryTaxBandsPanel'), {
 });
 
 export default function SalaryInsights({ onHide, result, selectedYear }: SalaryInsightsProps) {
-  const { activeTab, comparisonPeriod, period, setActiveTab, setComparisonPeriod, setPeriod } =
-    useSalaryInsights();
+  const {
+    activeTab,
+    comparisonPeriod,
+    period,
+    setActiveTab,
+    setComparisonPeriod,
+    setPeriod,
+    setTaxBandPeriod,
+    taxBandPeriod,
+  } = useSalaryInsights();
 
   return (
     <section
@@ -57,7 +65,12 @@ export default function SalaryInsights({ onHide, result, selectedYear }: SalaryI
           />
         )}
         {activeTab === 'taxBands' && (
-          <SalaryTaxBandsPanel result={result} selectedYear={selectedYear} />
+          <SalaryTaxBandsPanel
+            onPeriodChange={setTaxBandPeriod}
+            period={taxBandPeriod}
+            result={result}
+            selectedYear={selectedYear}
+          />
         )}
       </div>
     </section>

@@ -5,7 +5,12 @@ type AnalyticsPropertyValue = boolean | null | number | string;
 
 type AnalyticsProperties = Record<string, AnalyticsPropertyValue>;
 
-const VERCEL_CUSTOM_EVENTS = new Set(['embed_calculator_click', 'show_insights_click']);
+const VERCEL_CUSTOM_EVENTS = new Set([
+  'embed_calculator_click',
+  'show_insights_click',
+  'salary_increment_show_insights_click',
+  'job_offer_comparison_show_insights_click',
+]);
 
 /**
  * All custom events go to Google Analytics. Vercel receives only the explicitly allowlisted

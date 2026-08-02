@@ -42,6 +42,7 @@ export function computeSalaryScenario(
     annualGross,
     annualTax,
     annualNet: netMonthly * MONTHS_IN_YEAR,
+    deductionMonthly,
     effectiveRate,
   };
 }
@@ -59,6 +60,7 @@ export function compareSalaryScenarios(
 
   return {
     mode,
+    fiscalYear,
     current,
     next,
     grossIncreaseMonthly: next.grossMonthly - current.grossMonthly,

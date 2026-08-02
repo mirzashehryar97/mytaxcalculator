@@ -58,6 +58,7 @@ export interface TaxBandInsights {
   baseTax: number;
   effectiveRate: number;
   fiscalYearLabel: string;
+  periodLabel: string;
   rows: TaxBandContribution[];
   surcharge: number;
   totalTax: number;

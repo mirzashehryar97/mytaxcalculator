@@ -1,5 +1,7 @@
 import type {
   IncrementInputType,
+  SalaryComparisonInsightPeriod,
+  SalaryComparisonInsightTab,
   SalaryComparisonMode,
   SalaryIncrementFaqItem,
   SalaryIncrementOption,
@@ -112,6 +114,62 @@ export const SALARY_COMPARISON_RESULT_COPY = {
   effectiveRateJob: 'Effective Tax Rate (New Offer)',
   bonusChipPrefix: 'Bonus:',
   bonusChipSuffix: '/ month',
+} as const;
+
+export const SALARY_COMPARISON_INSIGHT_PERIOD_OPTIONS = [
+  { value: 'monthly', label: 'Monthly' },
+  { value: 'annual', label: 'Annual' },
+] as const satisfies readonly SalaryIncrementOption<SalaryComparisonInsightPeriod>[];
+
+export const SALARY_COMPARISON_INSIGHT_TABS = [
+  { id: 'taxBands', label: 'Tax band impact' },
+  { id: 'comparison', label: 'Before & after' },
+] as const satisfies ReadonlyArray<{
+  id: SalaryComparisonInsightTab;
+  label: string;
+}>;
+
+export const SALARY_COMPARISON_INSIGHT_COPY = {
+  launcherEyebrow: 'Salary insights',
+  launcherIncrementTitle: 'See what your raise really adds',
+  launcherJobOfferTitle: 'See which offer gives you more',
+  launcherDescription:
+    'Explore the take-home difference, before-and-after figures and tax band impact.',
+  showButton: 'Show insights',
+  hideButton: 'Hide insights',
+  incrementEyebrow: 'Increment insights',
+  jobOfferEyebrow: 'Offer insights',
+  incrementTitle: 'Understand your raise at a glance',
+  jobOfferTitle: 'Compare the offers at a glance',
+  incrementSubtitle: 'monthly salary after the increment',
+  jobOfferSubtitle: 'monthly taxable pay in the new offer',
+  effectiveRateLabel: 'New effective tax rate',
+  beforeAfterTitle: 'Before and after, side by side',
+  beforeAfterDescription: 'Compare what changes in the current role and the new scenario.',
+  currentIncrement: 'Current salary',
+  nextIncrement: 'After increment',
+  currentJobOffer: 'Current job',
+  nextJobOffer: 'New offer',
+  grossPay: 'Gross pay',
+  incomeTax: 'Income tax',
+  payrollDeductions: 'Payroll deductions',
+  takeHomePay: 'Take-home pay',
+  grossGrowth: 'Gross pay change',
+  takeHomeGrowth: 'Take-home change',
+  taxBandTitle: 'Compare tax bands side by side',
+  taxBandDescription:
+    'See each salary’s active band and tax contribution by slab. Band thresholds are annual; tax amounts follow your selected period.',
+  taxContributionByBand: 'Tax contribution by band',
+  activeBand: 'Your active band',
+  taxablePay: 'Taxable pay',
+  salaryTaxSurcharge: 'Salary tax surcharge',
+  totalTax: 'Total tax',
+  taxImpact: 'Tax impact',
+  activeRateChange: 'Active marginal rate',
+  taxDifferenceLabel: 'tax difference',
+  sameBand: 'The change stays within the same marginal tax band.',
+  crossedBand:
+    'The change crosses a tax band. Only the portion inside each band uses that band’s rate.',
 } as const;
 
 export const SALARY_COMPARISON_CROSS_LINK = {

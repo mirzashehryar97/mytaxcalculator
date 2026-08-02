@@ -43,12 +43,7 @@ export default function ComparisonResults({ comparison }: ComparisonResultsProps
 
       <ComparisonSummary comparison={comparison} />
 
-      <div>
-        <h3 className="mb-4 font-semibold text-emerald-700 text-xs uppercase tracking-wider">
-          {SALARY_COMPARISON_RESULT_COPY.insightsHeading}
-        </h3>
-        <ComparisonInsights comparison={comparison} />
-      </div>
+      <ComparisonInsights comparison={comparison} />
     </div>
   );
 }

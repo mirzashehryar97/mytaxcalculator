@@ -1,16 +1,24 @@
 import ActiveTaxBandCard from '@/features/salary-tax/components/ActiveTaxBandCard';
 import ProgressiveTaxExplainer from '@/features/salary-tax/components/ProgressiveTaxExplainer';
+import SalaryPeriodSelect from '@/features/salary-tax/components/SalaryPeriodSelect';
 import TaxBandContributionChart from '@/features/salary-tax/components/TaxBandContributionChart';
 import { formatCompactPkr, getTaxBandInsights } from '@/features/salary-tax/lib/insights';
-import type { SalaryTaxResult } from '@/features/salary-tax/types';
+import type { SalaryInsightPeriod, SalaryTaxResult } from '@/features/salary-tax/types';
 
 interface SalaryTaxBandsPanelProps {
+  onPeriodChange: (period: SalaryInsightPeriod) => void;
+  period: SalaryInsightPeriod;
   result: SalaryTaxResult;
   selectedYear: string;
 }
 
-export default function SalaryTaxBandsPanel({ result, selectedYear }: SalaryTaxBandsPanelProps) {
-  const insights = getTaxBandInsights(result, selectedYear);
+export default function SalaryTaxBandsPanel({
+  onPeriodChange,
+  period,
+  result,
+  selectedYear,
+}: SalaryTaxBandsPanelProps) {
+  const insights = getTaxBandInsights(result, selectedYear, period);
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-gray-50/50 p-3 shadow-sm sm:p-5">
@@ -22,12 +30,12 @@ export default function SalaryTaxBandsPanel({ result, selectedYear }: SalaryTaxB
             {formatCompactPkr(insights.annualIncome)}
           </p>
         </div>
-        <span className="inline-flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2 font-semibold text-gray-700 text-sm shadow-sm sm:w-32">
-          Annual
-          <span aria-hidden className="text-gray-400">
-            ▾
-          </span>
-        </span>
+        <SalaryPeriodSelect
+          id="salary-tax-bands-period"
+          label="Tax band display period"
+          onChange={onPeriodChange}
+          value={period}
+        />
       </div>
 
       <div className="mt-5 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_15rem]">

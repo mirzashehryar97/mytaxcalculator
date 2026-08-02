@@ -50,7 +50,7 @@ export default function ActiveTaxBandCard({ insights }: ActiveTaxBandCardProps) 
           </dd>
         </div>
         <div className="flex items-center justify-between gap-4 py-3">
-          <dt className="text-gray-600">Total annual tax</dt>
+          <dt className="text-gray-600">{insights.periodLabel} tax</dt>
           <dd className="font-bold text-red-600 tabular-nums">
             {formatCompactPkr(insights.totalTax)}
           </dd>

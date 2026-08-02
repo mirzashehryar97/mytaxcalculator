@@ -8,6 +8,7 @@ export default function useSalaryInsights() {
   const [activeTab, setActiveTab] = useState<SalaryInsightTab>('overview');
   const [period, setPeriod] = useState<SalaryInsightPeriod>('monthly');
   const [comparisonPeriod, setComparisonPeriod] = useState<SalaryInsightPeriod>('annual');
+  const [taxBandPeriod, setTaxBandPeriod] = useState<SalaryInsightPeriod>('annual');
 
   return {
     activeTab,
@@ -16,5 +17,7 @@ export default function useSalaryInsights() {
     setActiveTab,
     setComparisonPeriod,
     setPeriod,
+    setTaxBandPeriod,
+    taxBandPeriod,
   };
 }

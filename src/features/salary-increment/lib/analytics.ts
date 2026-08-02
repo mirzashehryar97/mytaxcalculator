@@ -12,6 +12,7 @@ export const SALARY_COMPARISON_ANALYTICS_CONFIG = {
     events: {
       pageView: 'salary_increment_view',
       calculatorUse: 'salary_increment_use',
+      showInsights: 'salary_increment_show_insights_click',
     },
     context: {
       calculator: 'salary_increment',
@@ -22,6 +23,7 @@ export const SALARY_COMPARISON_ANALYTICS_CONFIG = {
     events: {
       pageView: 'job_offer_comparison_view',
       calculatorUse: 'job_offer_comparison_use',
+      showInsights: 'job_offer_comparison_show_insights_click',
     },
     context: {
       calculator: 'job_offer_comparison',
@@ -38,5 +40,17 @@ export function buildSalaryComparisonUseParameters(
     ...SALARY_COMPARISON_ANALYTICS_CONFIG[mode].context,
     mode,
     fiscal_year: formState.fiscalYear,
+  } as const;
+}
+
+export function buildSalaryComparisonInsightsParameters(
+  mode: SalaryComparisonMode,
+  fiscalYear: string,
+) {
+  return {
+    ...SALARY_COMPARISON_ANALYTICS_CONFIG[mode].context,
+    mode,
+    fiscal_year: fiscalYear,
+    insight_surface: mode === 'increment' ? 'salary_increment_results' : 'job_offer_results',
   } as const;
 }

@@ -16,7 +16,7 @@ export default function TaxBandContributionChart({ insights }: TaxBandContributi
           <div
             key={`${row.label}-${row.rate}`}
             className={`grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-2 gap-y-1 rounded-lg px-2 py-1.5 sm:grid-cols-[minmax(8rem,1.15fr)_2.75rem_minmax(5rem,1.8fr)_4.75rem] ${
-              row.isActive ? 'border border-emerald-200 bg-emerald-50/80' : ''
+              row.isActive ? 'border border-emerald-300 bg-emerald-50/80' : ''
             }`}
           >
             <div className="min-w-0">
@@ -64,7 +64,7 @@ export default function TaxBandContributionChart({ insights }: TaxBandContributi
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-4 border-gray-200 border-t pt-3">
-        <span className="font-bold text-gray-800 text-sm">Total annual tax</span>
+        <span className="font-bold text-gray-800 text-sm">{insights.periodLabel} total tax</span>
         <span className="amount-wrap text-right font-bold text-lg text-red-600 tabular-nums">
           {formatPkr(insights.totalTax)}
         </span>
