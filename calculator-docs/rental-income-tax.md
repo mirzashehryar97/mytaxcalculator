@@ -33,6 +33,8 @@ third-party rate card, tax-firm summary or blog is load-bearing anywhere on this
 | **S3** | Finance Act 2022, Gazette of Pakistan | https://download1.fbr.gov.pk/Docs/2022711571639532FinanceAct2022.pdf | `…/2022711571639532FinanceAct2022.pdf` |
 | **S4** | FBR Withholding Income Tax Rates Card, "Updated up to 30-06-2021" (**TY 2022**) | https://download1.fbr.gov.pk/Docs/20218151182834653202189138454560UPDATEDWHTRateCardupto30thJune2021.pdf | `…/ty2022-wht-card.pdf` |
 | **S5** | FBR Withholding Income Tax Rate Card, "Updated up to June 30, 2025 as per Finance Act, 2025" (**TY 2026**) | https://download1.fbr.gov.pk/Docs/20258181281745641WHT-RateCard.pdf | `…/ty2026-wht-card.pdf` |
+| **S6** | FBR Withholding Income Tax Rates Card, "as per Finance Act, 2022 — updated up to June 30, 2022" (**TY 2023**) | https://download1.fbr.gov.pk/Docs/20229131493643904WithholdingRatesCardsUpdated30.06.2022.pdf | `…/ty2023-wht-card.pdf` |
+| **S7** | FBR Withholding Income Tax Rates Card, "as per Finance Act, 2024 — updated up to June 30, 2024" (**TY 2025**) | https://download1.fbr.gov.pk/Docs/20248211184455183WithholdingTaxRegimeRatesCard2024.pdf | `…/ty2025-wht-card.pdf` |
 
 Both rate cards carry this disclaimer on every page, which is what settles the one place they
 conflict with the statute:
@@ -52,19 +54,28 @@ conflict with the statute:
 | 600,001 – 2,000,000 | Rs 15,000 + 10% |
 | Above 2,000,000 | Rs 155,000 + 25% |
 
-✅ **Verified against official sources**, word for word, in three of them:
+✅ **Verified against official sources**, word for word, in six of them:
 
 - **[S1]** Ordinance, PDF p. 568 (printed p. 549), Division V(a).
+- **[S2]** Finance Act 2021, PDF p. 75, Part I item (C)(h) — the enacting text itself: *"in Division
+  V, for the TABLE, the following shall be substituted, namely:—"*, followed by these four bands
+  verbatim.
 - **[S4]** TY2022 card, PDF p. 24 — the same four bands, footnoted *"18 Table Substituted through
   Finance Act, 2021"*.
+- **[S6]** TY2023 card, PDF p. 9 — the same four bands.
+- **[S7]** TY2025 card, PDF p. 9-10 — the same four bands.
 - **[S5]** TY2026 card, PDF p. 7 — the same four bands again.
 
-**Why this table is right for FY 2021-22, the earliest year offered:** [S1] PDF p. 567 footnote 2
-records *"The Table of Division V substituted by the Finance Act, 2021"* and prints the superseded
-version — an eight-band scale starting at Rs 200,000 and topping out at 35%. That older scale belongs
-to FY 2020-21 and earlier, which this calculator does not offer. The Finance Act 2026 amends
-Divisions IC, III, IIIAA, IIIAB, IV and IVA of Part III and leaves Division V alone, so 2026-27
-reuses the table. **One table therefore covers all six years, 2021-22 → 2026-27.**
+**Why this table is right for FY 2021-22, the earliest year offered:** [S2] enacts it with effect
+from 1 July 2021, and [S1] PDF p. 567 footnote 2 records *"The Table of Division V substituted by the
+Finance Act, 2021"* and prints the superseded version — an eight-band scale starting at Rs 200,000
+and topping out at 35%. That older scale belongs to FY 2020-21 and earlier, which this calculator
+does not offer.
+
+**Why it is still right for FY 2026-27:** [S1] is the consolidation *after* the Finance Act 2026 — it
+carries FA2026 amendments (Tenth Schedule rule 10(y) is marked *"omitted by the Finance Act, 2026"*,
+PDF p. 804). Its Division V table still traces to FA2021 with no later substitution footnote, so
+FA2026 left Division V alone. **One table therefore covers all six years, 2021-22 → 2026-27.**
 
 ### Company — flat
 
@@ -77,6 +88,8 @@ reuses the table. **One table therefore covers all six years, 2021-22 → 2026-2
   17.5% … for non-filers"* were omitted by the Finance Act 2019, so the split now comes from the
   Tenth Schedule instead.
 - **[S5]** TY2026 card, PDF p. 7, in explicit columns: company rent **ATL 15.00% / Non-ATL 30.00%**.
+- **[S6]** TY2023 card, PDF p. 9 — company row **15% / 30%**.
+- **[S7]** TY2025 card, PDF p. 10 — company row **15% / 30%**.
 
 ### Non-filer
 
@@ -99,9 +112,17 @@ Rs 30,000, and Rs 30,000 + 20% to Rs 2,000,000 is Rs 310,000.
   carve-out**.
 - **[S5]** TY2026 card, PDF p. 7 — every §155 row cites *"Division-V of Part-III of First Schedule
   **read with R.1 of Tenth Schedule**"*, R.1 being that uplift rule.
+- **[S6]** TY2023 card, PDF p. 9 and **[S7]** TY2025 card, PDF p. 9 — both print, in the *"Not on
+  ATL"* column against the individual/AOP rent block, the words **"100% increase"**, cited to
+  *"Division V of Part III of First Schedule Read with R.1 of 10th Schedule"*. These two are the
+  FBR saying the uplift applies to §155 rent in FY 2022-23 and FY 2024-25 in its own words.
 
-The doubled slab is **derived**, not printed: the cards give the ATL slab and name R.1 rather than
-spelling out the doubled bands.
+The doubled *bands* are still **derived**, not printed: the cards give the ATL slab and either name
+R.1 or say "100% increase" rather than spelling out the doubled figures. Doubling the rate and the
+running fixed amount together is the same operation as doubling the whole tax function — for
+`tax(x) = fixed + rate × (x − min)`, `2 × tax(x) = 2·fixed + 2·rate × (x − min)` — so the shipped
+non-filer figure is exactly twice the filer figure at every rent, which is what "increased by hundred
+percent" means.
 
 ### FY 2021-22 — the uplift applies here too ✅ *(fixed 3 August 2026)*
 
@@ -192,16 +213,14 @@ above Rs 600,000".
 | Income Tax Ordinance 2001 | amended to 30 Jun 2024 | §155 and §15A. Points at the 2024 consolidation; the 2026 one **[S1]** carries the Division V and Tenth Schedule footnotes this page relies on. |
 | FBR IRIS Portal | `iris.fbr.gov.pk` | Correct. |
 
-⚠️ **The grid is missing the Finance Act 2021 [S2], and it is now load-bearing.** The repo rule is to
-cite the source of every year the calculator computes. FA2021 is the source of *two* things on this
-page: it substituted the Division V table the calculator uses for all six years, and it omitted §155
-from Tenth Schedule rule 10, which is why FY 2021-22 non-filers are charged double. Neither claim is
-traceable from the four cards above — the Ordinance card points at the 2024 consolidation, and the
-rate card covers FY 2025-26 only.
+| Finance Act 2021 | `…FinanceAct2021.pdf` | Correct — **added 4 August 2026**. This is **[S2]**. |
 
-`FBR_DOC_URLS.financeAct2021` already exists in `src/lib/officialSources.ts`, so this is one card in
-`RENTAL_OFFICIAL_SOURCES`, not new research. Not yet added — a source grid is a published claim, so
-it is being raised rather than slipped in.
+**Why the Finance Act 2021 card had to be there.** The repo rule is to cite the source of every year
+the calculator computes. FA2021 is the source of *two* things on this page: it substituted the
+Division V table the calculator uses for all six years (gazette p. 75), and it omitted §155 from
+Tenth Schedule rule 10, which is why FY 2021-22 non-filers are charged double (p. 106). Neither
+claim was traceable from the other four cards — the Ordinance card points at the 2024 consolidation,
+and the rate card covers FY 2025-26 only.
 
 **Islamic-content note:** the §15A card description says "the costs a landlord can claim". §15A
 itself uses the phrase *"profit paid on money borrowed"* — the statute's own halal-compatible
@@ -219,6 +238,144 @@ wording, and the reason the page never says "interest". Keep it that way.
 - **Sub-letting** and non-resident owners.
 
 ## Verification log
+
+### 4 August 2026 — full audit of the shipped page against the primary sources
+
+Every rate, threshold and legal claim on the page was re-checked against the cached documents rather
+than against this doc. **All of them hold.** New citations and four defects came out of it.
+
+**Read:**
+
+| Document | Where | What it settled |
+|---|---|---|
+| Ordinance to 30 Jun 2026 | PDF p. 568 (printed 549) | Division V(a) four bands and V(b) 15% company, verbatim as shipped. |
+| ” | PDF p. 567 (printed 548), fn 2 | Table substituted by FA2021; superseded eight-band Rs 200,000→35% scale printed. |
+| ” | PDF p. 798 (printed 779) | Tenth Schedule rule 1, 100% uplift, provisos for §231B and §236K only. |
+| ” | PDF p. 803 (printed 784), fn 5 | Rule 10 clause (d) *"tax deducted under section 155"* omitted by FA2021. |
+| ” | PDF p. 804, fn 7 | Rule 10(y) *"omitted by the Finance Act, 2026"* — proves this consolidation is post-FA2026. |
+| ” | PDF p. 358 (printed 339), fn 5 | §155(2), which made the deduction final, **omitted by the Finance Act 2010** — the statutory basis for the page's "adjustable, not final" claim. |
+| ” | PDF p. 359 (printed 340) | §155(3) prescribed persons, incl. **(vib)** *"individuals or association of persons paying gross rent of rupees one and a half million and above in a year"*. |
+| ” | PDF pp. 77-79 (printed 58-60) | §15A deductions. Clause **(h)** caps administration and collection at **four** per cent — fn 6: *"The word 'six' substituted by 'four' through Finance Act, 2020"*. The page's 4% is right. Clause (b) is *"any premium … to insure the building"*, clause (e) *"any profit … on any money borrowed"*. |
+| ” | PDF p. 77, fns 5-6 | §15A applies to a **person** since FA2021 (it read "company" from FA2016 to FA2021), and §15(6)/(7) were omitted by FA2021 — so from FY 2021-22 an individual landlord genuinely can claim these, which is what the page tells them. |
+| ” | PDF p. 157 (printed 138) | **§66 Income of joint owners** — see defect 4 below. |
+| Finance Act 2021 | PDF p. 75, item (C)(h) | *"in Division V, for the TABLE, the following shall be substituted"* + the four bands. The enacting text, not just the Ordinance footnote. |
+| ” | PDF p. 2 §1(2); PDF p. 106 item (104) | Commencement 1 July 2021; rule 10 clauses (d), (f), (g), (h), (j), (m), (r), (s) omitted. |
+| Finance Act 2022 | PDF p. 102 item (58) | (a) adds the rule 1 provisos for §231B and §236K; (b) is its **only** rule 10 edit — inserts (ca) §154A, omits (e), (p), (t). §155 untouched, as recorded 2 Aug. |
+| TY2022 card | PDF pp. 24-25 | Four bands, fn 17 (FA2019 exclusion) and fn 18 (FA2021 table), company 15%, no non-ATL line. As recorded 3 Aug. |
+| **TY2023 card** | PDF p. 9 | **New.** Four bands; *"Not on ATL"* = **"100% increase"**; company **15% / 30%**; reference *"Division V of Part III of First Schedule Read with R.1 of 10th Schedule"*. |
+| **TY2025 card** | PDF pp. 9-10 | **New.** Same again: four bands, **"100% increase"**, company **15% / 30%**, same reference. |
+| TY2026 card | PDF p. 7 | Four bands, company 15.00% / 30.00%, R.1 reference on every row. As recorded 3 Aug. |
+
+**Confirmed, nothing changed:** the shipped `FILER_SLABS`, `doubleBrackets`, the 15%/30% company
+rates, `RENTAL_TAX_FREE_LIMIT` (300,000), `RENTAL_PAYER_THRESHOLD` (1,500,000), the §15A list
+including the 4% cap, the "adjustable not final" framing, and the six-year coverage.
+
+**Changed in this doc:** [S6] and [S7] added to the source table; FA2021 p. 75 added as the direct
+authority for the Division V table; the "still not verified" line above corrected; the doubling
+argument written out.
+
+**Negative finding, so nobody re-suffers it:** `ty2025-wht-card.pdf` is a **rotated scan with a
+garbled OCR text layer** — `get_text()` returns transliterated nonsense and greps on it lie. Render
+it (`fitz` → `page.get_pixmap(dpi=170)`) and read the image. `sources/README.md` says the same.
+
+**Defects found. None of them is a wrong rate. All four were fixed the same day — see the
+"fixes applied" entry below.**
+
+1. **Slab-gap → negative tax on a fractional rent.** `FILER_SLABS` bands run `max: 300_000` then
+   `min: 300_001`, and `findTaxBracket` (`src/utils/slabEngine.ts`) matches on `amount >= min &&
+   amount <= max`. A rent strictly inside a gap matches nothing, falls through to `brackets.at(-1)`,
+   and `calcSlabTax` returns `155_000 + (amount − 2_000_001) × 0.25` — a large negative. Reachable:
+   `NumberInput` is `type="number" step="any" inputMode="decimal"`, so a monthly rent of 25,000.05
+   gives an annual 300,000.60 and a "tax taken out" of **−Rs 270,000**; 50,000.05/month gives
+   −Rs 195,000. Shared-engine bug, but it surfaces here because rent is entered monthly and ×12.
+2. **Band edges are 5-25 paisa light of the statute.** Division V charges *"5 per cent of the gross
+   amount exceeding Rs. 300,000"*, but the code computes `(amount − 300_001) × 5%`. Rs 600,000 of
+   rent yields 14,999.95 where the statute says 15,000. `formatPkr` rounds it away at most rents, but
+   it flips a rupee at a .5 boundary — Rs 600,005 of rent is Rs 15,000.50 in law, and the page shows
+   Rs 15,000. Setting the band `min`s to 300,000 / 600,000 / 2,000,000 fixes this **and** defect 1 in
+   one edit (band 1 still wins at exactly 300,000 because it is matched first on its `max`), but
+   `marginalBandStart` in `lib/calculation.ts` then has to become `marginalBracket.min` instead of
+   `min − 1`.
+3. **The published review date predates the correction.** `RENTAL_GUIDE_COPY.reviewedLabel` /
+   `reviewedDateTime` say 29 July 2026 and `routeMeta['/rental-income-tax-calculator'].dateModified`
+   agrees, which also feeds the JSON-LD `dateModified`. The rate model changed on **3 August 2026**
+   (commit `b3ca648`): FY 2021-22 non-filer rent doubled and the company non-filer rate went 15% →
+   30%. A "last reviewed" date is a published claim and this one is older than the fix.
+4. **`RENTAL_TERMS.aop` states the law backwards, and contradicts the page's own FAQ.** The tooltip
+   says two or more people owning a property together are an AOP and *"the group is taxed as one"*.
+   **§66(1)** (Ordinance PDF p. 157, printed 138) says the opposite where the ordinary case is
+   concerned:
+
+   > where any property is owned by two or more persons and their respective shares are definite and
+   > ascertainable – (a) the persons **shall not be assessed as an association of persons** in
+   > respect of the property; and (b) the share of each person in the income from the property …
+   > shall be taken into account in the computation of the person's taxable income
+
+   The `multiple-properties` FAQ on the same page gets it right (*"each owner is taxed on their own
+   share of the rent, so enter only your share"*). Changes no figure — individual and AOP share the
+   slab — but one of the two statements is wrong and they sit on the same page. AOP treatment is for
+   a genuine AOP or where the shares are not definite and ascertainable.
+
+**Also fixed:** the Finance Act 2021 is now in the on-page official-sources grid, closing the item
+left open on 3 August.
+
+**Clean:** the Islamic-content sweep over `src/features/rental-income-tax/` returns nothing for
+`interest`, `bond`, `money market`, `insurance`, `profit on debt`, `futures`, `PMEX`, `riba`,
+gambling, alcohol, pork or tobacco. §15A(1)(b) is rendered as *"Premiums paid to cover the building
+against damage or destruction"* and §15A(1)(e) as *"Profit paid on money you borrowed"* — the
+statute's own wording in both cases. Icons are `Home`, `Check`, `Info`, `Building2`, `Calculator`,
+`Wallet`, `Layers`, `BadgeCheck`, `BarChart3`, `FileText`, `Receipt`, `CheckCircle2` — no
+`PiggyBank`, no `CandlestickChart`.
+
+### 4 August 2026 — fixes applied
+
+All five items above are done.
+
+**1 and 2 — the slab bands now abut, site-wide.** Every `min` written as `X + 1` became `X`, in
+`utils/taxCalculator.ts` (110 bands), `business-tax` (18), `agricultural-tax` (5) and this
+calculator (3). `findTaxBracket` now selects on the **upper bound alone**, so a gap cannot reappear
+even if a table is written badly, and `slabEngine.ts` gained `bandStart(min)` (first rupee inside a
+band, for labels) and `isBandReached(bracket, amount)` (has the amount passed this band's floor).
+Callers that hand-rolled `min - 1` or `>= min` were moved onto those: `SlabsAnswer`,
+`lib/budgetComparison`, `agricultural-tax/lib/presentation`, both salary insights modules, and the
+`marginalBandStart` in this feature's and business's `calculation.ts`.
+
+Checked, not assumed:
+
+- A 2,013-row **engine-level** probe across every salary year, every rent year × owner × filer
+  status, and every business year, at 31 amounts each including band edges and fractional amounts.
+  Every row is **identical**, a gap fix, or a ≤1-unit statutory correction — **zero unexplained
+  changes**, and **zero** negative results where there were 72 before.
+- An **entry-point** probe (8,400 cases) driving each calculator's real exported entry — not
+  `calcSlabTax` — with an amount 0.5 above each of the 120 band edges across every year it offers:
+  **134 negatives → 0**. It also established that the negative was *not* reachable on four salary
+  surfaces, because `calculateBudgetYearTax` and `calcReverseSalary` round before the slabs. The
+  per-surface counts are the table in [open-questions.md](open-questions.md). This corrects an
+  earlier version of this entry that implied every slab surface was affected.
+- Rent now returns the statutory figures exactly: Rs 600,000 → **Rs 15,000** (was 14,999.95),
+  Rs 1,200,000 → **Rs 75,000**, Rs 2,000,000 → **Rs 155,000**, Rs 600,005 → **Rs 15,000.50**.
+- Every published slab-table label was rendered from a git worktree at the pre-fix commit and
+  diffed against the same labels now: **byte-identical**. `bandStart` restores the `600,001 –
+  1,200,000` range starts, and the "above/exceeding/over" bases are now plain `min`.
+- A gapless verifier over **45 tables / 301 bands** reports 0 problems.
+- `lint`, `type-check` and `build` all green.
+
+**3 — review date.** `reviewedLabel` / `reviewedDateTime` and `routeMeta.dateModified` moved to
+4 August 2026, so the published date is no longer older than the correction it covers.
+
+**4 — the AOP tooltip** now says an AOP is a partnership or group taxed as one, and that co-owners
+holding a fixed, known share are taxed separately on their own share — which is §66 and agrees with
+the `multiple-properties` FAQ instead of contradicting it.
+
+**5 — Finance Act 2021** added to `RENTAL_OFFICIAL_SOURCES`, described as what it is: it set the
+§155 rent table used for every year here and removed rent from the Tenth Schedule exclusions.
+`FBR_DOC_URLS.financeAct2021` already existed.
+
+**Not changed, deliberately:** the grid's Ordinance card still points at the 30 June 2024
+consolidation. That text is correct for everything this page claims — Division V, rule 1, rule 10,
+§155 and §15A are all unchanged since — and swapping this one page to the 2026 consolidation while
+five other grids still cite 2024 would make the site less consistent, not more. It stays tracked as
+a site-wide item in [open-questions.md](open-questions.md#salary-official-sources-cite-the-2024-ordinance).
 
 ### 3 August 2026 — fix applied
 
@@ -285,10 +442,12 @@ PER FINANCE ACT, 2025"*, §154A and §155 both on PDF p. 7).
 2019**, two years stale, and the card disclaims itself in favour of the Ordinance on every page. The
 FY 2021-22 no-uplift entry is a confirmed defect, not a card-versus-statute standoff.
 
-**Still not verified:** the TY2023, TY2024 and TY2025 cards. FBR's host is **intermittent** — the
-TY2022 and TY2026 cards downloaded on the first try, four others timed out at 75s across repeated
-attempts in the same session. Retry rather than assume the URL is dead. Those three cards are only
-needed for the freelancer question below; nothing on this page depends on them.
+**Still not verified that day:** the TY2023, TY2024 and TY2025 cards. FBR's host is **intermittent** —
+the TY2022 and TY2026 cards downloaded on the first try, four others timed out at 75s across repeated
+attempts in the same session. Retry rather than assume the URL is dead. (TY2023 and TY2025 were
+cached later the same day and read on 4 August — see below. TY2024 is still missing: its FBR document
+URL 404s, which `src/lib/officialSources.ts` already records, so **FY 2023-24 has no card of its
+own** and rests on the Ordinance plus the cards either side of it.)
 
 **Also found, and it is not about rent — the TY2022 card gives §154A** (PDF p. 23) as *"1% of the
 proceeds of the export"* with *"Persons not appearing in the Active Taxpayers' List: … increased by

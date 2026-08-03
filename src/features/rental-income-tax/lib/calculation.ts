@@ -83,6 +83,6 @@ export function calcRentalTax(inputs: RentalTaxInputs, fiscalYear: string): Rent
     taxFree: !isCompany && marginalBracket.rate === 0,
     marginalRate: isCompany ? 0 : marginalBracket.rate,
     marginalFixed: isCompany ? 0 : marginalBracket.fixed,
-    marginalBandStart: !isCompany && marginalBracket.min > 0 ? marginalBracket.min - 1 : 0,
+    marginalBandStart: isCompany ? 0 : marginalBracket.min,
   };
 }

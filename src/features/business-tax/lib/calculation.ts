@@ -66,7 +66,7 @@ export function calcBusinessTax(inputs: BusinessTaxInputs, fiscalYear: string): 
     remainingTax,
     marginalRate: marginalBracket.rate,
     marginalFixed: marginalBracket.fixed,
-    marginalBandStart: marginalBracket.min > 0 ? marginalBracket.min - 1 : 0,
+    marginalBandStart: marginalBracket.min,
     taxFree: marginalBracket.rate === 0,
   };
 }

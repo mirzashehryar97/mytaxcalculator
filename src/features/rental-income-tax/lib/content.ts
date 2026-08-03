@@ -59,7 +59,7 @@ export const RENTAL_TERMS = {
   },
   aop: {
     label: 'What does two or more owners mean?',
-    text: 'In tax law this is an Association of Persons (AOP) — two or more people who own or rent out the property together, such as a partnership. The group is taxed as one, at the same rates as a single owner.',
+    text: 'In tax law this is an Association of Persons (AOP) — a partnership or group that owns or rents out the property together and is taxed as one, at the same rates as a single owner. If instead you and the other owners each hold a fixed, known share, the law taxes each of you separately on your own share, so choose one owner and enter only your share.',
   },
   effectiveRate: {
     label: 'What is the effective rate?',
@@ -177,8 +177,8 @@ export const RENTAL_GUIDE_COPY = {
   exampleTotalValue: 'Rs. 75,000',
   exampleEffectiveLabel: 'Effective rate',
   exampleEffectiveValue: '6.25%',
-  reviewedLabel: 'Last reviewed 29 July 2026',
-  reviewedDateTime: '2026-07-29',
+  reviewedLabel: 'Last reviewed 4 August 2026',
+  reviewedDateTime: '2026-08-04',
 } as const;
 
 export const RENTAL_RATE_GUIDE_ROWS = [
@@ -262,6 +262,14 @@ export const RENTAL_OFFICIAL_SOURCES = [
     title: 'Finance Act 2026',
     description: 'The enacted budget law for 2026-27. It leaves the rent rates unchanged.',
     href: FBR_DOC_URLS.financeAct2026,
+    logo: FBR_LOGO,
+  },
+  {
+    id: 'finance-act-2021',
+    title: 'Finance Act 2021',
+    description:
+      'Set the Section 155 rent table used for every year here, and removed rent from the Tenth Schedule exclusions so non-filers pay double.',
+    href: FBR_DOC_URLS.financeAct2021,
     logo: FBR_LOGO,
   },
   {

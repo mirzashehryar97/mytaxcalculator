@@ -1,3 +1,5 @@
+import { bandStart } from '@/utils/slabEngine';
+
 import { TAXPAYER_TYPE_OPTIONS } from '@/features/agricultural-tax/lib/content';
 import { formatPkr, formatPkrRange } from '@/features/agricultural-tax/lib/formatting';
 import { AGRICULTURAL_PROVINCES } from '@/features/agricultural-tax/lib/provinces';
@@ -23,16 +25,16 @@ export function getTaxpayerTypeLabel(taxpayerType: AgriculturalTaxpayerType): st
 /** '0' for the first band, otherwise the rupee figure the band starts above. */
 function formatBand(min: number, max: number | null): string {
   if (max === null) {
-    return `Over ${formatPkr(min - 1)}`;
+    return `Over ${formatPkr(min)}`;
   }
-  return min === 0 ? `Up to ${formatPkr(max)}` : `${formatPkr(min)} – ${formatPkr(max)}`;
+  return min === 0 ? `Up to ${formatPkr(max)}` : `${formatPkr(bandStart(min))} – ${formatPkr(max)}`;
 }
 
 function formatSlabRate(rate: number, fixed: number, min: number): string {
   if (rate === 0) {
     return 'No tax';
   }
-  const base = `${rate}% of the amount over ${formatPkr(min - 1)}`;
+  const base = `${rate}% of the amount over ${formatPkr(min)}`;
   return fixed === 0 ? base : `${formatPkr(fixed)} + ${base}`;
 }
 

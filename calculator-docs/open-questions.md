@@ -11,12 +11,121 @@ for tax years 2022, 2023, 2025 and 2026 were read directly. That closed the rent
 freelancer entry, and left one genuine conflict (§154A from FY 2025-26) recorded rather than
 resolved.
 
+Revised again **4 August 2026** after a full audit of the rent calculator against the primary
+sources. Every rate it ships held. What it turned up was a **slab-engine** bug reaching every
+calculator (a fractional amount landing between two bands returned a negative tax), the paisa-level
+band-edge error behind it, a tooltip that stated §66 backwards, and a stale published review date.
+All four were fixed the same day, along with the Finance Act 2021 source card left open on 3 August.
+
 Four kinds of entry:
 
 - 🔴 **Defect** — the calculator produces a figure the law does not support.
 - 🟡 **Unverified** — the figure is probably right but nothing in this pass confirmed it.
 - 🔵 **Deliberate** — a known departure that was decided on purpose. Do not "fix" without reading why.
 - ✅ **Resolved** — was a defect, now fixed. Kept so the reasoning is not lost.
+
+---
+
+## ✅ A fractional income between two slab bands returned a negative tax
+
+**Code:** `src/utils/slabEngine.ts` → `findTaxBracket` · **Surfaces:** five of seven slab surfaces
+(table below); found on [rental-income-tax.md](rental-income-tax.md) 4 August 2026
+
+Slab tables are written with a one-rupee step between bands — `{ max: 300_000 }` then
+`{ min: 300_001 }` — and `findTaxBracket` matches on `amount >= min && amount <= max`. An amount
+strictly inside that step matches **no** bracket, so the loop falls through to
+`brackets.at(-1) ?? brackets[0]`, i.e. the **top** band, and `calcSlabTax` computes
+`fixed + (amount − topMin) × rate`, which is large and negative.
+
+It is reachable from the form wherever a fractional amount reaches the engine unrounded: `NumberInput`
+is `type="number" step="any" inputMode="decimal"`, and most of these calculators take a *monthly*
+figure and multiply by 12. A monthly rent of **25,000.05** gives an annual 300,000.60 and a displayed
+"tax taken out" of **−Rs 270,000**.
+
+**Which surfaces were actually exposed** — measured by driving each calculator's real entry point
+(not `calcSlabTax` directly) with an amount 0.5 above each of the 120 band edges, over every fiscal
+year that calculator offers:
+
+| Surface | Rounds before the slabs? | Negatives (pre-fix) |
+|---|---|---|
+| Salary single-year, embed, budget comparison, salary insights | **Yes** — `calculateBudgetYearTax` does `Math.round(monthly × 12)` | 0 |
+| Reverse salary | **Yes** — `calcReverseSalary` rounds the solved gross before taxing it | 0 |
+| Salary increment / job offer | No — `grossMonthly * 12` | 57 (worst −Rs 4,620,000) |
+| Multi-year salary | No — prorated slice gross | 14 (worst −Rs 4,620,000) |
+| Rental §155 | No — `monthlyRent * 12` | 24 (worst −Rs 540,000) |
+| Business / AOP | No — net income typed straight in | 33 (worst −Rs 640,000) |
+| Agricultural | No — income typed straight in | 6 (worst −Rs 640,000) |
+
+The two rounding guards are incidental, not defences — `calculateBudgetYearTax` rounds because salary
+is quoted to the rupee everywhere, and reverse salary rounds because it reports a gross to ask an
+employer for. Neither was written to prevent this, and the bisection inside `grossForNetAnnual` was
+still probing gaps internally; it just never settled in one. So "the homepage was fine" was luck.
+
+**The red border on the salary input is not validation.** Typing `50000.05` on the home page turns
+the field red, which looks like the input layer rejecting the fraction. It is not. That input
+(`SingleYearCalculator.tsx`) is `type="number"` with **no `step`**, so HTML defaults to `step=1`, the
+fraction trips `stepMismatch`, and `.form-input`'s `invalid:border-red-300` (`globals.css`) paints it.
+The value still reaches state and still calculates — nothing in the repo calls `checkValidity()`, and
+the field is not inside a `<form>`. Worse, every form that *did* go negative uses
+`components/calculator/NumberInput`, which defaults to **`step="any"`**, so a fraction there is valid
+HTML and shows no warning at all. The visual cue is on the one surface that was already safe and
+absent from all five that were not.
+
+**Applied 4 August 2026.** The +1 is gone from every band `min`, so the bands abut (`0–300,000`,
+`300,000–600,000`, …) — 136 bands across `utils/taxCalculator.ts`, `business-tax`,
+`agricultural-tax` and `rental-income-tax`. `findTaxBracket` now selects on the **upper bound
+alone**, so a gap cannot reappear even if a table is written badly. Three probes back this:
+a 2,013-row **engine-level** probe (72 negatives → 0, no unexplained change); the **entry-point**
+probe in the table above (8,400 cases, 134 negatives → 0); and a gapless verifier over **45 tables /
+301 bands** reporting 0 problems. See the 4 August entry in
+[rental-income-tax.md](rental-income-tax.md#4-august-2026--fixes-applied).
+
+---
+
+## ✅ Slab tax was a few paisa light of the statute at every band above the first
+
+**Code:** `src/utils/slabEngine.ts` → `calcSlabTax`, and every `rates.ts` that writes `min` as
+`… + 1`
+
+The statute charges the excess over the **band boundary**: Division V is *"5 per cent of the gross
+amount exceeding Rs. 300,000"*. The code charges the excess over `bracket.min`, which is written as
+`300_001`, so it undercharges by `1 × rate/100` in every band — 5 paisa at 5%, 25 paisa at 25%, and
+more in the doubled non-filer tables.
+
+`formatPkr` rounds this away at most amounts, so it is usually invisible. It is not always: Rs 600,005
+of rent is Rs 15,000.50 under Division V, which rounds to Rs 15,001, and the page shows Rs 15,000.
+Same one-rupee gap wherever the true figure lands on a .5 boundary.
+
+**Applied 4 August 2026** by the same edit as the entry above — abutting bands make `amount − min`
+the statutory excess. Rent now returns the printed figures exactly: Rs 600,000 → **Rs 15,000** (was
+14,999.95), Rs 1,200,000 → **Rs 75,000**, Rs 600,005 → **Rs 15,000.50**. Every published slab-table
+label was rendered from a worktree at the pre-fix commit and diffed against the same labels now —
+**byte-identical**, because `bandStart(min)` restores the `600,001 – 1,200,000` range starts while
+the "above/exceeding/over" bases became plain `min`.
+
+---
+
+## ✅ Rental "two or more owners" tooltip contradicted §66 and the page's own FAQ
+
+**Page:** [rental-income-tax.md](rental-income-tax.md) · **Code:**
+`src/features/rental-income-tax/lib/content.ts` → `RENTAL_TERMS.aop`
+
+The tooltip tells the reader that two or more people owning a property together are an AOP and that
+*"the group is taxed as one"*. **§66(1)** of the Ordinance (PDF p. 157, printed 138) says that where
+the co-owners' *"respective shares are definite and ascertainable"* they **"shall not be assessed as
+an association of persons in respect of the property"* and each takes their own share into their own
+taxable income — the ordinary case for a jointly-owned house.
+
+The `multiple-properties` FAQ on the same page states it correctly (*"each owner is taxed on their
+own share of the rent, so enter only your share"*), so the page says both things.
+
+No figure moves — individual and AOP run the same Division V slab — but one of the two statements is
+wrong.
+
+**Applied 4 August 2026.** The tooltip now says an AOP is a partnership or group that owns the
+property together and is taxed as one, and that owners each holding a fixed, known share are taxed
+separately on their own share — so pick "one owner" and enter your share. That is §66, and it agrees
+with the `multiple-properties` FAQ instead of contradicting it.
 
 ---
 
@@ -133,9 +242,9 @@ understated by half and the company rate was 15% instead of 30%.
 
 Full source list with links: [rental-income-tax.md](rental-income-tax.md#sources-this-page-is-verified-against).
 
-**One thing left over:** the on-page official-sources grid does not cite the **Finance Act 2021**,
-which is now the source of both the Division V table (all six years) and the FY 2021-22 uplift.
-`FBR_DOC_URLS.financeAct2021` already exists. See
+**The one thing left over — closed 4 August 2026.** The on-page official-sources grid did not cite
+the **Finance Act 2021**, which is the source of both the Division V table (all six years) and the
+FY 2021-22 uplift. It is now a card in `RENTAL_OFFICIAL_SOURCES`. See
 [rental-income-tax.md](rental-income-tax.md#official-sources-cited-on-the-page).
 
 ---
@@ -318,6 +427,20 @@ behind any salary figure. Now it is — the 10% surcharge on FY 2024-25 salaries
 rests on the Finance Act 2024 alone, and neither that Act nor the FA2025 proviso that cut the rate to
 9% appears in the grid the six salary surfaces share. The repo's rule is to cite the source of every
 year the page computes, so this one is a real omission rather than a nicety.
+
+### ✅ The rent page's published "Last reviewed" date predated its own correction
+
+`RENTAL_GUIDE_COPY.reviewedLabel` / `reviewedDateTime` say **29 July 2026**, and
+`routeMeta['/rental-income-tax-calculator'].dateModified` agrees — which also feeds the JSON-LD
+`dateModified` through `rentalTaxApplicationLd`. But the rate model changed on **3 August 2026**
+(commit `b3ca648`): FY 2021-22 non-filer rent doubled and the company non-filer rate went 15% → 30%.
+A "last reviewed" line is a published claim, and this one is older than the fix it is supposed to
+cover.
+
+**Applied 4 August 2026** — all three now read 4 August 2026. The wider point stands and is **still
+open**: no other calculator's `reviewedLabel` has been checked against `git log` on its
+`lib/rates.ts`, and the slab-band fix above touched the salary, business and agricultural tables
+without their review dates moving.
 
 ### Property sources do not cover the older years
 

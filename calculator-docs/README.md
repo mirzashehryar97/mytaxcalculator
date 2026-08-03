@@ -82,6 +82,12 @@ Written and verified: **2 August 2026.**
 - [open-questions.md](open-questions.md) — every place the shipped code and the primary source do
   not line up, or where a figure could not be traced. **Read this before trusting a rate.**
 
+### Researched, not built yet
+
+| Doc | Proposed route | Status |
+|---|---|---|
+| [pta-mobile-registration-tax.md](pta-mobile-registration-tax.md) | `/pta-tax-calculator` | Rates verified against primary sources 4 August 2026. No feature folder, no route, no `routeMeta` entry yet. Read its §7 and §9 before building — two inputs it needs cannot be sourced officially. |
+
 ## Not built, on purpose
 
 `/commodity-trading-tax-calculator` (PMEX futures, §37A(3), 5%) was removed and must not be

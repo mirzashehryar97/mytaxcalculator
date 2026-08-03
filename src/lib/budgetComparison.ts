@@ -1,3 +1,4 @@
+import { bandStart } from '@/utils/slabEngine';
 import { getSalarySurcharge, salaryTaxForYear, taxSlabs } from '@/utils/taxCalculator';
 
 export const BUDGET_YEARS = {
@@ -167,14 +168,14 @@ function formatPkr(value: number): string {
 
 function formatSlabRange(min: number, max: number | null): string {
   if (min === 0 && max !== null) return `Up to ${formatPkr(max)}`;
-  if (max === null) return `Above ${formatPkr(min - 1)}`;
-  return `${formatPkr(min)} – ${formatPkr(max)}`;
+  if (max === null) return `Above ${formatPkr(min)}`;
+  return `${formatPkr(bandStart(min))} – ${formatPkr(max)}`;
 }
 
 function formatSlabRate(slab: { rate: number; fixed: number; min: number }): string {
   if (slab.rate === 0) return '0%';
   if (slab.fixed === 0) return `${slab.rate}%`;
-  return `${formatPkr(slab.fixed)} + ${slab.rate}% above ${formatPkr(slab.min - 1)}`;
+  return `${formatPkr(slab.fixed)} + ${slab.rate}% above ${formatPkr(slab.min)}`;
 }
 
 export function getSlabRows(fiscalYear: string): SlabRow[] {

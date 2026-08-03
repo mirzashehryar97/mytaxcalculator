@@ -11,6 +11,7 @@ import {
   FY_2025_26_SURCHARGE_THRESHOLD,
 } from '@/lib/budgetComparison';
 
+import { bandStart } from '@/utils/slabEngine';
 import { taxSlabs } from '@/utils/taxCalculator';
 
 const FISCAL_YEARS = Object.keys(taxSlabs);
@@ -20,8 +21,8 @@ const formatPkr = (value: number) => `Rs. ${value.toLocaleString('en-IN')}`;
 
 function formatSlabRange(min: number, max: number | null): string {
   if (min === 0 && max !== null) return `Up to ${formatPkr(max)}`;
-  if (max === null) return `Above ${formatPkr(min - 1)}`;
-  return `${formatPkr(min)} to ${formatPkr(max)}`;
+  if (max === null) return `Above ${formatPkr(min)}`;
+  return `${formatPkr(bandStart(min))} to ${formatPkr(max)}`;
 }
 
 function formatTaxRate(slab: {
@@ -31,7 +32,7 @@ function formatTaxRate(slab: {
   fixed: number;
 }): string {
   if (slab.rate === 0 && slab.fixed === 0) return '0% (Tax Free)';
-  const exceedingBase = formatPkr(slab.min - 1);
+  const exceedingBase = formatPkr(slab.min);
   const rateStr = `${slab.rate}% of the amount exceeding ${exceedingBase}`;
   if (slab.fixed === 0) return rateStr;
   return `${formatPkr(slab.fixed)} + ${rateStr}`;

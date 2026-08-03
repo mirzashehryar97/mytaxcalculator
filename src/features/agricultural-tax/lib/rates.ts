@@ -38,11 +38,11 @@ const MILLION = 1_000_000;
  */
 const FARMER_SLABS: TaxBracket[] = [
   { min: 0, max: 600_000, rate: 0, fixed: 0 },
-  { min: 600_001, max: 1_200_000, rate: 15, fixed: 0 },
-  { min: 1_200_001, max: 1_600_000, rate: 20, fixed: 90_000 },
-  { min: 1_600_001, max: 3_200_000, rate: 30, fixed: 170_000 },
-  { min: 3_200_001, max: 5_600_000, rate: 40, fixed: 650_000 },
-  { min: 5_600_001, max: null, rate: 45, fixed: 1_610_000 },
+  { min: 600_000, max: 1_200_000, rate: 15, fixed: 0 },
+  { min: 1_200_000, max: 1_600_000, rate: 20, fixed: 90_000 },
+  { min: 1_600_000, max: 3_200_000, rate: 30, fixed: 170_000 },
+  { min: 3_200_000, max: 5_600_000, rate: 40, fixed: 650_000 },
+  { min: 5_600_000, max: null, rate: 45, fixed: 1_610_000 },
 ];
 
 /** Income a farmer can earn before any tax is due. */

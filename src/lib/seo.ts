@@ -348,7 +348,7 @@ export const routeMeta: Record<string, RouteMeta> = {
       'commercial property rent tax Pakistan',
     ],
     datePublished: '2026-07-29',
-    dateModified: '2026-07-29',
+    dateModified: '2026-08-04',
     socialImage: '/rental-income-tax-calculator/opengraph-image',
     socialImageAlt:
       'Pakistan Rental Income Tax Calculator 2026-27 — Section 155 rent rates for landlords',

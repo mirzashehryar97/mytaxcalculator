@@ -1,5 +1,6 @@
 import { calculateBudgetYearTax, getPreviousFiscalYear } from '@/lib/budgetComparison';
 
+import { findTaxBracket, isBandReached } from '@/utils/slabEngine';
 import { calculateTaxForTotalAmount, taxSlabs } from '@/utils/taxCalculator';
 
 import type {
@@ -39,10 +40,10 @@ function formatBandLabel(min: number, max: number | null): string {
   }
 
   if (max === null) {
-    return `Above Rs. ${formatThreshold(min - 1)}`;
+    return `Above Rs. ${formatThreshold(min)}`;
   }
 
-  return `Rs. ${formatThreshold(min - 1)}–${formatThreshold(max)}`;
+  return `Rs. ${formatThreshold(min)}–${formatThreshold(max)}`;
 }
 
 function getComparisonYears(selectedYear: string): string[] {
@@ -119,11 +120,7 @@ export function getSalaryPeriodBreakdown(
 
 export function getActiveTaxBand(fiscalYear: string, annualIncome: number) {
   const slabs = taxSlabs[fiscalYear] ?? taxSlabs['2026-2027'];
-  const activeSlab = slabs.find(
-    (slab) => annualIncome >= slab.min && (slab.max === null || annualIncome <= slab.max),
-  );
-  const fallbackSlab = slabs.at(-1);
-  const slab = activeSlab ?? fallbackSlab;
+  const slab = slabs.length > 0 ? findTaxBracket(slabs, annualIncome) : undefined;
 
   return {
     label: slab ? formatBandLabel(slab.min, slab.max) : 'Not available',
@@ -205,19 +202,19 @@ export function getTaxBandInsights(
   period: SalaryInsightPeriod,
 ): TaxBandInsights {
   const slabs = taxSlabs[selectedYear] ?? taxSlabs['2026-2027'];
+  const activeSlab = findTaxBracket(slabs, result.yearlyIncome);
   const rawRows: Omit<TaxBandContribution, 'barPercent'>[] = [];
   let previousTax = 0;
 
   for (const slab of slabs) {
-    const isReached = result.yearlyIncome >= slab.min;
+    const isReached = isBandReached(slab, result.yearlyIncome);
     const cappedIncome =
       slab.max === null ? result.yearlyIncome : Math.min(result.yearlyIncome, slab.max);
     const cumulativeTax = isReached
       ? calculateTaxForTotalAmount(cappedIncome, selectedYear)
       : previousTax;
     const contribution = Math.max(0, cumulativeTax - previousTax);
-    const isActive =
-      result.yearlyIncome >= slab.min && (slab.max === null || result.yearlyIncome <= slab.max);
+    const isActive = slab === activeSlab;
 
     rawRows.push({
       contribution,

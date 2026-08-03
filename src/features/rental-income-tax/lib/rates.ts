@@ -25,9 +25,9 @@ export const RENTAL_PAYER_THRESHOLD = 1_500_000;
  */
 const FILER_SLABS: TaxBracket[] = [
   { min: 0, max: 300_000, rate: 0, fixed: 0 },
-  { min: 300_001, max: 600_000, rate: 5, fixed: 0 },
-  { min: 600_001, max: 2_000_000, rate: 10, fixed: 15_000 },
-  { min: 2_000_001, max: null, rate: 25, fixed: 155_000 },
+  { min: 300_000, max: 600_000, rate: 5, fixed: 0 },
+  { min: 600_000, max: 2_000_000, rate: 10, fixed: 15_000 },
+  { min: 2_000_000, max: null, rate: 25, fixed: 155_000 },
 ];
 
 const COMPANY_FILER_RATE = 15;

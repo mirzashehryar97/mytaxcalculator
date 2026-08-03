@@ -32,16 +32,41 @@ is how most of the historical rows in this repo were confirmed.
 calcSlabTax(amount, brackets) = bracket.fixed + (amount - bracket.min) * bracket.rate / 100
 ```
 
-`findTaxBracket` picks the first bracket where `amount >= min` and (`max === null` or
-`amount <= max`). Brackets are written with `min` one rupee above the previous `max`
-(`{ min: 600_001, max: 1_200_000 }`), which mirrors the statute's "exceeds Rs 600,000 but does not
-exceed Rs 1,200,000".
+**Bands abut.** A bracket's `min` is the previous bracket's `max`, not one rupee above it:
+`{ min: 0, max: 600_000 }` is followed by `{ min: 600_000, max: 1_200_000 }`. `min` is the figure
+the band charges the excess *over*, so `amount - min` is literally the statute's "the amount
+exceeding Rs 600,000".
 
-**Known one-rupee artefact.** Because `min` is `600_001` rather than `600_000`, the marginal slice
-is computed as `amount - 600_001` where the statute says "the amount exceeding Rs 600,000". At the
-band's own ceiling that costs one rupee of base (e.g. Rs 5,999.99 instead of Rs 6,000 at
-Rs 1,200,000 in FY 2025-26), which disappears on rounding. It is not visible in any displayed
-figure, but it is why `Math.round` is applied before display rather than after.
+`findTaxBracket` selects on the **upper bound alone** — the first bracket where `max === null` or
+`amount <= max`. A progressive table is fully determined by its ceilings, so the boundary rupee
+falls to the band below: exactly Rs 600,000 is taxed in the band ending there, not the one starting
+there.
+
+Two helpers carry the convention into everything else, so no caller does its own `min ± 1`:
+
+- `bandStart(min)` — the **first rupee inside** a band, for labels like "Rs. 600,001 – 1,200,000".
+- `isBandReached(bracket, amount)` — true once the amount has *passed* the band's floor, which is
+  what "you have reached the 11% band" means.
+
+**Do not write `min` as `600_001`.** That was the convention until 4 August 2026 and it was wrong
+twice over.
+
+It left a one-rupee **gap** between every pair of bands. An amount landing inside a gap (any
+fractional figure — anything derived by ×12, ÷12 or a percentage) matched no bracket, fell through
+`findTaxBracket`'s `brackets.at(-1)` fallback to the **top** band, and returned a large negative tax.
+It reached the screen on the increment/job-offer, multi-year, rental, business and agricultural
+calculators — a monthly salary of Rs 50,000.04 on the increment page showed **−Rs 4,620,000** for
+FY 2021-22. It did **not** reach the salary single-year tab, the embed, budget comparison or reverse
+salary, because those round the annual figure before it reaches the slabs. Do not read that as a
+reason to relax: the rounding there is incidental (salary is quoted to the rupee), not a guard, and
+`grossForNetAnnual`'s bisection was probing gaps internally the whole time. The per-surface counts
+are in [open-questions.md](open-questions.md).
+
+It also charged the excess over `600_001` instead of `600_000`, which rounding usually hid but not
+always: Rs 600,005 of rent is Rs 15,000.50 in law and the page showed Rs 15,000.
+
+Both were fixed by making the bands abut; the verifier in the 4 August log of
+[rental-income-tax.md](rental-income-tax.md) checks all 301 bands.
 
 Users of the engine: salary (`utils/taxCalculator.ts`), business/AOP, rental (§155),
 agricultural income.

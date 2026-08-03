@@ -28,34 +28,34 @@ export const BUSINESS_SURCHARGE: BusinessSurcharge = {
 // TY 2024-25, 2025-26 & 2026-27 — 6 bands, top 45%.
 const CURRENT_STANDARD_SLABS: TaxBracket[] = [
   { min: 0, max: 600_000, rate: 0, fixed: 0 },
-  { min: 600_001, max: 1_200_000, rate: 15, fixed: 0 },
-  { min: 1_200_001, max: 1_600_000, rate: 20, fixed: 90_000 },
-  { min: 1_600_001, max: 3_200_000, rate: 30, fixed: 170_000 },
-  { min: 3_200_001, max: 5_600_000, rate: 40, fixed: 650_000 },
-  { min: 5_600_001, max: null, rate: 45, fixed: 1_610_000 },
+  { min: 600_000, max: 1_200_000, rate: 15, fixed: 0 },
+  { min: 1_200_000, max: 1_600_000, rate: 20, fixed: 90_000 },
+  { min: 1_600_000, max: 3_200_000, rate: 30, fixed: 170_000 },
+  { min: 3_200_000, max: 5_600_000, rate: 40, fixed: 650_000 },
+  { min: 5_600_000, max: null, rate: 45, fixed: 1_610_000 },
 ];
 
 // TY 2023-24 — 7 bands, top 35%.
 const SLABS_2023_2024: TaxBracket[] = [
   { min: 0, max: 600_000, rate: 0, fixed: 0 },
-  { min: 600_001, max: 800_000, rate: 7.5, fixed: 0 },
-  { min: 800_001, max: 1_200_000, rate: 15, fixed: 15_000 },
-  { min: 1_200_001, max: 2_400_000, rate: 20, fixed: 75_000 },
-  { min: 2_400_001, max: 3_000_000, rate: 25, fixed: 315_000 },
-  { min: 3_000_001, max: 4_000_000, rate: 30, fixed: 465_000 },
-  { min: 4_000_001, max: null, rate: 35, fixed: 765_000 },
+  { min: 600_000, max: 800_000, rate: 7.5, fixed: 0 },
+  { min: 800_000, max: 1_200_000, rate: 15, fixed: 15_000 },
+  { min: 1_200_000, max: 2_400_000, rate: 20, fixed: 75_000 },
+  { min: 2_400_000, max: 3_000_000, rate: 25, fixed: 315_000 },
+  { min: 3_000_000, max: 4_000_000, rate: 30, fixed: 465_000 },
+  { min: 4_000_000, max: null, rate: 35, fixed: 765_000 },
 ];
 
 // TY 2021-22 & 2022-23 — 8 bands, top 35% (unchanged between the two years).
 const LEGACY_STANDARD_SLABS: TaxBracket[] = [
   { min: 0, max: 600_000, rate: 0, fixed: 0 },
-  { min: 600_001, max: 800_000, rate: 5, fixed: 0 },
-  { min: 800_001, max: 1_200_000, rate: 12.5, fixed: 10_000 },
-  { min: 1_200_001, max: 2_400_000, rate: 17.5, fixed: 60_000 },
-  { min: 2_400_001, max: 3_000_000, rate: 22.5, fixed: 270_000 },
-  { min: 3_000_001, max: 4_000_000, rate: 27.5, fixed: 405_000 },
-  { min: 4_000_001, max: 6_000_000, rate: 32.5, fixed: 680_000 },
-  { min: 6_000_001, max: null, rate: 35, fixed: 1_330_000 },
+  { min: 600_000, max: 800_000, rate: 5, fixed: 0 },
+  { min: 800_000, max: 1_200_000, rate: 12.5, fixed: 10_000 },
+  { min: 1_200_000, max: 2_400_000, rate: 17.5, fixed: 60_000 },
+  { min: 2_400_000, max: 3_000_000, rate: 22.5, fixed: 270_000 },
+  { min: 3_000_000, max: 4_000_000, rate: 27.5, fixed: 405_000 },
+  { min: 4_000_000, max: 6_000_000, rate: 32.5, fixed: 680_000 },
+  { min: 6_000_000, max: null, rate: 35, fixed: 1_330_000 },
 ];
 
 /**

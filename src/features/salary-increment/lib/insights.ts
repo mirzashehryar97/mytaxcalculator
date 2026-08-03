@@ -1,3 +1,4 @@
+import { findTaxBracket, isBandReached } from '@/utils/slabEngine';
 import { calculateTaxForTotalAmount, taxSlabs } from '@/utils/taxCalculator';
 
 import type {
@@ -50,10 +51,10 @@ function formatBandLabel(min: number, max: number | null): string {
   }
 
   if (max === null) {
-    return `Above Rs. ${formatThreshold(min - 1)}`;
+    return `Above Rs. ${formatThreshold(min)}`;
   }
 
-  return `Rs. ${formatThreshold(min - 1)}–${formatThreshold(max)}`;
+  return `Rs. ${formatThreshold(min)}–${formatThreshold(max)}`;
 }
 
 export function getSalaryComparisonInsightSummary(
@@ -82,11 +83,12 @@ function getScenarioTaxBandInsights(
   period: SalaryComparisonInsightPeriod,
 ): SalaryScenarioTaxBandInsights {
   const slabs = taxSlabs[fiscalYear] ?? taxSlabs[DEFAULT_FISCAL_YEAR];
+  const activeSlab = findTaxBracket(slabs, annualIncome);
   const divisor = period === 'annual' ? 1 : MONTHS_IN_YEAR;
   let previousTax = 0;
 
   const rows = slabs.map((slab): SalaryComparisonTaxBandRow => {
-    const isReached = annualIncome >= slab.min;
+    const isReached = isBandReached(slab, annualIncome);
     const cappedIncome = slab.max === null ? annualIncome : Math.min(annualIncome, slab.max);
     const cumulativeTax = isReached
       ? calculateTaxForTotalAmount(cappedIncome, fiscalYear)
@@ -100,7 +102,7 @@ function getScenarioTaxBandInsights(
     return {
       barPercent: 0,
       contribution: contribution / divisor,
-      isActive: annualIncome >= slab.min && (slab.max === null || annualIncome <= slab.max),
+      isActive: slab === activeSlab,
       label: formatBandLabel(slab.min, slab.max),
       rate: slab.rate,
     };
