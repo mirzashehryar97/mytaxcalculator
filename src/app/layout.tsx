@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Open_Sans } from 'next/font/google';
+import { Amiri, Open_Sans } from 'next/font/google';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
@@ -87,9 +87,17 @@ const openSans = Open_Sans({
   variable: '--font-open-sans',
 });
 
+// Arabic only — Amiri never sets Latin text, so the latin subset stays unloaded.
+const amiri = Amiri({
+  weight: ['400', '700'],
+  subsets: ['arabic'],
+  display: 'swap',
+  variable: '--font-amiri',
+});
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-PK" className={openSans.variable}>
+    <html lang="en-PK" className={`${openSans.variable} ${amiri.variable}`}>
       <body className={openSans.className}>
         <JsonLd data={[organizationLd, websiteLd]} />
         <AppShell>{children}</AppShell>

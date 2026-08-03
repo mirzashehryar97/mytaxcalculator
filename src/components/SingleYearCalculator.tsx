@@ -8,11 +8,13 @@ import { BarChart2 } from 'lucide-react';
 
 import { toSelectOptions } from '@/components/calculator/options';
 import SelectInput from '@/components/calculator/SelectInput';
+import QuranVersePanel from '@/components/ui/QuranVersePanel';
 
 import { useCalculator } from '@/context/useCalculator';
 
 import { trackAnalyticsEvent } from '@/lib/analytics';
 import { calculateBudgetYearTax } from '@/lib/budgetComparison';
+import { GRATITUDE_VERSE, takeHomeShukrNote } from '@/lib/islamicContent';
 
 import SalaryInsightsLoading from '@/features/salary-tax/components/SalaryInsightsLoading';
 
@@ -184,6 +186,11 @@ function SingleYearCalculator() {
               selectedYear={selectedYear}
             />
 
+            <QuranVersePanel
+              note={takeHomeShukrNote(result.salaryAfterTax)}
+              verse={GRATITUDE_VERSE}
+            />
+
             <div className="section-divider" />
 
             {showInsights ? (
@@ -194,7 +201,9 @@ function SingleYearCalculator() {
               />
             ) : (
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
+                {/* Below `sm` the rate sits hard right of its label and the button
+                    takes the full row, as in the mockup's phone pair. */}
+                <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start">
                   <span className="font-medium text-gray-500 text-sm">Effective Tax Rate</span>
                   <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-800 text-lg">
                     {result.taxRate.toFixed(2)}%
@@ -209,7 +218,7 @@ function SingleYearCalculator() {
                     });
                     setShowInsights(true);
                   }}
-                  className="flex min-h-11 items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-600/20"
+                  className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-600/20 sm:w-auto"
                 >
                   <BarChart2 aria-hidden className="h-5 w-5" />
                   <span>Show insights</span>

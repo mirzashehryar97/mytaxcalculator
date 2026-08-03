@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
+import ClosingHadithStrip from '@/components/layout/ClosingHadithStrip';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
@@ -29,6 +30,8 @@ export default function AppShell({ children }: AppShellProps) {
       <main className="relative z-10 mx-auto w-full max-w-7xl flex-grow px-4 py-12 sm:px-6 lg:px-8">
         {children}
       </main>
+
+      <ClosingHadithStrip />
 
       <Footer />
     </div>

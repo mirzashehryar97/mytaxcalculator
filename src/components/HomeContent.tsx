@@ -20,10 +20,19 @@ export default function HomeContent() {
         <h1 className="mt-6 text-balance font-bold text-4xl text-white tracking-tight sm:text-5xl">
           Pakistan Salary &amp; Income Tax Calculator
         </h1>
+        {/* Two renderings of the same intro, both kept in the HTML: the phone gets
+            a one-line version, desktop the full one. Swapping spans rather than
+            dropping the paragraph keeps every term on the page for search. */}
         <p className="mx-auto mt-5 max-w-4xl text-emerald-50/80 text-lg leading-relaxed">
-          Calculate your salary tax and take-home pay using the latest FBR tax slabs for FY
-          2026-2027. Supports single-year and multi-year calculations from FY 2014-2015 to FY
-          2026-2027.
+          <span className="sm:hidden">
+            Calculate salary tax and take-home pay on the latest FBR slabs &mdash; FY 2014-2015 to
+            FY 2026-2027.
+          </span>
+          <span className="hidden sm:inline">
+            Calculate your salary tax and take-home pay using the latest FBR tax slabs for FY
+            2026-2027. Supports single-year and multi-year calculations from FY 2014-2015 to FY
+            2026-2027.
+          </span>
         </p>
       </div>
 

@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['var(--font-open-sans)', 'Arial', 'sans-serif'],
+        arabic: ['var(--font-amiri)', 'Amiri', 'serif'],
       },
       screens: {
         950: '950px',

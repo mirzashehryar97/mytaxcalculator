@@ -1,8 +1,11 @@
-import Link from 'next/link';
+import { ShieldCheck } from 'lucide-react';
 
-import { ArrowRight, ShieldCheck } from 'lucide-react';
-
-import { CALCULATOR_NAV_LINKS, RELATED_CALCULATORS_COPY } from '@/components/layout/navigation';
+import RelatedCalculatorGroup from '@/components/calculator/RelatedCalculatorGroup';
+import {
+  CALCULATOR_NAV_LINKS,
+  groupCalculatorLinks,
+  RELATED_CALCULATORS_COPY,
+} from '@/components/layout/navigation';
 
 interface RelatedCalculatorsProps {
   /** Pathname of the current calculator, excluded from the list. */
@@ -15,9 +18,11 @@ interface RelatedCalculatorsProps {
  * strengthening the calculator topic cluster for search.
  */
 export default function RelatedCalculators({ currentHref }: RelatedCalculatorsProps) {
-  const links = CALCULATOR_NAV_LINKS.filter((link) => link.href !== currentHref);
+  const groups = groupCalculatorLinks(
+    CALCULATOR_NAV_LINKS.filter((link) => link.href !== currentHref),
+  );
 
-  if (links.length === 0) {
+  if (groups.length === 0) {
     return null;
   }
 
@@ -39,34 +44,10 @@ export default function RelatedCalculators({ currentHref }: RelatedCalculatorsPr
         </p>
       </div>
 
-      <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:max-w-7xl xl:grid-cols-5">
-        {links.map((link) => {
-          const Icon = link.icon;
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="group flex h-full flex-col rounded-2xl border border-white/60 bg-white/95 p-5 shadow-emerald-950/10 shadow-lg backdrop-blur-sm transition-all hover:border-emerald-200 hover:shadow-xl"
-            >
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20">
-                <Icon className="h-6 w-6" aria-hidden="true" />
-              </span>
-
-              <span className="mt-4 block text-balance font-bold text-base text-gray-900 group-hover:text-emerald-700">
-                {link.label}
-              </span>
-              <span className="mt-1.5 block text-gray-500 text-sm">{link.description}</span>
-
-              <span className="mt-auto flex items-center gap-1.5 pt-4 font-semibold text-emerald-700 text-sm group-hover:text-emerald-800">
-                {RELATED_CALCULATORS_COPY.cta}
-                <ArrowRight
-                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                />
-              </span>
-            </Link>
-          );
-        })}
+      <div className="mx-auto max-w-5xl rounded-2xl border border-gray-200 bg-gray-100 p-2 pb-3 shadow-emerald-950/20 shadow-lg">
+        {groups.map((group) => (
+          <RelatedCalculatorGroup key={group.category} group={group} />
+        ))}
       </div>
     </section>
   );
