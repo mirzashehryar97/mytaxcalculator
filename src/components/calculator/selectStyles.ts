@@ -1,6 +1,6 @@
 import type { SelectSize } from '@/components/calculator/select';
 
-import type { DropdownPlacement } from '@/utils/dropdownPlacement';
+import type { PanelWidthMode } from '@/utils/anchoredPanelPosition';
 
 const TRIGGER_BASE =
   'flex w-full items-center justify-between gap-2 border-gray-200 bg-white text-left transition-colors hover:border-gray-300 focus:border-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-600/15';
@@ -19,10 +19,12 @@ const WRAPPER_SIZE: Record<SelectSize, string> = {
   inline: 'inline-flex w-fit flex-col align-middle',
 };
 
+// Not `relative` any more — the panel is portalled out and measured against the
+// viewport, so this only has to be the box the trigger fills.
 const ANCHOR_SIZE: Record<SelectSize, string> = {
-  md: 'relative block',
-  sm: 'relative block',
-  inline: 'relative inline-block',
+  md: 'block',
+  sm: 'block',
+  inline: 'inline-block',
 };
 
 const LABEL_SIZE: Record<SelectSize, string> = {
@@ -37,13 +39,23 @@ const CHEVRON_SIZE: Record<SelectSize, string> = {
   inline: 'h-3.5 w-3.5',
 };
 
+// No positioning here: the panel is portalled to the body and placed from the
+// trigger's measured box by `AnchoredPanel`, so it can't be clipped by a card
+// with `overflow-hidden`. Width follows from the size's `PANEL_WIDTH_MODE`.
 const PANEL_BASE =
-  'absolute z-40 rounded-xl border border-gray-200 bg-white shadow-[0_20px_50px_-18px_rgba(0,0,0,0.35)]';
+  'rounded-xl border border-gray-200 bg-white shadow-[0_20px_50px_-18px_rgba(0,0,0,0.35)]';
 
 const PANEL_SIZE: Record<SelectSize, string> = {
-  md: 'right-0 left-0',
-  sm: 'right-0 left-0 min-w-[5.5rem]',
-  inline: 'left-0 w-max min-w-full max-w-[calc(100vw-2.5rem)]',
+  md: '',
+  sm: 'min-w-[5.5rem]',
+  inline: 'w-max max-w-[calc(100vw-2.5rem)]',
+};
+
+/** Full-width fields get a list the same width; an inline one grows to its content. */
+export const PANEL_WIDTH_MODE: Record<SelectSize, PanelWidthMode> = {
+  md: 'match',
+  sm: 'match',
+  inline: 'min',
 };
 
 const OPTION_BASE =
@@ -82,10 +94,9 @@ export function getSelectChevronClass(size: SelectSize, isOpen: boolean): string
   }`;
 }
 
-/** The floating option list, flipped above the trigger when there is no room below. */
-export function getSelectPanelClass(size: SelectSize, placement: DropdownPlacement): string {
-  const position = placement === 'above' ? 'bottom-full mb-1' : 'top-full mt-1';
-  return `${PANEL_BASE} ${PANEL_SIZE[size]} ${position}`;
+/** Look of the floating option list; `AnchoredPanel` supplies where it sits. */
+export function getSelectPanelClass(size: SelectSize): string {
+  return `${PANEL_BASE} ${PANEL_SIZE[size]}`;
 }
 
 interface SelectOptionState {

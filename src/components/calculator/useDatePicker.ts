@@ -62,6 +62,8 @@ export default function useDatePicker({ value, onChange, min, max }: UseDatePick
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  /** The portalled calendar, which lives outside `containerRef` in the DOM. */
+  const panelRef = useRef<HTMLDivElement>(null);
   /** True while the field has focus, so the value below it can't rewrite the text. */
   const isTypingRef = useRef(false);
   /** Set by keyboard moves only, so clicking an arrow doesn't pull focus into the grid. */
@@ -238,8 +240,13 @@ export default function useDatePicker({ value, onChange, min, max }: UseDatePick
       return;
     }
 
+    // The calendar is portalled to the body, so "inside" means either half of
+    // the widget. Without the panel check, `focusin` would fire as focus lands
+    // on a day and shut the calendar before it could be used.
     const closeOnOutside = (event: Event) => {
-      if (!containerRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node;
+
+      if (!(containerRef.current?.contains(target) || panelRef.current?.contains(target))) {
         close();
       }
     };
@@ -291,6 +298,7 @@ export default function useDatePicker({ value, onChange, min, max }: UseDatePick
     handleTextKeyDown,
     isOpen,
     isTodaySelectable: isIsoWithinRange(todayIso, range),
+    panelRef,
     placement,
     range,
     rangeMessage: hasRangeError ? getDateRangeMessage(min, max) : null,

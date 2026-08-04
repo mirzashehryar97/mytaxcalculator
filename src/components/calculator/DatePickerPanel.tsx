@@ -1,5 +1,6 @@
 'use client';
 
+import AnchoredPanel from '@/components/calculator/AnchoredPanel';
 import DatePickerActions from '@/components/calculator/DatePickerActions';
 import DatePickerDayGrid from '@/components/calculator/DatePickerDayGrid';
 import DatePickerHeader from '@/components/calculator/DatePickerHeader';
@@ -9,7 +10,7 @@ import {
   getDatePickerStepLabel,
   getDatePickerTitleAction,
 } from '@/components/calculator/datePicker';
-import { getPanelClass } from '@/components/calculator/datePickerStyles';
+import { PANEL_CLASS, PANEL_GAP } from '@/components/calculator/datePickerStyles';
 import type { DatePickerController } from '@/components/calculator/useDatePicker';
 
 interface DatePickerPanelProps {
@@ -21,54 +22,62 @@ interface DatePickerPanelProps {
 
 export default function DatePickerPanel({ label, picker, selectedIso }: DatePickerPanelProps) {
   return (
-    <div aria-label={`${label} calendar`} className={getPanelClass(picker.placement)} role="dialog">
-      <DatePickerHeader
-        canDrillUp={picker.view !== 'years'}
-        canStepBack={picker.canStepBack}
-        canStepForward={picker.canStepForward}
-        onDrillUp={picker.drillUp}
-        onStep={picker.stepCalendar}
-        stepLabel={getDatePickerStepLabel(picker.view)}
-        title={picker.title}
-        titleAction={getDatePickerTitleAction(picker.view)}
-      />
-
-      {picker.view === 'days' ? (
-        <DatePickerDayGrid
-          focusedIso={picker.focusedIso}
-          gridRef={picker.gridRef}
-          monthTitle={picker.title}
-          onKeyDown={picker.handleDayKeyDown}
-          onSelect={picker.selectDay}
-          range={picker.range}
-          selectedIso={selectedIso}
-          todayIso={picker.todayIso}
-          weeks={picker.weeks}
+    <AnchoredPanel
+      anchorRef={picker.containerRef}
+      gap={PANEL_GAP}
+      panelRef={picker.panelRef}
+      placement={picker.placement}
+      widthMode="auto"
+    >
+      <div aria-label={`${label} calendar`} className={PANEL_CLASS} role="dialog">
+        <DatePickerHeader
+          canDrillUp={picker.view !== 'years'}
+          canStepBack={picker.canStepBack}
+          canStepForward={picker.canStepForward}
+          onDrillUp={picker.drillUp}
+          onStep={picker.stepCalendar}
+          stepLabel={getDatePickerStepLabel(picker.view)}
+          title={picker.title}
+          titleAction={getDatePickerTitleAction(picker.view)}
         />
-      ) : null}
 
-      {picker.view === 'months' ? (
-        <DatePickerMonthGrid
-          month={picker.visibleMonth}
-          onSelect={picker.selectMonth}
-          range={picker.range}
+        {picker.view === 'days' ? (
+          <DatePickerDayGrid
+            focusedIso={picker.focusedIso}
+            gridRef={picker.gridRef}
+            monthTitle={picker.title}
+            onKeyDown={picker.handleDayKeyDown}
+            onSelect={picker.selectDay}
+            range={picker.range}
+            selectedIso={selectedIso}
+            todayIso={picker.todayIso}
+            weeks={picker.weeks}
+          />
+        ) : null}
+
+        {picker.view === 'months' ? (
+          <DatePickerMonthGrid
+            month={picker.visibleMonth}
+            onSelect={picker.selectMonth}
+            range={picker.range}
+          />
+        ) : null}
+
+        {picker.view === 'years' ? (
+          <DatePickerYearGrid
+            onSelect={picker.selectYear}
+            range={picker.range}
+            year={picker.visibleMonth.year}
+          />
+        ) : null}
+
+        <DatePickerActions
+          canSelectToday={picker.isTodaySelectable}
+          hasValue={selectedIso !== ''}
+          onClear={picker.clear}
+          onToday={picker.selectToday}
         />
-      ) : null}
-
-      {picker.view === 'years' ? (
-        <DatePickerYearGrid
-          onSelect={picker.selectYear}
-          range={picker.range}
-          year={picker.visibleMonth.year}
-        />
-      ) : null}
-
-      <DatePickerActions
-        canSelectToday={picker.isTodaySelectable}
-        hasValue={selectedIso !== ''}
-        onClear={picker.clear}
-        onToday={picker.selectToday}
-      />
-    </div>
+      </div>
+    </AnchoredPanel>
   );
 }

@@ -1,5 +1,3 @@
-import type { DropdownPlacement } from '@/utils/dropdownPlacement';
-
 const FOCUS_RING =
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-1';
 const DAY_CELL_BASE = `flex h-9 w-9 items-center justify-center rounded-lg text-sm transition-colors ${FOCUS_RING}`;
@@ -61,12 +59,16 @@ export function getDateMessageClass(hasError: boolean): string {
   return hasError ? `${base} text-red-600` : `${base} text-gray-500`;
 }
 
-/** The floating calendar, flipped above the field when there is no room below. */
-export function getPanelClass(placement: DropdownPlacement): string {
-  const base =
-    'absolute left-0 z-40 w-[19.5rem] max-w-[calc(100vw-2.5rem)] rounded-2xl border border-gray-200 bg-white p-3 shadow-[0_20px_50px_-18px_rgba(0,0,0,0.35)]';
-  return placement === 'above' ? `${base} bottom-full mb-2` : `${base} top-full mt-2`;
-}
+/**
+ * Look of the floating calendar. No positioning: the panel is portalled to the
+ * body and placed from the field's measured box by `AnchoredPanel`, so a card
+ * with `overflow-hidden` can't slice it off.
+ */
+export const PANEL_CLASS =
+  'w-[19.5rem] max-w-[calc(100vw-2.5rem)] rounded-2xl border border-gray-200 bg-white p-3 shadow-[0_20px_50px_-18px_rgba(0,0,0,0.35)]';
+
+/** Distance between the field and the calendar, in pixels. */
+export const PANEL_GAP = 8;
 
 /** Arrow and title buttons in the panel header. */
 export const PANEL_NAV_BUTTON_CLASS = `flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-200 disabled:hover:bg-transparent ${FOCUS_RING}`;

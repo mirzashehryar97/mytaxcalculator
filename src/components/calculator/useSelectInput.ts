@@ -48,6 +48,8 @@ export default function useSelectInput<T extends string>({
   const dropdownRef = useRef<HTMLSpanElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLSpanElement>(null);
+  /** The portalled panel, which lives outside `dropdownRef` in the DOM. */
+  const panelRef = useRef<HTMLDivElement>(null);
   const typeahead = useRef<TypeaheadState>({ query: '', at: 0 });
 
   const hideTooltip = useCallback(() => setTooltip(null), []);
@@ -63,9 +65,9 @@ export default function useSelectInput<T extends string>({
   }, [close]);
 
   const showTooltip = useCallback((reason: string, option: HTMLElement) => {
-    const dropdown = dropdownRef.current;
+    const panel = panelRef.current;
 
-    if (!dropdown) {
+    if (!panel) {
       return;
     }
 
@@ -73,7 +75,7 @@ export default function useSelectInput<T extends string>({
       reason,
       ...getOptionTooltipPosition(
         option.getBoundingClientRect(),
-        dropdown.getBoundingClientRect(),
+        panel.getBoundingClientRect(),
         window.innerWidth,
       ),
     });
@@ -168,8 +170,12 @@ export default function useSelectInput<T extends string>({
       return;
     }
 
+    // The panel is portalled to the body, so "inside" means either half of the
+    // widget — a click on an option is not a click outside the dropdown.
     const closeOnOutsideClick = (event: MouseEvent) => {
-      if (!dropdownRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node;
+
+      if (!(dropdownRef.current?.contains(target) || panelRef.current?.contains(target))) {
         close();
       }
     };
@@ -200,6 +206,7 @@ export default function useSelectInput<T extends string>({
     hideTooltip,
     isOpen,
     listRef,
+    panelRef,
     placement,
     selectOption,
     showTooltip,

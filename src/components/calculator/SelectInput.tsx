@@ -2,6 +2,7 @@
 
 import { ChevronDown } from 'lucide-react';
 
+import AnchoredPanel from '@/components/calculator/AnchoredPanel';
 import SelectOptionTooltip from '@/components/calculator/SelectOptionTooltip';
 import type { SelectOption, SelectSize } from '@/components/calculator/select';
 import {
@@ -13,6 +14,7 @@ import {
   getSelectTriggerClass,
   getSelectValueClass,
   getSelectWrapperClass,
+  PANEL_WIDTH_MODE,
 } from '@/components/calculator/selectStyles';
 import useSelectInput from '@/components/calculator/useSelectInput';
 
@@ -91,7 +93,13 @@ export default function SelectInput<T extends string>({
         </button>
 
         {menu.isOpen ? (
-          <span className={getSelectPanelClass(size, menu.placement)}>
+          <AnchoredPanel
+            anchorRef={menu.dropdownRef}
+            className={getSelectPanelClass(size)}
+            panelRef={menu.panelRef}
+            placement={menu.placement}
+            widthMode={PANEL_WIDTH_MODE[size]}
+          >
             {/* biome-ignore lint/a11y/useSemanticElements: the native <select> this
                 replaces is the whole point — the roles are what keep it announced
                 as a dropdown. */}
@@ -146,7 +154,7 @@ export default function SelectInput<T extends string>({
                 width={menu.tooltip.width}
               />
             ) : null}
-          </span>
+          </AnchoredPanel>
         ) : null}
       </span>
 
