@@ -106,6 +106,12 @@ html {
     animation: fadeUp 0.5s ease-out both;
   }
 
+  /* Tooltip bubbles mount on hover, so the old opacity transition has nothing
+     to transition from; this replaces it at the same 150ms. */
+  .animate-tooltip-in {
+    animation: fadeIn 0.15s ease-out both;
+  }
+
   @keyframes calculatorPulse {
     0%,
     100% {

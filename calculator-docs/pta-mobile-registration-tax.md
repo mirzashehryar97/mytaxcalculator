@@ -11,7 +11,10 @@ primary sources instead of from the SEO tables that dominate the search results.
 **Researched and verified: 4 August 2026**, against the Finance Act 2026, the Income Tax Ordinance
 amended to 30 June 2026, the Sales Tax Act amended to 2025-26, the Pakistan Customs Tariff 2025-26,
 the Fifth Schedule to the Customs Act 2025-26, SRO 1063(I)/2026, SRO 1064(I)/2026, CGO 01 of 2019 as
-amended by CGO 01 of 2024, and PTA's DIRBS FAQ of 14 October 2025.
+amended by CGO 01 of 2024, PTA's DIRBS FAQ of 14 October 2025, and — in a second pass the same day —
+Valuation Rulings 1834/2023, 1999/2025 and 2070/2026 enumerated from FBR's own valuation database.
+**The second pass overturned §5**: an official per-model C&F table does exist. Read §5 and §10 before
+trusting any earlier summary of this document.
 
 ---
 
@@ -330,26 +333,55 @@ Every band above keys off **C&F value in US dollars**, which is a customs valuat
 phone costs in Karachi and not what it costs on apple.com. A calculator that asks for a retail price
 and silently treats it as C&F will be wrong by a factor.
 
-For **old and used** phones there is a published table. **Valuation Ruling No. 2035/2026**, dated
-**16 January 2026**, Directorate General of Customs Valuation, determined under §25A of the Customs
-Act and superseding VR 893/2024, sets a per-model C&F value:
+FBR **does** publish per-model C&F values, under §25A of the Customs Act, as Valuation Rulings from
+the Directorate General of Customs Valuation. There are **three live rulings** covering handsets, and
+they are read together — each supersedes the previous one only to the extent of its own scope:
 
-> the customs value of the following goods has been determined which shall be the value for assessment
-> of duty & taxes given against them in the Table below
+| Ruling | Dated | Scope | Size | Newest model in it |
+|---|---|---|---|---|
+| **VR 1834/2023** | 5 Dec 2023 | Mobile phones, **all brands, new** | **1,160 serials**, 26-page annexure | Galaxy S23 / Z Fold 5 |
+| **VR 1999/2025** | 22 Apr 2025 | **New iPhone (Apple) only** — supersedes VR 1834 *"to the extent of New IPhone (Apple) Mobile Phones"* | ~8 pp | iPhone 16 / 16e |
+| **VR 2070/2026** | 20 Apr 2026 | **Old and used**, without packing or accessories, in commercial quantity | 62 serials | iPhone 15 Pro Max / Galaxy S23 Ultra |
 
-Sample of the 62-model table (US$/piece): USED IPHONE 15 PRO MAX 460 · 15 PRO 390 · 15 PLUS 320 ·
-15 310 · 14 PRO MAX 360 · 14 PRO 290 · 14 210 · 13 PRO MAX 295 · 13 PRO 225 · 13 170 · 12 PRO MAX 215
-· 12 PRO 155 · 12 120 · 11 PRO MAX 145 · 11 PRO 125 · 11 95 · XS MAX 95 · XS 66 · XR 76 · X 57 ·
-8 PLUS 47 · 8 38 · 7 PLUS 26 · 7 24 · SAMSUNG S23 ULTRA 255 · S23+ 160 · S23 140 · S22 ULTRA 5G 160 ·
-S22+ 5G 75 · S22 5G 80 · S21+ 5G 69 · S21 5G 50 · NOTE 20 ULTRA 115 · GOOGLE PIXEL 9 PRO XL 260 ·
-9 PRO 195 · 9 150 · 8 PRO 188 · 8A 98 · 7 PRO 119 · 7 59.
+The column headings are exactly what a calculator needs — `S. No | BRAND | MODEL | Custom Value C&F
+in US$/Piece` — and the values are per variant, so storage tiers price separately. From VR 1999/2025:
+IPHONE 16 128GB **666** · 16 256GB **764** · 16 512GB **955** · 16e 128GB **591** · 16e 256GB **688** ·
+16 PLUS 128GB **764** · 16 PLUS 256GB **868** · 16 PLUS 512GB **1050** · 16 PRO 128GB **878** ·
+16 PRO 256GB **977**. From VR 1834/2023: IPHONE 15 128GB 825 · 15 PRO 128GB 1100 · 15 PRO MAX 256GB
+1300 · GALAXY S23 8+256GB 766 · GALAXY Z FOLD 5 12+512GB 1489.
 
-⚠️ **Two caveats, both load-bearing.** The ruling is expressly for used phones **"in commercial
-quantity"** — the Baggage Rules define commercial quantity as goods imported for trade rather than
-personal use, so whether WeBOC applies these values to a one-off DIRBS registration is unconfirmed.
-And there is **no equivalent published ruling for new phones**; those are assessed on declared or
-transaction value. A calculator therefore cannot map "iPhone 17 Pro Max" → a rupee figure from any
-official source. See §7 for what it can honestly do instead.
+VR 2070/2026 raised the used-phone values sharply over the ruling it replaced (iPhone 15 Pro Max
+505 vs 460; Galaxy S23 Ultra 305 vs 255).
+
+> ⚠️ **VR 2035/2026 is dead and must not be used.** The Director General rescinded it by
+> **Order-in-Revision No. 05/2026 dated 3 April 2026**, and VR 2070/2026 replaced it. An earlier draft
+> of this document cited VR 2035 as current; that was correct on 4 August 2026 only by accident of not
+> having checked the successor. Press coverage calling the replacement "VR 2076/2026" is wrong — FBR's
+> own database says 2070.
+
+### The coverage gap, which is the real problem
+
+The rulings exist; they are just **old for everything except Apple**. Nothing official values a
+Samsung Galaxy S24 or S25, an iPhone 17, or a Pixel 9/10 **as a new phone** — the newest non-Apple
+new-phone values in force were set in **December 2023**, and the newest Apple ones in **April 2025**.
+A grep of VR 1834/2023 for `S24` and `S25` returns **zero** hits.
+
+So a model picker is honest **only for models that appear in a ruling**, and it must say "not
+officially valued — enter the value your assessment used" for everything else. That is the opposite
+of what every competitor does, and it is the whole difference between citing a source and inventing
+one.
+
+⚠️ **Three caveats before transcribing any of this.**
+
+1. **"In commercial quantity"** on VR 2070/2026 is unresolved (see §9) — whether WeBOC applies it to
+   a one-off DIRBS registration is unconfirmed. VR 1834 and VR 1999 carry no such restriction.
+2. **Declared value wins when higher.** VR 1834 para: *"In cases, where declared values are higher
+   than the Customs values determined in this Ruling, the assessing officers shall apply those values
+   in terms of Sub-Section (1) of Section 25."* So the ruling is a **floor**, not a fixed price.
+3. **The text layer is OCR and it is bad.** Real extracted strings include `IPHONE I6 5I2GB`,
+   `256G8`, `2t5` for 215, `I 050` for 1050, and one iPhone 15 Pro value rendered as `1 two-`. Every
+   figure must be read off the **rendered page**, not the text layer, before it is typed into
+   `rates.ts`. This is the single largest transcription risk in the whole calculator.
 
 The PKR/USD rate is a second moving part: the sales tax is a percentage of a dollar-denominated
 value, so the answer changes daily. Whatever the page does, it must show the rate it used and the
@@ -390,10 +422,12 @@ FX rate stated.
   assessment procedure" and **no published schedule for it was found**. The CNIC figure is therefore a
   **floor**, and the page must label it one. Publishing a CNIC total that omits an unknown fine and
   calling it "the tax" would be the same class of error as the aggregators.
-- **A model lookup for new phones.** There is no official new-phone valuation table. Offering
-  "iPhone 17 Pro Max → Rs X" would mean inventing the input the whole calculation rests on. A used
-  handset picker built from VR 2035/2026 is defensible *if* the "commercial quantity" caveat in §5 is
-  resolved first; a new-phone picker is not.
+- **A model lookup for phones no ruling covers.** A picker *is* defensible for the ~1,200 models in
+  VR 1834/2023, VR 1999/2025 and VR 2070/2026 — those are official §25A values and can be cited. It
+  is **not** defensible for a Galaxy S24/S25, an iPhone 17 or a Pixel 9/10 as a new phone, because no
+  ruling values them (§5). Those must fall through to a "not officially valued" state that asks for
+  the value, never to a guess. Note also that a ruling value is a **floor** — a higher declared value
+  displaces it — so even a covered model yields a minimum, not a certainty.
 - **Years before 2025-26.** Sales tax has been 18%/25% only since the Finance Act 2024, RD needs the
   FY 2024-25 SRO which was not read in this pass, and the levy and §148 tables both moved. Ship
   `2026-2027` and `2025-2026` only — two years, exactly like the token-tax calculator — and show the
@@ -413,12 +447,47 @@ US$ 600 smartphone, FX Rs 280/US$, customs value Rs 168,000, sales-tax reading A
 | Mobile handset levy (501–700) | 8,000 | 8,000 |
 | **Total** | **Rs 67,600** | **Rs 79,100 + unpublished fine** |
 
-⚠️ **This assembled total is materially lower than the figures circulating on third-party "PTA tax"
-sites**, which quote six figures for a flagship. The gap is not reconciled. It could be the C&F value
-(they may be assessing new flagships far above US$ 600), the sales-tax base (reading B), the fine, or
-those sites simply being wrong — they are SEO pages with no citations, and they are not admissible
-sources for this repo either way. **Before shipping, one real PSID assessment should be compared line
-by line against this table.** Until then the page should not claim to reproduce the FBR figure.
+⚠️ This assembled total looks far lower than the figures circulating on third-party "PTA tax" sites,
+which quote six figures for a flagship. **That gap is an artefact of the example, not a defect in the
+tables** — see the reconciliation below. A flagship at US$ 1,200 C&F (Rs 336,000 at Rs 280/US$) comes
+out at RD 17,600 + ST 84,000 + levy 16,000 = **Rs 117,600** on the passport route, which is the six
+figures those sites quote. **Before shipping, one real PSID assessment should still be compared line
+by line against this table**, because a competitor agreeing with us is not the same as FBR agreeing
+with us.
+
+### Cross-check against a third-party calculator — 4 August 2026
+
+Not a source, and it must never appear in the official-sources grid. Recorded because it is the only
+independent arithmetic this research could be tested against, and it tests well.
+
+`taxcalculator.pk`'s PTA page returns, for a Samsung Galaxy S24 FE: **Rs 75,500 passport /
+Rs 95,700 CNIC**. Solving the passport figure against §4 with a sales-tax base of `V` rupees:
+
+```
+RD (above 500, FY 2025-26)  22,000
+levy (501–700)               8,000
+sales tax  0.25 × V         45,500   → V = 182,000  ( = US$ 650 at Rs 280/US$ )
+                            ------
+                            75,500   ← exactly their figure
+```
+
+**What that confirms.** The RD table in §4.3, the levy table in §4.6, the 25% cliff in §4.4 and — the
+one that mattered most — **customs duty at zero**. A Rs 250/set CD would put the total at 75,750 and
+force `V` to an unclean 181,000. Reading A of the sales-tax base also survives: reading B would add
+CD + RD to the base and overshoot. So an independently-built calculator lands on the same five lines
+this doc derived from the statutes.
+
+**What it does not confirm, and where they diverge from us.** US$ 650 is the S24 FE's **US retail
+launch price**, not a customs valuation — precisely the substitution §5 warns against, and C&F
+normally sits *below* MSRP. Their model picker is MSRP-as-C&F with the label filed off. The proof is
+that the **Galaxy S24 FE appears in no valuation ruling at all** (§5): the newest non-Apple new-phone
+values in force date from December 2023 and stop at the S23. There is no official number for that
+phone, so theirs cannot be one. Their CNIC
+column is Rs 20,200 above the passport one, of which §4.5 accounts for Rs 11,500 (§148, above 500,
+CBU); the residual **Rs 8,700 is unexplained**. It is the right order of magnitude for the fine FBR's
+own clarification hints at, but a competitor's undocumented constant is **not evidence** and does not
+close the open question in §9. Their page is also headed "as per 2024-2025 budget" while computing on
+the FY 2025-26 RD table, and offers no year selector at all.
 
 ## 8. Official sources for the page
 
@@ -440,7 +509,10 @@ the PTA cards:
 | SRO 1064(I)/2026 | FBR | Regulatory duty |
 | SRO 1063(I)/2026 | FBR | ACD, and the exemptions that zero it |
 | Customs General Order 01 of 2019, as amended by CGO 01 of 2024 | FBR | The registration procedure, the fine, the 120-day scheme |
-| Valuation Ruling 2035/2026 | Directorate General of Customs Valuation | Used-phone C&F values — **only if the used-phone picker ships** |
+| Valuation Ruling 1834/2023 | Directorate General of Customs Valuation | New-phone C&F values, all brands — **cite if the model picker ships** |
+| Valuation Ruling 1999/2025 | Directorate General of Customs Valuation | New iPhone C&F values, supersedes VR 1834 for Apple |
+| Valuation Ruling 2070/2026 | Directorate General of Customs Valuation | Old/used-phone C&F values (replaces the rescinded VR 2035/2026) |
+| WeBOC Mobile Device Duty Information | FBR / PRAL | The official per-IMEI duty lookup — where a user gets their real figure |
 | FBR IRIS / e-payment | FBR | Paying the PSID |
 
 Do **not** add PriceOye, WhatMobile, any "PTA tax calculator" site, PwC or ICMA, even as secondary.
@@ -464,7 +536,14 @@ Carry these into [open-questions.md](open-questions.md) when the calculator is b
   withdrawn on **30 June 2019**. The withdrawal is presumably in SRO 50 & 51(I)/2019, which is a scan
   with no text layer. The passport tables charge money at every band, so in practice the allowance
   does not apply to a DIRBS registration — but the *why* is unverified.
-- 🟡 **Does VR 2035/2026 reach individual registrations?** It says "in commercial quantity".
+- 🟡 **Does VR 2070/2026 reach individual registrations?** It says "in commercial quantity", and adds
+  a condition that the handset was *"activated at least six (06) months"* before export. Neither fits
+  a traveller registering one phone. VR 1834/2023 and VR 1999/2025 carry no such restriction, so the
+  new-phone tables are the safer basis for a personal registration.
+- 🟡 **What values a phone no ruling covers?** Galaxy S24/S25, iPhone 17, Pixel 9/10 as new devices
+  have no §25A value in force. WeBOC is presumably assessing them on declared/transaction value or on
+  an internal reference not published as a ruling. Which, is unknown — and it is the gap every
+  competitor fills by inventing a number.
 - 🟡 **RD SRO 1064(I)/2026 rate column** — read via an 80% cross-check against SRO 1152(I)/2025, not
   off a clean text layer. Re-read before shipping.
 - 🟡 **FY 2026-27 Customs Tariff and Fifth Schedule** not yet published; 2025-26 carried forward on
@@ -550,6 +629,8 @@ User-Agent works.
 `https://download1.fbr.gov.pk/VALUATIONS/20261191314224474VR2035-Old&UsedMobilePhone.pdf`, 5 pp.
 Supersedes VR 893/2024. Values determined under §25(7) after the transaction-value, identical-goods
 and similar-goods methods were each found inapplicable. Scope is "commercial quantity".
+- ⚠️ **Superseded — see the second pass below.** Rescinded by Order-in-Revision No. 05/2026 of
+  3 April 2026 and replaced by VR 2070/2026. Do not use its values.
 
 **Baggage Rules 2006 (SRO 666(I)/2006)** —
 `https://download1.fbr.gov.pk/SROs/2024129141213475172006sro666.pdf`, 6 pp. Rule 3A(viii) and rule
@@ -578,3 +659,77 @@ CNIC column gives 120 / 1,123 / 1,981 / 2,461 / 5,620 / 9,407. Subtracting the t
 amounts (70 / 100 / 930 / 970 / 3,000 / 5,200) leaves 50 / 1,023 / 1,051 / 1,491 / 2,620 / 4,207 —
 which is neither a flat fine nor a clean percentage of anything. The residual was **not** resolved
 and is not evidence for any fine formula.
+
+### 4 August 2026 — second pass, hunting a per-model valuation source
+
+Triggered by comparing the doc against a competitor's model-picker UI. **It overturned §5 of the
+first pass**, which asserted no official new-phone valuation table exists. One does.
+
+**How to enumerate the rulings — the method, because it is not discoverable from the page.**
+`https://www.fbr.gov.pk/showvaluations` renders an empty shell; the table is a server-side DataTables
+grid. `POST https://www.fbr.gov.pk/Home/LoadVALUATIONs` returns JSON with **926 rulings**, each with
+`VALUATIONNumber`, `Title`, `CreationDate` and a direct `UploadedFile1` PDF URL. It requires the full
+DataTables parameter set — `draw`, `start`, `length`, and `columns[n][data]` **plus `columns[n][name]`**
+for all three columns, `order[0][column]`, `order[0][dir]`, `search[value]`, `department=Customs` —
+with `X-Requested-With: XMLHttpRequest` and a `Referer`. **Negative findings:** dropping the
+`columns[n][name]` keys returns a 49-byte error body; `length` above ~100 does the same, so page
+through in hundreds; and `POST /LoadVALUATIONs` without the `/Home` prefix 302s to an ASP.NET error
+path. Filtering all 926 titles for handset terms yields exactly **13** rulings, three of them live
+device rulings.
+
+**Valuation Ruling 1834/2023, 5 December 2023** —
+`https://download1.fbr.gov.pk/VALUATIONS/2023121214121119988ValuationRuling1834-2023.pdf`, 29 pp.
+Supersedes VR 1732/2023 of 23-01-2023. Annexure-I is *"twenty six (26) number of pages having Serial
+No. 01 to Serial No. 1160"*, columns `S. No | BRAND | MODEL | Custom Value C&F in US$/Piece`. Brands
+present: Nokia, Apple, Samsung, OnePlus, Infinix, Oppo, Xiaomi, Huawei, Vivo, Tecno, Realme.
+- **What it changed:** the first pass's claim that no new-phone table exists is **withdrawn**. §5 and
+  §7 rewritten.
+- **Coverage ceiling, verified by grep:** `S24` and `S25` return **zero** hits; the newest Samsung is
+  GALAXY S23 8-256GB at 766 and GALAXY ZFOLD5 12-512GB at 1489.
+- Values are a **floor**: *"In cases, where declared values are higher than the Customs values
+  determined in this Ruling, the assessing officers shall apply those values in terms of Sub-Section
+  (1) of Section 25."*
+
+**Valuation Ruling 1999/2025, 22 April 2025** —
+`https://download1.fbr.gov.pk/VALUATIONS/20254251041448873VR1999.pdf`, 8 pp. Scope note in its own
+summary box: *"This Valuation Ruling supersedes Valuation Ruling No. 1834/2023 dated 06-12-2023 to the
+extent of New IPhone (Apple) Mobile Phones."* Triggered by a letter of 16-01-2025 from the
+Collectorate of Customs (Airport), Islamabad seeking inclusion of iPhone 16 variants.
+- Sample: IPHONE 16 128GB 666 · 256GB 764 · 512GB 955 · 16e 128GB 591 · 16e 256GB 688 · 16 PLUS 128GB
+  764 · 256GB 868 · 512GB 1050 · 16 PRO 128GB 878 · 256GB 977.
+- **Ceiling: iPhone 16.** No iPhone 17 in any ruling as of this date.
+
+**Valuation Ruling 2070/2026, 20 April 2026** —
+`https://download1.fbr.gov.pk/VALUATIONS/20264221242011915UsedMobilePhone.pdf`, ~12 pp. Old and used
+phones, 62 serials, brands Apple / Samsung / Google Pixel / OnePlus / Sharp.
+- **What it changed:** *"The Director General, vide Order-in-Revision No. 05/2026 dated 03-04-2026,
+  rescinded the Valuation Ruling No. 2035/2026 dated 16-01-2026"*, and this ruling *"supersedes earlier
+  Valuation Ruling No. 2035/2026 dated 16.01.2026."* The doc's §5 was citing a rescinded ruling.
+- Values rose sharply: USED IPHONE 15 PRO MAX 505 (was 460) · 15 PRO 472 (390) · 15 PLUS 390 (320) ·
+  15 378 (310) · 14 PRO MAX 413 (360) · SAMSUNG GALAXY S23 ULTRA 305 (255) · S23+ 260 (160) ·
+  S23 250 (140).
+- Note 2 adds a condition absent from VR 2035: the handset must have been *"activated at least six
+  (06) months"* before export to Pakistan.
+- **Ceiling: iPhone 15 / Galaxy S23**, same as the new-phone tables.
+- **Contradiction with press reporting, recorded deliberately:** propakistani and several outlets call
+  the replacement ruling "**2076**/2026". FBR's own database and the PDF itself say **2070/2026**.
+  Follow the database.
+
+**WeBOC Mobile Device Duty Information** —
+`https://www.weboc.gov.pk/Shared/MobileDeviceDutyInformation.aspx`, reachable without a session token.
+- **Finding:** the official duty lookup is keyed by **IMEI only** — a single 16-digit field posting
+  back to an ASP.NET form. FBR resolves IMEI → model → customs value → duty server-side. There is no
+  model-name search and no published mapping, so this **cannot** be mirrored; it is a place to send
+  the user, not a data source. It belongs in the official-sources grid for exactly that reason.
+
+**FBR "Rate of Duty and Taxes on Mobile Phones"**, linked from the DIRBS page as
+`https://fbr.gov.pk/Downloads/?id=25810&Type=Docs`.
+- **Negative finding, now with a chain:** that link 301s to
+  `…/Docs/2022121151057381Rateofdutyonmobile.pdf` — the **FY 2021-22** table the first pass already
+  flagged as stale. So FBR's *current* DIRBS page is still handing out a five-year-old rate sheet
+  showing 17% sales tax. This is very likely the origin of the wrong figures circulating on every
+  aggregator, and it is worth one sentence of page copy.
+
+**Still not found, after enumerating all 926 rulings:** any published schedule for the **CNIC fine**.
+It is not a valuation ruling, so the database was never going to hold it, but the enumeration at least
+rules the whole corpus out. The §9 open question stands.

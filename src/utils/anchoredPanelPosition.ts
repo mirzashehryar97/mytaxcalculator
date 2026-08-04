@@ -8,11 +8,18 @@ import type { DropdownPlacement } from '@/utils/dropdownPlacement';
  * - `min` — at least the trigger's width, wider when the content needs it.
  * - `auto` — the panel's own width; the trigger only fixes where its left edge
  *   starts.
+ * - `center` — a fixed-width bubble centred on the trigger and pushed back
+ *   inside the viewport when centring would hang it off an edge. What a tooltip
+ *   wants: it explains the trigger, so it points at it rather than lining up
+ *   with it.
  */
-export type PanelWidthMode = 'auto' | 'match' | 'min';
+export type PanelWidthMode = 'auto' | 'center' | 'match' | 'min';
 
 /** Default distance between a trigger and the panel floating off it, in pixels. */
 export const PANEL_GAP = 4;
+
+/** Breathing room kept between a centred panel and the edge that would cut it. */
+const EDGE_GUTTER = 8;
 
 export interface AnchoredPanelStyle {
   left: number;
@@ -25,8 +32,11 @@ export interface AnchoredPanelStyle {
 interface AnchoredPanelOptions {
   anchorRect: DOMRect;
   gap: number;
+  /** Only read in `center` mode; defaults to the trigger's own width. */
+  panelWidth?: number;
   placement: DropdownPlacement;
   viewportHeight: number;
+  viewportWidth: number;
   widthMode: PanelWidthMode;
 }
 
@@ -47,8 +57,10 @@ interface AnchoredPanelOptions {
 export function getAnchoredPanelStyle({
   anchorRect,
   gap,
+  panelWidth,
   placement,
   viewportHeight,
+  viewportWidth,
   widthMode,
 }: AnchoredPanelOptions): AnchoredPanelStyle {
   const vertical =
@@ -62,6 +74,16 @@ export function getAnchoredPanelStyle({
 
   if (widthMode === 'min') {
     return { left: anchorRect.left, minWidth: anchorRect.width, ...vertical };
+  }
+
+  if (widthMode === 'center') {
+    // Narrow the bubble before placing it, so the clamp below always has room
+    // to work with on a phone-width screen.
+    const width = Math.min(panelWidth ?? anchorRect.width, viewportWidth - EDGE_GUTTER * 2);
+    const centred = anchorRect.left + anchorRect.width / 2 - width / 2;
+    const furthestLeft = viewportWidth - width - EDGE_GUTTER;
+
+    return { left: Math.max(EDGE_GUTTER, Math.min(centred, furthestLeft)), width, ...vertical };
   }
 
   return { left: anchorRect.left, ...vertical };

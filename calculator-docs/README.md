@@ -86,7 +86,7 @@ Written and verified: **2 August 2026.**
 
 | Doc | Proposed route | Status |
 |---|---|---|
-| [pta-mobile-registration-tax.md](pta-mobile-registration-tax.md) | `/pta-tax-calculator` | Rates verified against primary sources 4 August 2026. No feature folder, no route, no `routeMeta` entry yet. Read its §7 and §9 before building — two inputs it needs cannot be sourced officially. |
+| [pta-mobile-registration-tax.md](pta-mobile-registration-tax.md) | `/pta-tax-calculator` | Rates and per-model customs values verified against primary sources 4 August 2026 (two passes). No feature folder, no route, no `routeMeta` entry yet. Read §5, §7 and §9 before building — official per-model values exist but stop at the Galaxy S23 / iPhone 16, and the CNIC fine has no published schedule. |
 
 ## Not built, on purpose
 

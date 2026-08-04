@@ -1,56 +1,31 @@
-export type TooltipAlignment = 'center' | 'start' | 'end';
+import type { DropdownPlacement } from '@/utils/dropdownPlacement';
+import { getDropdownPlacement } from '@/utils/dropdownPlacement';
 
-/** Mirrors the bubble's own `w-56` so the maths and the CSS can't drift apart. */
+/**
+ * How wide a tooltip bubble gets before its text wraps. Applied as a measured
+ * width rather than a Tailwind class: the centring maths needs the number
+ * anyway, and one source of truth beats a constant mirroring a class.
+ */
 export const TOOLTIP_WIDTH = 224;
 
-/** Breathing room kept between the bubble and whatever edge would otherwise cut it. */
-const EDGE_GUTTER = 8;
-
-interface HorizontalBounds {
-  left: number;
-  right: number;
-}
+/** Distance between the term and the bubble explaining it, in pixels. */
+export const TOOLTIP_GAP = 8;
 
 /**
- * Narrows the viewport down to the nearest ancestor that clips or scrolls
- * horizontally, so a bubble inside a scrolling rate table is measured against
- * that table rather than against the page.
+ * Roughly the tallest these explanations get at `TOOLTIP_WIDTH` — six lines of
+ * `text-xs leading-relaxed` plus the bubble's own padding. Only the decision to
+ * flip needs it; a flipped bubble is pinned by its bottom edge, so its real
+ * height never has to be measured.
  */
-export function getClippingBounds(trigger: HTMLElement, viewportWidth: number): HorizontalBounds {
-  let node = trigger.parentElement;
-
-  while (node) {
-    if (getComputedStyle(node).overflowX !== 'visible') {
-      const rect = node.getBoundingClientRect();
-
-      return { left: Math.max(0, rect.left), right: Math.min(viewportWidth, rect.right) };
-    }
-
-    node = node.parentElement;
-  }
-
-  return { left: 0, right: viewportWidth };
-}
+const TOOLTIP_HEIGHT = 160;
 
 /**
- * Centres the bubble on its trigger unless that would push it past an edge, in
- * which case it hangs off the near side instead of being sliced in half.
+ * Puts the bubble below the term it explains, and above it when the term sits
+ * too close to the bottom of the screen to show it underneath.
  */
-export function getTooltipAlignment(
+export function getTooltipPlacement(
   triggerRect: DOMRect,
-  bounds: HorizontalBounds,
-  tooltipWidth: number = TOOLTIP_WIDTH,
-): TooltipAlignment {
-  const triggerCenter = triggerRect.left + triggerRect.width / 2;
-  const halfWidth = tooltipWidth / 2;
-
-  if (triggerCenter + halfWidth > bounds.right - EDGE_GUTTER) {
-    return 'end';
-  }
-
-  if (triggerCenter - halfWidth < bounds.left + EDGE_GUTTER) {
-    return 'start';
-  }
-
-  return 'center';
+  viewportHeight: number,
+): DropdownPlacement {
+  return getDropdownPlacement(triggerRect, viewportHeight, TOOLTIP_HEIGHT);
 }

@@ -44,7 +44,13 @@ export default function RelatedCalculators({ currentHref }: RelatedCalculatorsPr
         </p>
       </div>
 
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-white/80 bg-gray-50 p-2 shadow-[0_24px_70px_-28px_rgba(2,44,34,0.65)] ring-1 ring-emerald-950/5 backdrop-blur-sm sm:p-3">
+      {/*
+        No `backdrop-blur` here: `bg-gray-50` is opaque, so the blur is invisible, but the
+        browser still re-samples and blurs the whole panel-sized backdrop every scroll frame
+        — and the page background (`.grid-pattern`/`.grid-squares`) is `position: fixed`, so
+        that backdrop changes on every frame. It made scrolling stutter over this section.
+      */}
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-white/80 bg-gray-50 p-2 shadow-[0_24px_70px_-28px_rgba(2,44,34,0.65)] ring-1 ring-emerald-950/5 sm:p-3">
         {groups.map((group) => (
           <RelatedCalculatorGroup key={group.category} group={group} />
         ))}

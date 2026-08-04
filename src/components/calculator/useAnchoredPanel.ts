@@ -13,6 +13,7 @@ import type { DropdownPlacement } from '@/utils/dropdownPlacement';
 interface UseAnchoredPanelOptions {
   anchorRef: RefObject<HTMLElement>;
   gap: number;
+  panelWidth?: number;
   placement: DropdownPlacement;
   widthMode: PanelWidthMode;
 }
@@ -29,6 +30,7 @@ interface UseAnchoredPanelOptions {
 export default function useAnchoredPanel({
   anchorRef,
   gap,
+  panelWidth,
   placement,
   widthMode,
 }: UseAnchoredPanelOptions): AnchoredPanelStyle | null {
@@ -42,11 +44,13 @@ export default function useAnchoredPanel({
     return getAnchoredPanelStyle({
       anchorRect: anchor.getBoundingClientRect(),
       gap,
+      panelWidth,
       placement,
       viewportHeight: window.innerHeight,
+      viewportWidth: window.innerWidth,
       widthMode,
     });
-  }, [anchorRef, gap, placement, widthMode]);
+  }, [anchorRef, gap, panelWidth, placement, widthMode]);
 
   const [style, setStyle] = useState<AnchoredPanelStyle | null>(measure);
 

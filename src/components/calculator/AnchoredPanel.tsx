@@ -18,7 +18,9 @@ interface AnchoredPanelProps {
   /** Distance between the trigger and the panel, in pixels. */
   gap?: number;
   /** Set on the panel element so outside-click checks can reach through the portal. */
-  panelRef: RefObject<HTMLDivElement>;
+  panelRef?: RefObject<HTMLDivElement>;
+  /** The bubble's own width, for `center` mode; ignored by the other modes. */
+  panelWidth?: number;
   placement: DropdownPlacement;
   widthMode: PanelWidthMode;
 }
@@ -46,10 +48,11 @@ export default function AnchoredPanel({
   className,
   gap = PANEL_GAP,
   panelRef,
+  panelWidth,
   placement,
   widthMode,
 }: AnchoredPanelProps) {
-  const style = useAnchoredPanel({ anchorRef, gap, placement, widthMode });
+  const style = useAnchoredPanel({ anchorRef, gap, panelWidth, placement, widthMode });
 
   return createPortal(
     <div className={`fixed z-50 ${className ?? ''}`} ref={panelRef} style={style ?? undefined}>
