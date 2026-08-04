@@ -4,10 +4,17 @@ import { ChevronDown } from 'lucide-react';
 
 import AnchoredPanel from '@/components/calculator/AnchoredPanel';
 import SelectOptionTooltip from '@/components/calculator/SelectOptionTooltip';
-import type { SelectOption, SelectSize } from '@/components/calculator/select';
+import SelectSearchField from '@/components/calculator/SelectSearchField';
+import {
+  getSelectOptionId,
+  SELECT_SEARCH_COPY,
+  type SelectOption,
+  type SelectSize,
+} from '@/components/calculator/select';
 import {
   getSelectAnchorClass,
   getSelectChevronClass,
+  getSelectEmptyClass,
   getSelectLabelClass,
   getSelectOptionClass,
   getSelectPanelClass,
@@ -36,6 +43,10 @@ interface SelectInputProps<T extends string> {
   labelAdornment?: React.ReactNode;
   /** Extra classes for the wrapper, e.g. the width it takes in a row. */
   className?: string;
+  /** Opens the panel into a filter box. For lists too long to scroll through. */
+  searchable?: boolean;
+  /** What that box asks for — name the things, e.g. "Search models". */
+  searchPlaceholder?: string;
 }
 
 /**
@@ -57,12 +68,15 @@ export default function SelectInput<T extends string>({
   helpText,
   labelAdornment,
   className,
+  searchable = false,
+  searchPlaceholder,
 }: SelectInputProps<T>) {
-  const menu = useSelectInput({ options, value, onChange });
+  const menu = useSelectInput({ options, value, onChange, searchable });
   const selected = options.find((option) => option.value === value);
   const labelId = `${id}-label`;
   const listId = `${id}-listbox`;
   const helpId = `${id}-help`;
+  const searchLabel = searchPlaceholder ?? SELECT_SEARCH_COPY.placeholder;
 
   return (
     <span className={getSelectWrapperClass(size, className)}>
@@ -100,6 +114,21 @@ export default function SelectInput<T extends string>({
             placement={menu.placement}
             widthMode={PANEL_WIDTH_MODE[size]}
           >
+            {searchable ? (
+              <SelectSearchField
+                activeIndex={menu.activeIndex}
+                fieldId={id}
+                inputRef={menu.searchRef}
+                label={searchLabel}
+                listId={listId}
+                onKeyDown={menu.handleSearchKeyDown}
+                onSearch={menu.search}
+                optionCount={menu.visibleOptions.length}
+                query={menu.query}
+                size={size}
+              />
+            ) : null}
+
             {/* biome-ignore lint/a11y/useSemanticElements: the native <select> this
                 replaces is the whole point — the roles are what keep it announced
                 as a dropdown. */}
@@ -110,7 +139,7 @@ export default function SelectInput<T extends string>({
               ref={menu.listRef}
               role="listbox"
             >
-              {options.map((option, index) => (
+              {menu.visibleOptions.map((option, index) => (
                 /* biome-ignore lint/a11y/useSemanticElements: an <option> can't hold
                    focus or explain why it is unavailable, so these are buttons. */
                 <button
@@ -122,6 +151,7 @@ export default function SelectInput<T extends string>({
                     isSelected: option.value === value,
                     size,
                   })}
+                  id={getSelectOptionId(id, index)}
                   key={option.value}
                   onClick={(event) => menu.selectOption(option, event.currentTarget)}
                   onFocus={(event) =>
@@ -137,13 +167,22 @@ export default function SelectInput<T extends string>({
                   }
                   onMouseLeave={menu.hideTooltip}
                   role="option"
-                  tabIndex={index === menu.activeIndex ? 0 : -1}
+                  // A searchable list keeps focus in its filter box, so nothing
+                  // here is tabbable — `aria-activedescendant` carries the
+                  // highlight instead.
+                  tabIndex={!searchable && index === menu.activeIndex ? 0 : -1}
                   type="button"
                 >
                   {option.label}
                 </button>
               ))}
             </span>
+
+            {/* Outside the listbox: anything but an option inside one is
+                announced as a broken list. */}
+            {menu.visibleOptions.length === 0 ? (
+              <span className={getSelectEmptyClass(size)}>{SELECT_SEARCH_COPY.noMatch}</span>
+            ) : null}
 
             {menu.tooltip ? (
               <SelectOptionTooltip

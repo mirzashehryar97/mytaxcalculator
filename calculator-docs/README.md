@@ -68,6 +68,7 @@ Written and verified: **2 August 2026.**
 | [cash-withdrawal-tax.md](cash-withdrawal-tax.md) | `/cash-withdrawal-tax-calculator` | `features/withholding-tax` |
 | [electricity-bill-tax.md](electricity-bill-tax.md) | `/electricity-bill-tax-calculator` | `features/withholding-tax` |
 | [mobile-internet-tax.md](mobile-internet-tax.md) | `/mobile-internet-tax-calculator` | `features/withholding-tax` |
+| [pta-mobile-registration-tax.md](pta-mobile-registration-tax.md) | `/pta-tax-calculator` | `features/pta-tax` |
 
 ### Provincial
 
@@ -81,12 +82,6 @@ Written and verified: **2 August 2026.**
   and how a figure gets verified.
 - [open-questions.md](open-questions.md) — every place the shipped code and the primary source do
   not line up, or where a figure could not be traced. **Read this before trusting a rate.**
-
-### Researched, not built yet
-
-| Doc | Proposed route | Status |
-|---|---|---|
-| [pta-mobile-registration-tax.md](pta-mobile-registration-tax.md) | `/pta-tax-calculator` | Rates and per-model customs values verified against primary sources 4 August 2026 (two passes). No feature folder, no route, no `routeMeta` entry yet. Read §5, §7 and §9 before building — official per-model values exist but stop at the Galaxy S23 / iPhone 16, and the CNIC fine has no published schedule. |
 
 ## Not built, on purpose
 

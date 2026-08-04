@@ -67,6 +67,23 @@ const OPTION_SIZE: Record<SelectSize, string> = {
   inline: 'min-h-9 py-2 text-sm',
 };
 
+// The filter box sits above the scrolling list, inside the panel, so it stays
+// put while the options move under it.
+const SEARCH_FIELD_BASE =
+  'w-full border-none bg-transparent text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0';
+
+const SEARCH_SIZE: Record<SelectSize, string> = {
+  md: 'py-2.5 pr-3 pl-9 text-base',
+  sm: 'py-2 pr-2.5 pl-8 text-sm',
+  inline: 'py-2 pr-2.5 pl-8 text-sm',
+};
+
+const SEARCH_ICON_SIZE: Record<SelectSize, string> = {
+  md: 'left-3 h-4 w-4',
+  sm: 'left-2.5 h-3.5 w-3.5',
+  inline: 'left-2.5 h-3.5 w-3.5',
+};
+
 export function getSelectWrapperClass(size: SelectSize, className?: string): string {
   return className ? `${WRAPPER_SIZE[size]} ${className}` : WRAPPER_SIZE[size];
 }
@@ -97,6 +114,23 @@ export function getSelectChevronClass(size: SelectSize, isOpen: boolean): string
 /** Look of the floating option list; `AnchoredPanel` supplies where it sits. */
 export function getSelectPanelClass(size: SelectSize): string {
   return `${PANEL_BASE} ${PANEL_SIZE[size]}`;
+}
+
+export function getSelectSearchWrapperClass(): string {
+  return 'relative flex items-center border-gray-100 border-b';
+}
+
+export function getSelectSearchFieldClass(size: SelectSize): string {
+  return `${SEARCH_FIELD_BASE} ${SEARCH_SIZE[size]}`;
+}
+
+export function getSelectSearchIconClass(size: SelectSize): string {
+  return `pointer-events-none absolute text-gray-400 ${SEARCH_ICON_SIZE[size]}`;
+}
+
+/** Shown in place of the list when a search matches nothing. */
+export function getSelectEmptyClass(size: SelectSize): string {
+  return `flex items-center px-3 text-gray-500 ${OPTION_SIZE[size]}`;
 }
 
 interface SelectOptionState {

@@ -113,6 +113,13 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
     category: 'vehicle',
   },
   {
+    href: '/pta-tax-calculator',
+    label: 'PTA Tax Calculator',
+    description: 'Mobile registration duties and taxes',
+    icon: Smartphone,
+    category: 'withholding',
+  },
+  {
     href: '/freelancer-tax-calculator',
     label: 'Freelancer Tax Calculator',
     description: 'IT export tax under Section 154A',

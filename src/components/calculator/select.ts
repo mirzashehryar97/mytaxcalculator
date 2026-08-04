@@ -17,6 +17,52 @@ export interface TypeaheadState {
   at: number;
 }
 
+/** Chrome for a searchable list; the field's own placeholder can override it. */
+export const SELECT_SEARCH_COPY = {
+  placeholder: 'Search…',
+  noMatch: 'No matching options',
+} as const;
+
+/** The id an option carries so `aria-activedescendant` can point at it. */
+export function getSelectOptionId(id: string, index: number): string {
+  return `${id}-option-${index}`;
+}
+
+const SEARCH_GAPS = /[^a-z0-9+]+/g;
+const QUERY_TERMS = /\s+/;
+
+/** Lowercased with spacing and punctuation dropped, so "a51" reaches "A-51". */
+function collapse(value: string): string {
+  return value.toLowerCase().replace(SEARCH_GAPS, '');
+}
+
+/**
+ * The options a typed query still matches. Every whitespace-separated term has
+ * to appear somewhere in the label, so "s10 plus" and "plus s10" both land on
+ * "Galaxy S10 Plus" and neither needs the words to be adjacent.
+ *
+ * Both sides lose their punctuation and spacing before matching, because the
+ * rulings this filters spell one handset several ways: "Galaxy A-51" is typed
+ * "a51", "Galaxy NOTE8" is typed "note 8", and a substring test on the raw
+ * label finds neither. `+` survives — "S23+" is a different phone from "S23"
+ * at a different value, so it has to stay searchable.
+ */
+export function filterOptions<T extends string>(
+  options: readonly SelectOption<T>[],
+  query: string,
+): readonly SelectOption<T>[] {
+  const terms = query.split(QUERY_TERMS).map(collapse).filter(Boolean);
+
+  if (terms.length === 0) {
+    return options;
+  }
+
+  return options.filter((option) => {
+    const haystack = collapse(option.label);
+    return terms.every((term) => haystack.includes(term));
+  });
+}
+
 /** How long a typed run counts as one word before the search restarts. */
 const TYPEAHEAD_RESET_MS = 700;
 

@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   extendTypeahead,
+  filterOptions,
   findInitialIndex,
   findTypeaheadIndex,
   type SelectOption,
@@ -24,6 +25,8 @@ interface UseSelectInputOptions<T extends string> {
   options: readonly SelectOption<T>[];
   value: T;
   onChange: (value: T) => void;
+  /** Puts a filter box in the panel, for lists too long to scroll or type through. */
+  searchable?: boolean;
 }
 
 /** Arrow keys walk the list, including over blocked options so they can be read. */
@@ -35,22 +38,37 @@ const MOVE_KEYS: Record<string, number> = { ArrowDown: 1, ArrowUp: -1 };
  * unavailable, and on mobile it hands the page over to the platform's own
  * picker. This drives a list of buttons instead, keeping what the native
  * control gave us: arrow keys, Home/End, type-to-jump, and Escape to close.
+ *
+ * Type-to-jump runs out somewhere past a hundred options: it matches the start
+ * of a label only, so nothing reaches "Galaxy S10 Plus" except "galaxy". A
+ * `searchable` list swaps it for a filter box, which moves focus into that box
+ * and drives the highlight through `aria-activedescendant` instead — a listbox
+ * cannot hold focus and be typed into at the same time.
  */
 export default function useSelectInput<T extends string>({
   options,
   value,
   onChange,
+  searchable = false,
 }: UseSelectInputOptions<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [placement, setPlacement] = useState<DropdownPlacement>('below');
   const [tooltip, setTooltip] = useState<OptionTooltip | null>(null);
+  const [query, setQuery] = useState('');
   const dropdownRef = useRef<HTMLSpanElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLSpanElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   /** The portalled panel, which lives outside `dropdownRef` in the DOM. */
   const panelRef = useRef<HTMLDivElement>(null);
   const typeahead = useRef<TypeaheadState>({ query: '', at: 0 });
+
+  /** What the list actually shows: everything until a search narrows it. */
+  const visibleOptions = useMemo(
+    () => (searchable ? filterOptions(options, query) : options),
+    [options, query, searchable],
+  );
 
   const hideTooltip = useCallback(() => setTooltip(null), []);
 
@@ -88,6 +106,9 @@ export default function useSelectInput<T extends string>({
       setPlacement(getDropdownPlacement(trigger.getBoundingClientRect(), window.innerHeight));
     }
 
+    // Cleared here rather than on close, so a panel that is closing never
+    // repaints its full list on the way out.
+    setQuery('');
     setActiveIndex(findInitialIndex(options, value));
     setIsOpen(true);
   }, [options, value]);
@@ -137,13 +158,22 @@ export default function useSelectInput<T extends string>({
     [options],
   );
 
+  const moveActive = useCallback(
+    (step: number) => {
+      const count = visibleOptions.length;
+
+      setActiveIndex((current) => (count === 0 ? 0 : (current + step + count) % count));
+    },
+    [visibleOptions.length],
+  );
+
   const handleListKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
       const step = MOVE_KEYS[event.key];
 
       if (step) {
         event.preventDefault();
-        setActiveIndex((current) => (current + step + options.length) % options.length);
+        moveActive(step);
         return;
       }
 
@@ -162,7 +192,50 @@ export default function useSelectInput<T extends string>({
         runTypeahead(event.key);
       }
     },
-    [closeAndRefocus, options.length, runTypeahead],
+    [closeAndRefocus, moveActive, options.length, runTypeahead],
+  );
+
+  /**
+   * Narrowing the list re-picks the highlight rather than keeping the old
+   * position, which would point at a different phone — or past the end of a
+   * shorter list — as soon as a letter lands.
+   */
+  const search = useCallback(
+    (next: string) => {
+      setQuery(next);
+      setActiveIndex(findInitialIndex(filterOptions(options, next), value));
+    },
+    [options, value],
+  );
+
+  const handleSearchKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      const step = MOVE_KEYS[event.key];
+
+      if (step) {
+        event.preventDefault();
+        moveActive(step);
+        return;
+      }
+
+      if (event.key === 'Enter') {
+        event.preventDefault();
+
+        const option = visibleOptions[activeIndex];
+        const element = listRef.current?.children[activeIndex];
+
+        if (option && element instanceof HTMLElement) {
+          selectOption(option, element);
+        }
+
+        return;
+      }
+
+      if (event.key === 'Escape' || event.key === 'Tab') {
+        closeAndRefocus();
+      }
+    },
+    [activeIndex, closeAndRefocus, moveActive, selectOption, visibleOptions],
   );
 
   useEffect(() => {
@@ -184,6 +257,13 @@ export default function useSelectInput<T extends string>({
     return () => document.removeEventListener('mousedown', closeOnOutsideClick);
   }, [close, isOpen]);
 
+  /** A searchable panel opens into its filter box, not onto an option. */
+  useEffect(() => {
+    if (isOpen && searchable) {
+      searchRef.current?.focus();
+    }
+  }, [isOpen, searchable]);
+
   /** Focus follows the active option, so the reason for a blocked one is announced. */
   useEffect(() => {
     if (!isOpen) {
@@ -192,26 +272,49 @@ export default function useSelectInput<T extends string>({
 
     const option = listRef.current?.children[activeIndex];
 
-    if (option instanceof HTMLElement) {
-      option.focus({ preventScroll: true });
-      option.scrollIntoView({ block: 'nearest' });
+    if (!(option instanceof HTMLElement)) {
+      return;
     }
-  }, [activeIndex, isOpen]);
+
+    option.scrollIntoView({ block: 'nearest' });
+
+    // Searching keeps focus in the filter box — taking it away would stop the
+    // typing that built the list — so the reason a blocked option is
+    // unavailable is raised here instead of on its focus handler.
+    if (searchable) {
+      const reason = visibleOptions[activeIndex]?.disabledReason;
+
+      if (reason) {
+        showTooltip(reason, option);
+      } else {
+        hideTooltip();
+      }
+
+      return;
+    }
+
+    option.focus({ preventScroll: true });
+  }, [activeIndex, hideTooltip, isOpen, searchable, showTooltip, visibleOptions]);
 
   return {
     activeIndex,
     dropdownRef,
     handleListKeyDown,
+    handleSearchKeyDown,
     handleTriggerKeyDown,
     hideTooltip,
     isOpen,
     listRef,
     panelRef,
     placement,
+    query,
+    search,
+    searchRef,
     selectOption,
     showTooltip,
     toggle,
     tooltip,
     triggerRef,
+    visibleOptions,
   };
 }

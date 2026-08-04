@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import SegmentedControlOption from '@/components/calculator/SegmentedControlOption';
 
 interface SegmentedOption<T extends string> {
@@ -14,6 +16,8 @@ interface SegmentedControlProps<T extends string> {
   onChange: (value: T) => void;
   name: string;
   helpText?: string;
+  /** Sits beside the legend — an `InfoTooltip` explaining what is being asked. */
+  labelAdornment?: ReactNode;
 }
 
 export default function SegmentedControl<T extends string>({
@@ -23,11 +27,17 @@ export default function SegmentedControl<T extends string>({
   onChange,
   name,
   helpText,
+  labelAdornment,
 }: SegmentedControlProps<T>) {
   const stackOnMobile = options.length > 2;
   return (
     <fieldset>
-      <legend className="form-label">{label}</legend>
+      <legend className="form-label">
+        <span className="inline-flex flex-wrap items-center gap-1.5">
+          {label}
+          {labelAdornment}
+        </span>
+      </legend>
       <div
         className={`flex w-full rounded-xl border border-gray-200 bg-gray-50 p-1 ${
           stackOnMobile ? 'flex-col sm:flex-row' : ''

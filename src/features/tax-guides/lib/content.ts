@@ -308,6 +308,27 @@ export const TAX_GUIDE_SEARCH_ENTRIES = [
     keywords: ['salary', 'tax slabs', 'take home', 'payroll', 'calculator'],
   },
   {
+    id: 'reverse-salary-calculator',
+    title: 'Reverse salary calculator',
+    description: 'Work backwards from the take-home pay you want to the gross salary it needs.',
+    href: '/reverse-salary-calculator',
+    keywords: ['reverse', 'take home', 'gross from net', 'net to gross', 'salary', 'in hand'],
+  },
+  {
+    id: 'salary-increment-calculator',
+    title: 'Salary increment calculator',
+    description: 'See how much of a raise you actually keep once tax is taken off it.',
+    href: '/salary-increment-calculator',
+    keywords: ['increment', 'raise', 'pay rise', 'appraisal', 'salary increase', 'after tax'],
+  },
+  {
+    id: 'job-offer-comparison-calculator',
+    title: 'Job offer comparison calculator',
+    description: 'Compare your current job with a new offer on take-home pay rather than gross.',
+    href: '/job-offer-comparison-calculator',
+    keywords: ['job offer', 'compare', 'new job', 'switch', 'take home', 'two offers'],
+  },
+  {
     id: 'freelancer-calculator',
     title: 'Freelancer tax calculator',
     description: 'Estimate tax on eligible IT and IT-enabled export income.',
@@ -468,6 +489,25 @@ export const TAX_GUIDE_SEARCH_ENTRIES = [
       'Estimate the tax inside a mobile load, internet bill or landline bill under Section 236.',
     href: '/mobile-internet-tax-calculator',
     keywords: ['mobile', 'load', 'internet', 'telephone', 'landline', '236', 'prepaid', 'balance'],
+  },
+  {
+    id: 'pta-tax-calculator',
+    title: 'PTA mobile registration tax calculator',
+    description:
+      'Work out the FBR duties and taxes on registering an imported phone through PTA DIRBS.',
+    href: '/pta-tax-calculator',
+    keywords: [
+      'PTA',
+      'DIRBS',
+      'mobile registration',
+      'IMEI',
+      'imported phone',
+      'iPhone',
+      'passport',
+      'CNIC',
+      'handset levy',
+      'customs value',
+    ],
   },
   ...TAX_GUIDES_FAQS.map((faq) => ({
     id: `faq-${faq.id}`,
