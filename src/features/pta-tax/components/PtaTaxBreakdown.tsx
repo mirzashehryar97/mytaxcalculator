@@ -6,20 +6,28 @@ import {
   PTA_BREAKDOWN_COPY,
   PTA_DECLARED_VALUE_NOTE,
   PTA_LEVY_GAP_NOTE,
-  PTA_RESULT_COPY,
+  PTA_PROVENANCE_NOTE,
   PTA_SALES_TAX_BASE_NOTE,
 } from '@/features/pta-tax/lib/content';
-import { formatPkr } from '@/features/pta-tax/lib/formatting';
-import type { PtaTaxResult } from '@/features/pta-tax/types';
+import { getPtaTaxLineDisplay } from '@/features/pta-tax/lib/presentation';
+import type { PtaFiscalYear, PtaTaxResult } from '@/features/pta-tax/types';
+
+/** The year whose figures are partly reconstructed — see `PTA_PROVENANCE_NOTE`. */
+const PROVENANCE_CAVEAT_YEAR: PtaFiscalYear = '2026-2027';
 
 interface PtaTaxBreakdownProps {
   result: PtaTaxResult;
+  fiscalYear: PtaFiscalYear;
   /** True when a typed declared value displaced the ruling's published figure. */
   isDeclaredValueUsed: boolean;
 }
 
 /** Every line with the document and band that produced it, under the result. */
-export default function PtaTaxBreakdown({ result, isDeclaredValueUsed }: PtaTaxBreakdownProps) {
+export default function PtaTaxBreakdown({
+  result,
+  fiscalYear,
+  isDeclaredValueUsed,
+}: PtaTaxBreakdownProps) {
   return (
     <div className="space-y-5">
       <div className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6">
@@ -28,35 +36,34 @@ export default function PtaTaxBreakdown({ result, isDeclaredValueUsed }: PtaTaxB
           {PTA_BREAKDOWN_COPY.description}
         </p>
         <ul className="mt-4 space-y-3">
-          {result.lines.map((line) => (
-            <li
-              key={line.id}
-              className="flex min-w-0 flex-col gap-1 border-gray-100 border-b pb-3 last:border-b-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
-            >
-              <div className="min-w-0">
-                <span className="block font-medium text-gray-900 text-sm">{line.label}</span>
-                <span className="block text-gray-600 text-xs leading-relaxed">{line.basis}</span>
-                {/* The citation is what makes the sentence above checkable, but
-                    it is not what a reader is here for — so it sits under it,
-                    quieter, rather than in place of it. */}
-                <span className="mt-0.5 block text-[11px] text-gray-400 leading-relaxed">
-                  {PTA_BREAKDOWN_COPY.referencePrefix} {line.reference}
-                </span>
-              </div>
-              {/* The reason a line is nil lives in `basis` directly above, so the
-                  amount column stays a short figure — a sentence here refuses to
-                  shrink beside the label and pushes the row off a narrow screen. */}
-              <strong
-                className={`amount-wrap shrink-0 text-left font-bold tabular-nums sm:text-right ${
-                  line.amountPkr > 0 ? 'text-red-600' : 'text-emerald-600'
-                }`}
+          {result.lines.map((line) => {
+            const display = getPtaTaxLineDisplay(line);
+
+            return (
+              <li
+                key={line.id}
+                className="flex min-w-0 flex-col gap-1 border-gray-100 border-b pb-3 last:border-b-0 last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
               >
-                {line.exemptReason && line.amountPkr === 0
-                  ? PTA_RESULT_COPY.nothingToPay
-                  : formatPkr(line.amountPkr)}
-              </strong>
-            </li>
-          ))}
+                <div className="min-w-0">
+                  <span className="block font-medium text-gray-900 text-sm">{line.label}</span>
+                  <span className="block text-gray-600 text-xs leading-relaxed">{line.basis}</span>
+                  {/* The citation is what makes the sentence above checkable, but
+                      it is not what a reader is here for — so it sits under it,
+                      quieter, rather than in place of it. */}
+                  <span className="mt-0.5 block text-[11px] text-gray-400 leading-relaxed">
+                    {PTA_BREAKDOWN_COPY.referencePrefix} {line.reference}
+                  </span>
+                </div>
+                {/* Exemptions are green, payable tax red, and an amount that is
+                    not established is amber rather than masquerading as nil. */}
+                <strong
+                  className={`amount-wrap shrink-0 text-left font-bold tabular-nums sm:text-right ${display.textClassName}`}
+                >
+                  {display.value}
+                </strong>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
@@ -82,6 +89,14 @@ export default function PtaTaxBreakdown({ result, isDeclaredValueUsed }: PtaTaxB
         body={PTA_SALES_TAX_BASE_NOTE.body}
         tone="neutral"
       />
+
+      {fiscalYear === PROVENANCE_CAVEAT_YEAR ? (
+        <PtaNoteCard
+          title={PTA_PROVENANCE_NOTE.title}
+          body={PTA_PROVENANCE_NOTE.body}
+          tone="neutral"
+        />
+      ) : null}
     </div>
   );
 }

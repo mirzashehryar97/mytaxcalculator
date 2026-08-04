@@ -9,11 +9,11 @@ export interface SourceLogo {
   width: number;
   height: number;
   /**
-   * Show only the leading mark instead of the whole image. Use for very wide
-   * wordmarks (the FBR logo) that would be illegible scaled down to fit.
+   * Let the logo keep its intrinsic width while the slot clips the overflow.
+   * Use for very wide wordmarks or artwork with excessive built-in whitespace.
    */
   cropToMark?: boolean;
-  /** Give a standalone seal or emblem more size and centre it in the logo slot. */
+  /** Give a standalone seal, emblem or detailed brand mark more size in the logo slot. */
   prominent?: boolean;
 }
 

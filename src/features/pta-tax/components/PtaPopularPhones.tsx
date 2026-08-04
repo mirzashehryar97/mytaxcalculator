@@ -3,15 +3,11 @@ import { AlertCircle, Info } from 'lucide-react';
 import { PTA_POPULAR_PHONES, PTA_POPULAR_PHONES_COPY } from '@/features/pta-tax/lib/content';
 import { formatPtaFiscalYear } from '@/features/pta-tax/lib/formatting';
 import { buildPopularPhoneRows } from '@/features/pta-tax/lib/presentation';
-import {
-  DEFAULT_PTA_FISCAL_YEAR,
-  PTA_DEFAULT_EXCHANGE_RATE,
-  PTA_EXCHANGE_RATE_DATE,
-} from '@/features/pta-tax/lib/rates';
+import { DEFAULT_PTA_FISCAL_YEAR, PTA_DEFAULT_EXCHANGE_RATE } from '@/features/pta-tax/lib/rates';
 
 const POPULAR_PHONE_ROWS = buildPopularPhoneRows(PTA_POPULAR_PHONES);
 
-const BASIS_NOTE = `Tax year ${formatPtaFiscalYear(DEFAULT_PTA_FISCAL_YEAR)}, new smartphone, at Rs ${PTA_DEFAULT_EXCHANGE_RATE} to the US dollar as at ${PTA_EXCHANGE_RATE_DATE}. Sales tax is a percentage, so every total here moves with the rupee — set your own rate in the calculator.`;
+const BASIS_NOTE = `Tax year ${formatPtaFiscalYear(DEFAULT_PTA_FISCAL_YEAR)}, new smartphone, at the default Rs ${PTA_DEFAULT_EXCHANGE_RATE} to the US dollar. Sales tax is a percentage, so every total here moves with the rupee — set your own rate in the calculator.`;
 
 /**
  * Named handsets with their totals, which is what people search for and what

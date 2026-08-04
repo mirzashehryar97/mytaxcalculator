@@ -5,8 +5,8 @@ import {
   PTA_PAGE_COPY,
   PTA_REVIEW_COPY,
   PTA_ROUTE,
-  PTA_VALUE_BASIS_NOTE,
 } from '@/features/pta-tax/lib/content';
+import { PTA_NEW_PHONES, PTA_PHONE_BRANDS } from '@/features/pta-tax/lib/phoneCatalogue';
 
 const publisher = {
   '@type': 'Organization',
@@ -36,40 +36,19 @@ function buildPtaApplicationLd(): JsonLd {
     publisher,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'PKR' },
     featureList: [
-      'Customs duty, regulatory duty, sales tax, section 148 and the mobile handset levy, itemised',
+      'Customs duty, additional customs duty, regulatory duty, sales tax, section 148 and the mobile handset levy, itemised',
       'Official per-model C&F customs values from FBR valuation rulings',
-      'Brand, model and storage picker covering 1,087 handsets across 23 brands',
+      /**
+       * Counted rather than typed, and stated as values across models because
+       * the two differ: most models are priced once per storage tier, so the
+       * larger number is rows in the rulings, not distinct handsets. Structured
+       * data has to describe what the page visibly does.
+       */
+      `Brand, model and storage picker covering ${PTA_NEW_PHONES.length.toLocaleString('en-PK')} published values across ${PTA_PHONE_BRANDS.length} brands`,
       'Passport and CNIC registration routes compared side by side',
       'Full rate tables by C&F band for both tax years',
       'Tax years 2025-2026 and 2026-2027',
     ],
-  };
-}
-
-/**
- * The four steps already printed in the value-basis section, declared so the
- * "how is PTA tax calculated" query has something to match. Each step points at
- * the card that states it, so the markup and the page never diverge.
- */
-function buildPtaHowToLd(): JsonLd {
-  const url = absoluteUrl(PTA_ROUTE);
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'HowTo',
-    '@id': `${url}#how-to`,
-    name: 'How to work out PTA mobile registration tax in Pakistan',
-    description: PTA_VALUE_BASIS_NOTE.body,
-    url: `${url}#pta-how-it-is-worked-out`,
-    inLanguage: 'en-PK',
-    totalTime: 'PT2M',
-    estimatedCost: { '@type': 'MonetaryAmount', currency: 'PKR', value: '0' },
-    step: PTA_VALUE_BASIS_NOTE.steps.map((step) => ({
-      '@type': 'HowToStep',
-      name: step.title,
-      text: step.body,
-      url: `${url}#pta-step-${step.id}`,
-    })),
   };
 }
 
@@ -88,6 +67,5 @@ function buildPtaFaqLd(): JsonLd {
 export const PTA_STRUCTURED_DATA = [
   ...routeStructuredData(PTA_ROUTE),
   buildPtaApplicationLd(),
-  buildPtaHowToLd(),
   buildPtaFaqLd(),
 ];

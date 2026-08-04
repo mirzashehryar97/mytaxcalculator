@@ -19,7 +19,7 @@ export interface PtaFormState {
   model: string;
   /** Storage tier; `''` both when the model has no tiers and before one is picked. */
   variant: string;
-  /** C&F value typed by hand, used when no ruling covers the handset. */
+  /** C&F value typed from an assessment or used where no ruling covers the handset. */
   manualCnfUsd: string;
   /** Optional higher declared value, which section 25(1) makes the assessment on. */
   declaredCnfUsd: string;
@@ -44,7 +44,7 @@ export const DEFAULT_PTA_FORM_STATE: PtaFormState = {
   valueSource: 'model',
   brand: DEFAULT_BRAND,
   model: DEFAULT_MODEL,
-  variant: getFirstVariant(DEFAULT_BRAND, DEFAULT_MODEL),
+  variant: getFirstVariant('smartphone', DEFAULT_BRAND, DEFAULT_MODEL),
   manualCnfUsd: '',
   declaredCnfUsd: '',
   exchangeRate: String(PTA_DEFAULT_EXCHANGE_RATE),
@@ -55,12 +55,19 @@ export function parsePtaNumberInput(value: string): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
 }
 
+export function usesManualPtaValue(formState: PtaFormState): boolean {
+  return formState.valueSource === 'manual';
+}
+
 /** The value the ruling puts on the chosen handset, or null when none does. */
 export function getOfficialCnfUsd(formState: PtaFormState): number | null {
-  if (formState.valueSource !== 'model') {
+  if (usesManualPtaValue(formState)) {
     return null;
   }
-  return findPhone(formState.brand, formState.model, formState.variant)?.cnfUsd ?? null;
+  return (
+    findPhone(formState.deviceKind, formState.brand, formState.model, formState.variant)?.cnfUsd ??
+    null
+  );
 }
 
 /**
@@ -69,7 +76,7 @@ export function getOfficialCnfUsd(formState: PtaFormState): number | null {
  * assessment on the declared figure instead, so the higher of the two wins.
  */
 export function getEffectiveCnfUsd(formState: PtaFormState): number {
-  if (formState.valueSource === 'manual') {
+  if (usesManualPtaValue(formState)) {
     return parsePtaNumberInput(formState.manualCnfUsd);
   }
   return Math.max(getOfficialCnfUsd(formState) ?? 0, parsePtaNumberInput(formState.declaredCnfUsd));
@@ -77,7 +84,7 @@ export function getEffectiveCnfUsd(formState: PtaFormState): number {
 
 /** True when the typed declared value is the figure being used, not the ruling's. */
 export function isDeclaredValueUsed(formState: PtaFormState): boolean {
-  if (formState.valueSource !== 'model') {
+  if (usesManualPtaValue(formState)) {
     return false;
   }
   const declared = parsePtaNumberInput(formState.declaredCnfUsd);
@@ -106,7 +113,7 @@ export function isPtaFormValid(formState: PtaFormState): boolean {
 /** Names the one answer still missing, for the placeholder that stands in. */
 export function getPtaMissingInput(formState: PtaFormState): string | null {
   if (getEffectiveCnfUsd(formState) <= 0) {
-    return formState.valueSource === 'manual'
+    return usesManualPtaValue(formState)
       ? 'Enter the C&F value in US dollars that your own assessment uses.'
       : 'Pick a handset that carries an official customs value, or switch to entering it yourself.';
   }

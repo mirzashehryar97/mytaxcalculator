@@ -21,6 +21,10 @@ export default function PtaRouteComparison({ result, route }: PtaRouteComparison
     passport: route === 'passport' ? result.totalPkr : result.otherRouteTotalPkr,
     cnic: route === 'cnic' ? result.totalPkr : result.otherRouteTotalPkr,
   };
+  const unknownCharges: Record<PtaRoute, boolean> = {
+    passport: route === 'passport' ? result.hasUnknownCharge : result.otherRouteHasUnknownCharge,
+    cnic: route === 'cnic' ? result.hasUnknownCharge : result.otherRouteHasUnknownCharge,
+  };
 
   return (
     <div className="grid gap-3 sm:grid-cols-2">
@@ -44,10 +48,10 @@ export default function PtaRouteComparison({ result, route }: PtaRouteComparison
               ) : null}
             </div>
             <strong className="amount-wrap mt-1 block font-bold text-lg text-red-600 tabular-nums">
-              {formatRouteTotal(totals[option], option)}
+              {formatRouteTotal(totals[option], option, unknownCharges[option])}
             </strong>
             <ul className="mt-3 space-y-1.5">
-              {getRouteFacts(option).map((fact) => (
+              {getRouteFacts(option, unknownCharges[option]).map((fact) => (
                 <li
                   key={fact}
                   className="flex items-start gap-2 text-gray-600 text-xs leading-snug"

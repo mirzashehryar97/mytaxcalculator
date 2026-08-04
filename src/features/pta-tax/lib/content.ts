@@ -1,8 +1,13 @@
-import { Globe, Smartphone } from 'lucide-react';
-
 import type { OfficialSource } from '@/components/calculator/OfficialSourcesGrid';
 
-import { FBR_DOC_URLS, FBR_LOGO, IRIS_LOGO, NATIONAL_ASSEMBLY_LOGO } from '@/lib/officialSources';
+import {
+  DIRBS_LOGO,
+  ENGINEERING_DEVELOPMENT_BOARD_LOGO,
+  FBR_DOC_URLS,
+  FBR_LOGO,
+  IRIS_LOGO,
+  NATIONAL_ASSEMBLY_LOGO,
+} from '@/lib/officialSources';
 
 import { PTA_NEW_PHONES } from '@/features/pta-tax/lib/phoneCatalogue';
 import type { PtaPopularPhoneRef } from '@/features/pta-tax/types';
@@ -13,9 +18,9 @@ export const PTA_PAGE_COPY = {
   eyebrow: 'Tax year 2026-27 · Phone registration',
   title: 'PTA Mobile Registration Tax Calculator',
   subtitle:
-    'Brought a phone into Pakistan? Pick your model and see what it costs to register it — every charge listed separately, worked out from the government’s own value for that exact phone.',
+    'Brought a phone into Pakistan? Pick a listed model or use the C&F value from your assessment, then see every registration charge separately.',
   badges: [
-    'Government figures only',
+    'Official tax sources',
     'Both ways of registering',
     /**
      * Counted from the catalogue rather than typed, because the two numbers are
@@ -34,14 +39,18 @@ export const PTA_RESULT_COPY = {
   totalLabel: 'Estimated FBR duties & taxes',
   passportCaption: 'Passport route',
   cnicCaption: 'CNIC route — the fine is not included',
+  cnicUnknownCaption:
+    'CNIC route — minimum only; additional customs duty and the fine are not included',
   /** Shown in place of a figure on a line that carries no charge. */
   nothingToPay: 'Exempt',
+  /** Shown where the source does not establish the amount, never as a false zero. */
+  unknownCharge: 'Not included',
 } as const;
 
 export const PTA_BREAKDOWN_COPY = {
   title: 'Where each figure comes from',
   description:
-    'Six separate charges make up the one amount you pay, and some of them come out at nothing. Here is what each one is and why it came out at that number.',
+    'Six separate charges are checked. Some are exempt, and a basic phone on CNIC has one charge that published sources do not quantify. Here is what each line means.',
   referencePrefix: 'Source:',
 } as const;
 
@@ -49,7 +58,7 @@ export const PTA_SOCIAL_IMAGE_COPY = {
   eyebrow: 'FY 2026-27 · Phone registration tax',
   title: 'PTA Mobile Registration Tax Calculator',
   subtitle: 'Brought it yourself, or registering with CNIC',
-  features: 'Free · Official government values · Every charge listed',
+  features: 'Free · Official tax sources · Every charge listed',
   brand: 'My Tax Calculator',
 } as const;
 
@@ -68,7 +77,7 @@ export const PTA_FORM_COPY = {
   brandLabel: 'Brand',
   modelLabel: 'Model',
   /**
-   * Samsung alone lists 128 models, so the picker takes a typed name. The
+   * Samsung's smartphone list alone has 125 models, so the picker takes a typed name. The
    * placeholder says "models" rather than "phones" because that is the field it
    * filters — the brand above it is chosen first and is not searched.
    */
@@ -135,7 +144,7 @@ export const PTA_TERMS = {
   },
   totalDue: {
     label: 'What is in this total?',
-    text: 'The six federal charges below added together: customs duty, additional customs duty, regulatory duty, sales tax, advance income tax and the mobile handset levy. Several of them come out at nothing depending on how you register. None of it goes to PTA — Customs assesses it and you pay it at a bank against a PSID. On the CNIC route it excludes a fine that FBR never publishes.',
+    text: 'The known amounts among the six federal charges below: customs duty, additional customs duty, regulatory duty, sales tax, advance income tax and the mobile handset levy. None goes to PTA — Customs assesses the amount and you pay it against a PSID. Every CNIC result excludes an unpublished fine; for a basic phone it also excludes additional customs duty because no published notification establishes the amount, so that total is a minimum.',
   },
   route: {
     label: 'Which registration route applies to me?',
@@ -143,7 +152,7 @@ export const PTA_TERMS = {
   },
   deviceKind: {
     label: 'Which device type is mine?',
-    text: 'A smartphone is any phone with a mobile operating system that runs apps you install — an iPhone, a Samsung, anything on Android. A basic phone is a call-and-text handset with no app store. A smartphone pays no customs duty at all; a basic phone pays a flat Rs 250.',
+    text: 'The tariff treats a phone as smart when its mobile operating system is designed for downloadable third-party apps and multitasking; a keypad or marketing name does not decide it. The picker uses a researched model taxonomy, with a few disclosed low-confidence assignments where exact records do not survive or conflict. If your assessment classifies yours differently, follow that assessment and enter its value directly. The choice changes customs duty, section 148 below US$ 30 and whether every CNIC charge is known.',
   },
   condition: {
     label: 'Does device condition change the value?',
@@ -159,15 +168,15 @@ export const PTA_TERMS = {
   },
   valueSource: {
     label: 'Which option should I choose?',
-    text: 'Pick your phone from the list where it is there — that pulls in the published value for your exact model and storage size. Choose "Enter the value" if the handset is too new to be on the list, or if you already have a figure from your own paperwork.',
+    text: 'Pick your phone from the filtered list where it is there — that pulls in the published value for the exact model and storage size. Choose "Enter the value" if it is not listed, your assessment classifies it differently or you already have the assessed figure in your paperwork.',
   },
   customsDuty: {
     label: 'What is customs duty?',
-    text: 'The ordinary import duty on goods entering Pakistan. Smartphones are exempt from it entirely, so this line is normally nil. A basic call-and-text phone is not covered by that exemption and pays a flat Rs 250 per set.',
+    text: 'The ordinary import duty on goods entering Pakistan. Smartphones are exempt from it entirely, so this line is normally nil. A basic/other cellular phone that does not meet the tariff’s smartphone test is not covered by that exemption and pays a flat Rs 250 per set.',
   },
   additionalCustomsDuty: {
     label: 'What is additional customs duty?',
-    text: 'A second import charge that sits on top of customs duty on most goods. Phones are exempt from it on both registration routes, so it always comes out at nil here. It is shown rather than hidden so you can see it was accounted for, not forgotten.',
+    text: 'A second import charge that sits on top of customs duty on most goods. A phone carried in your own baggage is outside it, and so is a smartphone however it is registered — so it comes out at nil in every ordinary case. It is shown rather than hidden so you can see it was accounted for, not forgotten. The one gap is a basic phone registered on a CNIC, where the exemption does not reach and nothing published says what does.',
   },
   regulatoryDuty: {
     label: 'What is regulatory duty?',
@@ -179,7 +188,7 @@ export const PTA_TERMS = {
   },
   incomeTax: {
     label: 'What is this income tax?',
-    text: 'Advance income tax collected at import, under section 148. You skip it entirely on the passport route. Where it is charged it counts towards your income tax for the year, so it is claimed back on your return rather than lost.',
+    text: 'Advance income tax collected at import, under section 148. You skip it entirely on the passport route. It is collected in advance of the tax year rather than as a charge on the phone, but whether someone registering one handset for their own use can set it against a return is not something FBR has published guidance on — ask your tax adviser before counting on it.',
   },
   handsetLevy: {
     label: 'What is the mobile handset levy?',
@@ -259,20 +268,32 @@ export const PTA_SALES_TAX_BASE_NOTE = {
   body: 'The law says sales tax is charged on the phone’s "import value" without ever saying exactly which figure that means. It could be the value on its own — which is what this page uses — or the value plus the duties already added to it, which on a US$ 600 phone would cost roughly Rs 4,400 more. We use the smaller reading and tell you about it rather than quietly picking one.',
 } as const;
 
+/**
+ * FBR had not posted the 2026-27 Customs Tariff or Fifth Schedule when this was
+ * built, and the SRO that carries the new regulatory duty is a scan whose text
+ * layer interleaves columns. Both figures are believed right and neither was
+ * read the way the rest of this page's figures were, so the page says which is
+ * which rather than letting "government figures only" cover the difference.
+ */
+export const PTA_PROVENANCE_NOTE = {
+  title: 'How firm the 2026-27 figures are',
+  body: 'Two of this year’s numbers rest on less than the rest. The regulatory duty amounts come from a notification FBR published only as a poor scan, and were resolved by checking that every figure is exactly 80% of last year’s — which they are, but it is a reconstruction rather than a clean reading. And the 2026-27 customs tariff had not been published at all when this page was last checked, so the 2025-26 customs duty treatment is carried forward on the strength of the Finance Act 2026 not amending it. Sales tax, income tax and the handset levy are read straight from the statutes.',
+} as const;
+
 export const PTA_LEVY_GAP_NOTE = {
   title: 'Your phone’s value falls in a gap in the law',
-  body: 'One of the charges has brackets that read "up to 100" and then "above 101", so a value of exactly 100.50 belongs to neither. The same hole appears at 200.50, 350.50, 500.50 and 700.50, and it has never been fixed. We use the lower bracket, on the basis that you should not be charged something the law never actually says you owe.',
+  body: 'One of the charges has brackets that read "up to 100" and then "above 101", so anything worth more than US$ 100 and up to US$ 101 belongs to neither — including exactly 101, which is what three phones on the official list are valued at. The same one-dollar hole appears at 200/201, 350/351, 500/501 and 700/701, and it has never been fixed. We use the lower bracket, on the basis that you should not be charged something the law never actually says you owe.',
 } as const;
 
 export const PTA_INSTALMENTS_NOTE = {
-  title: 'You can pay this in instalments',
-  body: 'Since the Finance Act 2026 you are allowed to pay in instalments rather than all at once, as long as everything is paid before the tax year ends. The detailed rules for how that works had not been published when this page was last checked, so we cannot show you a schedule yet — ask at the bank or on the portal.',
+  title: 'Instalments may be allowed',
+  body: 'The Finance Act 2026 lets someone registering a phone be allowed to pay in instalments rather than all at once, provided everything is paid before the tax year ends. It says "as may be prescribed", and the rules prescribing how it works had not been published when this page was last checked — so it is not yet something you can simply ask for at the counter. Check on the portal before you plan around it.',
 } as const;
 
 export const PTA_TEMPORARY_REGISTRATION = {
   days: '120',
   title: 'Just visiting for a few months?',
-  body: 'If you live abroad or are a foreign national, you can register one phone temporarily and pay nothing at all. It is tied to one SIM you nominate, and it lasts 120 days — after that the phone is blocked, and you cannot use this option twice for the same phone.',
+  body: 'If you live abroad or are a foreign national, you can register one phone temporarily and pay nothing at all. It is tied to one SIM you nominate, and it lasts 120 days — after that the phone is blocked. The same handset cannot come back through this option on a different passport.',
 } as const;
 
 export const PTA_HIGHLIGHTS = [
@@ -288,8 +309,8 @@ export const PTA_HIGHLIGHTS = [
   },
   {
     id: 'cnic-fine',
-    title: 'The CNIC fine is not published anywhere',
-    body: 'Registering with a CNIC adds a fine on top of everything else, and no official schedule for it exists. So treat the CNIC figure here as the minimum, not the final amount.',
+    title: 'A CNIC figure is a minimum',
+    body: 'Registering with a CNIC adds a fine for which no official schedule exists. For a basic phone, published notifications also do not establish the additional customs duty. The result labels both omissions instead of presenting a final total.',
   },
   {
     id: 'psid-validity',
@@ -302,7 +323,12 @@ export const PTA_COMPONENT_CARDS = [
   {
     id: 'customs-duty',
     title: 'Customs duty',
-    body: 'Nothing at all on a smartphone. A flat Rs 250 if it is a basic call-and-text phone.',
+    body: 'Nothing on a smartphone. A flat Rs 250 on a basic/other cellular phone that does not meet the tariff’s smartphone test.',
+  },
+  {
+    id: 'additional-customs-duty',
+    title: 'Additional customs duty',
+    body: 'Exempt for a phone in personal baggage and for a smartphone. The amount is unresolved for a basic phone on CNIC.',
   },
   {
     id: 'regulatory-duty',
@@ -315,6 +341,11 @@ export const PTA_COMPONENT_CARDS = [
     body: '18% of the value, or 25% once it passes US$ 500. The only charge that is a percentage.',
   },
   {
+    id: 'income-tax-148',
+    title: 'Income tax (section 148)',
+    body: 'A fixed CNIC-route collection by price bracket. A phone in your own baggage is exempt.',
+  },
+  {
     id: 'handset-levy',
     title: 'Mobile handset levy',
     body: 'A one-off charge for putting a phone on the networks. Again fixed, by price bracket.',
@@ -325,18 +356,18 @@ export const PTA_RATE_GUIDE_COPY = {
   eyebrow: 'The full rate tables',
   title: 'PTA tax rates by phone value',
   description:
-    'What each charge comes to at every price bracket, for both tax years. Brackets are set in US dollars, using the government’s value for the phone rather than what you paid for it. Customs duty has no column here because it does not vary: nothing on a smartphone, a flat Rs 250 on a basic phone.',
+    'The four value-banded charges for both tax years. Brackets use the phone’s published C&F value or the higher value on your assessment. Customs duty has no column because it is flat by device type; additional customs duty turns on route and device type rather than value, as explained above.',
   bandColumn: 'Phone value',
   regulatoryDutyColumn: 'Regulatory duty',
   salesTaxColumn: 'Sales tax',
   incomeTaxColumn: 'Income tax',
   handsetLevyColumn: 'Handset levy',
   incomeTaxNote:
-    'The income tax column applies only if you register with a CNIC. Carry the phone in yourself and you skip it — which is the whole reason the two ways of registering cost different amounts.',
+    'The income tax column applies only if you register with a CNIC. Carry the phone in yourself and you skip it — which is the whole reason the two ways of registering cost different amounts. The figures shown are for a smartphone; the law drops the first row to Rs 70 for a basic phone worth US$ 30 or less, and is identical everywhere above that.',
   salesTaxNote:
     'Sales tax is the only percentage in the table, so it is the only figure that changes with the exchange rate. Note it is charged on the full value, not just the part above the threshold.',
   gapNote:
-    'The brackets in the first column are the handset levy’s, printed exactly as the law writes them — gaps and all, so nothing covers a value of 100.50, 200.50, 350.50, 500.50 or 700.50. Land in one of those gaps and we charge the levy from the cheaper row below it. The other three charges have unbroken brackets of their own, so a value past the top of a row moves them to the row above.',
+    'The first column makes the handset levy’s exclusive lower and inclusive upper limits explicit. That exposes the drafting gaps: one row ends at 100 and the next starts above 101, so nothing covers a value above US$ 100 and up to US$ 101. The same one-dollar hole repeats at 200/201, 350/351, 500/501 and 700/701. Land in one and we use the cheaper levy row below it. The other three charges have unbroken brackets of their own.',
   yearHeadingPrefix: 'Tax year',
   currentYearLabel: 'In force now',
 } as const;
@@ -427,7 +458,7 @@ export const PTA_FAQ_ITEMS = [
     id: 'customs-duty-zero',
     question: 'Why is customs duty showing as zero?',
     answer:
-      'Because smartphones are genuinely exempt from it. The standard tariff does charge Rs 250 per phone, but a separate schedule overrides that and puts smartphones at 0% with no conditions attached — the entry directly below it does list conditions, which is how you can tell the blank is deliberate rather than an oversight. A basic call-and-text phone is not covered by that exemption and still pays the Rs 250.',
+      'Because smartphones are genuinely exempt from it. The standard tariff does charge Rs 250 per phone, but a separate schedule overrides that and puts smartphones at 0% with no conditions attached — the entry directly below it does list conditions, which is how you can tell the blank is deliberate rather than an oversight. A basic/other cellular phone that does not meet the tariff’s smartphone test is not covered by that exemption and still pays the Rs 250.',
   },
   {
     id: 'filer',
@@ -439,7 +470,7 @@ export const PTA_FAQ_ITEMS = [
     id: 'instalments',
     question: 'Can I pay in instalments?',
     answer:
-      'Yes, in principle — this became allowed in the Finance Act 2026. You can spread the payment out as long as all of it is paid before the tax year ends. The catch is that the detailed rules for how it works had not been published when this page was last checked, so there is no schedule anyone can show you yet. Ask at the bank or on the portal when you apply.',
+      'Possibly, but not yet reliably. The Finance Act 2026 added a provision saying someone registering a phone "may be allowed to pay tax in instalments as may be prescribed", with everything paid before the tax year ends. Those two phrases matter: it is permission for FBR to allow it, on rules FBR has to write, and those rules had not been published when this page was last checked. So there is no schedule anyone can show you and no guarantee the counter will offer it. Ask on the portal when you apply, and budget for paying in one go.',
   },
   {
     id: 'check-status',
@@ -465,12 +496,12 @@ export const PTA_SOURCES_COPY = {
   eyebrow: 'Straight from the source',
   title: 'Official sources',
   description:
-    'Every figure on this page comes from one of these documents — no blogs, no other calculators. Two different bodies show up: PTA runs the registration itself, FBR sets and collects the money.',
+    'These government sources set the tax rules and published values, with one official brand-level technology cross-check. The model filter also uses separate platform research; your Customs assessment remains controlling. The exchange-rate field is an editable starting assumption, not an official live rate.',
 } as const;
 
 export const PTA_REVIEW_COPY = {
-  reviewedLabel: 'Last reviewed 4 August 2026',
-  reviewedDateTime: '2026-08-04',
+  reviewedLabel: 'Last reviewed 5 August 2026',
+  reviewedDateTime: '2026-08-05',
 } as const;
 
 const PTA_DOC_URLS = {
@@ -481,10 +512,18 @@ const PTA_DOC_URLS = {
   customsTariff: 'https://download1.fbr.gov.pk/Docs/20258111683941732Tariff-2025-26.pdf',
   fifthSchedule: 'https://download1.fbr.gov.pk/Docs/202585238495687Fifth-Schedule.pdf',
   sroRegulatoryDuty: 'https://download1.fbr.gov.pk/SROs/202663017637155381064-2026.pdf',
+  sroRegulatoryDuty2025: 'https://download1.fbr.gov.pk/SROs/202572975650649SRO.1152of2025.pdf',
   sroAdditionalCustomsDuty: 'https://download1.fbr.gov.pk/SROs/20266301763307131063-2026.pdf',
+  sroAdditionalCustomsDuty2025:
+    'https://download1.fbr.gov.pk/SROs/202572975414701SRO1151OF2025.pdf',
+  financeAct2022: 'https://download1.fbr.gov.pk/Docs/2022711571639532FinanceAct2022.pdf',
+  edbMobilePhoneTechnologyList:
+    'https://engineeringpakistan.com/wp-content/uploads/2023/01/Mobile-phone.pdf',
   cgo2024: 'https://download1.fbr.gov.pk/Docs/20243221135610629CGO-01-2024.pdf',
   valuationRuling1834:
     'https://download1.fbr.gov.pk/VALUATIONS/2023121214121119988ValuationRuling1834-2023.pdf',
+  mobilePhoneValuation2021:
+    'https://download1.fbr.gov.pk/VALUATIONS/20211116121119450valuationMobilePhoneDevices.pdf',
   valuationRuling1999: 'https://download1.fbr.gov.pk/VALUATIONS/20254251041448873VR1999.pdf',
   valuationRuling2070:
     'https://download1.fbr.gov.pk/VALUATIONS/20264221242011915UsedMobilePhone.pdf',
@@ -492,11 +531,14 @@ const PTA_DOC_URLS = {
 } as const;
 
 /**
- * Every government document a figure on this page comes from. PTA and FBR are
- * different authorities, so the PTA cards carry their own mark rather than the
- * FBR wordmark. Third-party summaries are deliberately absent: the whole first
- * page of search results for this topic is aggregators, and they are wrong
- * about who levies the tax.
+ * Government documents behind the tax rates, published customs values and
+ * registration procedure. PTA and FBR are different authorities, so the PTA
+ * cards carry their own mark rather than the FBR wordmark. Third-party
+ * summaries are deliberately absent.
+ *
+ * Both tax years are cited, not just the current one. In particular the two
+ * 2025 notifications are separate sources rather than footnotes to their 2026
+ * replacements.
  */
 export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
   {
@@ -505,7 +547,7 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
     description:
       'The registration system itself — where a phone is registered, and blocked if it is not.',
     href: PTA_DOC_URLS.dirbs,
-    icon: Smartphone,
+    logo: DIRBS_LOGO,
   },
   {
     id: 'pta-dirbs-faqs',
@@ -513,7 +555,7 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
     description:
       'Says in PTA’s own words that registering early earns no discount, and that FBR sets the charges.',
     href: PTA_DOC_URLS.dirbsFaqs,
-    icon: Globe,
+    logo: DIRBS_LOGO,
   },
   {
     id: 'fifth-schedule',
@@ -526,7 +568,7 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
     id: 'customs-tariff',
     title: 'Pakistan Customs Tariff 2025-26',
     description:
-      'The standard Rs 250 per phone, which still applies to a basic call-and-text handset.',
+      'Separates smartphones from other cellular phones and sets the standard Rs 250 per phone.',
     href: PTA_DOC_URLS.customsTariff,
     logo: FBR_LOGO,
   },
@@ -539,11 +581,26 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
     logo: FBR_LOGO,
   },
   {
+    id: 'sro-1152-2025',
+    title: 'SRO 1152(I)/2025',
+    description: 'The regulatory duty amounts the calculator uses for the 2025-26 tax year.',
+    href: PTA_DOC_URLS.sroRegulatoryDuty2025,
+    logo: FBR_LOGO,
+  },
+  {
     id: 'sro-1063-2026',
     title: 'SRO 1063(I)/2026',
     description:
-      'The additional customs duty, and the exemptions that leave phones paying nothing under it.',
+      'The current additional-customs-duty rules, including the baggage and Fifth Schedule exemptions.',
     href: PTA_DOC_URLS.sroAdditionalCustomsDuty,
+    logo: FBR_LOGO,
+  },
+  {
+    id: 'sro-1151-2025',
+    title: 'SRO 1151(I)/2025',
+    description:
+      'The 2025-26 additional-customs-duty rules, including the baggage and Fifth Schedule exemptions.',
+    href: PTA_DOC_URLS.sroAdditionalCustomsDuty2025,
     logo: FBR_LOGO,
   },
   {
@@ -562,6 +619,13 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
     logo: NATIONAL_ASSEMBLY_LOGO,
   },
   {
+    id: 'finance-act-2022',
+    title: 'Finance Act 2022',
+    description: 'Rewrote the mobile handset levy into the seven brackets still in force.',
+    href: PTA_DOC_URLS.financeAct2022,
+    logo: FBR_LOGO,
+  },
+  {
     id: 'finance-act-2026',
     title: 'Finance Act 2026',
     description:
@@ -573,7 +637,7 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
     id: 'income-tax-ordinance',
     title: 'Income Tax Ordinance 2001',
     description:
-      'The advance income tax amounts, and the rule that lets a phone in your luggage skip them.',
+      'The section 148 mobile-phone table, its amendment history, and the baggage-route exemption.',
     href: FBR_DOC_URLS.incomeTaxOrdinance2026,
     logo: FBR_LOGO,
   },
@@ -588,9 +652,26 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
   {
     id: 'valuation-ruling-1834',
     title: 'Valuation Ruling 1834/2023',
-    description: 'The official value list for new phones — 1,160 models across every brand.',
+    description:
+      'The official new-phone value list, 1,160 numbered entries — superseded for Apple by the ruling below.',
     href: PTA_DOC_URLS.valuationRuling1834,
     logo: FBR_LOGO,
+  },
+  {
+    id: 'mobile-phone-valuation-2021',
+    title: 'Superseded Customs Valuation Advice (2021)',
+    description:
+      'Used only to map the ambiguous itel-14 Max label to part number W4003; not used for its old values.',
+    href: PTA_DOC_URLS.mobilePhoneValuation2021,
+    logo: FBR_LOGO,
+  },
+  {
+    id: 'edb-mobile-phone-technology-list',
+    title: 'EDB Mobile-Manufacturer List',
+    description:
+      'Records X Tell and Sea Shark as 2G brands; it does not classify their individual models.',
+    href: PTA_DOC_URLS.edbMobilePhoneTechnologyList,
+    logo: ENGINEERING_DEVELOPMENT_BOARD_LOGO,
   },
   {
     id: 'valuation-ruling-1999',
@@ -617,7 +698,7 @@ export const PTA_OFFICIAL_SOURCES: readonly OfficialSource[] = [
   {
     id: 'iris',
     title: 'FBR IRIS Portal',
-    description: 'Where your payment slip is created and the payment is made.',
+    description: 'FBR’s e-payment portal, where you can pay the slip issued through DIRBS.',
     href: FBR_DOC_URLS.iris,
     logo: IRIS_LOGO,
   },

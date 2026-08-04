@@ -1,3 +1,7 @@
+import {
+  assertPtaPhoneClassificationCoverage,
+  classifyPtaPhone,
+} from '@/features/pta-tax/lib/phoneClassification';
 import type { PtaPhone } from '@/features/pta-tax/types';
 
 /**
@@ -1262,12 +1266,19 @@ const USED_PHONE_CATALOGUE: Record<string, readonly CatalogueRow[]> = {
 
 function toPhones(source: Record<string, readonly CatalogueRow[]>): PtaPhone[] {
   return Object.entries(source).flatMap(([brand, rows]) =>
-    rows.map(([model, variant, cnfUsd]) => ({ brand, model, variant, cnfUsd })),
+    rows.map(([model, variant, cnfUsd]) => ({
+      brand,
+      deviceKind: classifyPtaPhone(brand, model),
+      model,
+      variant,
+      cnfUsd,
+    })),
   );
 }
 
 /** Every officially valued new handset, in the order the pickers show them. */
 export const PTA_NEW_PHONES: readonly PtaPhone[] = toPhones(NEW_PHONE_CATALOGUE);
+assertPtaPhoneClassificationCoverage(PTA_NEW_PHONES);
 
 /** Every old/used handset VR 2070/2026 values, for the commercial-import note. */
 export const PTA_USED_PHONES: readonly PtaPhone[] = toPhones(USED_PHONE_CATALOGUE);

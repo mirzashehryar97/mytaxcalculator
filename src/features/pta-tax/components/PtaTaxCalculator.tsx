@@ -43,7 +43,11 @@ export default function PtaTaxCalculator() {
       }
     >
       {isValid ? (
-        <PtaTaxBreakdown isDeclaredValueUsed={isDeclaredValueUsed} result={result} />
+        <PtaTaxBreakdown
+          fiscalYear={formState.fiscalYear}
+          isDeclaredValueUsed={isDeclaredValueUsed}
+          result={result}
+        />
       ) : null}
     </CalculatorLayout>
   );

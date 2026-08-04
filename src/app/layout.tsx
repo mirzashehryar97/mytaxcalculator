@@ -9,22 +9,13 @@ import './globals.css';
 import JsonLd from '@/components/JsonLd';
 import AppShell from '@/components/layout/AppShell';
 
-import {
-  OG_IMAGE,
-  organizationLd,
-  routeMeta,
-  SITE_KEYWORDS,
-  SITE_NAME,
-  SITE_URL,
-  websiteLd,
-} from '@/lib/seo';
+import { OG_IMAGE, organizationLd, routeMeta, SITE_NAME, SITE_URL, websiteLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: routeMeta['/'].title,
   description: routeMeta['/'].description,
   applicationName: SITE_NAME,
-  keywords: SITE_KEYWORDS,
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
   publisher: SITE_NAME,

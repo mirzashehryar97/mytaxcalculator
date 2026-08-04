@@ -6,20 +6,22 @@ import {
   PTA_PHONE_BRANDS,
   PTA_USED_PHONES,
 } from '@/features/pta-tax/lib/phoneCatalogue';
-import type { PtaPhone } from '@/features/pta-tax/types';
+import type { PtaDeviceKind, PtaPhone } from '@/features/pta-tax/types';
 
-export const PTA_BRAND_OPTIONS: readonly SelectOption<string>[] = PTA_PHONE_BRANDS.map((brand) => ({
-  value: brand,
-  label: brand,
-}));
+/** Brands that contain at least one model of the selected customs class. */
+export function getBrandOptions(deviceKind: PtaDeviceKind): SelectOption<string>[] {
+  return PTA_PHONE_BRANDS.filter((brand) =>
+    PTA_NEW_PHONES.some((phone) => phone.brand === brand && phone.deviceKind === deviceKind),
+  ).map((brand) => ({ value: brand, label: brand }));
+}
 
 /** Distinct model families a brand has, in the order the ruling lists them. */
-export function getModelOptions(brand: string): SelectOption<string>[] {
+export function getModelOptions(deviceKind: PtaDeviceKind, brand: string): SelectOption<string>[] {
   const seen = new Set<string>();
   const options: SelectOption<string>[] = [];
 
   for (const phone of PTA_NEW_PHONES) {
-    if (phone.brand === brand && !seen.has(phone.model)) {
+    if (phone.deviceKind === deviceKind && phone.brand === brand && !seen.has(phone.model)) {
       seen.add(phone.model);
       options.push({ value: phone.model, label: phone.model });
     }
@@ -40,8 +42,14 @@ export function getModelOptions(brand: string): SelectOption<string>[] {
  * configured price, so it stays in the list under `variantUnstatedLabel` — in
  * ruling order, which puts it first and makes it the default.
  */
-export function getVariantOptions(brand: string, model: string): SelectOption<string>[] {
-  const rows = PTA_NEW_PHONES.filter((phone) => phone.brand === brand && phone.model === model);
+export function getVariantOptions(
+  deviceKind: PtaDeviceKind,
+  brand: string,
+  model: string,
+): SelectOption<string>[] {
+  const rows = PTA_NEW_PHONES.filter(
+    (phone) => phone.deviceKind === deviceKind && phone.brand === brand && phone.model === model,
+  );
 
   if (rows.every((phone) => phone.variant === '')) {
     return [];
@@ -53,10 +61,19 @@ export function getVariantOptions(brand: string, model: string): SelectOption<st
   }));
 }
 
-export function findPhone(brand: string, model: string, variant: string): PtaPhone | null {
+export function findPhone(
+  deviceKind: PtaDeviceKind,
+  brand: string,
+  model: string,
+  variant: string,
+): PtaPhone | null {
   return (
     PTA_NEW_PHONES.find(
-      (phone) => phone.brand === brand && phone.model === model && phone.variant === variant,
+      (phone) =>
+        phone.deviceKind === deviceKind &&
+        phone.brand === brand &&
+        phone.model === model &&
+        phone.variant === variant,
     ) ?? null
   );
 }
@@ -66,12 +83,18 @@ export function findPhone(brand: string, model: string, variant: string): PtaPho
  * name alone because that ruling prices no storage tiers. Shown only as
  * context: its scope is commercial-quantity imports, not one traveller's phone.
  */
-export function findUsedPhone(brand: string, model: string): PtaPhone | null {
+export function findUsedPhone(
+  deviceKind: PtaDeviceKind,
+  brand: string,
+  model: string,
+): PtaPhone | null {
   const wanted = normaliseForMatch(`${brand} ${model}`);
 
   return (
     PTA_USED_PHONES.find(
-      (phone) => normaliseForMatch(`${phone.brand} ${phone.model}`) === wanted,
+      (phone) =>
+        phone.deviceKind === deviceKind &&
+        normaliseForMatch(`${phone.brand} ${phone.model}`) === wanted,
     ) ?? null
   );
 }
@@ -107,12 +130,20 @@ function normaliseForMatch(value: string): string {
     .replace(TRAILING_5G, '');
 }
 
+/** First compatible brand, preserving the current brand when both classes contain it. */
+export function getFirstBrand(deviceKind: PtaDeviceKind, preferredBrand = ''): string {
+  const options = getBrandOptions(deviceKind);
+  return options.some((option) => option.value === preferredBrand)
+    ? preferredBrand
+    : (options[0]?.value ?? '');
+}
+
 /** First model of a brand, so changing brand never leaves a stale selection. */
-export function getFirstModel(brand: string): string {
-  return getModelOptions(brand)[0]?.value ?? '';
+export function getFirstModel(deviceKind: PtaDeviceKind, brand: string): string {
+  return getModelOptions(deviceKind, brand)[0]?.value ?? '';
 }
 
 /** First storage tier of a model, or `''` when the model has no tiers. */
-export function getFirstVariant(brand: string, model: string): string {
-  return getVariantOptions(brand, model)[0]?.value ?? '';
+export function getFirstVariant(deviceKind: PtaDeviceKind, brand: string, model: string): string {
+  return getVariantOptions(deviceKind, brand, model)[0]?.value ?? '';
 }

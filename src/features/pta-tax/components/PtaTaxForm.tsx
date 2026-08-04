@@ -18,7 +18,11 @@ import {
   PTA_VALUE_SOURCE_OPTIONS,
 } from '@/features/pta-tax/lib/content';
 import type { PtaFormState, UpdatePtaField } from '@/features/pta-tax/lib/input';
-import { getRouteHelp } from '@/features/pta-tax/lib/presentation';
+import {
+  getDeviceKindHelp,
+  getExchangeRateHelp,
+  getRouteHelp,
+} from '@/features/pta-tax/lib/presentation';
 import { PTA_FISCAL_YEARS, resolvePtaFiscalYear } from '@/features/pta-tax/lib/rates';
 import type { PtaPhone } from '@/features/pta-tax/types';
 
@@ -61,6 +65,7 @@ export default function PtaTaxForm({
           prefix="Rs."
           suffix="per US$"
           placeholder={PTA_FORM_COPY.exchangeRatePlaceholder}
+          helpText={getExchangeRateHelp()}
           labelAdornment={
             <InfoTooltip label={PTA_TERMS.exchangeRate.label} text={PTA_TERMS.exchangeRate.text} />
           }
@@ -87,6 +92,7 @@ export default function PtaTaxForm({
           options={PTA_DEVICE_KIND_OPTIONS}
           value={formState.deviceKind}
           onChange={(value) => updateField('deviceKind', value)}
+          helpText={getDeviceKindHelp()}
         />
 
         <SegmentedControl

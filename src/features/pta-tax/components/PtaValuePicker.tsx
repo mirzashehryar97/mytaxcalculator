@@ -7,8 +7,12 @@ import InfoTooltip from '@/components/ui/InfoTooltip';
 
 import { PTA_FORM_COPY, PTA_TERMS } from '@/features/pta-tax/lib/content';
 import { formatUsd } from '@/features/pta-tax/lib/formatting';
-import type { PtaFormState, UpdatePtaField } from '@/features/pta-tax/lib/input';
-import { getModelOptions, PTA_BRAND_OPTIONS } from '@/features/pta-tax/lib/phoneLookup';
+import {
+  type PtaFormState,
+  type UpdatePtaField,
+  usesManualPtaValue,
+} from '@/features/pta-tax/lib/input';
+import { getBrandOptions, getModelOptions } from '@/features/pta-tax/lib/phoneLookup';
 
 interface PtaValuePickerProps {
   formState: PtaFormState;
@@ -20,10 +24,9 @@ interface PtaValuePickerProps {
 }
 
 /**
- * Brand → model → storage, then the value those three resolve to. The storage
- * field is absent rather than disabled when a model has only one listed
- * configuration, because a dropdown holding a single choice asks a question
- * the ruling never posed.
+ * Device-class-filtered brand → model → storage, then the value those resolve
+ * to. Storage is absent when the ruling states no configuration; a single
+ * stated configuration remains visible because it identifies the priced row.
  */
 export default function PtaValuePicker({
   formState,
@@ -31,7 +34,7 @@ export default function PtaValuePicker({
   officialCnfUsd,
   updateField,
 }: PtaValuePickerProps) {
-  if (formState.valueSource === 'manual') {
+  if (usesManualPtaValue(formState)) {
     return (
       <NumberInput
         id="pta-manual-cnf"
@@ -55,7 +58,7 @@ export default function PtaValuePicker({
           id="pta-brand"
           label={PTA_FORM_COPY.brandLabel}
           onChange={(value) => updateField('brand', value)}
-          options={PTA_BRAND_OPTIONS}
+          options={getBrandOptions(formState.deviceKind)}
           value={formState.brand}
         />
 
@@ -63,7 +66,7 @@ export default function PtaValuePicker({
           id="pta-model"
           label={PTA_FORM_COPY.modelLabel}
           onChange={(value) => updateField('model', value)}
-          options={getModelOptions(formState.brand)}
+          options={getModelOptions(formState.deviceKind, formState.brand)}
           searchPlaceholder={PTA_FORM_COPY.modelSearchPlaceholder}
           searchable={true}
           value={formState.model}

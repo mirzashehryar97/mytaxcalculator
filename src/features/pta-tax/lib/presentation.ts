@@ -1,4 +1,5 @@
 import { calcPtaTax, findAmountBand, findSalesTaxBand } from '@/features/pta-tax/lib/calculation';
+import { PTA_RESULT_COPY } from '@/features/pta-tax/lib/content';
 import {
   formatPhoneName,
   formatPkr,
@@ -17,6 +18,7 @@ import type {
   PtaPopularPhoneRow,
   PtaRateGuideRow,
   PtaRoute,
+  PtaTaxLine,
 } from '@/features/pta-tax/types';
 
 /** What each route means, shown under the segmented control that picks it. */
@@ -24,6 +26,16 @@ export function getRouteHelp(route: PtaRoute): string {
   return route === 'passport'
     ? 'A traveller registering a handset from their own accompanied baggage, within 60 days of arriving.'
     : 'A local applicant, or a traveller past the 60 days. Section 148 applies and a fine is added.';
+}
+
+/** Identifies the opening figure as a default and directs the visitor to their assessment. */
+export function getExchangeRateHelp(): string {
+  return `Default: Rs ${PTA_DEFAULT_EXCHANGE_RATE}/US$. Use the rate on your assessment.`;
+}
+
+/** Explains that model filtering follows the customs test, not the handset shape. */
+export function getDeviceKindHelp(): string {
+  return 'The lists use researched tariff-capability tags, not keypad shape. Some KaiOS, Sea Shark and X Tell assignments are not settled model-specific Customs classifications, so use the class on your assessment if it differs.';
 }
 
 /** Label for the other route in the side-by-side comparison. */
@@ -35,18 +47,57 @@ export function getRouteLabel(route: PtaRoute): string {
   return route === 'passport' ? 'Passport' : 'CNIC';
 }
 
+export function getRouteTotalCaption(route: PtaRoute, hasUnknownCharge = false): string {
+  if (route === 'passport') {
+    return PTA_RESULT_COPY.passportCaption;
+  }
+  return hasUnknownCharge ? PTA_RESULT_COPY.cnicUnknownCaption : PTA_RESULT_COPY.cnicCaption;
+}
+
 /**
  * A CNIC total omits a fine that FBR sets by assessment procedure and publishes
- * nowhere, so it is never a final figure — the suffix says so wherever the
- * amount appears.
+ * nowhere. A basic-phone CNIC result can also omit unquantified additional
+ * customs duty, so that case is explicitly labelled as a minimum.
  */
-export function formatRouteTotal(total: number, route: PtaRoute): string {
-  return route === 'cnic' ? `${formatPkr(total)} + fine` : formatPkr(total);
+export function formatRouteTotal(total: number, route: PtaRoute, hasUnknownCharge = false): string {
+  if (route !== 'cnic') {
+    return formatPkr(total);
+  }
+  return hasUnknownCharge ? `${formatPkr(total)} minimum + fine` : `${formatPkr(total)} + fine`;
 }
 
 /** Whether the route shown carries the unpublished fine. */
 export function hasUnpublishedFine(route: PtaRoute): boolean {
   return route === 'cnic';
+}
+
+export interface PtaTaxLineDisplay {
+  value: string;
+  tone: 'negative' | 'positive' | 'warning';
+  textClassName: string;
+}
+
+/** Keep an unquantified charge visually and verbally distinct from an exemption. */
+export function getPtaTaxLineDisplay(line: PtaTaxLine): PtaTaxLineDisplay {
+  if (line.status === 'unknown') {
+    return {
+      value: PTA_RESULT_COPY.unknownCharge,
+      tone: 'warning',
+      textClassName: 'text-amber-600',
+    };
+  }
+  if (line.status === 'exempt') {
+    return {
+      value: PTA_RESULT_COPY.nothingToPay,
+      tone: 'positive',
+      textClassName: 'text-emerald-600',
+    };
+  }
+  return {
+    value: formatPkr(line.amountPkr),
+    tone: 'negative',
+    textClassName: 'text-red-600',
+  };
 }
 
 /**
@@ -58,6 +109,10 @@ export function hasUnpublishedFine(route: PtaRoute): boolean {
  * levy separates US$ 501–700 from above 700 where regulatory duty and section
  * 148 both stop at 500. Looking the coarser tables up at the top of each levy
  * band therefore reproduces them exactly rather than merging them away.
+ *
+ * The section 148 column is the smartphone table. The only row where the two
+ * differ is the lowest, where a basic phone pays Rs 70 against a smartphone's
+ * Rs 100, and `incomeTaxNote` says so under the table.
  */
 export function buildPtaRateGuideRows(fiscalYear: PtaFiscalYear): PtaRateGuideRow[] {
   const rates = getPtaRates(fiscalYear);
@@ -65,7 +120,7 @@ export function buildPtaRateGuideRows(fiscalYear: PtaFiscalYear): PtaRateGuideRo
   return rates.handsetLevy.map((levyBand) => {
     const probeUsd = levyBand.maxUsd ?? levyBand.minUsd;
     const regulatoryDuty = findAmountBand(rates.regulatoryDuty, probeUsd)?.band;
-    const incomeTax148 = findAmountBand(rates.incomeTax148, probeUsd)?.band;
+    const incomeTax148 = findAmountBand(rates.incomeTax148.smartphone, probeUsd)?.band;
     const salesTax = findSalesTaxBand(rates.salesTax, probeUsd);
 
     return {
@@ -96,7 +151,7 @@ export function buildPopularPhoneRows(phones: readonly PtaPopularPhoneRef[]): Pt
   const rows: PtaPopularPhoneRow[] = [];
 
   for (const ref of phones) {
-    const phone = findPhone(ref.brand, ref.model, ref.variant);
+    const phone = findPhone('smartphone', ref.brand, ref.model, ref.variant);
     if (!phone) {
       continue;
     }
@@ -122,7 +177,7 @@ export function buildPopularPhoneRows(phones: readonly PtaPopularPhoneRef[]): Pt
   return rows;
 }
 
-export function getRouteFacts(route: PtaRoute): readonly string[] {
+export function getRouteFacts(route: PtaRoute, hasUnknownCharge = false): readonly string[] {
   return route === 'passport'
     ? [
         'Handset in your own accompanied baggage',
@@ -133,6 +188,7 @@ export function getRouteFacts(route: PtaRoute): readonly string[] {
     : [
         'Local applicant, or past the 60 days',
         'Income tax under section 148 is payable',
+        ...(hasUnknownCharge ? ['Basic-phone additional customs duty is not included'] : []),
         'A prescribed fine applies',
         'The fine amount is not published by FBR',
       ];

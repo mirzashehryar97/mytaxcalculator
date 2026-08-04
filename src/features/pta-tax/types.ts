@@ -16,13 +16,31 @@ export type PtaCondition = 'new' | 'used';
 /** Where the C&F value comes from: an official ruling, or typed in by hand. */
 export type PtaValueSource = 'model' | 'manual';
 
-/** One row of a table that charges a flat rupee amount per set inside a band. */
+/**
+ * One row of a table that charges a flat rupee amount per set inside a band.
+ *
+ * `minUsd` is **exclusive** and `maxUsd` inclusive, because that is how every
+ * one of these tables is drafted — "Up to 30", then "Above 30 and up to 100".
+ * Writing the lower bound as the figure the document prints keeps the data
+ * readable against the source; `findAmountBand` applies the exclusivity.
+ */
 export interface PtaAmountBand {
-  /** Lowest C&F value the band covers, in US dollars, as the document prints it. */
+  /** The figure the band is stated to start above, in US dollars, as printed. */
   minUsd: number;
   /** Highest C&F value the band covers; `null` for the open top band. */
   maxUsd: number | null;
   amountPkr: number;
+}
+
+/**
+ * The §148 table twice, because serial 1 reads "Up to 30 **except smart
+ * phones**" and serial 2 reads "Above 30 – 100, **and smart phones up to 100**".
+ * A smartphone under US$ 30 therefore pays serial 2's Rs 100, not serial 1's
+ * Rs 70 — the only place on this page where device type moves income tax.
+ */
+export interface PtaIncomeTax148Bands {
+  smartphone: readonly PtaAmountBand[];
+  featurePhone: readonly PtaAmountBand[];
 }
 
 /** One row of the Ninth Schedule sales-tax table, which charges a percentage. */
@@ -38,13 +56,19 @@ export interface PtaYearRates {
   /** Ninth Schedule, Table-II — the only ad valorem component. */
   salesTax: readonly PtaSalesTaxBand[];
   /** First Schedule Part II, second proviso. CBU column. CNIC route only. */
-  incomeTax148: readonly PtaAmountBand[];
+  incomeTax148: PtaIncomeTax148Bands;
   /** Section 10 of the Finance Act 2018, as amended. */
   handsetLevy: readonly PtaAmountBand[];
   /** Customs duty per set on an ordinary cellular phone (a smartphone pays nil). */
   featurePhoneCustomsDutyPkr: number;
   /** Documents the year's figures were read from, for the on-page rate guide. */
-  sources: { regulatoryDuty: string; incomeTax148: string; handsetLevy: string };
+  sources: {
+    regulatoryDuty: string;
+    /** The ACD notification in force that year — the one the nil is cited to. */
+    additionalCustomsDuty: string;
+    incomeTax148: string;
+    handsetLevy: string;
+  };
 }
 
 export interface PtaInputs {
@@ -56,13 +80,16 @@ export interface PtaInputs {
   exchangeRate: number;
 }
 
+/** Whether a result line is payable, legally nil, or cannot yet be quantified. */
+export type PtaTaxLineStatus = 'charged' | 'exempt' | 'unknown';
+
 /** One line of the assessment, in the order the PSID prints them. */
 export interface PtaTaxLine {
   id: string;
   label: string;
   amountPkr: number;
-  /** Set where the line is nil for a reason worth naming rather than merely zero. */
-  exemptReason?: string;
+  /** Keeps an unresolved amount distinct from a genuine statutory exemption. */
+  status: PtaTaxLineStatus;
   /**
    * Plain-English account of where the amount came from, shown under the label.
    * Leads with what happened to the reader's money, not with the provision.
@@ -81,8 +108,12 @@ export interface PtaTaxResult {
   customsValuePkr: number;
   lines: readonly PtaTaxLine[];
   totalPkr: number;
+  /** True when `totalPkr` is only the sum of known lines and is therefore a floor. */
+  hasUnknownCharge: boolean;
   /** The same computation on the other route, for the side-by-side comparison. */
   otherRouteTotalPkr: number;
+  /** Whether the comparison route also omits an unquantified charge. */
+  otherRouteHasUnknownCharge: boolean;
   /** True where a band gap in the levy table had to be resolved downward. */
   usedLevyGapFallback: boolean;
   salesTaxPercent: number;
@@ -119,6 +150,8 @@ export interface PtaPopularPhoneRow {
 /** A phone the valuation rulings put an official C&F value on. */
 export interface PtaPhone {
   brand: string;
+  /** Customs class used to filter the picker and apply device-specific charges. */
+  deviceKind: PtaDeviceKind;
   /** Model family, with the storage split out into `variant`. */
   model: string;
   /** Storage/RAM tier, or `''` where the ruling lists the model only once. */

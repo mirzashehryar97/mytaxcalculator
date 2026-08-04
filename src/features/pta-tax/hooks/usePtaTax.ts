@@ -15,6 +15,7 @@ import {
 } from '@/features/pta-tax/lib/input';
 import {
   findUsedPhone,
+  getFirstBrand,
   getFirstModel,
   getFirstVariant,
   getVariantOptions,
@@ -30,23 +31,36 @@ export default function usePtaTax() {
   );
 
   const variantOptions = useMemo(
-    () => getVariantOptions(formState.brand, formState.model),
-    [formState.brand, formState.model],
+    () => getVariantOptions(formState.deviceKind, formState.brand, formState.model),
+    [formState.deviceKind, formState.brand, formState.model],
   );
 
   /**
    * The same handset in the old-and-used ruling, where it appears there. Shown
    * as context under the used-phone note, never fed into the calculation.
+   *
+   * Only in model mode: `brand` and `model` keep their defaults while a value is
+   * being typed in by hand, so without the check a visitor who never touched the
+   * picker is shown a bulk-import figure for a phone they did not name.
    */
   const usedPhone = useMemo(
-    () => (formState.condition === 'used' ? findUsedPhone(formState.brand, formState.model) : null),
-    [formState.condition, formState.brand, formState.model],
+    () =>
+      formState.condition === 'used' && formState.valueSource === 'model'
+        ? findUsedPhone(formState.deviceKind, formState.brand, formState.model)
+        : null,
+    [
+      formState.condition,
+      formState.valueSource,
+      formState.deviceKind,
+      formState.brand,
+      formState.model,
+    ],
   );
 
   /**
-   * Changing brand or model invalidates the choices below it, so those are
-   * reset in the same update — otherwise a Samsung storage tier survives a
-   * switch to Nokia and the lookup silently finds nothing.
+   * Changing device class, brand or model invalidates the choices below it, so
+   * those are reset in the same update. A brand is preserved across classes
+   * only when the filtered catalogue contains it in both.
    */
   const updateField = useCallback(
     <TField extends PtaFormField>(field: TField, value: PtaFormState[TField]) => {
@@ -54,12 +68,18 @@ export default function usePtaTax() {
         const next = { ...current, [field]: value };
 
         if (field === 'brand') {
-          next.model = getFirstModel(next.brand);
-          next.variant = getFirstVariant(next.brand, next.model);
+          next.model = getFirstModel(next.deviceKind, next.brand);
+          next.variant = getFirstVariant(next.deviceKind, next.brand, next.model);
           next.declaredCnfUsd = '';
         }
         if (field === 'model') {
-          next.variant = getFirstVariant(next.brand, next.model);
+          next.variant = getFirstVariant(next.deviceKind, next.brand, next.model);
+          next.declaredCnfUsd = '';
+        }
+        if (field === 'deviceKind') {
+          next.brand = getFirstBrand(next.deviceKind, next.brand);
+          next.model = getFirstModel(next.deviceKind, next.brand);
+          next.variant = getFirstVariant(next.deviceKind, next.brand, next.model);
           next.declaredCnfUsd = '';
         }
 

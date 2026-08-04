@@ -1,8 +1,8 @@
-import { Coins, Receipt, ShieldCheck, Smartphone } from 'lucide-react';
+import { Coins, FileText, Landmark, Receipt, ShieldCheck, Smartphone } from 'lucide-react';
 
 import { PTA_COMPONENT_CARDS } from '@/features/pta-tax/lib/content';
 
-const CARD_ICONS = [Smartphone, ShieldCheck, Receipt, Coins] as const;
+const CARD_ICONS = [Smartphone, ShieldCheck, Landmark, Receipt, FileText, Coins] as const;
 
 /** What the single PSID figure is actually made of, one card per levy. */
 export default function PtaComponentCards() {
@@ -11,7 +11,7 @@ export default function PtaComponentCards() {
       <h2 className="sr-only" id="pta-components">
         What makes up your estimate
       </h2>
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {PTA_COMPONENT_CARDS.map((card, index) => {
           const Icon = CARD_ICONS[index % CARD_ICONS.length];
 

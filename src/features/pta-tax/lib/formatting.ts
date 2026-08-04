@@ -24,8 +24,8 @@ export function formatPhoneName(model: string, variant: string): string {
 
 /**
  * A band as a reader would say it out loud — "US$ 500 or less", "over US$ 700"
- * — for the sentences that explain a figure. `formatUsdBand` below keeps the
- * statute's own phrasing for the printed rate table and the citations.
+ * — for the sentences that explain a figure. Middle bands name both endpoint
+ * semantics so an exact threshold is never visually assigned to the wrong row.
  *
  * The lowest band is "or less" rather than "under", because its top figure is
  * inside it: a handset at exactly US$ 500 is taxed at 18%, so "under US$ 500"
@@ -38,12 +38,12 @@ export function formatPlainBand(band: PtaAmountBand | PtaSalesTaxBand): string {
   if (band.minUsd === 0) {
     return `US$ ${band.maxUsd} or less`;
   }
-  return `US$ ${band.minUsd}–${band.maxUsd}`;
+  return `over US$ ${band.minUsd} and up to US$ ${band.maxUsd}`;
 }
 
 /**
- * A band written the way the statute writes it, so the printed rate table and
- * the basis line under each result read identically.
+ * A band written with the statute's exclusive lower and inclusive upper bounds
+ * made explicit, so the printed rate table cannot misstate an exact boundary.
  */
 export function formatUsdBand(band: PtaAmountBand | PtaSalesTaxBand): string {
   if (band.maxUsd === null) {
@@ -52,5 +52,5 @@ export function formatUsdBand(band: PtaAmountBand | PtaSalesTaxBand): string {
   if (band.minUsd === 0) {
     return `up to US$ ${band.maxUsd}`;
   }
-  return `US$ ${band.minUsd} – ${band.maxUsd}`;
+  return `above US$ ${band.minUsd} and up to US$ ${band.maxUsd}`;
 }

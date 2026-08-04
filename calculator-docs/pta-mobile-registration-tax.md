@@ -5,15 +5,16 @@
 **Rates:** `lib/rates.ts` → `PTA_RATES`.
 **Per-model customs values:** `lib/phoneCatalogue.ts` → `PTA_NEW_PHONES`, `PTA_USED_PHONES`.
 
-**Status: built and shipped, 4 August 2026.** Sections 1 to 10 below are the research this was built
-from and remain the record of *why* each figure is what it is; **§11 describes the calculator as it
-actually ships** and is the section to read first if you are changing the code.
+**Status: built and shipped 4 August 2026; corrected and re-reviewed 5 August 2026.** Sections 1 to
+10 below are the research this was built from and remain the record of *why* each figure is what it
+is; **§11 describes the calculator as it actually ships** and is the section to read first if you
+are changing the code.
 
-**Researched and verified: 4 August 2026**, against the Finance Act 2026, the Income Tax Ordinance
+**Researched and verified through 5 August 2026**, against the Finance Act 2026, the Income Tax Ordinance
 amended to 30 June 2026, the Sales Tax Act amended to 2025-26, the Pakistan Customs Tariff 2025-26,
-the Fifth Schedule to the Customs Act 2025-26, SRO 1063(I)/2026, SRO 1064(I)/2026, CGO 01 of 2019 as
-amended by CGO 01 of 2024, PTA's DIRBS FAQ of 14 October 2025, and — in a second pass the same day —
-Valuation Rulings 1834/2023, 1999/2025 and 2070/2026 enumerated from FBR's own valuation database.
+the Fifth Schedule to the Customs Act 2025-26, SRO 1151(I)/2025, SRO 1063(I)/2026,
+SRO 1064(I)/2026, CGO 01 of 2019 as amended by CGO 01 of 2024, PTA's DIRBS FAQ of 14 October 2025,
+and Valuation Rulings 1834/2023, 1999/2025 and 2070/2026 enumerated from FBR's own valuation database.
 **The second pass overturned §5**: an official per-model C&F table does exist. Read §5 and §10 before
 trusting any earlier summary of this document.
 
@@ -104,8 +105,8 @@ insurance, no speculative instrument. Two traps to avoid when drafting copy:
   "…(v) two hundred cigarettes or fifty cigars or half kilogram of manufactured tobacco; … (viii) one
   mobile phone…". Only clause (viii) is relevant; quoting the surrounding list would drop tobacco
   into the page for no reason. Cite the mobile-phone clause alone.
-- **Icons.** This page wants `Smartphone`, `ShieldCheck`, `Receipt`, `Coins`. `CandlestickChart` and
-  `PiggyBank` remain banned site-wide.
+- **Icons.** This page uses `Smartphone`, `ShieldCheck`, `Landmark`, `Receipt`, `FileText` and `Coins`.
+  `CandlestickChart` and `PiggyBank` remain banned site-wide.
 
 ## 3. The two routes, and what actually separates them
 
@@ -217,11 +218,33 @@ SRO 1063(I)/2026 (30 June 2026, supersedes SRO 1151(I)/2025), para 3:
 > Table of Part-III;
 > (iv) import under the Baggage Rules, 2006;
 
+The superseded notification used for tax year 2025-26 says the same thing. SRO 1151(I)/2025,
+official FBR PDF p. 2 (the second and final page; no separate printed page number), paragraph 3:
+
+> The additional customs duty shall not be levied on the following, namely: -
+> (iii) import under the Fifth Schedule to the Customs Act, 1969 (IV of 1969),
+> excluding, -
+> (1) serial numbers 30, 33 and 35 of the Table of Part-I,
+> (2) serial numbers 102, 110, 111, 116(except xvi), 117 and 118 of the
+> Table of Part III;
+> (iv) import under the Baggage Rules, 2006;
+
 Serial 99 of Part-III is **not** in the exclusion list, so a smartphone imported under the Fifth
 Schedule escapes ACD; and the passport route escapes it a second time under (iv). ✅ Verified,
 `SRO1063-2026-ACD.pdf` p. 2. ACD is therefore **zero on both routes for a smartphone** and the
 calculator should not model it at all — but the doc records why, because "we forgot ACD" and "ACD is
 nil here" look identical in the output.
+
+⚠️ **The two exemptions are not the same width, and the page must not blur them.** Paragraph 3(iv)
+covers anything under the Baggage Rules, so the *passport* route is out whatever the handset is.
+Paragraph 3(iii) covers imports under the Fifth Schedule, and the Fifth Schedule entry is
+**smartphones** — a basic cellular phone is not in it. That leaves exactly one uncovered cell:
+**a basic phone on the CNIC route**, where §9's open question about which ACD rate attaches to a
+specific Rs 250/set duty actually bites. The calculation stores zero only as a non-additive
+placeholder, gives the line an explicit `unknown` status, renders **Not included** in amber and labels
+the headline total and comparison as a minimum. It must never be rendered as Rs 0 or **Exempt**. Do
+not simplify that back into "handsets are exempt" — that sentence was in the code until 5 August 2026
+and it was wrong for one real combination the form can produce.
 
 ### 4.3 Regulatory duty — the biggest line on a cheap phone
 
@@ -328,6 +351,18 @@ with the footnote that reprints the *superseded* version, and the superseded one
 over the same six bands with a single "Tax (in Rs.)" column — 70 / 100 / 930 / 970 / 3,000 / 5,200.
 It looks exactly like a current table and it is not one.
 
+⚠️ **Serials 1 and 2 are a device-type test, and the calculator has to model it.** Serial 1 is "Up to
+30 **except smart phones**" at Rs 70; serial 2 is "Above 30 – 100, **and smart phones up to 100**" at
+Rs 100. So the Rs 70 row reaches a *basic* phone only, and a smartphone worth US$ 30 or less pays
+Rs 100. There is no other place in this regime where §148 moves with device type — from US$ 100 up
+the table is common to both. The shipped code carries the table twice for that reason
+(`PtaIncomeTax148Bands`: `smartphone` collapses serials 1-2 into one 0-100 band at Rs 100,
+`featurePhone` keeps both rows), and the on-page rate guide prints the smartphone column with a
+footnote naming the Rs 70 row. **Corrected 5 August 2026** — the code previously charged Rs 70 to
+everything under US$ 30 regardless, understating a CNIC-route basic-value smartphone by Rs 30, and
+the comment above the table wrongly claimed the two lowest rows "share a rate for every phone this
+calculator prices". They do not: 70 ≠ 100.
+
 ⚠️ **The Ordinance still cites dead PCT codes.** It says 8517.1219 (CBU) and 8517.1211 (CKD/SKD);
 the Customs Tariff has used the HS-2022 codes 8517.13xx / 8517.14xx since FY 2022-23. Nobody has
 tidied this up. It does not change the rate — the bands are stated in dollars — but a reader
@@ -363,13 +398,28 @@ Finance Act 2022 **PDF p. 111**; Finance Act 2026 **PDF p. 76**. Greps of the Fi
 found no other amendment, so the FA2022 table stands except for serial 3.
 
 ⚠️ **The FA2022 bands have holes in them, and the statute has never been corrected.** Serial 2 ends
-at 100 and serial 3 starts *above 101*; serial 3 ends at 200 and serial 4 starts *above 201*. A C&F
-value of exactly US$ 100.50, 200.50, 350.50, 500.50 or 700.50 falls in **no band**. The RD and §148
-tables are contiguous ("above 100 and up to 200"), so this is the levy table's own drafting defect.
-Decide the fill rule deliberately and say so on the page — the safe reading is to treat each gap as
-belonging to the *lower* band, which is the reading that does not charge tax the statute never
+at 100 and serial 3 starts *above 101*; serial 3 ends at 200 and serial 4 starts *above 201*. The RD
+and §148 tables are contiguous ("above 100 and up to 200"), so this is the levy table's own drafting
+defect. Decide the fill rule deliberately and say so on the page — the safe reading is to treat each
+gap as belonging to the *lower* band, which is the reading that does not charge tax the statute never
 imposed. Also note serial 7 reads "Above 701 **and above**", which is a typo for "and above" as an
 open top band; treat it as everything over 700.
+
+⚠️ **The hole is an interval, not a decimal curiosity — and US$ 101 is inside it.** It is easy to
+write the defect up as "US$ 100.50 falls in no band" and stop there, which is how it was first
+recorded here and how the code was first written. But serial 2 ends *at* 100 and serial 3 begins
+*above* 101, so **everything above 100 and up to and including 101** is uncovered, and likewise
+(200, 201], (350, 351], (500, 501] and (700, 701]. The integer endpoint is not a hypothetical:
+**three handsets in the shipped catalogue are valued at exactly US$ 101** — Samsung Galaxy-A3 (2017),
+Xiaomi Redmi 5 3 GB, Infinix Hot 20I 6 GB + 128 GB. Under the fill rule they take serial 2's Rs 200,
+not serial 3's, which for 2025-26 is a **Rs 400 difference** on a real, pickable phone.
+
+This also fixes what every band bound in this regime means. All four tables are drafted with an
+**exclusive lower bound and an inclusive upper one** — "Up to 30", then "Above 30 and up to 100" — so
+a value sitting exactly on a printed threshold belongs to the *lower* band. On the contiguous tables
+either convention happens to give the same answer, because the lower band's ceiling is the same
+figure; on the levy table it is the whole difference between honouring the gap and papering over it.
+`findAmountBand` compares the lower bound with `>` for that reason, with `0` the one inclusive floor.
 
 ## 5. The input problem: C&F value is not the price
 
@@ -433,8 +483,10 @@ one.
    we have.
 
 The PKR/USD rate is a second moving part: the sales tax is a percentage of a dollar-denominated
-value, so the answer changes daily. Whatever the page does, it must show the rate it used and the
-date, and never cache a figure that looks authoritative a month later.
+value, so the answer changes with the assessment rate. The page must show the rate it used, identify
+Rs 280 only as an editable default and tell the visitor to use the assessment rate. At the user's
+direction it does **not** attach a date to that default; the important safeguard is that the copy
+never presents it as current or automatic.
 
 ## 6. Why this cannot reuse the shared calculator plumbing
 
@@ -471,8 +523,10 @@ FX rate stated.
   assessment procedure" and **no published schedule for it was found**. The CNIC figure is therefore a
   **floor**, and the page must label it one. Publishing a CNIC total that omits an unknown fine and
   calling it "the tax" would be the same class of error as the aggregators.
-- **A model lookup for phones no ruling covers.** A picker *is* defensible for the ~1,200 models in
-  VR 1834/2023, VR 1999/2025 and VR 2070/2026 — those are official §25A values and can be cited. It
+- **A model lookup for phones no ruling covers.** A new-phone picker is defensible for the **1,087
+  published value rows across 870 model families** assembled from VR 1834/2023 plus the Apple rows
+  superseded by VR 1999/2025. VR 2070/2026 is commercial-used context only and never prices the
+  selected phone. It
   is **not** defensible for a Galaxy S24/S25, an iPhone 17 or a Pixel 9/10 as a new phone, because no
   ruling values them (§5). Those must fall through to a "not officially valued" state that asks for
   the value, never to a guess. Note also that a ruling value is a **floor** — a higher declared value
@@ -540,7 +594,10 @@ the FY 2025-26 RD table, and offers no year selector at all.
 
 ## 8. Official sources for the page
 
-Per `CLAUDE.md`, only government sources, and every source the page actually uses. This regime is
+Per `CLAUDE.md`, only government sources, **every source the page actually uses, and every year the
+calculator computes**. The last clause was missed twice: the grid first shipped without SRO
+1152(I)/2025 or the Finance Act 2022, then cited SRO 1151(I)/2025 in the breakdown without giving it
+a card. A year the dropdown offers is a rate claim like any other. This regime is
 entirely federal, so `OFFICIAL_SOURCES_COPY` can be used unchanged — no provincial emblem problem
 like the token page has. But **PTA is not FBR**, and the grid must show both, with PTA's own mark on
 the PTA cards:
@@ -553,12 +610,17 @@ the PTA cards:
 | Finance Act 2026 | FBR | Ninth Schedule instalments; levy serial 3 cut to Rs 200; §148 serial 3 cut to Rs 100 |
 | Sales Tax Act 1990, updated 2025-26 | FBR | Ninth Schedule Table-II, 18%/25% |
 | Finance Act 2018 (as amended) | FBR | §10, the mobile handset levy itself |
+| Finance Act 2022 | FBR | The seven-band levy table still in force |
+| SRO 1152(I)/2025 | FBR | Regulatory duty for the 2025-26 tax year |
+| SRO 1151(I)/2025 | FBR | Additional customs duty and its exemptions for the 2025-26 tax year |
 | Pakistan Customs Tariff FY 2025-26 | FBR | Heading 85.17 |
 | Fifth Schedule to the Customs Act 1969 (2025-26) | FBR | Serial 99 — smartphones at 0% |
 | SRO 1064(I)/2026 | FBR | Regulatory duty |
-| SRO 1063(I)/2026 | FBR | ACD, and the exemptions that zero it |
+| SRO 1063(I)/2026 | FBR | Current ACD rules and the baggage / Fifth Schedule exemptions |
 | Customs General Order 01 of 2019, as amended by CGO 01 of 2024 | FBR | The registration procedure, the fine, the 120-day scheme |
 | Valuation Ruling 1834/2023 | Directorate General of Customs Valuation | New-phone C&F values, all brands — **cite if the model picker ships** |
+| Mobile-phone Valuation Advice (November 2021) | Directorate General of Customs Valuation | **Superseded for valuation**; used only for the exact W4003 part number behind VR 1834's ambiguous `itel-14 Max` label |
+| List of Approved MDM Authorization Holders (2023) | Engineering Development Board | Brand-level corroboration only: X Tell and Sea Shark are recorded as 2G; it does not classify their individual models |
 | Valuation Ruling 1999/2025 | Directorate General of Customs Valuation | New iPhone C&F values, supersedes VR 1834 for Apple |
 | Valuation Ruling 2070/2026 | Directorate General of Customs Valuation | Old/used-phone C&F values (replaces the rescinded VR 2035/2026) |
 | WeBOC Mobile Device Duty Information | FBR / PRAL | The official per-IMEI duty lookup — where a user gets their real figure |
@@ -624,13 +686,31 @@ the shipped page takes a position anyway, the position is named and shown to the
   To close it, look for an FBR clarification on §148 mobile-phone collections and the ATL, or a
   WeBOC/PSID output for a known non-filer.
 - 🟡 **RD SRO 1064(I)/2026 rate column** — read via an 80% cross-check against SRO 1152(I)/2025, not
-  off a clean text layer. Re-read before shipping.
+  off a clean text layer. Re-read before shipping. **Now disclosed on the page** rather than left in
+  this file: `PTA_PROVENANCE_NOTE` renders under the breakdown whenever 2026-27 is selected and says
+  in as many words that these two figures are a reconstruction and a carry-forward. "Government
+  figures only" is true of the *sourcing* and was reading as a claim about the *certainty*.
 - 🟡 **FY 2026-27 Customs Tariff and Fifth Schedule** not yet published; 2025-26 carried forward on
-  the strength of the Finance Act 2026 containing no 85.17 amendment.
+  the strength of the Finance Act 2026 containing no 85.17 amendment. Disclosed in the same note.
 - 🟡 **ACD on a non-smart cellular phone (8517.1419) under the CNIC route.** SRO 1063(I)/2026 sets
   ACD by *tariff slab* (2% on the 20% slab, and so on); 8517.1419 carries a specific duty of
   Rs 250/set, which is not a slab. Which ACD rate attaches, if any, is undetermined. Immaterial for
-  smartphones, which are the overwhelming majority of registrations.
+  smartphones, which are the overwhelming majority of registrations — but the form *can* produce that
+  combination, so as of 5 August 2026 the line says the exemption reaches smartphones only and that
+  the total is a floor. See §4.2.
+- 🟡 **Is §148 on a personally-registered handset adjustable against a return?** The page used to
+  say it "is claimed back on your return", which nothing read for this page establishes. §148 is an
+  advance collection, but the adjustability machinery is written around an importer with income
+  arising from the import, and a traveller registering one phone for their own use has none. Neither
+  the Ordinance passes read here nor the PTA/FBR material settles it. The copy now stops at what
+  §148 *is* — collected in advance of the tax year — and points the reader at a tax adviser. To
+  close it, look for FBR guidance on §148 collections against DIRBS registrations, or the treatment
+  of a §148 credit claimed by a salaried non-importer.
+- 🟡 **Do the Ninth Schedule instalments exist in practice?** Sub-clause (vi) says a person "**may be
+  allowed** to pay tax in instalments **as may be prescribed**". Both phrases are conditional: it is
+  an enabling power, and the rules prescribing it were unpublished as of 4 August 2026. The page said
+  "You can pay this in instalments", which promised a facility nobody can currently invoke; it now
+  quotes the conditionality. Re-check whether the rules have been notified before strengthening it.
 
 ## 10. Verification log
 
@@ -1107,6 +1187,381 @@ the other calculators that do.
 Home/End, type-to-jump, Escape and focus-returns-to-trigger behave exactly as before everywhere
 else. New file: `components/calculator/SelectSearchField.tsx`.
 
+### 5 August 2026 — eighth pass, a code-versus-doc audit, and two real rate errors
+
+Another agent audited the shipped feature **against this document** rather than against the primary
+sources, and found things the sixth pass's copy audit could not: the sixth pass compared the page
+with itself, this one compared the page with the record. Every finding was re-verified in code before
+anything moved. **Two of them were arithmetic, not wording**, which is the first time that has
+happened on this page.
+
+**Rate error 1 — §148 charged Rs 70 to a cheap smartphone.** `INCOME_TAX_148_*` carried serial 1
+(Rs 70) as a flat 0-30 band with no device-type test, while First Schedule Part II qualifies it "Up
+to 30 **except smart phones**" and puts smartphones in serial 2 "up to 100" at Rs 100. The comment
+sitting above the table asserted the two lowest rows "share a rate for every phone this calculator
+prices" — they differ by Rs 30, which is what a comment stating a conclusion instead of the data will
+do. 100 of the 1,087 catalogue rows are valued at US$ 30 or less and a good number are Android
+handsets (Galaxy J1 Mini Prime 24, Oppo A3S 30, Meizu C9 30, Lenovo K320 29, Sharp Aquos R 26), so
+this was reachable from the picker, not only from manual entry. Now two tables (§4.5). A US$ 20
+smartphone on CNIC at Rs 280/US$ moved **Rs 1,418 → Rs 1,448**; a basic phone at the same value is
+Rs 1,668, the Rs 250 customs duty being the rest of the difference.
+
+**Rate error 2 — the levy gap stopped one dollar short.** Re-read the operative table off
+**Finance Act 2022, PDF p. 111**, section 7 ("Amendment in Finance Act, 2018"), verbatim:
+
+> | Sr. No | Mobile Phones having C&F Value (US Dollars) | Rate of levy per set in Pak Rupees |
+> |---|---|---|
+> | 1. | Up to 30 | 100 |
+> | 2. | Above 30 and up to 100 | 200 |
+> | 3. | Above 101 and up to 200 | 600 |
+> | 4. | Above 201 and up to 350 | 1800 |
+> | 5. | Above 351 and up to 500 | 4000 |
+> | 6. | Above 501 and up to 700 | 8000 |
+> | 7. | Above 701 and above | 16000 |
+
+Serial 3 begins **above** 101, so US$ 101 itself is inside the hole — not just the 100.50 this file
+had been using as the example. `findAmountBand` compared `cnfUsd >= band.minUsd`, which pulled 101
+*up* into serial 3 while 100.50 fell *down* into serial 2: the page advertised one fill rule and the
+engine ran two. **Three shipped catalogue handsets are valued at exactly US$ 101** (Galaxy-A3 (2017),
+Redmi 5 3 GB, Infinix Hot 20I), so for tax year 2025-26 they were charged Rs 600 where the statute
+imposes nothing and the stated rule gives Rs 200 — **Rs 400** on a real, pickable phone. The
+comparison is now `>`, with `0` the one inclusive floor, and the gap notice fires at 101 as it should.
+Regression-checked that the contiguous tables do not move at a threshold: US$ 30, 100, 200, 350 and
+500 return identical RD, §148 and sales-tax figures before and after, and §7's three worked examples
+(600 → 67,600 / 79,100; 666 → 72,220 / 83,720; 1,200 → 117,600 / 129,100) are unchanged.
+
+**Claims that ran ahead of the sources** — each cut back to what was actually read, and each now an
+open question in §9 rather than a silently softened sentence:
+
+- **"It is claimed back on your return."** Nothing read for this page establishes that a traveller
+  registering one handset can adjust a §148 collection; the adjustability machinery assumes an
+  importer with income arising from the import. Now stops at "collected in advance of the tax year".
+- **"You can pay this in instalments."** The Ninth Schedule sub-clause says "**may be allowed** …
+  **as may be prescribed**", and the rules are unpublished. Now quotes the conditionality, in the
+  note and in the FAQ.
+- **"You cannot use this option twice for the same phone."** CGO 01 of 2019 records the narrower
+  restriction — the same IMEI cannot come back on a *different passport*. Now says that.
+- **"Handsets are exempt" on the ACD line.** True via the Fifth Schedule for smartphones and via the
+  Baggage Rules for the passport route, and true of neither for a basic phone on CNIC. See §4.2.
+- **"Government figures only" beside a reconstructed rate.** The RD 2026-27 column came off an 80%
+  cross-check against a poor scan and the 2026-27 tariff was never published. Both were recorded here
+  and nowhere the visitor could see. `PTA_PROVENANCE_NOTE` now says so under the breakdown whenever
+  2026-27 is selected. The badge is about *sourcing*, but it was reading as a claim about *certainty*.
+
+**Sources the grid was missing.** Selecting tax year 2025-26 prices entirely off **SRO 1152(I)/2025**
+and the **Finance Act 2022**, neither of which had a card — the grid cited only the current year.
+Both added (URLs in §10's first-pass entry and `PTA_DOC_URLS`; both re-checked live, HTTP 200). The
+ACD citation was hard-coded to SRO 1063(I)/2026 on both years and is now `sources.additionalCustomsDuty`,
+so 2025-26 cites SRO 1151(I)/2025, the notification 1063 supersedes. Two card descriptions were also
+wrong: **IRIS** was described as where the payment slip is *created* (DIRBS issues the PSID; IRIS is
+e-payment), and **VR 1834** as "1,160 models" when 1,160 is its serial count and its Apple entries are
+superseded by VR 1999.
+
+**Structured data claimed more than the page shows.** The WebApplication `featureList` said "1,087
+handsets" where 1,087 is published *values* across 870 models, and enumerated five charges where the
+page itemises six. Both now derive from the catalogue rather than being typed. Google requires
+structured data to represent visible content; an inflated count is the kind of thing that is invisible
+until it is not.
+
+**Exchange-rate wording here was superseded by the thirteenth-pass follow-through below.** At this
+point `PTA_EXCHANGE_RATE_DATE` existed and was rendered only in the popular-phones basis line, so the
+main field's Rs 280 default carried no date and read as live. The field later gained help text, then
+the date was removed from both places at the user's direction while retaining the warning that Rs
+280 is only an editable default. `usePtaTax` also computed `usedPhone` from
+`brand`/`model` regardless of value source, so a visitor in "Enter the value" mode who selected Used
+was shown a bulk-import figure for whatever the picker's untouched defaults happened to be; it is now
+gated on `valueSource === 'model'`.
+
+**Historical decision, superseded by the thirteenth pass below.** This pass declined to derive device
+type because VR 1834 does not carry a classification field. The later pass did the missing external
+platform research, recorded the uncertainty explicitly and added a guarded taxonomy instead of
+pretending that the valuation ruling itself supplies the answer.
+
+**Quality gate:** `lint:fix` → `lint` (821 files, clean) → `type-check` clean; production build
+succeeded at **20 kB / 139 kB**; content-policy sweep over `src/features/pta-tax/` clean.
+
+### 5 August 2026 — ninth pass, closing the re-audit
+
+The current feature was checked again against the eighth-pass record. This pass corrected the
+remaining presentation and provenance mismatches rather than changing a tax amount:
+
+- **Unknown ACD is now a real state, not a zero with exemption styling.** `PtaTaxLine.status`
+  distinguishes `charged`, `exempt` and `unknown`. A basic phone on CNIC shows **Not included** in
+  amber; the headline and both route cards say the known subtotal is a minimum and separately name
+  the fine. The model picker also warns that the valuation ruling does not classify device type.
+- **Every printed band names its endpoint semantics.** Middle rows now say “above US$ X and up to
+  US$ Y”. This removes the false implication that US$ 30 or US$ 101 belongs to the upper row while
+  preserving the downward fallback for the levy’s genuine drafting gaps.
+- **Source attribution was narrowed.** The Income Tax Ordinance is the source of the complete §148
+  table and its footnotes; the Finance Act 2022 card now claims only the seven-band handset-levy
+  rewrite. The source intro now covers tax rates and published customs values, not the editable
+  Rs 280 exchange-rate assumption.
+
+One primary source was opened and cached during this pass:
+
+- **SRO 1151(I)/2025**, official FBR PDF,
+  `https://download1.fbr.gov.pk/SROs/202572975414701SRO1151OF2025.pdf`, **PDF p. 2** (the second and
+  final page; no separate printed page number). The operative text is:
+
+  > The additional customs duty shall not be levied on the following, namely: -
+  > (iii) import under the Fifth Schedule to the Customs Act, 1969 (IV of 1969),
+  > excluding, -
+  > (1) serial numbers 30, 33 and 35 of the Table of Part-I,
+  > (2) serial numbers 102, 110, 111, 116(except xvi), 117 and 118 of the
+  > Table of Part III;
+  > (iv) import under the Baggage Rules, 2006;
+
+  This confirms that tax year 2025-26 uses the same two relevant exemptions as the successor
+  notification: the passport route is covered by the Baggage Rules; the Fifth Schedule reaches
+  smartphones but does not establish the treatment of a basic phone on CNIC. The PDF is cached as
+  `docs/tax-sectors/sources/SRO1151-2025-ACD.pdf` and recorded in that folder’s README. It was missing
+  from the official-source grid even though the year-specific breakdown cited it; a card was added.
+
+**Deliberately not modelled in this pass:** no ACD percentage was invented for a basic phone on CNIC,
+and no model was classified from the undifferentiated valuation annexure alone. The thirteenth pass
+later adds a separately sourced model taxonomy; the unresolved ACD remains unresolved. The catalogue
+sweep count was also corrected from 1,084 to **1,087** lookup rows, making the combined documented
+sweep **9,783**, not 9,780. Page review and structured-data modification dates now record 5 August
+2026.
+
+**Verification after the fixes:** `lint:fix` → `lint` → `type-check` all passed; the production build
+completed at **20.3 kB / 139 kB** for this route. A direct compiled-module sweep covered all 1,087
+catalogue rows × 2 years × 2 routes × 2 device types (**8,696 calculations**), including the explicit
+unknown-ACD state, all six line statuses, the US$ 101 gap and the three worked examples.
+
+### 5 August 2026 — tenth pass, official DIRBS identity
+
+The live PTA Device Registration System was opened at `https://dirbs.pta.gov.pk/drs`. Its application
+bundle `https://dirbs.pta.gov.pk/drs/static/js/main.183537f8.js` identifies and renders this image as
+the DIRBS header logo:
+
+`https://dirbs.pta.gov.pk/drs/static/media/dirbs.864c516c1922970b878f.jpg`
+
+The asset is the multicolour **DIRBS Pakistan** wordmark and is served directly by PTA's official
+`dirbs.pta.gov.pk` host. It was cached unchanged at
+`public/images/official/dirbs-logo.jpg` (4,160 × 2,339 px) and now appears on both PTA cards in the
+official-sources grid; the generic phone and globe icons were removed. No tax rate, procedure or
+calculator behaviour changed. The source image includes generous white margins, so the card clips
+only that surrounding whitespace through the existing logo presentation rather than altering the
+official artwork. `lint:fix`, `lint`, `type-check` and the production build all passed; the built
+route contains the local logo twice, once for each PTA card.
+
+### 5 August 2026 — eleventh pass, shorter exchange-rate help (superseded in part)
+
+The exchange-rate field still identifies Rs 280/US$ as a default and tells the visitor to use the
+rate on their assessment, but no longer puts a date in that field-level message. The concise shipped
+copy is: **“Default: Rs 280/US$. Use the rate on your assessment.”** The thirteenth-pass follow-through
+later removed the date constant and date wording from the popular-phone examples as well.
+
+### 5 August 2026 — twelfth pass, temporary manual-only basic mode (superseded)
+
+**Superseded by the researched taxonomy in the thirteenth pass below.** This was the safe interim
+behaviour while the catalogue had no independently verified device-class field.
+
+Selecting **Basic phone** now switches the customs-value input to manual mode and removes the
+brand, model, storage and value-source controls. The published valuation annexure mixes basic phones
+and smartphones without identifying either class; leaving the full catalogue visible under a
+basic-phone selection displayed obvious smartphones, while filtering it would require inventing a
+device-type field across 870 models. The form therefore asks for the C&F value from the visitor's
+PSID or assessment. Switching back to **Smartphone** restores the model picker.
+
+This is enforced both in the state transition and in the pure input layer: `usesManualPtaValue()`
+treats every basic-phone state as manual even if a stale caller supplies `valueSource: 'model'`.
+No tax rate or device classification was added. A direct invariant check confirmed that such a stale
+state ignores the catalogue and declared value, uses the manual C&F figure and exposes no official
+model value. `lint:fix`, `lint`, `type-check` and the production build all passed.
+
+### 5 August 2026 — thirteenth pass, researched device taxonomy and filtered picker
+
+The manual-only basic mode above was replaced after a separate model-classification audit. VR 1834
+still supplies **only** brand, model, configuration and C&F value; it does not become evidence of
+device class merely because the code now carries one. `phoneClassification.ts` records the researched
+taxonomy, and `phoneCatalogue.ts` attaches the resulting `deviceKind` to every value row.
+
+#### Controlling test and research method
+
+The customs test is a capability test, not a retail segment, price, keypad or model-name test. The
+World Customs Organization's HS 2022 Chapter 85 Note 5 says:
+
+> For the purposes of heading 85.17, the term “smartphones” means telephones for cellular networks,
+> equipped with a mobile operating system designed to perform the functions of an automatic data
+> processing machine such as downloading and running multiple applications simultaneously,
+> including third-party applications, and whether or not integrating other features such as digital
+> cameras and navigational aid systems.
+
+Source: WCO Trade Tools, Chapter 85 legal notes,
+`https://www.wcotradetools.org/en/harmonized-system/2022/en/168517`, Note 5. FBR's Pakistan Customs
+Tariff FY 2025-26 then separates **8517.13 Smartphones** from **8517.14 Other telephones for cellular
+networks** at **PDF p. 249**. The tariff PDF is cached as
+`docs/tax-sectors/sources/Tariff-2025-26.pdf`.
+
+The WCO's published proposal history is useful on a common source of false positives. At **PDF p. 30
+(printed p. 23)** it describes input devices as “normally including a touch screen”, while the final
+legal Note 5 states no touch requirement. The implementation therefore treats a keypad alone as
+insufficient to make an otherwise app-capable, multitasking phone basic; that is an inference from
+the final test and its proposal history, not additional operative wording. The PDF is cached as
+`docs/tax-sectors/sources/WCO-Creating-HS-Change-Proposals-2023.pdf`.
+
+The taxonomy covers all **870 distinct brand + model keys** mechanically, but it is not a claim that
+870 separate model-specific evidence records survive. Clear modern product families were assigned by
+their known platform families; the likely basic set and ambiguous complement entries were researched
+against manufacturer specifications, platform documentation, exact part numbers and, where no
+manufacturer record survived, Pakistani tariff-coded trade records. Dollar value and keywords were
+not used as automatic classifiers. The result is:
+
+| Customs class | Value rows | Distinct models | Brands |
+|---|---:|---:|---:|
+| Smartphone | **1,003** | **786** | **21** |
+| Basic / other cellular phone | **84** | **84** | **5** |
+| Total | **1,087** | **870** | **23** |
+
+The basic-phone brands are Samsung, Nokia, itel, Sea Shark and X Tell. Samsung, Nokia and itel also
+contain smartphones, so filtering must continue through model and configuration rather than stopping
+at brand. Sea Shark and X Tell are basic-only in this implementation taxonomy; VR 1834 itself gives
+no device class. All 84 basic models have a blank
+configuration in VR 1834, so the storage selector naturally disappears for them; it is not hidden by
+a special device-type rule.
+
+#### Edge decisions
+
+- **Android, iOS, HarmonyOS and Symbian models are smartphones.** The catalogue's Nokia C5-00,
+  E5-00, E52, E72 and N73 are Symbian smartphones, not basic phones. Conversely, the old Series 30 /
+  Series 40 families in the allowlist below stay basic. Microsoft's archived Nokia Devices pages
+  list C5-00, E5, E52 and E72 under Symbian 3.2 and describe N73 as an S60 smartphone with
+  downloadable applications (`https://blogs.windows.com/devices/2011/06/29/updates-to-symbian-3-2-and-5-0/`,
+  `https://blogs.windows.com/devices/2009/05/08/nokia-n73/`). HMD's Nokia 105 4G specification
+  identifies Series 30+ (`https://www.hmd.com/en_int/nokia-105-4g-2021/specs`), while Microsoft's
+  archived Nokia Devices material expressly describes Series 40 as not a smartphone
+  (`https://blogs.windows.com/devices/2011/06/14/five-days-with-an-s40-phone-day-two/`).
+- **Four KaiOS Nokias are classified as smartphones for this customs calculation:** `8110 DS`,
+  `2720`, `6300 4G DS` and `8000 4G DS`. HMD markets the 6300 and 8000 as members of its “feature
+  phone family”, but the same manufacturer page says KaiStore provides hundreds of downloadable apps
+  (`https://www.hmd.com/en_int/press/new-nokia-feature-phones-nokia-6300-4g-and-nokia-8000-4g`).
+  KaiOS's own store material says users download apps and any developer may submit one
+  (`https://www.kaiostech.com/apps-feature-phones-everything-need-know-kaistore/`). Its version 2.5
+  permissions — the relevant platform generation — include background services and out-of-process
+  windows (`https://developer.kaiostech.com/docs/getting-started/main-concepts/permissions/`). Those
+  capabilities support 8517.13 under the legal Note 5 even though the retail label says “feature
+  phone”. The trade record is **not** one-way corroboration: an exact Nokia 6300 4G was declared under
+  8517.13 in February 2024, while exact 6300 4G variants were declared under 8517.14 in February 2023;
+  exact 2720 Flip and 8110 shipments also appear under 8517.14. See
+  `https://www.volza.com/p/used-mobile-phone/export/export-from-united-states/`,
+  `https://www.volza.com/p/nokia-6300/export/export-from-vietnam/`,
+  `https://www.volza.com/p/nokia-phone/export/export-from-vietnam/hsn-code-85171400/` and
+  `https://www.volza.com/p/box-pallet/export/hsn-code-8517140000/`. Customs/logistics practice is
+  therefore conflicting, not settled. The shipped tag is a documented application of the legal
+  capability test, and the UI directs the visitor to follow a different class on the actual Customs
+  assessment.
+- **VR 1834's bare `2720` label is itself ambiguous.** Nokia also sold a 2009 Series 40 `2720 Fold`.
+  The US$ 38 value and placement among modern HMD models make the 2019 KaiOS `2720 Flip` the more
+  likely identity, but VR 1834 supplies no part number. That model remains in the four-phone KaiOS
+  inference above rather than being presented as a model-specific Customs determination.
+- **`itel-14 Max` is a smartphone.** VR 1834's shortened label is ambiguous, so the older official
+  Customs Valuation Advice was used to recover its exact part number. **PDF p. 6, Annex-I serial 224**
+  says:
+
+  > 224 … ITEL ITEL-14 MAX W4003 24
+
+  Third-party archived manual and firmware records identify W4003 as an Android 8.1 handset. The
+  official valuation PDF is cached as
+  `docs/tax-sectors/sources/Mobile-Phone-Valuation-2021.pdf`; supporting exact-model records are
+  `https://www.libble.eu/itel-a14-max---w4003/online-manual-955356/?page=0004` and
+  `https://www.hovatek.com/forum/thread-28337.html`. Because the official Customs record supports the
+  part-number mapping used by the shipped classification, it was also added to the on-page
+  official-source grid, prominently labelled **superseded for valuation** and not used for its old
+  prices.
+- **`Sharp Aquos ZERO5G BASIC` is a smartphone.** “BASIC” is part of that Android model's commercial
+  name, not a customs classification. This is why the implementation contains no keyword classifier.
+- **Sea Shark and X Tell carry the lowest-confidence assignments.** No durable manufacturer platform
+  page was found for all seven exact names. One Pakistani trade record supports exact Sea Shark
+  `S700` under non-smart PCT 8517.1411, but it is secondary evidence rather than a Customs ruling.
+  The record containing `Music ka badshah` says **Zee Tell**, not X Tell; the `Big Boss` record gives
+  no brand; and no exact-model record was located for `S112`, `X2 King`, `X4 King` or `Big Power`.
+  They therefore do not prove those six assignments. The official **Engineering Development Board
+  List of Approved MDM Authorization Holders**, PDF p. 2 (no printed page number), supplies only
+  brand-level corroboration:
+
+  > 30 DB Link PTA/MDM-32/10094/2022 30-Nov-22 X TELL 2G
+  >
+  > 31 MOBO Mobile Pvt Ltd PTA/MDM-33/10095/2022 30-Nov-22 Mobo, Sea Shark 2G
+
+  The seven stay basic as explicitly low-confidence, reasoned assignments from the 2G brand record,
+  catalogue brand grouping and the partial exact trade record—not as settled model-specific Customs
+  classifications. The UI directs a visitor to use the class on their assessment if it differs.
+  Sources: `https://www.volza.com/p/cellular-mobile/import/coo-hong-kong/`,
+  `https://www.volza.com/p/music/import/import-in-pakistan/hsn-code-8517/`,
+  `https://www.volza.com/p/phone-chargers/export/hsn-code-85171411/` and
+  `https://engineeringpakistan.com/wp-content/uploads/2023/01/Mobile-phone.pdf`. The EDB PDF is cached
+  as `docs/tax-sectors/sources/EDB-Mobile-Phone-Technology-List-2023.pdf` and, because it supports a
+  shipped brand-level decision, is now cited honestly in the on-page official-source grid.
+
+**Negative finding:** Nokia's indexed software-strategy PDF distinguishes Symbian as its smartphone
+platform from Series 30/40 mobile-phone platforms, but both `prod.nokia.com` and `www.nokia.com`
+returned HTTP 403 to the local cache request. The URL is
+`https://www.nokia.com/sites/default/files/2019-08/12-software-strategy-white-paper-pdf.pdf`; it was
+not falsely listed as cached. The official Microsoft/Nokia archive and model specifications above
+were retained as readable primary evidence.
+
+#### Complete basic-phone allowlist
+
+Every model not listed here is tagged `smartphone` in this fixed catalogue version. The model count
+and a fingerprint of every `brand + model + deviceKind` assignment make an addition, deletion, rename
+or class change throw at module load until this audit is repeated, so the complement cannot silently
+absorb a future phone and the curated basic set cannot silently shrink.
+
+- **Samsung (3):** `SM-B310E`; `GT-E1200R/E1200`; `GT-E1205`.
+- **Nokia (60):** `105 - 2022`; `1280`; `105 4G`; `125`; `X1-01`; `6310`; `101`; `220`; `225`;
+  `C1-02`; `107`; `215 4G`; `206`; `100`; `110 4G`; `1616`; `103`; `1600`; `1800`; `112`;
+  `X2-05`; `X2-02 (2011)`; `X2-01`; `X2-00`; `1110`; `C2-01`; `1209`; `1202`; `1100`; `C3-00`;
+  `301`; `1112`; `C2-00`; `6090`; `200`; `1650`; `5130`; `6230`; `202`; `6303`; `2700`; `515`;
+  `C2-03`; `130 DS`; `105 SS`; `105 DS`; `108 DS`; `215 DS`; `222 DS`; `150 DS`; `216 DS`;
+  `230 DS`; `3310 DS`; `3310 3G`; `106 DS`; `210 DS`; `110 DS`; `150 DS 2020`; `5310 DS`;
+  `225 4G DS`.
+- **itel (14):** `Value 400`; `itel-Power 400`; `Muzik 410`; `itel-Value 110`; `Muzik 110`;
+  `itel-IT5092`; `Value-100`; `Power 700`; `Magic 2`; `Magic 2 Max`; `Muzik 400 Core`;
+  `Power 410`; `IT5026`; `IT2192T`.
+- **Sea Shark (2):** `S112`; `S700`.
+- **X Tell (5):** `X2 King`; `X4 King`; `Music ka badshah`; `Big Power`; `Big Boss`.
+
+#### Shipped filtering and invariants
+
+Both device types again offer **Pick my phone** and **Enter the value**. In model mode, brand, model
+and storage queries all require the selected `deviceKind`; `findPhone` repeats that requirement so a
+stale UI state cannot price a phone through the wrong tax class. Changing device type preserves the
+brand only when that brand has the new class, then resets model, storage and the higher declared
+value. Manual entry remains the escape hatch for an unlisted phone or a Customs assessment that
+classifies a borderline model differently.
+
+The current test record in §11 pins the complete class-filter and opposite-class lookup invariants.
+
+#### SEO and exchange-rate follow-through
+
+Two SEO leftovers from the earlier pass were removed rather than retained for site-wide consistency.
+Google Search Central says HowTo rich results have been deprecated since 13 September 2023 and that
+the `meta keywords` tag has no effect on indexing or ranking:
+
+- `https://developers.google.com/search/blog/2023/08/howto-faq-changes`
+- `https://developers.google.com/search/docs/crawling-indexing/special-tags`
+
+The route therefore no longer emits `HowTo` JSON-LD or a keyword meta tag. The root metadata and
+shared page-metadata builder were cleaned at the same time, so the unsupported tag is removed
+consistently site-wide rather than merely hidden on this route; route keyword lists remain available
+only to legitimate internal/structured-data consumers. Its visible, server-rendered rate and
+popular-phone sections remain unchanged, and its structured data now consists of BreadcrumbList,
+WebApplication and FAQPage. FAQPage remains valid markup for visible FAQ content; Google says it does
+not cause a search problem even where a non-government site is not regularly eligible for the rich
+result.
+
+The exchange-rate copy now identifies Rs 280 only as an editable default and tells the visitor to use
+the rate on the assessment. `PTA_EXCHANGE_RATE_DATE` was removed, and neither the form helper nor the
+popular-phone basis line mentions a date.
+
+Final verification after all taxonomy, source, copy and SEO follow-through: `lint:fix` → `lint` →
+`type-check` passed; the production build passed at **21.4 kB / 140 kB** for this route. A compiled
+lookup audit resolved all 1,087 rows only through their assigned class and rejected every
+opposite-class lookup. The generated route HTML contains the local official DIRBS logo twice and the
+date-free default-rate helper once, with no keyword meta tag, HowTo block or exchange-rate date.
+
 ## 11. The calculator as built
 
 ### Route and files
@@ -1121,11 +1576,11 @@ page plus its OG image.
 | Input | Notes |
 |---|---|
 | Tax year | `2026-2027` or `2025-2026`. Every band table moves between them. |
-| Exchange rate | Rs per US$, defaulted to 280 and labelled with the date that figure was taken. Editable, because we call no rate API and must not pretend the default is current. |
+| Exchange rate | Rs per US$, defaulted to 280. Editable, because we call no rate API and must not pretend the default is current. The field identifies it as a default and directs the visitor to use the rate on their assessment; at the user's request, that field-level message does not include a date. |
 | Registration route | Passport / CNIC. Drives §148 and the fine note. |
-| Device type | Smartphone / Basic phone. Drives customs duty only (nil vs Rs 250). |
+| Device type | Smartphone / Basic phone. Drives customs duty (nil vs Rs 250), the §148 floor below US$ 30 (Rs 100 vs Rs 70), and whether the ACD line can claim an exemption. The valuation ruling itself does not classify models, so the picker uses the separately researched Chapter 85 taxonomy in the thirteenth-pass log. The visitor still chooses the class and can follow a different class on their assessment by using direct value entry. |
 | Device condition | New / Used. Deliberately does **not** move the value — see §9. |
-| Customs value | "Pick my phone" (brand → model → storage) or "Enter the value". |
+| Customs value | For either class: "Pick my phone" (class-filtered brand → model → storage) or "Enter the value". Basic mode currently exposes 84 listed models across five brands; none has a stated storage tier. |
 | Higher declared value | Optional, model mode only. Wins where higher, per §25(1). |
 
 ### Live calculation, and the placeholder that stands in
@@ -1144,6 +1599,11 @@ otherwise still total up while sales tax silently came to nothing.
 
 ### Only what is relevant to the combination shows
 
+- **Device type filters the complete picker.** Brand, model and storage lookups all require
+  `deviceKind`. Basic mode shows only the 84 researched basic models; smartphone mode shows only the
+  other 786 model families. Mixed brands (Samsung, Nokia and itel) are filtered again at model level,
+  and basic-only brands (Sea Shark and X Tell) cannot appear in smartphone mode. `findPhone` also
+  checks the class, so filtering is a calculation invariant rather than a visual convenience.
 - **Storage** is absent, not disabled, for the **548** models the rulings price without stating any
   configuration at all — `getVariantOptions` returns `[]` and `PtaValuePicker` drops the field. A
   dropdown holding no real choice asks a question the ruling never posed. It is *not* keyed on
@@ -1152,17 +1612,19 @@ otherwise still total up while sales tax silently came to nothing.
   so showing it tells the reader which configuration their value came from. (Corrected 4 August 2026:
   this bullet previously claimed 747, which is neither figure and described behaviour the code does
   not have.)
-- **Brand → model → storage cascade**: changing brand resets model and storage, changing model
-  resets storage, and both clear any declared value. Otherwise a Samsung storage tier survives a
-  switch to Nokia and the lookup silently finds nothing.
-- **The model field is searchable**; brand and storage are not. Samsung alone lists 128 models and
+- **Device type → brand → model → storage cascade**: changing class retains a brand only if that
+  brand contains the new class, then resets model and storage. Changing brand resets model and
+  storage, changing model resets storage, and all three clear any declared value. Otherwise a stale
+  smartphone model could survive under Basic phone even if the visible lists were filtered.
+- **The model field is searchable**; brand and storage are not. Smartphone mode alone lists 125
+  Samsung models,
   the shared `SelectInput`'s type-to-jump matches the *start* of a label only, so nothing typed
   reaches "Galaxy S10 Plus" except "galaxy" — the list was only navigable by scrolling. 23 brands
-  and at most a handful of storage tiers do not have that problem, and a filter box there would add
-  a keyboard on mobile for nothing.
-- **"Pick my phone" vs "Enter the value"** swap the whole value block; the model pickers and the
-  official-value badge simply do not exist in manual mode, and the declared-value override does not
-  exist either (there is no published floor to override).
+  exist across the full catalogue, but one selection shows at most 21 smartphone brands or five
+  basic brands; those and the handful of storage tiers do not need another search field.
+- **"Pick my phone" vs "Enter the value"** are offered for both device types and swap the whole value
+  block; the model pickers and official-value badge do not exist in manual mode, and the
+  declared-value override does not exist either (there is no published floor to override).
 - **The used-phone note** renders only when condition is Used, and its VR 2070 figure only when that
   ruling actually lists the handset.
 - **The levy band-gap warning** renders only when a value genuinely lands in one of the five holes.
@@ -1173,55 +1635,70 @@ otherwise still total up while sales tax silently came to nothing.
 
 ### Colour
 
-Site convention, not the mockup. Every figure on this page is tax owed, so both route totals are red
+Site convention, not the mockup. Every quantified charge is tax owed, so both route totals are red
 (`text-red-600`) including the cheaper passport one; the mockup showed passport in green, which would
-read as money the taxpayer keeps. Nil lines are green because a levy that does not apply is money
-kept. The C&F and customs values are the pre-tax base and stay neutral.
+read as money the taxpayer keeps. Exempt lines are green, while an amount the sources do not establish
+is amber and excluded from the labelled minimum. The C&F and customs values stay neutral.
 
 ### Responsive
 
 Every grid is single-column below `sm`. Each flex and grid child carries `min-w-0` and each amount
 `amount-wrap` (`overflow-wrap: anywhere`), so no figure can push a row off a 320 px screen. The
 headline total steps `text-2xl` → `sm:text-3xl`. The breakdown rows stack label-over-amount on mobile
-and go side by side at `sm`, and the amount column holds a short figure — an exempt line prints
-"Nil", with the reason in the basis line above it, because a sentence in that slot refuses to shrink
-beside the label.
+and go side by side at `sm`, and the amount column holds a short status — an exempt line prints
+**Exempt**, while the unresolved ACD cell prints **Not included** in amber, with the reason in the
+basis line above it.
 
 ### What it deliberately will not do
 
 - **Quote a value for a phone no ruling covers.** The catalogue stops at the Galaxy S23 and the
   iPhone 16; anything newer falls through to "Enter the value" with an on-page explanation. This is
   the whole difference between citing a source and inventing one.
-- **Present a CNIC total as final.** Every CNIC figure is suffixed "+ fine" and the comparison card
-  says the amount is not published by FBR.
+- **Present a CNIC total as final.** Every CNIC figure is suffixed "+ fine". A basic-phone CNIC result
+  also says **minimum** because its additional customs duty is unquantified, and both omissions are
+  named under the headline and in the comparison card.
 - **Price from VR 2070/2026.** See §9.
 - **Cover years before 2025-26**, where sales tax, RD, the levy and §148 all sat differently.
 
 ### Testing
 
-`calcPtaTax` and the lookup layer were swept over **9,780 cases**: every one of the 1,084
-brand → model → storage combinations resolves to a value; every phone × 2 years × 2 routes × 2 device
-types (8,696 combinations) returns six finite, non-negative lines each carrying a cited basis, with
-§148 nil on every passport case and the passport total never above the CNIC one. On top of that,
-targeted checks pin the worked example in §7 (Rs 67,600 / Rs 79,100), the mockup example (iPhone 16
+`calcPtaTax` and the lookup layer were swept over **9,783 cases** for arithmetic compatibility: every
+one of the 1,087 brand → model → storage combinations resolves to a value, and the earlier engine
+sweep deliberately prices both device classes at every value to exercise the device-specific tax
+branches. The picker now has a stricter semantic sweep as well: all **1,087 assigned rows** resolve in
+their tagged class, all **1,087 opposite-class lookups** return `null`, every kind-specific brand and
+model option set exactly matches its assigned rows, and all 84 basic rows suppress storage because
+VR 1834 states no configuration for them. On top of that, targeted checks pin the worked example in
+§7 (Rs 67,600 / Rs 79,100), the mockup example (iPhone 16
 128 GB at Rs 72,220 / Rs 83,720), the US$ 500 sales-tax cliff at 500 vs 500.01, all five levy band
 gaps resolving downward in both years, the year-over-year moves in RD / §148 / levy, the declared
 value overriding only when higher, and blank / negative / non-numeric inputs producing no bill.
 
+Two boundary families were added on the eighth pass and are the ones to re-run after any band edit,
+because they are where the previous two rate errors lived:
+
+- **Exactly on a printed threshold.** US$ 30, 100, 200, 350, 500, 700 must stay in the *lower* band
+  on every table, and US$ 101, 201, 351, 501, 701 must fall into the levy gap rather than jumping up.
+  A single `>=` in `findAmountBand` broke the second group while leaving the first intact, which is
+  why testing one of them proves nothing about the other.
+- **Device type against the §148 floor.** Below US$ 30 a smartphone pays Rs 100 and a basic phone
+  Rs 70; from US$ 30 up they are identical. A sweep that only prices smartphones cannot see this, and
+  the original 8,696-case sweep did cover both device types — but only checked that lines were finite
+  and cited, not that they held the right *amount*.
+
 ### Search surface (added on the 4 August 2026 SEO pass)
 
 Two sections were added below the calculator, both **server-rendered**, because neither takes any
-state. **19.2 kB / 138 kB first load** as of the sixth pass; the figure in this bullet was 17.2 kB /
-135 kB and had gone stale across the tooltip and model-search work, so re-read it off the build
-output rather than trusting it.
+state. **20.3 kB / 139 kB first load** as of the ninth pass; this figure goes stale on almost every
+pass, so re-read it off the build output rather than trusting it.
 
 - **`PtaRateGuide` + `PtaRateTable` — `#pta-tax-rates`.** Every band, both years, printed. This is
   the convention every other calculator on the site already followed and this one did not; a page
   that charges 2025-26 as readily as 2026-27 and prints neither table leaves its own answers
-  unsourced. Rows are built by `buildPtaRateGuideRows()` **from `PTA_RATES` itself**, so the printed
-  guide cannot drift from the engine — the failure mode CLAUDE.md names ("rates correct in
-  `lib/rates.ts` but wrong in the on-page rate guide are still wrong") is structurally impossible
-  here rather than merely checked.
+  unsourced. Rows are built by `buildPtaRateGuideRows()` **from `PTA_RATES` itself**, which prevents
+  duplicated amounts from drifting. It does not make labels infallible: the eighth-pass formatter
+  printed exclusive lower bounds like inclusive ranges until the ninth pass made every **above** /
+  **up to** endpoint explicit. Rate-guide copy remains part of the calculation audit.
 
   Rows follow the **handset levy's** bands, which are the finest split: the levy separates
   US$ 501-700 from above 700, where RD and §148 both stop at 500. The coarser tables are then looked
@@ -1238,20 +1715,17 @@ output rather than trusting it.
 
   The list is chosen to straddle the cliff on purpose: **iPhone 14 at US$ 490 pays 18%, iPhone 15 at
   US$ 600 pays 25%**, adjacent rows in the same table. Every total is stamped with the tax year, the
-  device class and *"at Rs 280 to the US dollar as at 4 August 2026"* in an amber panel above — sales
+  device class and *"at the default Rs 280 to the US dollar"* in an amber panel above — sales
   tax is the one percentage in the assessment, so these are the only figures on the page that move
   with the rupee, and they must never read as fixed.
 
 ### Structured data and metadata
 
-`PTA_STRUCTURED_DATA` = BreadcrumbList (via `routeStructuredData`) + WebApplication + **HowTo** +
-FAQPage. The HowTo was added on the SEO pass and is not invented content: its four steps are the four
-cards already printed in `PtaValueBasisSection`, and each `HowToStep.url` points at that card's own
-`#pta-step-<id>` anchor, so the markup and the page cannot describe different procedures.
-
-`routeMeta['/pta-tax-calculator'].keywords` went from 14 to 24 entries, adding the model-name and
-"how to calculate" long tail the two new tables now actually answer. Title 55 chars, description 155
-— both inside the truncation limits.
+`PTA_STRUCTURED_DATA` = BreadcrumbList (via `routeStructuredData`) + WebApplication + FAQPage. The
+earlier `HowTo` block was removed after the 5 August follow-through checked Google's deprecation
+notice. The route-specific keyword array was removed and the shared metadata system stopped emitting
+the unsupported meta tag site-wide. Title 55 chars, description 155 — both inside the truncation
+limits.
 
 The route was also missing from **`TAX_GUIDE_SEARCH_ENTRIES`** (`src/features/tax-guides/lib/content.ts`),
 which is the site's own search index and an internal link from `/tax-guides`. Added.
@@ -1273,7 +1747,8 @@ So the split now runs along a line, not a mood:
 - **Inputs and results keep the official name.** Registration route · Passport / CNIC. Device type.
   Device condition. Customs value. C&F value. Exchange rate. Higher declared value. Estimated FBR
   duties & taxes. Customs duty · Additional customs duty · Regulatory duty · Sales tax · Income tax
-  (section 148) · Mobile handset levy. A nil line reads **Exempt**, not "Nothing to pay".
+  (section 148) · Mobile handset levy. A legally nil line reads **Exempt**; an amount the sources do
+  not establish reads **Not included**, never Exempt or Rs 0.
 - **The explanation rides in an info icon** beside each of those, never in place of it. Sixteen
   tooltips, fifteen distinct: seven on the form (route, device type, condition, how the value is
   found, the official-value badge, declared value, exchange rate) and nine on the result (C&F value,
@@ -1299,9 +1774,9 @@ the same explanations are one scroll up on the result itself.
 `basis` and `reference` separately: `basis` is a sentence about the money — *"25% of the customs
 value — the rate for handsets over US$ 500. The only charge here that is a percentage, so the only
 one that moves with the rupee."* — and `reference` is the citation, printed under it in grey at 11px
-behind "Source:". `formatPlainBand` ("under US$ 500", "over US$ 700") serves those sentences;
-`formatUsdBand` keeps the statute's phrasing for the rate table and the citations. No rate, band,
-cutoff or citation changed in any of this.
+behind "Source:". `formatPlainBand` serves those sentences; `formatUsdBand` prints every nonzero lower
+bound as **above** and every finite upper bound as **up to**, so an exact threshold cannot be assigned
+to the wrong row by an inclusive-looking label.
 
 **Where formal language deliberately stayed elsewhere:** the `Source:` citations, and the *titles* of
 documents in the official-sources grid — "Fifth Schedule to the Customs Act 1969", "Valuation Ruling

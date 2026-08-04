@@ -15,6 +15,16 @@ export const IRIS_LOGO = {
   height: 33,
 } as const satisfies SourceLogo;
 
+/** Wordmark served by PTA's official DIRBS registration application. */
+export const DIRBS_LOGO = {
+  src: '/images/official/dirbs-logo.jpg',
+  alt: 'PTA DIRBS Pakistan',
+  width: 4160,
+  height: 2339,
+  cropToMark: true,
+  prominent: true,
+} as const satisfies SourceLogo;
+
 export const FINANCE_DIVISION_LOGO = {
   src: '/images/official/pakistan-government-emblem.png',
   alt: 'Government of Pakistan Finance Division',
@@ -30,6 +40,15 @@ export const FINANCE_DIVISION_LOGO = {
 export const NATIONAL_ASSEMBLY_LOGO = {
   src: '/images/official/pakistan-government-emblem.png',
   alt: 'National Assembly of Pakistan',
+  width: 192,
+  height: 206,
+  prominent: true,
+} as const satisfies SourceLogo;
+
+/** Federal emblem for an Engineering Development Board publication. */
+export const ENGINEERING_DEVELOPMENT_BOARD_LOGO = {
+  src: '/images/official/pakistan-government-emblem.png',
+  alt: 'Engineering Development Board Pakistan',
   width: 192,
   height: 206,
   prominent: true,
