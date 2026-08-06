@@ -24,8 +24,8 @@ import type {
 /** What each route means, shown under the segmented control that picks it. */
 export function getRouteHelp(route: PtaRoute): string {
   return route === 'passport'
-    ? 'A traveller registering a handset from their own accompanied baggage, within 60 days of arriving.'
-    : 'A local applicant, or a traveller past the 60 days. Section 148 applies and a fine is added.';
+    ? 'For a phone you carried in with your own luggage and are registering within 60 days of landing.'
+    : 'For a phone bought here, or one you brought in but did not register in time. Income tax is charged too, and a fine is added.';
 }
 
 /** Identifies the opening figure as a default and directs the visitor to their assessment. */
@@ -35,7 +35,7 @@ export function getExchangeRateHelp(): string {
 
 /** Explains that model filtering follows the customs test, not the handset shape. */
 export function getDeviceKindHelp(): string {
-  return 'The lists use researched tariff-capability tags, not keypad shape. Some KaiOS, Sea Shark and X Tell assignments are not settled model-specific Customs classifications, so use the class on your assessment if it differs.';
+  return 'Phones are sorted by what they can do, not by whether they have a keypad. A few KaiOS, Sea Shark and X Tell models are hard to place, so if your assessment puts yours in the other type, go with that.';
 }
 
 /** Label for the other route in the side-by-side comparison. */
@@ -180,16 +180,16 @@ export function buildPopularPhoneRows(phones: readonly PtaPopularPhoneRef[]): Pt
 export function getRouteFacts(route: PtaRoute, hasUnknownCharge = false): readonly string[] {
   return route === 'passport'
     ? [
-        'Handset in your own accompanied baggage',
+        'Phone came in with your own luggage',
         'Registered within 60 days of arrival',
         'Income tax under section 148 is exempt',
         'No fine',
       ]
     : [
-        'Local applicant, or past the 60 days',
+        'Bought here, or past the 60 days',
         'Income tax under section 148 is payable',
-        ...(hasUnknownCharge ? ['Basic-phone additional customs duty is not included'] : []),
-        'A prescribed fine applies',
+        ...(hasUnknownCharge ? ['Extra customs duty on basic phones is not included'] : []),
+        'A fine applies',
         'The fine amount is not published by FBR',
       ];
 }
