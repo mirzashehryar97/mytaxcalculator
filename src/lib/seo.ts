@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import { CONTACT_EMAIL } from '@/lib/contact';
+
 export const SITE_URL = 'https://www.mytaxcalculator.pk';
 export const SITE_NAME = 'My Tax Calculator';
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -1075,6 +1077,13 @@ export const organizationLd: JsonLd = {
   description:
     'Free Pakistan income tax calculator with the latest FBR tax slabs for FY 2026-2027, plus guides on filing, deductions and the tax system.',
   areaServed: { '@type': 'Country', name: 'Pakistan' },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: CONTACT_EMAIL,
+    areaServed: 'PK',
+    availableLanguage: 'English',
+  },
 };
 
 export const websiteLd: JsonLd = {

@@ -1,3 +1,5 @@
+import { CONTACT_MAILTO } from '@/lib/contact';
+
 export interface FooterLink {
   href: string;
   label: string;
@@ -5,6 +7,7 @@ export interface FooterLink {
 
 export const FOOTER_QUICK_LINKS = [
   { href: '/about', label: 'About Us' },
+  { href: CONTACT_MAILTO, label: 'Contact Us' },
   { href: '/tax-guides', label: 'Tax Guides' },
   { href: '/budget-2025-26-vs-2026-27', label: 'Budget 2025-26 vs 2026-27' },
   { href: '/tax-news', label: 'Tax News' },

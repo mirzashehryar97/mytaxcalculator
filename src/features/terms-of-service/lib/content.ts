@@ -17,6 +17,8 @@ import type {
   PolicyTrustBadge,
 } from '@/components/ui/policy/types';
 
+import { CONTACT_EMAIL } from '@/lib/contact';
+
 export const TERMS_LAST_UPDATED = 'June 12, 2026';
 
 export const TERMS_SOCIAL_IMAGE_COPY = {
@@ -151,7 +153,7 @@ export const TERMS_CONTACT_COPY = {
   title: 'Need something clarified?',
   description:
     'If any part of these terms is unclear, email us and we will help explain how it applies to the site.',
-  email: 'info@mytaxcalculator.pk',
+  email: CONTACT_EMAIL,
   buttonLabel: 'Email us',
   note: 'My Tax Calculator is an independent service and is not operated by FBR or the Government of Pakistan.',
 } as const;

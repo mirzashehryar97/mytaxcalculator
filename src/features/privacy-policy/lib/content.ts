@@ -14,6 +14,8 @@ import {
   UsersRound,
 } from 'lucide-react';
 
+import { CONTACT_EMAIL, CONTACT_MAILTO } from '@/lib/contact';
+
 import type {
   PrivacyHeroFact,
   PrivacyHighlight,
@@ -210,8 +212,8 @@ export const PRIVACY_SECTIONS: readonly PrivacySection[] = [
         href: 'https://tools.google.com/dlpage/gaoptout',
       },
       {
-        label: 'Email info@mytaxcalculator.pk with a privacy request.',
-        href: 'mailto:info@mytaxcalculator.pk',
+        label: `Email ${CONTACT_EMAIL} with a privacy request.`,
+        href: CONTACT_MAILTO,
       },
     ],
     icon: Settings2,
@@ -252,7 +254,7 @@ export const PRIVACY_CONTACT_COPY = {
   title: 'Talk to us about privacy.',
   description:
     'If something here is unclear, or you want to make a privacy request, email us. Please do not send detailed financial records or identity documents.',
-  email: 'info@mytaxcalculator.pk',
+  email: CONTACT_EMAIL,
   buttonLabel: 'Email privacy team',
   note: 'My Tax Calculator is an independent service and is not operated by FBR or the Government of Pakistan.',
 } as const;

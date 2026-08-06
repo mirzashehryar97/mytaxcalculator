@@ -2,6 +2,8 @@ import Link from 'next/link';
 
 import { ArrowRight, Check, Code2 } from 'lucide-react';
 
+import { SUPPORT_EMAIL, SUPPORT_MAILTO } from '@/lib/contact';
+
 import {
   EMBED_SALARY_TAX_DISCOVERY_COPY,
   EMBED_SALARY_TAX_PUBLISHER_BENEFITS,
@@ -43,6 +45,16 @@ export default function PublisherEmbedCard() {
               </li>
             ))}
           </ul>
+
+          <p className="mt-4 text-gray-600 text-sm">
+            {EMBED_SALARY_TAX_DISCOVERY_COPY.publisherSupportPrompt}{' '}
+            <a
+              href={SUPPORT_MAILTO}
+              className="font-semibold text-emerald-700 underline underline-offset-2 transition-colors hover:text-emerald-900"
+            >
+              {SUPPORT_EMAIL}
+            </a>
+          </p>
         </div>
 
         <div className="flex flex-col items-start gap-3 lg:items-stretch">

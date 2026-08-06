@@ -32,6 +32,7 @@ export const EMBED_SALARY_TAX_DISCOVERY_COPY = {
     'Give your visitors instant Pakistan salary tax estimates with a free, privacy-friendly calculator.',
   publisherPrimaryLink: 'Get embed code',
   publisherSecondaryLink: 'View live widget',
+  publisherSupportPrompt: 'Questions about the integration?',
 } as const;
 
 export const EMBED_SALARY_TAX_PUBLISHER_BENEFITS = [

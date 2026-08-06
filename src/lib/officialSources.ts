@@ -176,6 +176,16 @@ export const OFFICIAL_SOURCES_COPY = {
     'Every rate on this page comes from these official documents. Open them to check the figures yourself.',
 } as const;
 
+/**
+ * Rendered under every calculator's source grid, whichever copy object the page
+ * passes in. The grid invites readers to check the figures against the statute —
+ * this gives them somewhere to go when one does not match.
+ */
+export const OFFICIAL_SOURCES_CORRECTION_COPY = {
+  prompt: 'Found a figure that does not match the source?',
+  linkLabel: 'Report a correction',
+} as const;
+
 /** Salary slab sources — shared by the salary, reverse-salary and salary-comparison calculators. */
 export const SALARY_OFFICIAL_SOURCES = [
   {

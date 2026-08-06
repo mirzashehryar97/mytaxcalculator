@@ -4,6 +4,9 @@ import OfficialSourcesGrid, {
   type OfficialSource,
 } from '@/components/calculator/OfficialSourcesGrid';
 
+import { SUPPORT_MAILTO } from '@/lib/contact';
+import { OFFICIAL_SOURCES_CORRECTION_COPY } from '@/lib/officialSources';
+
 interface OfficialSourcesSectionProps {
   id: string;
   eyebrow: string;
@@ -52,6 +55,15 @@ export default function OfficialSourcesSection({
         <OfficialSourcesGrid sources={sources} columns={columns} />
         <p className="mt-5 text-center text-emerald-50/70 text-sm">
           <time dateTime={reviewedDateTime}>{reviewedLabel}</time>
+        </p>
+        <p className="mt-2 text-center text-emerald-50/70 text-sm">
+          {OFFICIAL_SOURCES_CORRECTION_COPY.prompt}{' '}
+          <a
+            href={SUPPORT_MAILTO}
+            className="font-medium text-emerald-200 underline underline-offset-2 transition-colors hover:text-white"
+          >
+            {OFFICIAL_SOURCES_CORRECTION_COPY.linkLabel}
+          </a>
         </p>
       </div>
     </section>
