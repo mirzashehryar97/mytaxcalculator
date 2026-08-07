@@ -38,6 +38,13 @@ export const PLAN_NEXT_SALARY_TOOLS = [
   },
 ] as const satisfies readonly PlanNextSalaryTool[];
 
+export const SALARY_SLABS_SECTION_COPY = {
+  eyebrow: 'FBR salary tax slabs',
+  title: 'Income Tax Slabs in Pakistan',
+  description:
+    'The progressive salary tax rates the calculator applies. Pick any fiscal year from FY 2014-2015 onwards to see the slabs that applied that year.',
+} as const;
+
 export const SALARY_GUIDE_COPY = {
   reviewedLabel: 'Last reviewed 26 July 2026',
   reviewedDateTime: '2026-07-26',

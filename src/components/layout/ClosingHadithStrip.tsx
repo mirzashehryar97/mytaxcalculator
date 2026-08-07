@@ -1,9 +1,13 @@
 import { CHARITY_HADITH, HADITH_MARK } from '@/lib/islamicContent';
 
 /**
- * Single-line hadith strip that closes every page, sitting between the page
- * body and the footer. Shares the sand/gold treatment used for the hero verse
- * ribbon so religious content reads the same everywhere on the site.
+ * Single-line hadith strip that closes a calculator page, sitting between the
+ * page body and the footer. Shares the sand/gold treatment used for the hero
+ * verse ribbon so religious content reads the same everywhere on the site.
+ *
+ * `AppShell` renders it on calculator routes only (`isCalculatorPath`) — the
+ * tax guides, the budget comparison and the legal pages deliberately close
+ * without it.
  *
  * As in the mockup, the Arabic runs to the right edge of the strip (it is a
  * full-width RTL block) with the English rendering below it on the left.

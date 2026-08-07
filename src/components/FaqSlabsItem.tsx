@@ -1,6 +1,6 @@
 import { ChevronDown } from 'lucide-react';
 
-import SlabsAnswer from './SlabsAnswer';
+import SlabsAnswer from '@/features/salary-tax/components/SlabsAnswer';
 
 export default function FaqSlabsItem({ question }: { question: string }) {
   return (

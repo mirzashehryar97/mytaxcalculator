@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import ClosingHadithStrip from '@/components/layout/ClosingHadithStrip';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import { isCalculatorPath } from '@/components/layout/navigation';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ export default function AppShell({ children }: AppShellProps) {
         {children}
       </main>
 
-      <ClosingHadithStrip />
+      {isCalculatorPath(pathname) ? <ClosingHadithStrip /> : null}
 
       <Footer />
     </div>

@@ -38,7 +38,12 @@ function formatTaxRate(slab: {
   return `${formatPkr(slab.fixed)} + ${rateStr}`;
 }
 
-export default function SlabsAnswer() {
+/**
+ * The home page renders this twice — once as its own slab section, once inside FAQ
+ * question 1 — so the select's id has to be caller-supplied: `SelectInput` derives its
+ * label, listbox and option ids from it, and duplicates would break the ARIA wiring.
+ */
+export default function SlabsAnswer({ selectId = 'slabs-fiscal-year' }: { selectId?: string }) {
   const [year, setYear] = useState<string>(FISCAL_YEARS[0]);
   const slabs = taxSlabs[year] ?? [];
 
@@ -51,7 +56,7 @@ export default function SlabsAnswer() {
         <SelectInput
           ariaLabel="Select fiscal year for tax slabs"
           hideLabel
-          id="slabs-fiscal-year"
+          id={selectId}
           label="Fiscal year"
           onChange={setYear}
           options={FISCAL_YEAR_OPTIONS}

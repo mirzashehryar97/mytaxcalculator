@@ -5,6 +5,7 @@ import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 import PublisherEmbedCard from '@/features/embed-salary-tax/components/PublisherEmbedCard';
 import PlanNextSalary from '@/features/salary-tax/components/PlanNextSalary';
 import SalaryOfficialSources from '@/features/salary-tax/components/SalaryOfficialSources';
+import SalaryTaxSlabsSection from '@/features/salary-tax/components/SalaryTaxSlabsSection';
 
 import CalculatorTabs from './CalculatorTabs';
 import FaqSection from './FaqSection';
@@ -40,11 +41,13 @@ export default function HomeContent() {
 
       <PlanNextSalary />
 
+      <SalaryTaxSlabsSection />
+
+      <FaqSection />
+
       <RelatedCalculators currentHref="/" />
 
       <PublisherEmbedCard />
-
-      <FaqSection />
 
       <SalaryOfficialSources />
     </>

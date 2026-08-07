@@ -233,6 +233,21 @@ export const CALCULATOR_NAV_LINKS: readonly CalculatorNavLink[] = [
   },
 ];
 
+const CALCULATOR_PATHS: ReadonlySet<string> = new Set(CALCULATOR_NAV_LINKS.map((l) => l.href));
+const TRAILING_SLASHES = /\/+$/;
+
+/**
+ * True only on a calculator route. Gates the page furniture that belongs to a
+ * calculator and not to the guides, the budget comparison or the legal pages —
+ * currently the closing hadith strip in `AppShell`. Derived from
+ * `CALCULATOR_NAV_LINKS`, so a new calculator is covered the moment it is
+ * listed in the nav.
+ */
+export function isCalculatorPath(pathname: string): boolean {
+  const normalized = pathname.length > 1 ? pathname.replace(TRAILING_SLASHES, '') : pathname;
+  return CALCULATOR_PATHS.has(normalized);
+}
+
 /**
  * Buckets the calculator links into the ordered category groups rendered by
  * `RelatedCalculators`. Categories with no links left (the current page is filtered out

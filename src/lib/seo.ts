@@ -107,7 +107,7 @@ export const routeMeta: Record<string, RouteMeta> = {
     description:
       'Free Pakistan income tax calculator with the latest FBR tax slabs for FY 2026-2027. Calculate your salary tax and take-home pay, or compare fiscal years 2014 to 2027.',
     breadcrumb: 'Home',
-    dateModified: '2026-07-26',
+    dateModified: '2026-08-07',
     sitemapPriority: 1.0,
     sitemapChangeFrequency: 'weekly',
   },
