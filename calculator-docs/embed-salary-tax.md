@@ -30,6 +30,33 @@ against the Income Tax Ordinance 2001 (amended to 30 June 2026).
 The embed renders no official-sources grid — it is designed to sit inside someone else's page. The
 rates behind it are the ones cited on `/`.
 
+## Who has embedded it
+
+`hooks/useEmbedHostTracking.ts` fires one `embed_calculator_load` event per framed page load,
+carrying `host` — the hostname of the site the iframe is sitting in. The event is allowlisted in
+`src/lib/analytics.ts` so it reaches **both** Google Analytics and Vercel Web Analytics (most custom
+events go to GA only). In Vercel: **Analytics → Events → `embed_calculator_load`**, broken down by
+the `host` property.
+
+Top-level visits to `/embed/salary-tax` — our own preview, and the page the "Embed this calculator"
+button lives on — are skipped via `window.self === window.top`, so the event counts publishers
+rather than us.
+
+`lib/embedHost.ts` resolves the host from two signals, in order:
+
+1. `location.ancestorOrigins`, last entry — the top-level page of the frame chain. Chromium and
+   WebKit only, but it survives `<iframe referrerpolicy="no-referrer">` and reports the outermost
+   page rather than whoever framed us directly (so a nested embed is attributed to the real site).
+2. `document.referrer` — the Firefox fallback. The default `strict-origin-when-cross-origin` policy
+   already trims a cross-origin referrer to its origin, which is the granularity we want.
+
+Where neither resolves — a sandboxed frame reporting an opaque `"null"` origin, or a publisher
+suppressing the referrer on Firefox — the event still fires with `host: 'unknown'`, deliberately:
+an unmeasurable embed should show up as a number rather than vanish from the total.
+
+The one thing this cannot see is a site that copies our markup instead of iframing us; nothing
+client-side can.
+
 ## Deliberately not modelled
 
 Everything the salary calculator leaves out. The embed is intentionally a strict subset: if it ever

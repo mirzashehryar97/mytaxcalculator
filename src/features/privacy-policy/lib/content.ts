@@ -24,7 +24,7 @@ import type {
   PrivacyTrustBadge,
 } from '@/features/privacy-policy/types';
 
-export const PRIVACY_LAST_UPDATED = 'August 1, 2026';
+export const PRIVACY_LAST_UPDATED = 'August 7, 2026';
 
 export const PRIVACY_SOCIAL_IMAGE_COPY = {
   eyebrow: 'Privacy · My Tax Calculator',
@@ -225,6 +225,7 @@ export const PRIVACY_SECTIONS: readonly PrivacySection[] = [
     paragraphs: [
       'Our guides and source cards link to government websites such as FBR and IRIS. Once you open another website, its privacy practices apply. We are not responsible for how an external site handles information.',
       'The embeddable salary calculator is part of My Tax Calculator and is covered by this policy. The publisher of a page that embeds it may collect information separately under its own policy.',
+      'When the calculator is displayed inside another website, we record the domain name of that website—for example “example.com”—so we can see where the calculator is being used and keep it working there. This identifies the publisher’s website, not you. It does not include the specific page you were reading, and the amounts you enter into the embedded calculator are still processed only in your browser.',
     ],
     icon: ExternalLink,
   },

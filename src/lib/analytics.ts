@@ -7,6 +7,7 @@ type AnalyticsProperties = Record<string, AnalyticsPropertyValue>;
 
 const VERCEL_CUSTOM_EVENTS = new Set([
   'embed_calculator_click',
+  'embed_calculator_load',
   'show_insights_click',
   'salary_increment_show_insights_click',
   'job_offer_comparison_show_insights_click',

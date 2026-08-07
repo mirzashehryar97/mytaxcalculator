@@ -4,11 +4,14 @@ import EmbedSalaryTaxBrand from '@/features/embed-salary-tax/components/EmbedSal
 import EmbedSalaryTaxFooter from '@/features/embed-salary-tax/components/EmbedSalaryTaxFooter';
 import EmbedSalaryTaxForm from '@/features/embed-salary-tax/components/EmbedSalaryTaxForm';
 import EmbedSalaryTaxResults from '@/features/embed-salary-tax/components/EmbedSalaryTaxResults';
+import useEmbedHostTracking from '@/features/embed-salary-tax/hooks/useEmbedHostTracking';
 import useEmbedSalaryTax from '@/features/embed-salary-tax/hooks/useEmbedSalaryTax';
 import { EMBED_SALARY_TAX_COPY } from '@/features/embed-salary-tax/lib/content';
 
 export default function EmbedSalaryTaxCalculator() {
   const { formState, result, updateField } = useEmbedSalaryTax();
+
+  useEmbedHostTracking();
 
   return (
     <section
