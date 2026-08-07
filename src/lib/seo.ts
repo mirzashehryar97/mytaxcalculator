@@ -26,9 +26,9 @@ export const HOME_FAQS: HomeFaqItem[] = [
   {
     question: 'How do I calculate income tax on my salary in Pakistan?',
     answer:
-      'Enter your monthly or annual salary, select the fiscal year (e.g. FY 2026-2027), and the calculator applies the progressive FBR tax slabs to compute your total tax liability, monthly tax, and take-home salary.',
+      'Enter your gross monthly salary, select the fiscal year (e.g. FY 2026-2027), and the calculator applies the progressive FBR tax slabs to compute your total tax liability, monthly tax, and take-home salary.',
     schemaAnswer:
-      'Enter your monthly or annual salary, select the fiscal year (e.g. FY 2026-2027), and the calculator applies the progressive FBR tax slabs to compute your total tax liability, monthly tax, and take-home salary.',
+      'Enter your gross monthly salary, select the fiscal year (e.g. FY 2026-2027), and the calculator applies the progressive FBR tax slabs to compute your total tax liability, monthly tax, and take-home salary.',
   },
   {
     question: 'How much tax will I pay on my salary in Pakistan?',
